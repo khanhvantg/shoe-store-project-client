@@ -84,7 +84,7 @@ export const updateCategory = ({category}) => async (dispatch, getState) => {
   try {
     dispatch({ type: CATEGORY_UPDATE_REQUEST });
 
-    const { data } = await axios.put(`/api/accounts/${category.categoryId}`, category, {headers: authHeader()});
+    const { data } = await axios.put(`/api/category/${category.categoryId}`, category, {headers: authHeader()});
 
     dispatch({ type: CATEGORY_UPDATE_SUCCESS, payload: data });
     dispatch({ type: CATEGORY_DETAILS_SUCCESS, payload: data});

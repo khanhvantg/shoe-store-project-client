@@ -44,11 +44,11 @@ export const getAllProducts = () => async (dispatch) => {
   }
 };
 
-export const createProductByCategoryId = ({productInfo}) => async (dispatch) => {
+export const createProductByCategoryId = ({productInfo,id}) => async (dispatch) => {
 try {
   dispatch({ type: PRODUCT_CREATE_REQUEST });
   console.log(productInfo)
-  const { data } = await axios.post('/api/category/2/products', productInfo, {headers: authHeader()});
+  const { data } = await axios.post(`/api/category/${id}/products`, productInfo, {headers: authHeader()});
   dispatch({ type: PRODUCT_CREATE_SUCCESS, payload: data });
   toast("Create Product Successfull", {position: toast.POSITION.TOP_CENTER});
 } catch (error) {

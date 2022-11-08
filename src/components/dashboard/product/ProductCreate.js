@@ -70,6 +70,7 @@ const ProductCreate = ({isShowing, hide}) => {
     const submitHandler = (e) => {
         e.preventDefault();
         checkValideInput();
+        dispatch(createProductByCategoryId({productInfo}));
         // if(checkValideInput){
         //     dispatch(createProductByCategoryId({productInfo}));
         // }

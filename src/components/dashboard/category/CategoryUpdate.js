@@ -29,7 +29,7 @@ const CategoryUpdate = ({isShowing, hide, id}) => {
     const dispatch = useDispatch();
 
     const categoryDetail = useSelector((state) => state.categoryDetail);
-    const { loading, error, category} = categoryDetail;
+    const { loading, error, category } = categoryDetail;
 
     const categoryUpdate = useSelector((state) => state.categoryUpdate);
     const {
@@ -67,9 +67,8 @@ const CategoryUpdate = ({isShowing, hide, id}) => {
     }
     const submitHandler = (e) => {
         e.preventDefault();
-        dispatch(updateCategory({categories}));
+        dispatch(updateCategory(categories));
     };
-
     if(!isShowing) return null;
     return (
         <>

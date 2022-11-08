@@ -22,9 +22,7 @@ import {
       case CATEGORY_LIST_SUCCESS:
         return {
           loading: false,
-          pages: action.payload.pages,
-          page: action.payload.page,
-          categorys: action.payload.categorys,
+          categories: action.payload,
         };
       case CATEGORY_LIST_FAIL:
         return { loading: false, error: action.payload };
@@ -33,6 +31,7 @@ import {
     }
   };
   
+
   export const categoryDetailsReducer = ( state = { category: {} },action) => {
     switch (action.type) {
       case CATEGORY_DETAILS_REQUEST:
@@ -45,7 +44,7 @@ import {
         return state;
     }
   };
-  
+    
   export const categoryCreateReducer = (state = { category: {} }, action) => {
     switch (action.type) {
         case CATEGORY_CREATE_REQUEST:

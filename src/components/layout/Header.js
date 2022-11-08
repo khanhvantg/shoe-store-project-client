@@ -22,7 +22,7 @@ const Header = () => {
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white w-100 navigation flex-row-reverse" id="navbar">
-            <div className="container" style={{width: "240px"}}>
+            <div className="" style={{width: 165}}>
                 <ul className="top-menu list-inline mb-0 d-lg-block" id="top-menu">
                     <li className="dropdown cart-nav dropdown-slide list-inline-item">
                         <a className="search_toggle" id="search-icon" data-toggle="dropdown" data-hover="dropdown">
@@ -78,10 +78,14 @@ const Header = () => {
                             </div>
                         </div>
                     </li>
-                    <li className="list-inline-item "><Link to="/profile"><i className="tf-ion-ios-person mr-3"></i></Link></li>
+                    <li className="list-inline-item" style={{width: 35}}>
+                        <Link to="/profile" style={{width: "35px"}} >
+                            <i className="tf-ion-ios-person mr-3"></i>
+                        </Link>
+                    </li>
                 </ul>
             </div>
-            <div className="container ">
+            <div className="container">
                 <Link className="navbar-brand font-weight-bold" to={{ pathname: "/"}}>E-Shop</Link>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar"
                     aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -90,15 +94,29 @@ const Header = () => {
   
                 <div className="collapse navbar-collapse" id="main-navbar">
                 <ul className="navbar-nav mx-auto">
-                    <li className="nav-item active">
-                    <Link className="nav-link" to={{ pathname: "/"}}>Home</Link>
-                    </li>
-
                     <li className="nav-item">
-                    <a className="nav-link" href="#">About Us</a>
+                        <Link className="nav-link" to={{ pathname: "/"}}>Home</Link>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link" href="#">About Us</a>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to={{ pathname: "/shop"}}>Shoes</Link>
+                    </li>
+                    {/* <li className="nav-item">
+                        <Link className="nav-link" to={{ pathname: "/login"}}>Login Page</Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to={{ pathname: "/signup"}}>SignUp Page</Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to={{ pathname: "/login"}} onClick={logoutHandler}>Logout</Link>
+                    </li> */}
+                    <li className="nav-item">
+                        <Link className="nav-link" to={{ pathname: "/manage/accounts"}}>Manage</Link>
                     </li>
                 
-                    <li className="nav-item dropdown dropdown-slide">
+                    {/* <li className="nav-item dropdown dropdown-slide">
                     <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown4" role="button" data-delay="350"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Pages
@@ -111,9 +129,9 @@ const Header = () => {
                         <li><a href="#">404 Page</a></li>
                         <li><a href="#">FAQ</a></li>
                     </ul>
-                    </li>
+                    </li> */}
 
-                    <li className="nav-item dropdown dropdown-slide">
+                    {/* <li className="nav-item dropdown dropdown-slide">
                     <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-delay="350"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Shop
@@ -126,7 +144,7 @@ const Header = () => {
                     </ul>
                     </li>
 
-                
+                 */}
                     <li className="nav-item dropdown dropdown-slide">
                     <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown5" role="button" data-delay="350"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -137,10 +155,9 @@ const Header = () => {
                         (<li><Link to={{ pathname: "/login"}} onClick={logoutHandler}>Logout</Link></li>):
                         (<li><Link to={{ pathname: "/login"}}>Login Page</Link></li>)}
                         <li><Link to={{ pathname: "/signup"}}>SignUp Page</Link></li>
-                        <li><Link to={{ pathname: "/forgot-password"}}>Forgot Password</Link></li>
                     </ul>
                     </li>
-                    {userInfo ? (
+                    {/* {userInfo ? (
                         <li className="nav-item dropdown dropdown-slide">
                         <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown5" role="button" data-delay="350"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -152,12 +169,11 @@ const Header = () => {
                             <li><Link to={{ pathname: "/forgot-password"}}>Forgot Password</Link></li>
                         </ul>
                         </li>
-                    ): (<></>)}
+                    ): (<></>)} */}
                 </ul>
                 </div>
             </div>
         </nav>
     )
 }
-
 export default Header
