@@ -15,6 +15,7 @@ import {
   PRODUCT_LIST_FAIL,
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
+  CATEGORY_DETAILS_FAIL,
 } from "../constants/Constants";
 import {toast} from 'react-toastify'
 export const authHeader = () => {
@@ -31,7 +32,6 @@ export const getAllProducts = () => async (dispatch) => {
       dispatch({ type: PRODUCT_LIST_REQUEST });
 
       const { data } = await axios.get('/api/products', {headers: authHeader()})
-
       dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
       console.log(data)
   } catch (error) {

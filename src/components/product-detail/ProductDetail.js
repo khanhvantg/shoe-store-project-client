@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateProduct, getProductById, getAllProducts} from '../../redux/actions/ProductAction'
 import { getImageById } from '../../redux/actions/ImageAction'
 import { addItemToCart } from '../../redux/actions/CartAction'
+import { createLineItem } from '../../redux/actions/WishlistAction'
 import {
     PRODUCT_UPDATE_RESET,
 } from '../../redux/constants/Constants'
@@ -14,15 +15,23 @@ import Message from "../loadingError/Message";
 const ProductDetail = () => {
 
     const dispatch = useDispatch();
-
+    const dispatchItem = useDispatch();
     const productDetail = useSelector((state) => state.productDetail);
     const { loading, error, product} = productDetail;
-
+    const [amount,setAmount] = useState(1);
+    const [total,setTotal] = useState(0);
+    const [submit,setSubmit] = useState(false);
     const {id} = useParams();
     useEffect(() => {
         // setActive("");
-        dispatch(getProductById(id))
-    }, [dispatch])
+        if(submit){
+            console.log(itemInfo);
+            dispatchItem(createLineItem({itemInfo,productId:id}))
+            setSubmit(false)
+        }else {
+            dispatch(getProductById(id))
+        }
+    }, [dispatch,submit])
 
     const [idImg,setIdImg]=useState("");
     const [index,setIndex]=useState(0);
@@ -31,11 +40,15 @@ const ProductDetail = () => {
         setIdImg(ID);
         setIndex(1);
     }
-    const [quantity,setQuantity] = useState (0);
+    const itemInfo={
+        amount,
+        total
+    }
     const handleAddToCart = () => {
-        console.log(quantity)
-        dispatch(addItemToCart(product,quantity));
-       // console.log("id=",id,"quantity=",quantity)
+        setSubmit(true);
+        setTotal(amount*product.price);
+        //dispatch(addItemToCart(product,amount));
+       // console.log("id=",id,"amount=",amount)
     }
     // const insertTag = () => {
     //     if (product.images.length === 2) return <li><img src="/assets/images/phong.png" alt="" class="img-fluid" s/></li>
@@ -72,13 +85,13 @@ const ProductDetail = () => {
             
             <section class="single-product">
                 <div class="container">
+                {loading ? ( <Loading />) : error ? (<Message variant="alert-danger">{error}</Message>) : (
                 <div class="row">
                     <div class="col-md-5">
                     <div class="single-product-slider">
                         <div class="carousel slide" data-ride="carousel" id="single-product-slider">
                         <div class="carousel-inner">
-
-                        {product.images&&product.images.map((item,key)=>(
+                        {product.images&&product.images.sort((a,b)=>(a.id-b.id)).map((item,key)=>(
 
                                 <div className={(item.id===idImg||index+key===0)?"carousel-item active":"carousel-item"}>
                                     {key<3?(<img src={item.link} alt="" class="img-fluid" />):(<></>)}
@@ -87,7 +100,7 @@ const ProductDetail = () => {
                             ))}
                             </div>
                         <ol class="carousel-indicators">
-                            {product.images&&product.images.map((item,key)=>(
+                            {product.images&&product.images.sort((a,b)=>(a.id-b.id)).map((item,key)=>(
                                 <li data-target="#single-product-slider" data-slide-to={key} className={(item.id===idImg||index+key===0)?"active":""}>
                                     {key<3?(<img src={item.link} onClick={()=>handleimg(item.id)} alt="" class="img-fluid"/>):(<></>)}
                                 </li>
@@ -122,19 +135,19 @@ const ProductDetail = () => {
                         </p>
             
                         {/* <form class="cart">
-                        <div class="quantity d-flex align-items-center">
+                        <div class="amount d-flex align-items-center">
                             <input type="number" id="#" class="input-text qty text form-control w-25 mr-3" step="1" min="1" max="9" 
-                            onChange={(e) => setQuantity(e.target.value)}
-                            name="quantity" value={quantity} 
+                            onChange={(e) => setAmount(e.target.value)}
+                            name="amount" value={amount} 
                             
                             title="Qty" size="4" />
                             <button class="btn btn-main btn-small" onClick={()=>handleAddToCart()}>Add to cart</button>
                         </div>
                         </form> */}
-                        <div class="quantity d-flex align-items-center">
+                        <div class="amount d-flex align-items-center">
                         <input type="number" id="#" class="input-text qty text form-control w-25 mr-3" step="1" min="1" max="9" 
-                            onChange={(e) => setQuantity(e.target.value)}
-                            name="quantity" value={quantity} 
+                            onChange={(e) => setAmount(e.target.value)}
+                            name="amount" value={amount} 
                             
                             title="Qty" size="4" />
                             <button class="btn btn-main btn-small" onClick={()=>handleAddToCart()}>Add to cart</button>
@@ -191,7 +204,7 @@ const ProductDetail = () => {
                         </div>
                     </div>
                     </div>
-                </div>
+                </div>)}
             
                 
                 <div class="row">

@@ -16,7 +16,7 @@ const AccountUpdate = ({isShowing, hide, id}) => {
     const [username, setUsername] = useState("");
     const [status, setStatus] = useState("");
     const [txtrole, setRole] = useState("");
-
+    const [open,setOpen]=useState(false);
     //const {modifiedBy} = localStorage.getItem("userInfo").username;
     var today = new Date();
 
@@ -43,7 +43,6 @@ const AccountUpdate = ({isShowing, hide, id}) => {
             if (isShowing&&account.id!==id) {
                 dispatch(getAccountById(id));
             }else if (isShowing){
-                setPassword("123456");
                 setUsername(account.username);
                 setStatus(account.status);
                 const str=[];
@@ -58,7 +57,7 @@ const AccountUpdate = ({isShowing, hide, id}) => {
                 console.log(account)
             }
         }
-    }, [account, dispatch, id, successUpdate]);
+    }, [account, dispatch, id, successUpdate, hide]);
     
     var role = txtrole.split(",")
     const accounts = {
@@ -73,7 +72,7 @@ const AccountUpdate = ({isShowing, hide, id}) => {
         dispatch(getAllAccounts());
     };
 
-    if(!isShowing) return null;
+    if(!isShowing&&!open) return null;
     return (
         <>
             <div className="modal-overlay"/>
@@ -122,7 +121,7 @@ const AccountUpdate = ({isShowing, hide, id}) => {
                                                         <input 
                                                             value={password}
                                                             onChange={(e) => setPassword(e.target.value)}
-                                                            className="form-control" type="text" name="password" placeholder/>
+                                                            className="form-control" type="text" name="password" placeholder="Please leave it blank if not changed"/>
                                                     </div>
                                                 </div>
                                                 <br></br>

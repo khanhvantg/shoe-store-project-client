@@ -13,6 +13,7 @@ import {
     CATEGORY_LIST_FAIL,
     CATEGORY_LIST_REQUEST,
     CATEGORY_LIST_SUCCESS,
+    CATEGORY_DETAILS_STOP
   } from "../constants/Constants";
   
   export const categoryListReducer = (state = { categories: [] }, action) => {
@@ -32,12 +33,14 @@ import {
   };
   
 
-  export const categoryDetailsReducer = ( state = { category: {} },action) => {
+  export const categoryDetailsReducer = ( state = { category: {}, products: [] },action) => {
     switch (action.type) {
       case CATEGORY_DETAILS_REQUEST:
-        return { ...state, loading: true };
+        return { ...state, loading: true, products: [] };
       case CATEGORY_DETAILS_SUCCESS:
-        return { loading: false, category: action.payload };
+        return { loading: false, success: true, category: action.payload, products: action.payloadd };
+      case CATEGORY_DETAILS_STOP:
+        return {  ...state, success: false };
       case CATEGORY_DETAILS_FAIL:
         return { loading: false, error: action.payload };
       default:
@@ -74,4 +77,3 @@ import {
         return state;
     }
   };
-  

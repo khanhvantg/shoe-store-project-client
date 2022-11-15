@@ -14,6 +14,7 @@ import {
     CATEGORY_LIST_FAIL,
     CATEGORY_LIST_REQUEST,
     CATEGORY_LIST_SUCCESS,
+    CATEGORY_DETAILS_STOP
   } from "../constants/Constants";
 
   import {toast} from 'react-toastify'
@@ -61,14 +62,18 @@ export const creatCategory = ({categoryInfo}) => async (dispatch) => {
   }
 };
 
+export const stopGetCategory = () => async (dispatch) => {
+  //dispatch({ type: CATEGORY_DETAILS_REQUEST });
+  dispatch({ type: CATEGORY_DETAILS_STOP});
+};
+
 export const getCategoryById = (id) => async (dispatch) => {
   try {
   dispatch({ type: CATEGORY_DETAILS_REQUEST });
 
   const { data } = await axios.get(`/api/category/${id}`, {headers: authHeader()});
 
-  dispatch({ type: CATEGORY_DETAILS_SUCCESS, payload: data });
-
+  dispatch({ type: CATEGORY_DETAILS_SUCCESS, payload: data, payloadd: data.products });
   } catch (error) {
   dispatch({
       type: CATEGORY_DETAILS_FAIL,
@@ -80,11 +85,12 @@ export const getCategoryById = (id) => async (dispatch) => {
   }
 };
 
-export const updateCategory = ({category}) => async (dispatch, getState) => {
+export const updateCategory = ({categoryInfo}) => async (dispatch, getState) => {
   try {
     dispatch({ type: CATEGORY_UPDATE_REQUEST });
 
-    const { data } = await axios.put(`/api/category/${category.categoryId}`, category, {headers: authHeader()});
+    console.log("a",categoryInfo.categoryId)
+    const { data } = await axios.put(`/api/category/${categoryInfo.categoryId}`, categoryInfo, {headers: authHeader()});
 
     dispatch({ type: CATEGORY_UPDATE_SUCCESS, payload: data });
     dispatch({ type: CATEGORY_DETAILS_SUCCESS, payload: data});

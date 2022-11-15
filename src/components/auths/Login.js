@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -19,12 +19,38 @@ const Login = () => {
 
     useEffect(() => {
         if (userInfo) {
-            navigate("/");
+            navigate("/shop");
         }
     }, [userInfo, navigate]);
 
+    const onValidate = (value, name) => {
+        setErrorInput(prev => ({
+          ...prev,
+          [name]: { ...prev[name], errorMsg: value }
+        }));
+      }
+       
+    const [errorIput, setErrorInput] = useState({
+        username: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onValidate
+        },
+        password: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onValidate
+        }
+    });
 
-    const handleChange = (e) => {
+    // const onHandleChange = useCallback((value, name) => {
+    //     setFormValues(prev => ({
+    //       ...prev,
+    //       [name]: value
+    //     }));
+    //   }, []);
+
+    const onHandleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({...formValues, [name]: value})
     }
@@ -54,40 +80,34 @@ const Login = () => {
                                         <input
                                             value={formValues.username}
                                             name="username"
-                                            onChange={handleChange}
+                                            onChange={onHandleChange}
                                             //onChange={(e) => setUsername(e.target.value)} 
-                                            type="username" class="form-control" placeholder="Enter Username" />
+                                            type="username" class="form-control" placeholder="Enter Username" 
+                                            {...errorIput.username}
+                                            />
+                                        
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group mb-4">
                                         <label for="#">Enter Password</label>
                                         <input 
                                             value={formValues.password}
                                             name="password"
-                                            onChange={handleChange}
+                                            onChange={onHandleChange}
                                             //onChange={(e) => setPassword(e.target.value)} 
-                                            type="password" class="form-control" placeholder="Enter Password" /> 
+                                            type="password" class="form-control" placeholder="Enter Password" 
+                                            {...errorIput.password}/> 
+                                        
                                     </div>
+                                    <div className="text-center pt-1 mb-3 pb-1">
+                                                <button className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" onClick={submitHandler}>Login</button>
+                                            </div>
                                     {loading ? (
                                         <Loading />
                                             ) : error ? (
-                                            <div className="text-center pt-1 mb-5 pb-1">
-                                                
-                                                
-                                                <button className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" onClick={submitHandler}>Login</button>
                                                 <Message variant="alert-danger">Username Or Password is not correct</Message>
-                                            </div>
                                             ) : (
-                                                <div className="text-center pt-1 mb-5 pb-1">
-                                                    
-                                                    <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" 
-                                                        type="button" 
-                                                        onClick={submitHandler}>Login</button>
-                                                        <div style={{visibility: "hidden"}}>
-                                                    <Message variant="alert-danger">0</Message>
-                                                    </div>
-                                                </div>
-                                            
-                                        )}
+                                                <></>
+                                    )}
                                 </form>
                             </div>
                         </div>

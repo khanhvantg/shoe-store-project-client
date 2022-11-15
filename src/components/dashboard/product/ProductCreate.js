@@ -3,16 +3,18 @@ import '../Modal.scss'
 
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts, createProductByCategoryId} from '../../../redux/actions/ProductAction'
+
 import {
     PRODUCT_CREATE_RESET,
 } from '../../../redux/constants/Constants'
 
 import Loading from '../../loadingError/Loading';
 import Message from "../../loadingError/Message";
-const ProductCreate = ({isShowing, hide}) => {
+const ProductCreate = ({isShowing, hide, categories}) => {
     const [name, setName] = useState("");
     const [price, setPrice] = useState("");
     const [amount, setAmount] = useState("");
+    const [idCategory, setIdCategory] = useState("");
     const [description, setDescription] = useState("");
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const [createdBy, setCreatedBy] = useState(userInfo.username);
@@ -32,6 +34,13 @@ const ProductCreate = ({isShowing, hide}) => {
 
     var today = new Date();
     useEffect(() => {
+        setName("");
+        setPrice("");
+        setAmount("")
+        setModifiedBy("")
+        setModifiedDate("");
+        setDescription("");
+        setStatus("");
         if (succsesCreate) {
             dispatch({type: PRODUCT_CREATE_RESET});
             dispatch(getAllProducts());
@@ -56,12 +65,16 @@ const ProductCreate = ({isShowing, hide}) => {
         let isValid = true;
         const arrInput = [name,price,amount,description,status];
         const arrInput1 = ['name','price','amount','description','status'];
-        console.log('a',arrInput.toString())
-        for(let i = 0; i < arrInput.length; i++){
-            if(arrInput[i]===""){
-                isValid = false;
-                alert('Missing parameter: '+ arrInput1[i]);
-                break;
+        if(idCategory===""){
+            isValid = false;
+            alert('Missing parameter: Category');
+        } else {
+            for(let i = 0; i < arrInput.length; i++){
+                if(arrInput[i]===""){
+                    isValid = false;
+                    alert('Missing parameter: '+ arrInput1[i]);
+                    break;
+                }
             }
         }
         return isValid;
@@ -69,13 +82,12 @@ const ProductCreate = ({isShowing, hide}) => {
 
     const submitHandler = (e) => {
         e.preventDefault();
-        checkValideInput();
-        dispatch(createProductByCategoryId({productInfo}));
-        // if(checkValideInput){
-        //     dispatch(createProductByCategoryId({productInfo}));
-        // }
+        let isValid = checkValideInput();
+        if(isValid){
+            dispatch(createProductByCategoryId({productInfo, id:idCategory}));
+        }
     };
-
+    console.log("aaa",categories)
     if(!isShowing) return null;
     return (
         <>
@@ -100,11 +112,30 @@ const ProductCreate = ({isShowing, hide}) => {
                                                         <input 
                                                             value={createdBy}
                                                             className="form-control" type="text" name="createdBy" disabled/>
-                                                    <label>Name</label>
-                                                    <input 
-                                                        value={name}
-                                                        onChange={(e) => setName(e.target.value)}
-                                                        className="form-control" type="text" name="name" placeholder/>
+                                                    <div className="row">
+                                                            <div className="col">
+                                                                <div className="form-group">
+                                                                <label>Name</label>
+                                                                    <input 
+                                                                        value={name}
+                                                                        onChange={(e) => setName(e.target.value)}
+                                                                        className="form-control" type="text" name="name" placeholder/>  
+                                                                </div>
+                                                            </div>
+                                                            <div className="col">
+                                                                <div className="form-group">
+                                                                    <label>Category</label>
+                                                                    <form class="ordering">
+                                                                        <select class="orderby form-control" value={idCategory} onChange={(e)=>setIdCategory(e.target.value)}>
+                                                                            <option value="">---Select---</option>
+                                                                            {categories&&categories.map((item,index)=>(
+                                                                                <option value={item.id}>{item.name}</option>
+                                                                            ))};
+                                                                        </select>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     <div className="row">
                                                             <div className="col">
                                                                 <div className="form-group">

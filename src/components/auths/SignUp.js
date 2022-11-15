@@ -26,7 +26,7 @@ const SignUp = () => {
     const {checkEmpty} = checkInput();
     useEffect(() => {
         if (userInfo) {
-            navigate("/profile");
+            navigate("/login");
         }
     }, [userInfo, navigate]);
 
@@ -53,19 +53,19 @@ const SignUp = () => {
                 <div class="row justify-content-center ">
                     <div class="col-lg-6">
                     <div class="login-form border p-5 bg-white">
-                        <div class="text-center heading">
+                        <div class="text-center">
                         <h2 class="mb-2">Sign Up</h2>
                         <p class="lead">Already have an account? <Link to="/login"> Login now</Link></p>
                         </div>
                         <form>
-                            <div class="form-group mb-4">
+                            <div class="form-group mb-2">
                                 <label for="#">Enter username</label>
                                 <input
                                     value={username} 
                                     onChange={(e) => setUsername(e.target.value)}
                                     type="text" class="form-control" placeholder="Enter Password"/> 
                             </div>
-                            <div class="form-group mb-4">
+                            <div class="form-group mb-2">
                                 <label for="#">Enter Password</label>
                                 <input
                                     value={password}    
@@ -79,16 +79,16 @@ const SignUp = () => {
                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                     type="password" class="form-control" placeholder="Confirm Password" /> 
                             </div>
+                            <div class="form-group">
+                                        <button onClick={submitHandler} class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Signup</button>
+                                    </div>
                             {loading ? (
-                                        <Loading />
-                                            ) : error || err ? (
-                                            <div>
-                                                <Message variant="alert-danger">{error || err}</Message>
-                                                <button onClick={submitHandler} class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Signup</button>
-                                            </div>
-                                            ) : (
-                                            <button onClick={submitHandler} class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Signup</button>
-                                        )}
+                                <Loading />
+                                    ) : error || err ? (
+                                        <Message variant="alert-danger">{error || err}</Message>
+                                    ) : (
+                                        <></>
+                                )}
                         </form>
                     </div>
                     </div>

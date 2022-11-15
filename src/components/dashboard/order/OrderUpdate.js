@@ -1,64 +1,77 @@
 import React, { useState, useEffect } from "react";
-import '../Modal.scss'
-
+import '../Modal.scss';
 import { useDispatch, useSelector } from "react-redux";
-import { updateCategory, getCategoryById, getAllcategories} from '../../../redux/actions/CategoryAction'
+import { updateProduct, getProductById, getAllProducts} from '../../../redux/actions/ProductAction'
+import { getAllcategories, getCategoryById, stopGetCategory } from '../../../redux/actions/CategoryAction'
 import {
-    CATEGORY_UPDATE_RESET,
+    PRODUCT_UPDATE_RESET,
 } from '../../../redux/constants/Constants'
 
 import Loading from '../../loadingError/Loading';
 import Message from "../../loadingError/Message";
-const CategoryUpdate = ({isShowing, hide, id}) => {
+const OrderUpdate = ({isShowing, hide, id, idCategory}) => {
     //const [accountId,setAccountId] = useState({id});
 
     const [name, setName] = useState("");
+    const [price, setPrice] = useState("");
+    const [amount, setAmount] = useState("");
     const [description, setDescription] = useState("");
+    const [status, setStatus] = useState("");
     const [createdBy, setCreatedBy] = useState("");
     const [createdDate, setCreatedDate] = useState("");
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const [modifiedBy, setModifedBy] = useState(userInfo.username);
     const [modifiedDate, setModifiedDate] = useState("");
-    const [status, setStatus] = useState("");
-    
 
     //const {modifiedBy} = localStorage.getItem("userInfo").username;
     var today = new Date();
 
     // const {modifiedDate} = today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()+'  '+today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     const dispatch = useDispatch();
-
-    const categoryDetail = useSelector((state) => state.categoryDetail);
-    const { loading, error, category } = categoryDetail;
-
-    const categoryUpdate = useSelector((state) => state.categoryUpdate);
+    const dispatchCategory = useDispatch();
+    const productDetail = useSelector((state) => state.productDetail);
+    const { loading, error, product} = productDetail;
+    const productUpdate = useSelector((state) => state.productUpdate);
     const {
         loading: loadingUpdate,
         error: errorUpdate,
         success: successUpdate,
-    } = categoryUpdate;
+    } = productUpdate;
 
     useEffect(() => {
+        setName("");
+        setPrice("");
+        setAmount("")
+        setCreatedBy("")
+        setCreatedDate("");
+        setDescription("");
+        setStatus("");
         if (successUpdate) {
-            dispatch({type: CATEGORY_UPDATE_RESET});
-            dispatch(getAllcategories());
+            dispatch({type: PRODUCT_UPDATE_RESET});
+            dispatch(getAllProducts());
+            dispatchCategory(getCategoryById(idCategory))
         } else {
-            if (isShowing&&category.id!==id) {
-                dispatch(getCategoryById(id));
+            if (isShowing&&product.id!==id) {
+                dispatch(getProductById(id));
             }else if (isShowing){
                 setModifiedDate(today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()+'  '+today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds());
-                setName(category.name);
-                setCreatedBy(category.createdBy)
-                setCreatedDate(category.createDate);
-                setDescription(category.description);
-                setStatus(category.status);
+                setName(product.name);
+                setPrice(product.price);
+                setAmount(product.amount)
+                setCreatedBy(product.createdBy)
+                setCreatedDate(product.createdDate);
+                setDescription(product.description);
+                setStatus(product.status);
+                //console.log(description)
             }
         }
-    }, [category, dispatch, id, successUpdate]);
+    }, [product, dispatch, dispatchCategory, id, successUpdate,idCategory]);
     
-    const categoryInfo = {
-        categoryId: id,
+    const productInfo = {
+        productId: id,
         name,
+        price,
+        amount,
         description,
         createdBy,
         createdDate,
@@ -68,8 +81,9 @@ const CategoryUpdate = ({isShowing, hide, id}) => {
     }
     const submitHandler = (e) => {
         e.preventDefault();
-        dispatch(updateCategory({categoryInfo}))
-    }
+        dispatch(updateProduct({productInfo}));
+    };
+
     if(!isShowing) return null;
     return (
         <>
@@ -78,7 +92,7 @@ const CategoryUpdate = ({isShowing, hide, id}) => {
             <div className="modal-dialog modal-lg">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">Update Account</h5>
+                        <h5 className="modal-title">Create A Category</h5>
                         <button type="button" className="close" data-dismiss="modal" onClick={hide}>
                             <span aria-hidden="true">×</span>
                         </button>
@@ -86,16 +100,16 @@ const CategoryUpdate = ({isShowing, hide, id}) => {
                     <div className="modal-body">
                         <div className="py-1">
                         {loading ? (
-                        <Loading />
-                            ) : error ?(
+                            <Loading />
+                            ) : error ? (
                                 <Message variant="alert-danger">{error}</Message>
                             ) : (
-                                <form className="form" novalidate="">
+                            <form className="form" novalidate="">
                                 <div className="row">
                                     <div className="col">
                                             <div className="col">
                                                 <div className="form-group">
-                                                    <label>modified By</label>
+                                                    <label>Modifie By</label>
                                                         <input 
                                                             value={modifiedBy}
                                                             className="form-control" type="text" name="modifiedBy" disabled/>
@@ -104,6 +118,26 @@ const CategoryUpdate = ({isShowing, hide, id}) => {
                                                         value={name}
                                                         onChange={(e) => setName(e.target.value)}
                                                         className="form-control" type="text" name="name" placeholder/>
+                                                    <div className="row">
+                                                            <div className="col">
+                                                                <div className="form-group">
+                                                                    <label>Price</label>
+                                                                    <input 
+                                                                        value={price}
+                                                                        onChange={(e) => setPrice(e.target.value)}
+                                                                        className="form-control" type="text" name="price" placeholder/>
+                                                                </div>
+                                                            </div>
+                                                            <div className="col">
+                                                                <div className="form-group">
+                                                                    <label>Amount</label>
+                                                                    <input 
+                                                                        value={amount}
+                                                                        onChange={(e) => setAmount(e.target.value)}
+                                                                        className="form-control" type="text" name="gender" placeholder/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     <label>Description</label>
                                                         <input 
                                                             value={description}
@@ -114,7 +148,6 @@ const CategoryUpdate = ({isShowing, hide, id}) => {
                                                         value={status}
                                                         onChange={(e) => setStatus(e.target.value)}
                                                         className="form-control" type="text" name="status" placeholder/>                
-                                                
                                                 </div>
                                             </div>
                                         </div> 
@@ -131,4 +164,4 @@ const CategoryUpdate = ({isShowing, hide, id}) => {
     </>
     )
 }
-export default CategoryUpdate
+export default OrderUpdate

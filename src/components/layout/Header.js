@@ -1,23 +1,34 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Header.scss";
-import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/actions/AuthAction";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { removeItemFromCart } from '../../redux/actions/CartAction'
+import { getWishListById, removeLineItem } from '../../redux/actions/WishlistAction'
 const Header = () => {
-
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    const { cartItems } = useSelector((state) => state.cart);
+    const lineItemList = useSelector((state) => state.lineItemList);
+    const { loading, error, lineItems} = lineItemList;
 
-    const { userInfo } = useSelector((state) => state.userLogin);
-    
+    const userLogin = useSelector((state) => state.userLogin);
+    const { success, userInfo } = userLogin;
+    useEffect(() => async () =>{
+        if(userInfo){
+            dispatch(getWishListById());
+        }
+    },[dispatch,navigate,userInfo])
+
+    lineItems.sort((a,b)=>(a.id-b.id))
+
     const logoutHandler = () => {
       dispatch(logout());
     };
 
     const handleRemoveItem = (id) => {
-        dispatch(removeItemFromCart(id));
+        dispatch(removeLineItem(id));
+
     }
 
     return (
@@ -33,50 +44,37 @@ const Header = () => {
                         </div>
                     </li>
                     <li className="dropdown cart-nav dropdown-slide list-inline-item">
-                        <a href="#" className="dropdown-toggle cart-icon" data-toggle="dropdown" data-hover="dropdown">
+                        <Link to="/cart" className="dropdown-toggle cart-icon" data-hover="dropdown">
                             <i className="tf-ion-android-cart"></i>
-                            {cartItems.quantity}
-                        </a>
+                        </Link>
                         <div className="dropdown-menu cart-dropdown">
-                            {cartItems&&cartItems.map(item=>(
+                        {lineItems&&lineItems.map(item=>(
                                 <div className="media">
                                 <a href="/product-single">
-                                    <img className="media-object img- mr-3" src={item.image} alt="image" />
+                                    <img className="media-object img- mr-3" src={item.product.images[0]?.link} alt="image" />
                                 </a>
                                 <div className="media-body">
-                                    <h6>{item.name}</h6>
+                                    <h6>{item.product.name}</h6>
                                     <div className="cart-price">
-                                        <span>{item.quantity} x</span>
-                                        <span>{item.price}</span>
+                                        <span>{item.amount} x </span>
+                                        <span>{item.product.price} =</span>
+                                        <span>{item.total}</span>
                                     </div>
                                 </div>
-                                <a className="remove circle" onClick={()=>handleRemoveItem(item.productId)}><i className="tf-ion-close"></i></a>
+                                <a className="remove circle" onClick={()=>handleRemoveItem(item.id)}><i className="tf-ion-close"></i></a>
                             </div>
                             ))}
-                            
-                            {/* <div className="media">
-                                <a href="/product-single">
-                                <img className="media-object img-fluid mr-3" src="assets/images/cart-2.jpg" alt="image" />
-                                </a>
-                                <div className="media-body">
-                                <h6>Skinny Jeans</h6>
-                                <div className="cart-price">
-                                    <span>1 x</span>
-                                    <span>1250.00</span>
-                                </div>
-                                </div>
-                                <a href="#" className="remove"><i className="tf-ion-close"></i></a>
-                            </div> */}
                             <div className="cart-summary">
                                 <span className="h6">Total</span>
                                 <span className="total-price h6">$1799.00</span>
                         
                                 <div className="text-center cart-buttons mt-3">
-                                <a href="#" className="btn btn-small btn-transparent btn-block">View Cart</a>
+                                <Link to="/cart" className="btn btn-small btn-transparent btn-block">View Cart</Link>
                                 <a href="#" className="btn btn-small btn-transparent btn-block">Checkout</a>
                                 </div>
                             </div>
                         </div>
+                    
                     </li>
                     <li className="list-inline-item" style={{width: 35}}>
                         <Link to="/profile" style={{width: "35px"}} >
@@ -152,7 +150,7 @@ const Header = () => {
                     </a>
                     <ul className="dropdown-menu" aria-labelledby="navbarDropdown5">
                         {userInfo ? 
-                        (<li><Link to={{ pathname: "/login"}} onClick={logoutHandler}>Logout</Link></li>):
+                        (<li><Link onClick={logoutHandler} to={{ pathname: "/login"}}>Logout</Link></li>):
                         (<li><Link to={{ pathname: "/login"}}>Login Page</Link></li>)}
                         <li><Link to={{ pathname: "/signup"}}>SignUp Page</Link></li>
                     </ul>

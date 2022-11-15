@@ -1,7 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import ProductMain from './ProductMain';
-
+import { getAllcategories, getCategoryById, stopGetCategory } from '../../redux/actions/CategoryAction'
 const Shop = () => {
+    const categoryList = useSelector((state) => state.categoryList);
+    const { categories } = categoryList;
+    const  [idCategory, setIdCategory] = useState('0');
+    const categoryDetail = useSelector((state) => state.categoryDetail);
+    const { success, category } = categoryDetail;
+
+    const dispatchCategory = useDispatch();
+    useEffect(() => {
+        dispatchCategory(getAllcategories());
+    }, [dispatchCategory]);
+
+    const handleC = (e) => {
+        setIdCategory(e.target.value);
+    }
     return (
         <div className="shop-container">
             <section class="page-header">
@@ -35,22 +50,24 @@ const Shop = () => {
                                     <h2 class="d-block text-left-sm">Product</h2>
                                     <div class="heading d-flex justify-content-between mb-5">
                                         <p class="result-count mb-0"></p>
-                                        <form class="ordering " method="get">
-                                            <select name="orderby" class="orderby form-control" aria-label="Shop order" >
-                                                <option value="" selected="selected">All</option>
-                                                <option value="">Nike</option>
-                                                <option value="">Adidas</option>
-                                                <option value="">Bitis</option>
-                                            </select>
-                                            <input type="hidden" name="paged" value="1" />
-                                        </form>
+                                        <form className="ordering">
+                                        <select className="orderby form-control"
+                                                value={idCategory}
+                                                onChange={handleC} >
+                                                <option value="0">All</option>
+                                                {categories&&categories.map((item,index)=>(
+                                                    <option key={index} value={item.id}>{item.name}</option>
+                                                ))};
+                                        </select>
+                                        <input type="hidden" name="paged" value="1" />
+                                    </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     <div class="row">
                     
-                        <ProductMain/>
+                        <ProductMain idCategory={idCategory}/>
                 
             
                         {/* <div class="col-12">

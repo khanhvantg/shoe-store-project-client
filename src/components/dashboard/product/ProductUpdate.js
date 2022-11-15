@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import '../Modal.scss';
 import { useDispatch, useSelector } from "react-redux";
 import { updateProduct, getProductById, getAllProducts} from '../../../redux/actions/ProductAction'
+import { getAllcategories, getCategoryById, stopGetCategory } from '../../../redux/actions/CategoryAction'
 import {
     PRODUCT_UPDATE_RESET,
 } from '../../../redux/constants/Constants'
 
 import Loading from '../../loadingError/Loading';
 import Message from "../../loadingError/Message";
-const ProductUpdate = ({isShowing, hide, id}) => {
+const ProductUpdate = ({isShowing, hide, id, idCategory}) => {
     //const [accountId,setAccountId] = useState({id});
 
     const [name, setName] = useState("");
@@ -18,22 +19,18 @@ const ProductUpdate = ({isShowing, hide, id}) => {
     const [status, setStatus] = useState("");
     const [createdBy, setCreatedBy] = useState("");
     const [createdDate, setCreatedDate] = useState("");
-
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const [modifiedBy, setModifedBy] = useState(userInfo.username);
     const [modifiedDate, setModifiedDate] = useState("");
-
-    
 
     //const {modifiedBy} = localStorage.getItem("userInfo").username;
     var today = new Date();
 
     // const {modifiedDate} = today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()+'  '+today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     const dispatch = useDispatch();
-
+    const dispatchCategory = useDispatch();
     const productDetail = useSelector((state) => state.productDetail);
     const { loading, error, product} = productDetail;
-
     const productUpdate = useSelector((state) => state.productUpdate);
     const {
         loading: loadingUpdate,
@@ -52,6 +49,7 @@ const ProductUpdate = ({isShowing, hide, id}) => {
         if (successUpdate) {
             dispatch({type: PRODUCT_UPDATE_RESET});
             dispatch(getAllProducts());
+            dispatchCategory(getCategoryById(idCategory))
         } else {
             if (isShowing&&product.id!==id) {
                 dispatch(getProductById(id));
@@ -67,7 +65,7 @@ const ProductUpdate = ({isShowing, hide, id}) => {
                 //console.log(description)
             }
         }
-    }, [product, dispatch, id, successUpdate]);
+    }, [product, dispatch, dispatchCategory, id, successUpdate, idCategory]);
     
     const productInfo = {
         productId: id,

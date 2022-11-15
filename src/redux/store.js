@@ -34,8 +34,21 @@ import {
   imageUpdateReducer,
 } from "./reducers/ImageReducer";
 import {
-cartReducer,
-} from "./reducers/CartReducer";
+  lineItemCreateReducer,
+  lineItemListReducer,
+  lineItemRemoveReducer,
+  wishListClearReducer,
+} from "./reducers/WishListReducer";
+import {
+  orderCreateReducer,
+  orderDetailsReducer,
+  orderListReducer,
+  orderListByUserIdReducer,
+  orderUpdateReducer,
+} from "./reducers/OrderReducer";
+import {
+  cartReducer,
+  } from "./reducers/CartReducer";
 const cartItemsFromStorage = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems"))
   : [];
@@ -77,6 +90,17 @@ const reducer = combineReducers({
   imageUpdate: imageUpdateReducer,
   //cart
   cart:cartReducer,
+  //wishList
+  lineItemCreate: lineItemCreateReducer,
+  lineItemList:lineItemListReducer,
+  lineItemRemove:lineItemRemoveReducer,
+  wishListClear:wishListClearReducer,
+  //order
+  orderList: orderListReducer,
+  orderCreate: orderCreateReducer,
+  orderDetail: orderDetailsReducer,
+  orderUpdate: orderUpdateReducer,
+  orderListByUserId: orderListByUserIdReducer,
 });
 const initialState = {
   cart: {

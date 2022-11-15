@@ -29,11 +29,11 @@ export const login = ({formValues}) => async (dispatch) => {
   }
 };
 
-export const logout = () => async (dispatch) => {
-  localStorage.removeItem("userInfo");
+export const logout = () => async (dispatch,navigate) => {
   dispatch({ type: USER_LOGOUT });
   const { data } = await axios.post("/api/auth/signout");
   toast(data.message, {position: toast.POSITION.TOP_CENTER});
+  localStorage.removeItem("userInfo");
 };
 
 export const register = (username, password, role) => async (dispatch) => {
@@ -47,7 +47,6 @@ export const register = (username, password, role) => async (dispatch) => {
     const { data } = await axios.post("/api/auth/signup", { username, password, role });
     dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
     toast("Signup Successfull", {position: toast.POSITION.TOP_CENTER});
-    dispatch(login(username,password))
   } catch (error) {
     dispatch({
       type: USER_REGISTER_FAIL,

@@ -1,34 +1,59 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllProducts} from '../../redux/actions/ProductAction'
+import { getAllProducts} from '../../redux/actions/ProductAction';
+import { getAllcategories, getCategoryById, stopGetCategory } from '../../redux/actions/CategoryAction'
 import { Link } from "react-router-dom";
 import Loading from '../loadingError/Loading';
 import Message from "../loadingError/Message";
-import { addItemToCart } from '../../redux/actions/CartAction'
-const ProductMain = () => {
+import { createLineItem } from '../../redux/actions/WishlistAction'
+const ProductMain = ({idCategory}) => {
+    const [total, setTotal] = useState(0);
+    const [amount, setAmount] = useState(1);
+    const [productId,setProductId]=useState(null);
     const dispatch = useDispatch();
+    const dispatchItem = useDispatch();
 
     const productList = useSelector((state) => state.productList);
-    const { loading, error, products} = productList;
+    const categoryDetail = useSelector((state) => state.categoryDetail);
+    const { loading, error, products} = idCategory==="0" ? productList : categoryDetail;
     
+    //const { success, category, loading, error, products } = categoryDetail;
     useEffect(() => {
-        dispatch(getAllProducts());
-    }, [dispatch]);
-    const [quantity,setQuantity] = useState (1);
-    const handleAddToCart = (product) => {
-        console.log(quantity)
-        dispatch(addItemToCart(product,quantity));
+        if(total!==0){
+            dispatchItem(createLineItem({itemInfo,productId}))
+            console.log(itemInfo)
+            setTotal(0);
+        }
+        if (!loading) {
+            if(idCategory==="0"){
+                dispatch(getAllProducts());
+            } 
+            else {
+                dispatch(getCategoryById(idCategory));
+            }
+        }
+    }, [dispatch,idCategory, total]);
+
+    const itemInfo = {
+        amount,
+        total
     }
+
+    function handleAddToCart(product){
+        setTotal(product.price);
+        setProductId(product.id);
+    }
+
     return (
         <div className="container">
             {loading ? ( <Loading />) : error ? (<Message variant="alert-danger">{error}</Message>) : (
             <div className="row">
-                {products&&products.map((product)=>(
+                { products&&products.sort((a, b) => (a.id-b.id)).map((product)=>(
                     <div class="col-lg-3 col-12 col-md-6 col-sm-6 mb-5" >
                         <div class="product">
                             <div class="product-wrap">
                                 <Link to={{ pathname: `/product/${product.id}`}}>
-                                    <img className="img-thumbnail w-100 mb-3 img-first"  src={product.images[0]?.link} />
+                                    <img className="img-thumbnail w-100 mb-3 img-first"  src={product.images.sort((a, b) => (a.id-b.id))[0]?.link} />
                                 </Link>                      
                             </div>
                             {/* <span class="onsale">Sale</span> */}
@@ -37,7 +62,7 @@ const ProductMain = () => {
                                 <a className="circle" ><i class="tf-ion-ios-heart"></i></a>
                             </div>
                             <div class="product-info">
-                                <h2 class="product-title h5 mb-0"><a href="/product-single">{product.name}</a></h2>
+                                <h2 class="product-title h5 mb-0"><Link to={{ pathname: `/product/${product.id}`}}>{product.name}</Link></h2>
                                 <span class="price">
                                     {product.price}
                                 </span>

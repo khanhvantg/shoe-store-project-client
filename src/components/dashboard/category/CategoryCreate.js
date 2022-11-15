@@ -29,7 +29,8 @@ const CategoryCreate = ({isShowing, hide}) => {
         error: errorCreate,
         success: succsesCreate,
     } = categoryCreate;
-
+    
+    var today = new Date();
     useEffect(() => {
         if (succsesCreate) {
             dispatch({type: CATEGORY_CREATE_RESET});
@@ -48,7 +49,6 @@ const CategoryCreate = ({isShowing, hide}) => {
         modifiedDate,
         status
     }
-    var today = new Date();
     const submitHandler = (e) => {
         e.preventDefault();
         dispatch(creatCategory({categoryInfo}));
@@ -99,7 +99,7 @@ const CategoryCreate = ({isShowing, hide}) => {
                                         </div> 
                                 </div>
                                 <div className="col text-center px-xl-3">
-                                    <button className="btn btn-primary btn-block" type="submit" onClick={submitHandler,hide}>Save Changes</button>
+                                    <button className="btn btn-primary btn-block" type="submit" onClick={submitHandler}>Save Changes</button>
                                 </div>
                             </form>
                         </div>

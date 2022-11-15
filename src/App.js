@@ -16,33 +16,48 @@ import ManageAccountsScreen from './screen/ManageAccountsScreen';
 import ManageUserScreen from './screen/ManageUserScreen';
 import ManageCategoryScreen from './screen/ManageCategoryScreen';
 import ManageProductScreen from './screen/ManageProductScreen';
-
+import ManageOrderScreen from './screen/ManageOrderScreen';
 import ProfileScreen from './screen/ProfileScreen'
-import HomeScreen from './screen/HomeScreen'
+import Home from './components/home/Home'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Order from './components/orderHistory/Order';
+
+import { useSelector } from "react-redux";
+import React, { useState, useEffect, useDispatch } from 'react'
+import { Link, useNavigate } from "react-router-dom";
+import { logout } from "./redux/actions/AuthAction";
+import { getWishListById, removeLineItem } from './redux/actions/WishlistAction'
 const App = () => {
+  const userLogin = useSelector((state) => state.userLogin);
+  const { success, userInfo } = userLogin;
+  useEffect(() => async () =>{
+
+  },[userInfo])
+
   return (
     <div className="App">
         <ToastContainer/>
         <BrowserRouter>
-          <Header/>
+          {userInfo?<Header />:<></>}
+          {/* <Header/> */}
           <Routes>
-            <Route path="/" element={<HomeScreen />} />
+            {/* <Route path="/" element={<Home />} /> */}
             <Route path="/manage/accounts" element={<ManageAccountsScreen/>}/>
             <Route path="/manage/users" element={<ManageUserScreen/>}/>
             <Route path="/manage/categories" element={<ManageCategoryScreen/>}/>
             <Route path="/manage/products" element={<ManageProductScreen/>}/>
-
+            <Route path="/manage/orders" element={<ManageOrderScreen/>}/>
             <Route path="/profile" element={<ProfileScreen/>}> </Route>
             <Route path="/shop" element={<Shop />} />
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/order" element={<Order />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
           </Routes>
-          <Footer/>
+          {/* {userInfo?<Footer/>:<></>} */}
         </BrowserRouter>
     </div>
   );
