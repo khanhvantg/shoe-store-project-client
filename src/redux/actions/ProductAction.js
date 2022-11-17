@@ -44,11 +44,10 @@ export const getAllProducts = () => async (dispatch) => {
   }
 };
 
-export const createProductByCategoryId = ({productInfo,id}) => async (dispatch) => {
+export const createProductByCategoryId = ({form}) => async (dispatch) => {
 try {
   dispatch({ type: PRODUCT_CREATE_REQUEST });
-  console.log(productInfo)
-  const { data } = await axios.post(`/api/category/${id}/products`, productInfo, {headers: authHeader()});
+  const { data } = await axios.post(`/api/category/${form.category}/products`, form, {headers: authHeader()});
   dispatch({ type: PRODUCT_CREATE_SUCCESS, payload: data });
   toast("Create Product Successfull", {position: toast.POSITION.TOP_CENTER});
 } catch (error) {
@@ -80,11 +79,11 @@ dispatch({
 }
 };
 
-export const updateProduct = ({productInfo}) => async (dispatch, getState) => {
+export const updateProduct = ({form}) => async (dispatch, getState) => {
 try {
   dispatch({ type: PRODUCT_UPDATE_REQUEST });
 
-  const { data } = await axios.put(`/api/product/${productInfo.productId}`, productInfo, {headers: authHeader()});
+  const { data } = await axios.put(`/api/product/${form.productId}`, form, {headers: authHeader()});
 
   dispatch({ type: PRODUCT_UPDATE_SUCCESS, payload: data });
   dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data});

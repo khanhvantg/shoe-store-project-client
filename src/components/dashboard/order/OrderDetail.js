@@ -1,19 +1,54 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createOrder, getOrdersByUserId, getOrderById, getAllOrders } from '../../../redux/actions/OrderAction'
-
+import { createOrder, getOrdersByUserId, getOrderById, getAllOrders, updateOrder } from '../../../redux/actions/OrderAction'
+import {
+    ORDER_UPDATE_RESET,
+} from '../../../redux/constants/Constants'
 const OrderDetail = ({isShowing, hide, id}) => {
     const dispatch = useDispatch();
-
+    const dispatchUpdate = useDispatch();
     const orderDetail = useSelector((state) => state.orderDetail);
-    const { order, lineItems} = orderDetail;
-
+    const {order, lineItems} = orderDetail;
+    console.log(order.status)
+    const [status, setStatus]=useState(order.status);
+    const [submit,setSubmit]=useState(false)
+    const orderUpdate = useSelector((state) => state.orderUpdate);
+    const {
+        loading: loadingUpdate,
+        error: errorUpdate,
+        success: successUpdate,
+    } = orderUpdate;
     useEffect(() => {
-        if(isShowing&&order.id!==id){
-            dispatch(getOrderById(id));
+        if (successUpdate) {
+            dispatch({type: ORDER_UPDATE_RESET});
+            dispatch(getAllOrders());
+            setStatus(order.status)
+        }else{
+            if(isShowing&&order.id!==id){
+                dispatch(getOrderById(id));
+            }
+            if(submit&&status!=order.status){
+                dispatchUpdate(updateOrder({orderInfo}));
+                setSubmit(false);
+            }
         }
-    }, [dispatch, id, isShowing]);
-    console.log(order)
+    }, [order, dispatch, id, isShowing, submit]);
+    const orderInfo = {
+        orderId: id,
+        status
+    }
+    const handleCancel = () => {
+        setStatus(0);
+        setSubmit(true);
+    }
+    const handleConfirm = () => {
+        setStatus(2);
+        setSubmit(true);
+    }
+    const handleShip = () => {
+        setStatus(3);
+        setSubmit(true);
+    }
   if(!isShowing) return null;
   return (
     <>
@@ -39,7 +74,18 @@ const OrderDetail = ({isShowing, hide, id}) => {
                 <div class="row justify-content-center">
                 <div class="col-lg-12">
                     <div class="cart-info card p-4 mt-4">
+                    <li class="d-flex justify-content-between pb-2 mb-3">
                         <h4 class="mb-4">Information Order</h4>
+                        {order.status ==="0" ? (
+                            <h3 className="text-nowrap align-middle" style={{color:"red"}}>Cancelled</h3>
+                        ):order.status ==="1" ?(
+                            <h3 className="align-middle"  style={{color:"gold"}}>Waiting Confirm</h3>
+                        ):order.status ==="2" ?(
+                            <h3 className="align-middle" style={{color:"blue"}}>Shipping</h3>
+                        ):(
+                            <h3 className="align-middle" style={{color:"green"}}>Shipped</h3>
+                        )}
+                    </li>
                         <ul class="list-unstyled mb-4">
                             <li class="d-flex justify-content-between pb-2 mb-3">
                             <h5>Orderer</h5>
@@ -120,6 +166,33 @@ const OrderDetail = ({isShowing, hide, id}) => {
                                 </tbody>
                             </table>
                         </form>
+                        <div className="d-flex text-white justify-content-center">
+                            {/* <div className="btn-group px-xl-3">
+                                    <button 
+                                    onClick={handleCancel}
+                                    type="button" class="btn btn-danger" >Cancel</button>
+                                <button 
+                                    onClick={handleConfirm}
+                                    type="button" class="btn btn-success">Confirm</button>
+                                    </div> */}
+                            {order.status==="1"?(
+                                <div className="btn-group px-xl-3">
+                                    <button 
+                                    onClick={handleCancel}
+                                    type="button" class="btn btn-danger">Cancel</button>
+                                <button 
+                                    onClick={handleConfirm}
+                                    type="button" class="btn btn-success">Confirm And Ship</button>
+                                    </div>
+                                ): order.status==="2" ? (
+                                    <div className="btn-group"> 
+                                <button 
+                                    onClick={handleShip}
+                                    type="button" class="btn btn-success" >Complete</button>
+                                    </div>
+                            ):(<></>)}
+                            
+                        </div>
                     </div>
                 </div>
                 </div>

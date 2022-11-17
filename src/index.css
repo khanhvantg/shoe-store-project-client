@@ -820,7 +820,7 @@ a.text-primary:hover {
   position: absolute;
   content: "";
   left: -10px;
-  top: -10px;
+  top: 10px;
   border: 2px solid #fb5c42;
   width: 100%;
   height: 100%;

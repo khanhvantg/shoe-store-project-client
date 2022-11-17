@@ -42,7 +42,7 @@ const App = () => {
           {userInfo?<Header />:<></>}
           {/* <Header/> */}
           <Routes>
-            {/* <Route path="/" element={<Home />} /> */}
+            <Route path="/" element={<Home />} />
             <Route path="/manage/accounts" element={<ManageAccountsScreen/>}/>
             <Route path="/manage/users" element={<ManageUserScreen/>}/>
             <Route path="/manage/categories" element={<ManageCategoryScreen/>}/>

@@ -1,57 +1,94 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { removeItemFromCart } from '../../redux/actions/CartAction'
 import { getWishListById,removeLineItem } from '../../redux/actions/WishlistAction'
 import { createOrder } from '../../redux/actions/OrderAction'
-
+import Input from '../checkValidate/Input'
 const Cart = () => {
     const dispatch = useDispatch();
-    const [name,setName]=useState("");
-    const [address,setAddress]=useState("");
-    const [phoneNumber,setPhoneNumber]=useState("");
-    const [amount,setAmount] = useState(0);
-    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    const [createdBy, setCreatedBy] = useState(userInfo.username);
-    var today = new Date();
-    const [createdDate,setCreatedDate] =useState(today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear());
-    const [modifiedBy, setModifiedBy] = useState("");
-    const [modifiedDate, setModifiedDate] = useState("");
-    const [status, setStatus] = useState(0);
+
     const lineItemList = useSelector((state) => state.lineItemList);
     const { loading, error, lineItems, user} = lineItemList;
-    var amountItem=0;
     const totalPrice = lineItems.reduce(function (result, item) {
         amountItem++;
-        return Number(result) + Number(item.total);
-      }, 0);
+        return result + Number(item.total);
+      },0);
     useEffect(()=>{
         dispatch(getWishListById());
-        setName(user.name);
-        setPhoneNumber(user.phone);
-        setAddress(user.address);
-    },[dispatch])
-    //console.log(user.name);
-    lineItems.sort((a,b)=>(a.id-b.id))
+    }, [dispatch])
 
+    lineItems.sort((a,b)=>(a.id-b.id));
+    var amountItem=0;
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    var today = new Date();
+    const [form, setForm] = useState({
+        address: user.address,
+        phoneNumber: user.phone,
+        name: user.name,
+        status: 1,      //status = 0 : cancle, 1 : wait confirm, 2: shipping, 3: completed 
+        createdDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear(),
+        createdBy: userInfo.username,
+        modifiedBy: "",
+        modifiedDate: "",
+        totalPrice
+    });
+    console.log("b",form)
+  
+    
     const handleRemoveItem = (id) => {
         dispatch(removeLineItem(id));
     }
 
-    const orderInfo = {
-        status,
-        createdDate,
-        createdBy,
-        modifiedBy,
-        modifiedDate,
-        amountItem,
-        totalPrice,
-        address,
-        phoneNumber,
-        name
+    const onInputValidate = (value, name) => {
+        setErrorInput(prev => ({
+            ...prev,
+            [name]: { ...prev[name], errorMsg: value }
+        }));
+        }
+         
+    const [errorInput, setErrorInput] = useState({
+        name: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        address: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        phoneNumber: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        }
+    });
+         
+    const onInputChange = useCallback((value, name) => {
+        setForm(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    }, []);
+        
+    const validateForm = () => {
+        let isInvalid = false;
+        Object.keys(errorInput).forEach(x => {
+            const errObj = errorInput[x];
+            if (errObj.errorMsg) {
+                isInvalid = true;
+            } else if (errObj.isReq && !form[x]) {
+                isInvalid = true;
+                onInputValidate(true, x);
+            }
+        });
+        return !isInvalid;
     }
-    var today = new Date();
+        
     const handleOrder = () => {
-        dispatch(createOrder({orderInfo}));
+        const isValid = validateForm();
+        if (isValid) {
+            dispatch(createOrder({form}));
+        }
     }
   return (
         <div className="checkout-container">
@@ -110,9 +147,9 @@ const Cart = () => {
                                         <div class="quantity">
                                             <label class="sr-only" >Amount</label>
                                             <input 
-                                                // onChange={(e)=>handle(item.amount)}
+                                                //onChange={(e)=>handle(item.amount)}
                                                 name="item.amount" 
-                                                value={amount!=0?item.amount:amount}
+                                                value={item.amount}
                                                 type="number" class="input-text qty text" step="1" min="0" max="9" title="Qty" size="4"  />
                                         </div>
                                     </td>
@@ -171,35 +208,56 @@ const Cart = () => {
                     </div>
                     <div class="col-lg-8">
                     <div class="cart-info card p-4 mt-4">
-                        <h4 class="mb-4">Delivery Information</h4>
-                        <form className="form">
-                        <div className="row">
-                            <div className="col">
-                            <div className="col">
+                        <h4 class="text-center mb-4">Delivery Information</h4>
+                        <div className="form">
+                            <div className="row">
+                                <div className="col">
+                                    <div className="col">
                                         <div className="form-group">
-                            <label>Name</label>
-                            <input 
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                className="form-control" type="text" name="name" placeholder/>
-                          
-                            <label>Phone</label>
-                            <input 
-                                value={phoneNumber}
-                                onChange={(e) => setPhoneNumber(e.target.value)}
-                                className="form-control" type="text" name="phoneNumber" placeholder/>            
-                           
-                            <label>Address</label>
+                                            <Input
+                                                name="name"
+                                                title="Name"
+                                                value={form.name}
+                                                onChangeFunc={onInputChange}
+                                                {...errorInput.name}
+                                                />
+                                            <Input
+                                                name="address"
+                                                title="Address"
+                                                value={form.address}
+                                                onChangeFunc={onInputChange}
+                                                {...errorInput.address}
+                                            />
+                                            <Input
+                                                name="phoneNumber"
+                                                title="Phone Number"
+                                                value={form.phoneNumber}
+                                                onChangeFunc={onInputChange}
+                                                {...errorInput.phoneNumber}
+                                            />
+                                            {/* <label>Name</label>
+                                                <input 
+                                                    value={name}
+                                                    onChange={(e) => setName(e.target.value)}
+                                                    className="form-control" type="text" name="name" placeholder/>
+                            
+                                <label>Phone</label>
                                 <input 
-                                    value={address}
-                                    onChange={(e) => setAddress(e.target.value)}
-                                    className="form-control" type="text" name="addrees" placeholder/>
-                        </div>
-                        </div>
-                        </div>
-                        </div>
+                                    value={phoneNumber}
+                                    onChange={(e) => setPhoneNumber(e.target.value)}
+                                    className="form-control" type="text" name="phoneNumber" placeholder/>            
+                            
+                                <label>Address</label>
+                                    <input 
+                                        value={address}
+                                        onChange={(e) => setAddress(e.target.value)}
+                                        className="form-control" type="text" name="addrees" placeholder/> */}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         
-                        </form>
+                        </div>
                         <div className="col text-center px-xl-3">
                         <button 
                             onClick={handleOrder}

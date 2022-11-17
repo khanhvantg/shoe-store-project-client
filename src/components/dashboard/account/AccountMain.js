@@ -58,9 +58,14 @@ const AccountMain = () => {
                                                 </div>
                                             ))}
                                             </td>
-                                            <td className="text-nowrap align-middle">
+                                            {account.status ==="0" ? (
+                                                <td className="text-nowrap align-middle" style={{color:"red"}}>Inactive</td>
+                                            ):(
+                                                <td className="align-middle" style={{color:"green"}}>Active</td>
+                                            )}
+                                            {/* <td className="text-nowrap align-middle">
                                                 {account.status ==="1" ? <Status check="checked" /> : <Status check=""/>}
-                                            </td>
+                                            </td> */}
                                             <td className="text-center align-middle">
                                                 <div className="btn-group align-top">
                                                     <button className="btn btn-sm btn-outline-secondary badge" type="button" onClick={()=>{toggle(account.id)}}> 

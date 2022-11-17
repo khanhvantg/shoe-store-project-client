@@ -15,8 +15,12 @@ const Order = () => {
         dispatch(getOrdersByUserId());
     },[dispatch])
     orders.sort((a,b)=>(a.id-b.id))
+    // const handleCancel = () => {
+    //     setStatus(0);
+    //     setSubmit(true);
+    // }
   return (
-    <>
+            <div class="container">
     <div class="row justify-content-center">
                 <div class="col-lg-12">
                     <div class="product-list">
@@ -48,15 +52,33 @@ const Order = () => {
                                     <td class="product-quantity" data-title="Quantity">
                                        {item.totalPrice}
                                     </td>
-                                    <td class="product-subtotal" data-title="Total">
+                                    {/* <td class="product-subtotal" data-title="Total">
                                             {item.status}
-                                    </td>
+                                    </td> */}
+                                    {item.status ==="0" ? (
+                                            <td className="text-nowrap align-middle" style={{color:"red"}}>Cancelled</td>
+                                        ):item.status ==="1" ?(
+                                            <td className="align-middle"  style={{color:"gold"}}>Waiting Confirm</td>
+                                        ):item.status ==="2" ?(
+                                            <td className="align-middle" style={{color:"blue"}}>Shipping</td>
+                                        ):(
+                                            <td className="align-middle" style={{color:"green"}}>Shipped</td>
+                                        )}
                                     <td class="product-remove" data-title="Remove">
+                                    <div className="btn-group align-top">
                                         <button 
                                             onClick={()=>toggle(item.id)}
                                             className="btn btn-sm btn-outline-secondary badge" type="button"> 
                                             <i className="tf-ion-ios-eye"></i>
                                         </button>
+                                        {item.status ==="1"?
+                                            <button
+                                                className="btn btn-sm btn-outline-secondary badge" type="button"> 
+                                                <i className="tf-ion-android-delete"></i>
+                                            </button>
+                                            :<></>
+                                        }
+                                    </div>
                                     </td>
                                 </tr>
                                 
@@ -87,7 +109,7 @@ const Order = () => {
             id={id}
             // linItems={order}
             />
-            </>
+            </div>
   )
 }
 

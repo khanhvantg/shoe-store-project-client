@@ -33,7 +33,7 @@ const Header = () => {
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white w-100 navigation flex-row-reverse" id="navbar">
-            <div className="" style={{width: 165}}>
+            <div className="container" style={{width: 165}}>
                 <ul className="top-menu list-inline mb-0 d-lg-block" id="top-menu">
                     <li className="dropdown cart-nav dropdown-slide list-inline-item">
                         <a className="search_toggle" id="search-icon" data-toggle="dropdown" data-hover="dropdown">
@@ -172,6 +172,7 @@ const Header = () => {
                 </div>
             </div>
         </nav>
+    
     )
 }
 export default Header

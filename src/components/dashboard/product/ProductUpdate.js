@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import '../Modal.scss';
 import { useDispatch, useSelector } from "react-redux";
 import { updateProduct, getProductById, getAllProducts} from '../../../redux/actions/ProductAction'
@@ -9,19 +9,27 @@ import {
 
 import Loading from '../../loadingError/Loading';
 import Message from "../../loadingError/Message";
-const ProductUpdate = ({isShowing, hide, id, idCategory}) => {
-    //const [accountId,setAccountId] = useState({id});
 
-    const [name, setName] = useState("");
-    const [price, setPrice] = useState("");
-    const [amount, setAmount] = useState("");
-    const [description, setDescription] = useState("");
-    const [status, setStatus] = useState("");
-    const [createdBy, setCreatedBy] = useState("");
-    const [createdDate, setCreatedDate] = useState("");
-    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    const [modifiedBy, setModifedBy] = useState(userInfo.username);
-    const [modifiedDate, setModifiedDate] = useState("");
+import Input from '../../checkValidate/Input'
+import Radio from '../../checkValidate/Radio'
+const statusList = [
+    { value: 1, label: "Active" },
+    { value: 0, label: "Inactive" }
+  ];
+const ProductUpdate = ({isShowing, hide, id, idCategory}) => {
+    const [form, setForm] = useState({
+        productId: id,
+        name: '',
+        price: '',
+        amount: '',
+        //category: '',
+        description: '',
+        createdBy: '',
+        createdDate: '',
+        modifiedBy: '',
+        modifiedDate: '',
+        status: null
+      });
 
     //const {modifiedBy} = localStorage.getItem("userInfo").username;
     var today = new Date();
@@ -29,8 +37,13 @@ const ProductUpdate = ({isShowing, hide, id, idCategory}) => {
     // const {modifiedDate} = today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()+'  '+today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     const dispatch = useDispatch();
     const dispatchCategory = useDispatch();
+
+    const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin;
+
     const productDetail = useSelector((state) => state.productDetail);
     const { loading, error, product} = productDetail;
+
     const productUpdate = useSelector((state) => state.productUpdate);
     const {
         loading: loadingUpdate,
@@ -39,13 +52,7 @@ const ProductUpdate = ({isShowing, hide, id, idCategory}) => {
     } = productUpdate;
 
     useEffect(() => {
-        setName("");
-        setPrice("");
-        setAmount("")
-        setCreatedBy("")
-        setCreatedDate("");
-        setDescription("");
-        setStatus("");
+        setForm({})
         if (successUpdate) {
             dispatch({type: PRODUCT_UPDATE_RESET});
             dispatch(getAllProducts());
@@ -54,34 +61,84 @@ const ProductUpdate = ({isShowing, hide, id, idCategory}) => {
             if (isShowing&&product.id!==id) {
                 dispatch(getProductById(id));
             }else if (isShowing){
-                setModifiedDate(today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()+'  '+today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds());
-                setName(product.name);
-                setPrice(product.price);
-                setAmount(product.amount)
-                setCreatedBy(product.createdBy)
-                setCreatedDate(product.createdDate);
-                setDescription(product.description);
-                setStatus(product.status);
-                //console.log(description)
+                setForm(prev => ({
+                    ...prev,
+                    productId: id,
+                    name: product.name,
+                    amount: product.amount,
+                    price: product.price,
+                    status: product.status,
+                    description: product.description,
+                    createdBy: product.createBy,
+                    createdDate: product.createdDate,
+                    modifiedBy: userInfo.username,
+                    modifiedDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()
+                }))
             }
         }
     }, [product, dispatch, dispatchCategory, id, successUpdate, idCategory]);
     
-    const productInfo = {
-        productId: id,
-        name,
-        price,
-        amount,
-        description,
-        createdBy,
-        createdDate,
-        modifiedBy,
-        modifiedDate,
-        status
+    const onInputValidate = (value, name) => {
+        setErrorInput(prev => ({
+            ...prev,
+            [name]: { ...prev[name], errorMsg: value }
+        }));
+        }
+
+    const [errorInput, setErrorInput] = useState({
+        name: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        amount: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        price: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        description: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        status: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        }
+    });
+         
+    const onInputChange = useCallback((value, name) => {
+        setForm(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    }, []);
+        
+    const validateForm = () => {
+        let isInvalid = false;
+        Object.keys(errorInput).forEach(x => {
+            const errObj = errorInput[x];
+            if (errObj.errorMsg) {
+                isInvalid = true;
+            } else if (errObj.isReq && !form[x]) {
+                isInvalid = true;
+                onInputValidate(true, x);
+            }
+        });
+        return !isInvalid;
     }
-    const submitHandler = (e) => {
-        e.preventDefault();
-        dispatch(updateProduct({productInfo}));
+
+    const submitHandler = () => {
+        const isValid = validateForm();
+        if (isValid) {
+            dispatch(updateProduct({form}));
+        }
     };
 
     if(!isShowing) return null;
@@ -92,7 +149,7 @@ const ProductUpdate = ({isShowing, hide, id, idCategory}) => {
             <div className="modal-dialog modal-lg">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">Create A Category</h5>
+                        <h5 className="modal-title">Update Product</h5>
                         <button type="button" className="close" data-dismiss="modal" onClick={hide}>
                             <span aria-hidden="true">×</span>
                         </button>
@@ -104,58 +161,63 @@ const ProductUpdate = ({isShowing, hide, id, idCategory}) => {
                             ) : error ? (
                                 <Message variant="alert-danger">{error}</Message>
                             ) : (
-                            <form className="form" novalidate="">
+                            <div className="form" >
                                 <div className="row">
-                                    <div className="col">
                                             <div className="col">
                                                 <div className="form-group">
                                                     <label>Modifie By</label>
                                                         <input 
-                                                            value={modifiedBy}
+                                                            value={form.modifiedBy}
                                                             className="form-control" type="text" name="modifiedBy" disabled/>
-                                                    <label>Name</label>
-                                                    <input 
-                                                        value={name}
-                                                        onChange={(e) => setName(e.target.value)}
-                                                        className="form-control" type="text" name="name" placeholder/>
-                                                    <div className="row">
-                                                            <div className="col">
-                                                                <div className="form-group">
-                                                                    <label>Price</label>
-                                                                    <input 
-                                                                        value={price}
-                                                                        onChange={(e) => setPrice(e.target.value)}
-                                                                        className="form-control" type="text" name="price" placeholder/>
-                                                                </div>
-                                                            </div>
-                                                            <div className="col">
-                                                                <div className="form-group">
-                                                                    <label>Amount</label>
-                                                                    <input 
-                                                                        value={amount}
-                                                                        onChange={(e) => setAmount(e.target.value)}
-                                                                        className="form-control" type="text" name="gender" placeholder/>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    <label>Description</label>
-                                                        <input 
-                                                            value={description}
-                                                            onChange={(e) => setDescription(e.target.value)}
-                                                            className="form-control" type="text" name="description" placeholder/>
-                                                    <label>Status</label>
-                                                        <input 
-                                                        value={status}
-                                                        onChange={(e) => setStatus(e.target.value)}
-                                                        className="form-control" type="text" name="status" placeholder/>                
+                                                </div>   
+                                                <Input
+                                                    name="name"
+                                                    title="Name"
+                                                    value={form.name}
+                                                    onChangeFunc={onInputChange}
+                                                    {...errorInput.name}
+                                                />
+                                                <div className="row">
+                                                    <div className="col">
+                                                        <Input
+                                                            name="amount"
+                                                            title="Amount"
+                                                            value={form.amount}
+                                                            onChangeFunc={onInputChange}
+                                                            {...errorInput.amount}
+                                                        />
+                                                    </div>
+                                                    <div className="col">
+                                                        <Input
+                                                            name="price"
+                                                            title="Price"
+                                                            value={form.price}
+                                                            onChangeFunc={onInputChange}
+                                                            {...errorInput.price}
+                                                        />   
+                                                    </div>
                                                 </div>
+                                                <Input
+                                                    name="description"
+                                                    title="Description"
+                                                    value={form.description}
+                                                    onChangeFunc={onInputChange}
+                                                    {...errorInput.description}
+                                                />
+                                                <Radio
+                                                    name="status"
+                                                    title="Status"
+                                                    value={form.status}
+                                                    options={statusList}
+                                                    onChangeFunc={onInputChange}
+                                                    {...errorInput.status}
+                                                />             
                                             </div>
-                                        </div> 
                                 </div>
                                 <div className="col text-center px-xl-3">
                                     <button className="btn btn-primary btn-block" type="submit" onClick={submitHandler}>Save Changes</button>
                                 </div>
-                            </form>)}
+                            </div>)}
                         </div>
                     </div>
                 </div>

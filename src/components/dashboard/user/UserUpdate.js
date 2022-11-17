@@ -1,32 +1,50 @@
-import React, { useState, useEffect } from "react";
-import '../Modal.scss'
-
+import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserProfileByAdmin, getUserDetails, getAllUsers} from '../../../redux/actions/UserAction'
 import {
     USER_UPDATE_PROFILE_RESET,
 } from '../../../redux/constants/Constants'
-
+import '../Modal.scss'
 import Loading from '../../loadingError/Loading';
 import Message from "../../loadingError/Message";
+
+import Input from '../../checkValidate/Input';
+import Radio from "../../checkValidate/Radio";
+
+const genderList = [
+    { value: "Male", label: "Male" },
+    { value: "Female", label: "Female" }
+  ];
+
+  const statusList = [
+    { value: 1, label: "Active" },
+    { value: 0, label: "Inactive" }
+  ];
+
+  const typeList = [
+    { value: 1, label: "Vip" },
+    { value: 0, label: "Normal" }
+  ];
 const UserUpdate = ({isShowing, hide, id}) => {
-    //const [accountId,setAccountId] = useState({id});
+    const [form, setForm] = useState({
+        userId: id,
+        name: '',
+        age: '',
+        gender: '',
+        address: '',
+        phone: '',
+        email: '',
+        username: '',
+        status: null,
+        type: null,
+        modifiedBy: '',
+        modifiedDate: '',
+    })
 
-    const [name, setName] = useState("");
-    const [age, setAge] = useState("");
-    const [gender, setGender] = useState("");
-    const [address, setAddress] = useState("");
-    const [phone, setPhone] = useState("");
-    const [email, setEmail] = useState("");
-    const [status, setStatus] = useState("");
-    const [type, setType] = useState("");
-    //const {modifiedBy} = localStorage.getItem("userInfo").username;
-    var today = new Date();
-
-    // const {modifiedDate} = today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()+'  '+today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    const {modifiedBy,setModifiedBy} = useState(localStorage.getItem("userInfo").username);
-    const {modifiedDate,setModifiedDate} =useState(today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()+'  '+today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds());
     const dispatch = useDispatch();
+
+    const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin;
 
     const userDetail = useSelector((state) => state.userDetail);
     const { loading, error, user} = userDetail;
@@ -38,7 +56,9 @@ const UserUpdate = ({isShowing, hide, id}) => {
         success: successUpdate,
     } = userUpdate;
 
+    var today = new Date();
     useEffect(() => {
+        setForm({});
         if (successUpdate) {
             dispatch({type: USER_UPDATE_PROFILE_RESET});
             dispatch(getAllUsers());
@@ -46,33 +66,87 @@ const UserUpdate = ({isShowing, hide, id}) => {
             if (isShowing&&user.id!==id) {
                 dispatch(getUserDetails(id));
             }else if (isShowing){
-                setName(user.name);
-                setAge(user.age);
-                setGender(user.gender);
-                setPhone(user.phone);
-                setAddress(user.address);
-                setEmail(user.email);
-                setType(user.type);
-                setStatus(user.status);
+                setForm(prev => ({
+                    ...prev,
+                    userId: id,
+                    name: user.name,
+                    age: user.age,
+                    gender: user.gender ? user.gender : 'Male',
+                    address: user.address,
+                    phone: user.phone,
+                    email: user.email,
+                    username: user.account.username,
+                    status: user.status ? user.status : "1",
+                    type: user.type ? user.type : "0",
+                    modifiedBy: userInfo.username,
+                    modifiedDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear(),
+                }))
             }
         }
     }, [user, dispatch, id, successUpdate]);
-    
-   
-    const userprofile = {
-        userId: id,
-        name,
-        age,
-        gender,
-        phone,
-        address,
-        email,
-        type,
-        status
+
+
+    const onInputValidate = (value, name) => {
+        setErrorInput(prev => ({
+            ...prev,
+            [name]: { ...prev[name], errorMsg: value }
+        }));
+        }
+         
+    const [errorInput, setErrorInput] = useState({
+        name: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        age: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        phone: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        email: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        address: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        }
+    });
+         
+    const onInputChange = useCallback((value, name) => {
+        setForm(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    }, []);
+        
+    const validateForm = () => {
+        let isInvalid = false;
+        Object.keys(errorInput).forEach(x => {
+            const errObj = errorInput[x];
+            if (errObj.errorMsg) {
+                isInvalid = true;
+            } else if (errObj.isReq && !form[x] && isShowing) {
+                isInvalid = true;
+                onInputValidate(true, x);
+            }
+        });
+        return !isInvalid;
     }
-    const submitHandler = (e) => {
-        e.preventDefault();
-        dispatch(updateUserProfileByAdmin({userprofile}));
+
+    const submitHandler = () => {
+        const isValid = validateForm();
+        if (isValid) {
+            dispatch(updateUserProfileByAdmin({form}));
+        }
     };
 
     if(!isShowing) return null;
@@ -83,7 +157,7 @@ const UserUpdate = ({isShowing, hide, id}) => {
                 <div className="modal-dialog modal-lg">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title">Update Account</h5>
+                            <h5 className="modal-title">Update User</h5>
                             <button type="button" className="close" data-dismiss="modal" onClick={hide}>
                                 <span aria-hidden="true">×</span>
                             </button>
@@ -95,79 +169,100 @@ const UserUpdate = ({isShowing, hide, id}) => {
                                 ) : error ?(
                                     <Message variant="alert-danger">{error}</Message>
                                 ) : (
-                                <form className="form" novalidate="">
+                                <dive className="form">
                                     <div className="row">
                                         <div className="col">
+                                            <div className="form-group">
+                                                <label>Id</label>
+                                                <input 
+                                                    value={id}
+                                                    className="form-control" type="text" name="accountId" disabled/>
+                                            </div>
+                                            <div className="form-group">
+                                                <label>Modified By</label>
+                                                <input 
+                                                    value={form.modifiedBy}
+                                                    className="form-control" type="text" name="username" disabled/>
+                                            </div>
+                                            <div className="form-group">
+                                                <label>Username</label>
+                                                <input 
+                                                    value={form.username}
+                                                    className="form-control" type="text" name="username" disabled/>
+                                            </div>
+                                            <Input
+                                                name="name"
+                                                title="Name"
+                                                value={form.name}
+                                                onChangeFunc={onInputChange}
+                                                {...errorInput.name}
+                                            />
+                                            <div className="row">
                                                 <div className="col">
-                                                    <div className="form-group">
-                                                        <label>Id</label>
-                                                        <input 
-                                                            value={id}
-                                                            className="form-control" type="text" name="accountId" disabled/>
-                                                        <label>Name</label>
-                                                        <input 
-                                                            value={name}
-                                                            onChange={(e) => setName(e.target.value)}
-                                                            className="form-control" type="text" name="name" placeholder/>
-                                                        <div className="row">
-                                                            <div className="col">
-                                                                <div className="form-group">
-                                                                    <label>Age</label>
-                                                                    <input 
-                                                                        value={age}
-                                                                        onChange={(e) => setAge(e.target.value)}
-                                                                        className="form-control" type="text" name="age" placeholder/>
-                                                                </div>
-                                                            </div>
-                                                            <div className="col">
-                                                                <div className="form-group">
-                                                                    <label>Gender</label>
-                                                                    <input 
-                                                                        value={gender}
-                                                                        onChange={(e) => setGender(e.target.value)}
-                                                                        className="form-control" type="text" name="gender" placeholder/>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <label>Phone</label>
-                                                        <input 
-                                                            value={phone}
-                                                            onChange={(e) => setPhone(e.target.value)}
-                                                            className="form-control" type="text" name="phone" placeholder/>
-                                                        <label>Address</label>
-                                                        <input 
-                                                            value={address}
-                                                            onChange={(e) => setAddress(e.target.value)}
-                                                            className="form-control" type="text" name="address" placeholder/>
-                                                        <label>Email</label>
-                                                        <input 
-                                                            value={email}
-                                                            onChange={(e) => setEmail(e.target.value)}
-                                                            className="form-control" type="text" name="email" placeholder/>
-                                                        <div className="row">
-                                                            <div className="col">
-                                                                <div className="form-group">
-                                                                    <label>Type</label>
-                                                                    <input 
-                                                                        value={type}
-                                                                        onChange={(e) => setType(e.target.value)}
-                                                                        className="form-control" type="text" name="type" placeholder/>
-                                                                </div>
-                                                            </div>
-                                                            <div className="col">
-                                                                <div className="form-group">
-                                                                    <label>Status</label>
-                                                                    <input 
-                                                                    value={status}
-                                                                    onChange={(e) => setStatus(e.target.value)}
-                                                                    className="form-control" type="text" name="status" placeholder/>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        
-                                                    </div>
+                                                    <Input
+                                                        name="age"
+                                                        title="Age"
+                                                        value={form.age}
+                                                        onChangeFunc={onInputChange}
+                                                        {...errorInput.age}
+                                                    />
                                                 </div>
-                                            </div> 
+                                                <div className="col">
+                                                    <Radio
+                                                        name="gender"
+                                                        title="Gender"
+                                                        value={form.gender}
+                                                        options={genderList}
+                                                        onChangeFunc={onInputChange}
+                                                        // {...errorInput.gender}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <Input
+                                                name="phone"
+                                                title="Phone Number"
+                                                value={form.phone}
+                                                onChangeFunc={onInputChange}
+                                                {...errorInput.phone}
+                                            />
+                                            <Input
+                                                name="email"
+                                                title="Email"
+                                                type="Email"
+                                                value={form.email}
+                                                onChangeFunc={onInputChange}
+                                                {...errorInput.email}
+                                            />
+                                            <Input
+                                                name="address"
+                                                title="Address"
+                                                value={form.address}
+                                                onChangeFunc={onInputChange}
+                                                {...errorInput.address}
+                                            />
+                                            <div className="row">
+                                                <div className="col">
+                                                    <Radio
+                                                        name="type"
+                                                        title="Type"
+                                                        value={form.type}
+                                                        options={typeList}
+                                                        onChangeFunc={onInputChange}
+                                                        // {...errorInput.type}
+                                                    />
+                                                </div>
+                                                <div className="col">
+                                                    <Radio
+                                                        name="status"
+                                                        title="Status"
+                                                        value={form.status}
+                                                        options={statusList}
+                                                        onChangeFunc={onInputChange}
+                                                        // {...errorInput.status}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div className="col text-center px-xl-3">
                                             <button className="btn btn-primary btn-block" type="submit" onClick={submitHandler}>Save Changes</button>
@@ -177,7 +272,7 @@ const UserUpdate = ({isShowing, hide, id}) => {
                                             <button className="btn btn-primary" type="submit" onClick={submitHandler}>Save Changes</button>
                                         </div>
                                     </div> */}
-                                </form>)}
+                                </dive>)}
                             </div>
                         </div>
                     </div>

@@ -45,13 +45,13 @@ export const getAllOrders = () => async (dispatch) => {
   }
 };
 
-export const createOrder = ({orderInfo}) => async (dispatch,getState) => {
+export const createOrder = ({form}) => async (dispatch,getState) => {
     try {
       dispatch({ type: ORDER_CREATE_REQUEST });
       const {
         userLogin: { userInfo },
       } = getState();
-      const { data } = await axios.post(`/api/orders/${userInfo.id}`, orderInfo, {headers: authHeader()});
+      const { data } = await axios.post(`/api/orders/${userInfo.id}`, form, {headers: authHeader()});
       dispatch({ type: ORDER_CREATE_SUCCESS, payload: data });
       toast("Create Order Successfull", {position: toast.POSITION.TOP_CENTER});
     } catch (error) {
@@ -107,11 +107,17 @@ export const updateOrder = ({orderInfo}) => async (dispatch, getState) => {
 try {
   dispatch({ type: ORDER_UPDATE_REQUEST });
 
-  const { data } = await axios.put(`/api/order/${orderInfo.orderId}`, orderInfo, {headers: authHeader()});
+  const { data } = await axios.put(`/api/orders/${orderInfo.orderId}`, orderInfo, {headers: authHeader()});
 
   dispatch({ type: ORDER_UPDATE_SUCCESS, payload: data });
   dispatch({ type: ORDER_DETAILS_SUCCESS, payload: data});
-  toast("Update Order Successfull", {position: toast.POSITION.TOP_CENTER});
+  if(data.status==="0"){
+    toast("Cancel Order Successfull", {position: toast.POSITION.TOP_CENTER});
+  }else if(data.status==="2"){
+    toast("Cofirm Order Successfull", {position: toast.POSITION.TOP_CENTER});
+  }else {
+    toast("Delivery Order Complete", {position: toast.POSITION.TOP_CENTER});
+  }
 } catch (error) {
   dispatch({
     type: ORDER_UPDATE_FAIL,

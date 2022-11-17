@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserProfileByUser, getUserDetails} from '../redux/actions/UserAction'
@@ -10,22 +10,28 @@ import {
 
 import Loading from '../components/loadingError/Loading';
 import Message from "../components/loadingError/Message";
+import Input from '../components/checkValidate/Input';
+import Radio from '../components/checkValidate/Radio'
+const genderList = [
+    { value: "Male", label: "Male" },
+    { value: "Female", label: "Female" }
+  ];
+
 const ProfileScreen = () => {
-    //const [accountId,setAccountId] = useState({id});
-    const [currentPassword, setCurrentPassword] = useState("");
-    const [newPassword, setNewPassword] = useState("");
+    const [formChangePassword, setFormChangePassword] = useState({
+        newPassword: "",
+        currentPassword: "",
+    })
     const [hide, setHide] = useState(false);
-
-    const [name, setName] = useState("");
-    const [age, setAge] = useState("");
-    const [gender, setGender] = useState("");
-    const [address, setAddress] = useState("");
-    const [phone, setPhone] = useState("");
-    const [email, setEmail] = useState("");
-    const [username, setUsername] = useState("");
-
-
-
+    const [form, setForm] = useState({
+        name: '',
+        age: '',
+        gender: '',
+        address: '',
+        phone: '',
+        email: '',
+        username: '',
+    })
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const id = userInfo.id;
 
@@ -46,163 +52,267 @@ const ProfileScreen = () => {
         {
             dispatch({type: ACCOUNT_UPDATE_RESET});
         }
-        if (successUpdate) {
-            dispatch({type: USER_UPDATE_PROFILE_RESET});
-        } else {
-            if (user.id!==id) {
-                dispatch(getUserDetails(id));
-            }else {
-                setName(user.name);
-                setAge(user.age);
-                setGender(user.gender);
-                setPhone(user.phone);
-                setAddress(user.address);
-                setEmail(user.email);
-                setUsername(user.account.username);
-            }
+        if (user.id!==id) {
+            dispatch(getUserDetails(id));
+        }else {
+            setForm({
+                name: user.name,
+                age: user.age,
+                gender: user.gender?user.gender:'Male',
+                address: user.address,
+                phone: user.phone,
+                email: user.email,
+                username: user.account.username,
+            });
         }
     }, [user, dispatch, id, successUpdate]);
     
-    const userprofile = {
-        userId: id,
-        name,
-        age,
-        gender,
-        phone,
-        address,
-        email
+    const onInputValidate = (value, name) => {
+        setErrorInputProfile(prev => ({
+            ...prev,
+            [name]: { ...prev[name], errorMsg: value }
+        }));
+        setErrorInput(prev => ({
+            ...prev,
+            [name]: { ...prev[name], errorMsg: value }
+        }));
     }
-    const submitHandler = (e) => {
-        e.preventDefault();
-        dispatch(updateUserProfileByUser({userprofile}));
-    };
+    const [errorInputProfile, setErrorInputProfile] = useState({
+        name: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        age: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        gender: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        phone: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        email: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        address: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+    });
 
+    //Change Password
     const accountUpdate = useSelector((state) => state.accountUpdate);
     const {
         loading: loadingUpdateAccount,
         error: errorUpdateAccount,
         success: successUpdateAccount,
     } = accountUpdate;
-    const submitHandlerChangePassword = (e) => {
-        e.preventDefault();
-        dispatch(updateAccountByUser({id,currentPassword,newPassword}));
+         
+    const [errorInput, setErrorInput] = useState({
+        currentPassword: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        newPassword: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+    });
+         
+    const onInputChange = useCallback((value, name) => {
+        setForm(prev => ({
+            ...prev,
+            [name]: value
+        }));
+        setFormChangePassword(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    }, []);
+
+    const validateForm = () => {
+        let isInvalid = false;
+        Object.keys(errorInput).forEach(x => {
+            const errObj = errorInput[x];
+            if (errObj.errorMsg) {
+                isInvalid = true;
+            } else if (errObj.isReq && ! formChangePassword[x]) {
+                isInvalid = true;
+                onInputValidate(true, x);
+            }
+        });
+        return !isInvalid;
+    }
+
+    const validateFormProfile = () => {
+        let isInvalid = false;
+        Object.keys(errorInputProfile).forEach(x => {
+            const errObj = errorInputProfile[x];
+            if (errObj.errorMsg) {
+                isInvalid = true;
+            } else if (errObj.isReq && ! form[x]) {
+                isInvalid = true;
+                onInputValidate(true, x);
+            }
+        });
+        return !isInvalid;
+    }
+
+    const handleSubmit = () => {
+        const isValid = validateForm();
+        if (isValid) {
+            dispatch(updateAccountByUser({formChangePassword}));
+        }
     };
+
+    const submitHandler = () => {
+        const isValid = validateFormProfile();
+        if (isValid) {
+            dispatch(updateUserProfileByUser({form}));
+        }
+
+        //dispatch(updateUserProfileByUser({userprofile}));
+    };
+
+    
   return (
       <div class="container rounded bg-white mt-5">
         <div class="row">
             <div class="col-md-4 border-right">
                 <div class="d-flex flex-column align-items-center text-center p-3 py-5">
                     <img class="rounded-circle mt-5" src="https://i.imgur.com/0eg0aG0.jpg" width="90"/>
-                    <span class="font-weight-bold">{username}</span>
-                    <span class="text-black-50">{email}</span>
-                    <span>{address}</span></div>
+                    <span class="font-weight-bold">{form.username}</span>
+                    <span class="text-black-50">{form.email}</span>
+                    <span>{form.address}</span></div>
                     <button className="btn btn-primary btn-block" type="submit" onClick={()=>setHide(!hide)}>Change Password</button>
                         { hide ? (
-                        <form className="form" novalidate="">
+                        <div className="form">
                         <div className="row">
                             <div className="col">
                                     <div className="col">
-                                        <div className="form-group">
-                                            <label>Current Password</label>
-                                            <input 
-                                                value={currentPassword}
-                                                onChange={(e) => setCurrentPassword(e.target.value)}
-                                                className="form-control" type="password" name="currentPassword" placeholder/>
-                                            
-                                            <label>New Password</label>
-                                                <input 
-                                                    value={newPassword}
-                                                    onChange={(e) => setNewPassword(e.target.value)}
-                                                    className="form-control" type="password" name="newPassword" placeholder/>
+                                        <Input
+                                            name="currentPassword"
+                                            title="Current Password"
+                                            type="password"
+                                            value={formChangePassword.currentPassword}
+                                            onChangeFunc={onInputChange}
+                                            {...errorInput.currentPassword}
+                                        />
+                                        <Input
+                                            name="newPassword"
+                                            title="New Password"
+                                            type="password"
+                                            value={formChangePassword.newPassword}
+                                            onChangeFunc={onInputChange}
+                                            {...errorInput.newPassword}
+                                        />
                                         </div>
                                     </div>
                                 </div> 
-                        </div>
+                    
                         
                         {loadingUpdateAccount ? (
                             <Loading />
                                 ) : (errorUpdateAccount) ? (
                                     <div className="col text-center px-xl-3">
                                         <Message variant="alert-danger">{errorUpdateAccount}</Message>
-                                        <button className="btn btn-success btn-block" type="submit" onClick={submitHandlerChangePassword}>Save Changes</button>
+                                        <button className="btn btn-success btn-block" onClick={handleSubmit}>Save Changes</button>
                                     
                                     </div>
                                 ) : (
                         <div className="col text-center px-xl-3">
-                            <button className="btn btn-success btn-block" type="submit" onClick={submitHandlerChangePassword}>Save Changes</button>
+                            <button className="btn btn-success btn-block" onClick={handleSubmit}>Save Changes</button>
                         </div>)}
 
-                    </form>):(<></>)}
+                    </div>):(<></>)}
                     
             </div>
             <div class="col-md-8">
-                <div class="p-3 py-5">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="text-center">
                         {/* <div class="d-flex flex-row align-items-center back"><i class="fa fa-long-arrow-left mr-1 mb-1"></i>
                             <h6>Back to home</h6>
                         </div> */}
-                        <h6 class="text-right">Edit Profile</h6>
+                        <h4>Edit Profile</h4>
                         
                         </div>
-                    </div>
                     { (loading || loadingUpdate) ? (
                         <Loading />
                             ) : (error || errorUpdate) ? (
                                 <Message variant="alert-danger">{error}</Message>
                             ) : (
-                        <form className="form" novalidate="">
+                        <div className="form">
                         <div className="row">
                             <div className="col">
                                     <div className="col">
-                                        <div className="form-group">
-                                            <label>Name</label>
-                                            <input 
-                                                value={name}
-                                                onChange={(e) => setName(e.target.value)}
-                                                className="form-control" type="text" name="name" placeholder/>
+                                            <Input
+                                                name="name"
+                                                title="Name"
+                                                value={form.name}
+                                                onChangeFunc={onInputChange}
+                                                {...errorInputProfile.name}
+                                                />
                                             <div className="row">
                                                     <div className="col">
-                                                        <div className="form-group">
-                                                            <label>Age</label>
-                                                            <input 
-                                                                value={age}
-                                                                onChange={(e) => setAge(e.target.value)}
-                                                                className="form-control" type="text" name="age" placeholder/>
-                                                        </div>
+                                                    <Input
+                                                        name="age"
+                                                        title="Age"
+                                                        value={form.age}
+                                                        onChangeFunc={onInputChange}
+                                                        {...errorInputProfile.age}
+                                                        />
                                                     </div>
                                                     <div className="col">
-                                                        <div className="form-group">
-                                                            <label>Gender</label>
-                                                            <input 
-                                                                value={gender}
-                                                                onChange={(e) => setGender(e.target.value)}
-                                                                className="form-control" type="text" name="gender" placeholder/>
-                                                        </div>
+                                                        <Radio
+                                                            name="gender"
+                                                            title="Gender"
+                                                            value={form.gender}
+                                                            options={genderList}
+                                                            onChangeFunc={onInputChange}
+                                                            {...errorInputProfile.gender}
+                                                        />
                                                     </div>
                                                 </div>
-                                            <label>Phone</label>
-                                                <input 
-                                                    value={phone}
-                                                    onChange={(e) => setPhone(e.target.value)}
-                                                    className="form-control" type="text" name="phone" placeholder/>              
-                                            <label>Email</label>
-                                                <input 
-                                                    value={email}
-                                                    onChange={(e) => setEmail(e.target.value)}
-                                                    className="form-control" type="text" name="email" placeholder/>
-                                            <label>Address</label>
-                                                <input 
-                                                    value={address}
-                                                    onChange={(e) => setAddress(e.target.value)}
-                                                    className="form-control" type="text" name="addrees" placeholder/>
-                                        </div>
+                                                <Input
+                                                    name="phone"
+                                                    title="Phone Number"
+                                                    value={form.phone}
+                                                    onChangeFunc={onInputChange}
+                                                    {...errorInputProfile.phone}
+                                                />
+                                                <Input
+                                                    name="email"
+                                                    title="Email"
+                                                    type="Email"
+                                                    value={form.email}
+                                                    onChangeFunc={onInputChange}
+                                                    {...errorInputProfile.email}
+                                                />
+                                                <Input
+                                                    name="address"
+                                                    title="Address"
+                                                    value={form.address}
+                                                    onChangeFunc={onInputChange}
+                                                    {...errorInputProfile.address}
+                                                />
                                     </div>
                                 </div> 
                         </div>
-                        <div className="col text-center px-xl-3">
+                        <div className="col text-center px-xl-3" style={{padding: "0 0 10 0"}}>
                             <button className="btn btn-primary btn-block" type="submit" onClick={submitHandler}>Save Changes</button>
                         </div>
-                    </form>
+                    </div>
                     )}
                 </div>
             </div>

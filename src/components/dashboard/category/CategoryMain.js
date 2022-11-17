@@ -10,8 +10,6 @@ import useModal from '../useModal';
 import useModalCreate from '../useModalCreate';
 const CategoryMain = () => {
     const dispatch = useDispatch();
-    const [openModal, setOpenModal] = useState(false);
-    const [checked,setChecked]=useState();
     const {isShowingCreate, toggleCreate} = useModalCreate();
     const {isShowing, toggle, id} = useModal();
     const categoryList = useSelector((state) => state.categoryList);
@@ -64,9 +62,14 @@ const CategoryMain = () => {
                                             <td className="text-nowrap align-middle">{category.createdDate}</td>
                                             <td className="text-nowrap align-middle">{category.modifiedBy}</td>
                                             <td className="text-nowrap align-middle">{category.modifiedDate}</td>
-                                            <td className="text-nowrap align-middle">
+                                            {/* <td className="text-nowrap align-middle">
                                                 {category.status ==="1" ? <Status check="checked" /> : <Status check=""/>}
-                                            </td>
+                                            </td> */}
+                                            {category.status ==="0" ? (
+                                                <td className="text-nowrap align-middle" style={{color:"red"}}>Inactive</td>
+                                            ):(
+                                                <td className="align-middle" style={{color:"green"}}>Active</td>
+                                            )}
                                             <td className="text-center align-middle">
                                                 <div className="btn-group align-top">
                                                     <button className="btn btn-sm btn-outline-secondary badge" type="button" onClick={()=>{toggle(category.id)}}> 

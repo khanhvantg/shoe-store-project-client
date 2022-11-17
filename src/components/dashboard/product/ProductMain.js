@@ -48,7 +48,7 @@ const ProductMain = () => {
             <div className="e-panel card">
                 <div className="card-body">
                     <div className="text-center card-title">
-                        <h3 className="mr-2">Products</h3>
+                        <h3 className="mr-2">Products Manage</h3>
                         <form className="ordering">
                             <select className="orderby form-control"
                                     value={idCategory}
@@ -91,9 +91,14 @@ const ProductMain = () => {
                                         <td className="text-nowrap align-middle">{product.description}</td>
                                         <td className="text-nowrap align-middle">{product.price}</td>
                                         <td className="text-nowrap align-middle">{product.amount}</td>
-                                        <td className="text-nowrap align-middle">
+                                        {/* <td className="text-nowrap align-middle">
                                             {product.status ==="1" ? <Status check="checked" /> : <Status check=""/>}
-                                        </td>
+                                        </td> */}
+                                        {product.status ==="0" ? (
+                                                <td className="text-nowrap align-middle" style={{color:"red"}}>Inactive</td>
+                                            ):(
+                                                <td className="align-middle" style={{color:"green"}}>Active</td>
+                                            )}
                                         <td className="text-center align-middle">
                                             <div className="btn-group align-top">
                                                 <button className="btn btn-sm btn-outline-secondary badge" type="button" onClick={()=>{toggle(product.id)}}> 

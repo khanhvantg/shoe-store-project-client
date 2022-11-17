@@ -54,13 +54,12 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
   };
   
   // UPDATE PROFILE BY ADMIN
-  export const updateUserProfileByAdmin = ({userprofile}) => async (dispatch, getState) => {
+  export const updateUserProfileByAdmin = ({form}) => async (dispatch, getState) => {
     try {
       dispatch({ type: USER_UPDATE_PROFILE_REQUEST });
-      const { data } = await axios.put(`/api/users/${userprofile.userId}/mod`, userprofile, {headers : authHeader()});
+      const { data } = await axios.put(`/api/users/${form.userId}/mod`, form, {headers : authHeader()});
       dispatch({ type: USER_UPDATE_PROFILE_SUCCESS, payload: data });
-      //dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
-    //   localStorage.setItem("userInfo", JSON.stringify(data));
+      dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
       toast("Update Profile Successfull", {position: toast.POSITION.TOP_CENTER});
     } catch (error) {
       dispatch({
@@ -73,13 +72,17 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
   };
 
   // UPDATE PROFILE BY USER
-  export const updateUserProfileByUser = ({userprofile}) => async (dispatch, getState) => {
+  export const updateUserProfileByUser = ({form}) => async (dispatch, getState) => {
     try {
+      const {
+        userLogin: { userInfo },
+      } = getState();
       dispatch({ type: USER_UPDATE_PROFILE_REQUEST });
-      const { data } = await axios.put(`/api/users/${userprofile.userId}`, userprofile, {headers : authHeader()});
+      const { data } = await axios.put(`/api/users/${userInfo.id}`, form, {headers : authHeader()});
       dispatch({ type: USER_UPDATE_PROFILE_SUCCESS, payload: data });
       //dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
     //   localStorage.setItem("userInfo", JSON.stringify(data));
+    dispatch(getUserDetails(userInfo.id));
     toast("Update Profile Successfull", {position: toast.POSITION.TOP_CENTER});
     } catch (error) {
       dispatch({

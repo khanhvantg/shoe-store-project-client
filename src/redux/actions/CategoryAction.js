@@ -44,11 +44,10 @@ export const getAllcategories = () => async (dispatch) => {
     }
 };
 
-export const creatCategory = ({categoryInfo}) => async (dispatch) => {
+export const creatCategory = ({form}) => async (dispatch) => {
   try {
     dispatch({ type: CATEGORY_CREATE_REQUEST });
-    console.log(categoryInfo)
-    const { data } = await axios.post("/api/category", categoryInfo, {headers: authHeader()});
+    const { data } = await axios.post("/api/category", form, {headers: authHeader()});
     dispatch({ type: CATEGORY_CREATE_SUCCESS, payload: data });
     toast("Create Category Successfull", {position: toast.POSITION.TOP_CENTER});
   } catch (error) {
@@ -85,13 +84,10 @@ export const getCategoryById = (id) => async (dispatch) => {
   }
 };
 
-export const updateCategory = ({categoryInfo}) => async (dispatch, getState) => {
+export const updateCategory = ({form}) => async (dispatch, getState) => {
   try {
     dispatch({ type: CATEGORY_UPDATE_REQUEST });
-
-    console.log("a",categoryInfo.categoryId)
-    const { data } = await axios.put(`/api/category/${categoryInfo.categoryId}`, categoryInfo, {headers: authHeader()});
-
+    const { data } = await axios.put(`/api/category/${form.categoryId}`, form, {headers: authHeader()});
     dispatch({ type: CATEGORY_UPDATE_SUCCESS, payload: data });
     dispatch({ type: CATEGORY_DETAILS_SUCCESS, payload: data});
     toast("Update Category Successfull", {position: toast.POSITION.TOP_CENTER});

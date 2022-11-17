@@ -11,10 +11,10 @@ import {
 import { toast } from "react-toastify";
 
 
-export const login = ({formValues}) => async (dispatch) => {
+export const login = ({form}) => async (dispatch) => {
   try {
     dispatch({ type: USER_LOGIN_REQUEST });    
-    const { data } = await axios.post("/api/auth/signin", formValues);
+    const { data } = await axios.post("/api/auth/signin", form);
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
     localStorage.setItem("userInfo", JSON.stringify(data));
     toast("Login Successfull", {position: toast.POSITION.TOP_CENTER});
@@ -36,7 +36,7 @@ export const logout = () => async (dispatch,navigate) => {
   localStorage.removeItem("userInfo");
 };
 
-export const register = (username, password, role) => async (dispatch) => {
+export const register = ({form}) => async (dispatch) => {
   try {
     dispatch({ type: USER_REGISTER_REQUEST });
     const config = {
@@ -44,7 +44,7 @@ export const register = (username, password, role) => async (dispatch) => {
         "Content-Type": "application/json",
       },
     };
-    const { data } = await axios.post("/api/auth/signup", { username, password, role });
+    const { data } = await axios.post("/api/auth/signup", form);
     dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
     toast("Signup Successfull", {position: toast.POSITION.TOP_CENTER});
   } catch (error) {

@@ -60,10 +60,20 @@ const UserMain = () => {
                                             <td className="text-nowrap align-middle">{user.address}</td>
                                             <td className="text-nowrap align-middle">{user.phone}</td>
                                             <td className="text-nowrap align-middle">{user.email}</td>
-                                            <td className="text-nowrap align-middle">{user.type}</td>
-                                            <td className="text-nowrap align-middle">
+                                            {user.type ==="0" ? (
+                                                <td className="text-nowrap align-middle" style={{color:"blue"}}>Normal</td>
+                                            ):(
+                                                <td className="align-middle" style={{color:"gold"}}>Vip</td>
+                                            )}
+                                            {user.status ==="0" ? (
+                                                <td className="text-nowrap align-middle" style={{color:"red"}}>Inactive</td>
+                                            ):(
+                                                <td className="align-middle" style={{color:"green"}}>Active</td>
+                                            )}
+                                            {/* <td className="text-nowrap align-middle">{user.type}</td> */}
+                                            {/* <td className="text-nowrap align-middle">
                                                 {user.status ==="1" ? <Status check="checked" /> : <Status check=""/>}
-                                            </td>
+                                            </td> */}
                                             <td className="text-center align-middle">
                                                 <div className="btn-group align-top">
                                                     <button className="btn btn-sm btn-outline-secondary badge" type="button" onClick={()=>{toggle(user.id)}}> 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -6,45 +6,85 @@ import { toast } from "react-toastify";
 import { register } from "../../redux/actions/AuthAction";
 import Loading from '../loadingError/Loading';
 import Message from "../loadingError/Message";
+import Input from '../checkValidate/Input';
 import {
     USER_REGISTER_RESET
 } from '../../redux/constants/Constants'
-import checkInput from '../checkInput/checkInput';
 const SignUp = () => {
-
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const role = ["user"];
-    const [confirmPassword, setConfirmPassword] = useState("");
+    const [form, setForm] = useState({
+        username: "",
+        password: "",
+        confirmPassword: ""
+      });
     const [err, SetErr] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const userRegister = useSelector((state) => state.userRegister);
     const { error, loading, userInfo } = userRegister;
-
-    const {checkEmpty} = checkInput();
     useEffect(() => {
         if (userInfo) {
             navigate("/login");
         }
     }, [userInfo, navigate]);
 
-    const submitHandler = (e) => {
-        e.preventDefault();
-        //const inputList = [username, password, confirmPassword];
-        const inputList = ["username", "password", "confirmPassword"];
-        
-        //console.log(JSON.parse(inputList))
-        checkEmpty(inputList);
-        
-        if (password !== confirmPassword) {
-            dispatch({type: USER_REGISTER_RESET})
-        } else {
-            SetErr("");
-            dispatch(register(username, password, role));
+    const onInputValidate = (value, name) => {
+        setErrorInput(prev => ({
+            ...prev,
+            [name]: { ...prev[name], errorMsg: value }
+        }));
         }
-    };
+         
+    const [errorInput, setErrorInput] = useState({
+        username: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        password: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        confirmPassword: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        }
+    });
+         
+    const onInputChange = useCallback((value, name) => {
+        setForm(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    }, []);
+        
+    const validateForm = () => {
+        let isInvalid = false;
+        Object.keys(errorInput).forEach(x => {
+            const errObj = errorInput[x];
+            if (errObj.errorMsg) {
+                isInvalid = true;
+            } else if (errObj.isReq && !form[x]) {
+                isInvalid = true;
+                onInputValidate(true, x);
+            }
+        });
+        return !isInvalid;
+    }
+        
+    const handleSubmit = () => {
+        const isValid = validateForm();
+        if (isValid) {
+            if (form.password !== form.confirmPassword) {
+                dispatch({type: USER_REGISTER_RESET})
+            } else {
+                SetErr("");
+                dispatch(register({form}));
+            }
+        }
+    }
 
     return (
         <div className="signUp-container gradient-custom">
@@ -57,30 +97,32 @@ const SignUp = () => {
                         <h2 class="mb-2">Sign Up</h2>
                         <p class="lead">Already have an account? <Link to="/login"> Login now</Link></p>
                         </div>
-                        <form>
-                            <div class="form-group mb-2">
-                                <label for="#">Enter username</label>
-                                <input
-                                    value={username} 
-                                    onChange={(e) => setUsername(e.target.value)}
-                                    type="text" class="form-control" placeholder="Enter Password"/> 
-                            </div>
-                            <div class="form-group mb-2">
-                                <label for="#">Enter Password</label>
-                                <input
-                                    value={password}    
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    type="password" class="form-control" placeholder="Enter Password"/> 
-                            </div>
+                        <div class="form">
+                            <Input
+                                name="username"
+                                title="Username"
+                                value={form.username}
+                                onChangeFunc={onInputChange}
+                                {...errorInput.username}
+                                />
+                            <Input
+                                name="password"
+                                title="Password"
+                                type="password"
+                                value={form.password}
+                                onChangeFunc={onInputChange}
+                                {...errorInput.password}
+                            />
+                            <Input
+                                name="confirmPassword"
+                                title="Confirm Password"
+                                type="password"
+                                value={form.confirmPassword}
+                                onChangeFunc={onInputChange}
+                                {...errorInput.confirmPassword}
+                            />
                             <div class="form-group">
-                                <label for="#">Confirm Password</label>
-                                <input 
-                                    value={confirmPassword} 
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
-                                    type="password" class="form-control" placeholder="Confirm Password" /> 
-                            </div>
-                            <div class="form-group">
-                                        <button onClick={submitHandler} class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Signup</button>
+                                        <button onClick={handleSubmit} class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Signup</button>
                                     </div>
                             {loading ? (
                                 <Loading />
@@ -89,7 +131,7 @@ const SignUp = () => {
                                     ) : (
                                         <></>
                                 )}
-                        </form>
+                        </div>
                     </div>
                     </div>
                 </div>

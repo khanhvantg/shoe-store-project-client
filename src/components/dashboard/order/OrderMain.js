@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllProducts} from '../../../redux/actions/ProductAction'
-import { getAllcategories, getCategoryById, stopGetCategory } from '../../../redux/actions/CategoryAction'
-import { CATEGORY_DETAILS_STOP, CATEGORY_DETAILS_SUCCESS } from '../../../redux/constants/Constants'
+// import { getAllProducts} from '../../../redux/actions/ProductAction'
+// import { getAllcategories, getCategoryById, stopGetCategory } from '../../../redux/actions/CategoryAction'
+// import { CATEGORY_DETAILS_STOP, CATEGORY_DETAILS_SUCCESS } from '../../../redux/constants/Constants'
 import Status from '../../status/Status';
 import Loading from '../../loadingError/Loading';
 import Message from "../../loadingError/Message";
 import useModal from '../useModal';
-import useModalCreate from '../useModalCreate';
-import { createOrder, getOrdersByUserId, getOrderById, getAllOrders } from '../../../redux/actions/OrderAction'
+import { getAllOrders } from '../../../redux/actions/OrderAction'
 import OrderDetail from "./OrderDetail";
-import OrderUpdate from "./OrderUpdate";
 const OrderMain = () => {
     const {isShowing, toggle, id} = useModal();
     const dispatch = useDispatch();
@@ -38,7 +36,7 @@ const OrderMain = () => {
             <div className="e-panel card">
                 <div className="card-body">
                     <div className="text-center card-title">
-                        <h3 className="mr-2">Orders</h3>
+                        <h3 className="mr-2">Orders Manage</h3>
                     </div>
                     <div className="e-table">
                         <div className="table-responsive table-lg mt-3">
@@ -65,14 +63,20 @@ const OrderMain = () => {
                                         <td className="text-nowrap align-middle">{item.createdDate}</td>
                                         <td className="text-nowrap align-middle">{item.amountItem}</td>
                                         <td className="text-nowrap align-middle">{item.totalPrice}</td>
-                                        <td className="text-nowrap align-middle">
-                                            {item.status ==="1" ? <Status check="checked" /> : <Status check=""/>}
-                                        </td>
+                                        {item.status ==="0" ? (
+                                            <td className="text-nowrap align-middle" style={{color:"red"}}>Cancelled</td>
+                                        ):item.status ==="1" ?(
+                                            <td className="align-middle"  style={{color:"gold"}}>Waiting Confirm</td>
+                                        ):item.status ==="2" ?(
+                                            <td className="align-middle" style={{color:"blue"}}>Shipping</td>
+                                        ):(
+                                            <td className="align-middle" style={{color:"green"}}>Shipped</td>
+                                        )}
                                         <td className="text-center align-middle">
                                             <div className="btn-group align-top">
-                                                <button className="btn btn-sm btn-outline-secondary badge" type="button" onClick={""}> 
+                                                {/* <button className="btn btn-sm btn-outline-secondary badge" type="button" onClick={""}> 
                                                     <i className="tf-ion-edit"></i>
-                                                </button>
+                                                </button> */}
                                                 <button className="btn btn-sm btn-outline-secondary badge" type="button" onClick={()=>{toggle(item.id)}}> 
                                                     <i className="tf-ion-eye"></i>
                                                 </button>

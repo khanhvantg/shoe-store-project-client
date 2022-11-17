@@ -153,7 +153,7 @@ const ProductDetail = () => {
                             <button class="btn btn-main btn-small" onClick={()=>handleAddToCart()}>Add to cart</button>
                             </div>
                         
-                        <div class="color-swatches mt-4 d-flex align-items-center">
+                        {/* <div class="color-swatches mt-4 d-flex align-items-center">
                         <span class="font-weight-bold text-capitalize product-meta-title">color:</span>
                         <ul class="list-inline mb-0">
                             <li class="list-inline-item">
@@ -166,9 +166,9 @@ const ProductDetail = () => {
                             <a routerLink="/product-single" class="bg-danger"></a>
                             </li>
                         </ul>
-                        </div>
+                        </div> */}
             
-                        <div class="product-size d-flex align-items-center mt-4">
+                        {/* <div class="product-size d-flex align-items-center mt-4">
                         <span class="font-weight-bold text-capitalize product-meta-title">Size:</span>
                         <select class="form-control">
                             <option>S</option>
@@ -176,9 +176,9 @@ const ProductDetail = () => {
                             <option>L</option>
                             <option>XL</option>
                         </select>
-                        </div>
+                        </div> */}
             
-                        <div class="products-meta mt-4">
+                        {/* <div class="products-meta mt-4">
                         <div class="product-category d-flex align-items-center">
                             <span class="font-weight-bold text-capitalize product-meta-title">Categories :</span>
                             <a href="#">Products , </a>
@@ -201,13 +201,13 @@ const ProductDetail = () => {
                             </li>
                             </ul>
                         </div>
-                        </div>
+                        </div>*/}
                     </div>
                     </div>
                 </div>)}
             
                 
-                <div class="row">
+                {/* <div class="row">
                     <div class="col-lg-12">
                     <nav class="product-info-tabs wc-tabs mt-5 mb-5">
                         <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
@@ -315,6 +315,7 @@ const ProductDetail = () => {
                     </div>
                     </div>
                 </div>
+                 */}
                 </div>
             </section>
             

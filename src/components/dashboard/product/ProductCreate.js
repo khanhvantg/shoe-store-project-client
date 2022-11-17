@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import '../Modal.scss'
 
 import { useDispatch, useSelector } from "react-redux";
@@ -10,20 +10,44 @@ import {
 
 import Loading from '../../loadingError/Loading';
 import Message from "../../loadingError/Message";
+
+import Input from '../../checkValidate/Input'
+import Radio from '../../checkValidate/Radio'
+import Select from '../../checkValidate/Select'
+
 const ProductCreate = ({isShowing, hide, categories}) => {
-    const [name, setName] = useState("");
-    const [price, setPrice] = useState("");
-    const [amount, setAmount] = useState("");
-    const [idCategory, setIdCategory] = useState("");
-    const [description, setDescription] = useState("");
-    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    const [createdBy, setCreatedBy] = useState(userInfo.username);
-    const [createdDate,setCreatedDate] =useState("");
-    const [modifiedBy, setModifiedBy] = useState("");
-    const [modifiedDate, setModifiedDate] = useState("");
-    const [status, setStatus] = useState("");
+
+    
+    const statusList = [
+        { value: 1, label: "Active" },
+        { value: 0, label: "Inactive" }
+      ];
+
+    const categoryList=[];
+    for (let i in categories) {
+        const cate = { value: categories[i].id, label: categories[i].name};
+        categoryList.push(cate);
+    }
+    // const categoryList = categories.map(item=>())
+    
+      console.log(categoryList)
+    const [form, setForm] = useState({
+        name: '',
+        price: '',
+        amount: '',
+        category: '',
+        description: '',
+        createdBy: '',
+        createdDate: '',
+        modifiedBy: '',
+        modifiedDate: '',
+        status: 1
+      });
     
     const dispatch = useDispatch();
+
+    const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin;
 
     const productCreate = useSelector((state) => state.productCreate);
     const {
@@ -34,60 +58,87 @@ const ProductCreate = ({isShowing, hide, categories}) => {
 
     var today = new Date();
     useEffect(() => {
-        setName("");
-        setPrice("");
-        setAmount("")
-        setModifiedBy("")
-        setModifiedDate("");
-        setDescription("");
-        setStatus("");
+        setForm({});
         if (succsesCreate) {
             dispatch({type: PRODUCT_CREATE_RESET});
             dispatch(getAllProducts());
         }else if(isShowing){
-            setCreatedDate(today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()+'  '+today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds());
+            setForm(prev => ({
+                ...prev,
+                createdBy: userInfo.username,
+                createdDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()
+            }))
         }
-    }, [dispatch, succsesCreate]);
+    }, [dispatch, succsesCreate, isShowing]);
 
-    const productInfo = {
-        name,
-        price,
-        amount,
-        description,
-        createdBy,
-        createdDate,
-        modifiedBy,
-        modifiedDate,
-        status
-    }
-
-    const checkValideInput = () => {
-        let isValid = true;
-        const arrInput = [name,price,amount,description,status];
-        const arrInput1 = ['name','price','amount','description','status'];
-        if(idCategory===""){
-            isValid = false;
-            alert('Missing parameter: Category');
-        } else {
-            for(let i = 0; i < arrInput.length; i++){
-                if(arrInput[i]===""){
-                    isValid = false;
-                    alert('Missing parameter: '+ arrInput1[i]);
-                    break;
-                }
+    const onInputValidate = (value, name) => {
+        setErrorInput(prev => ({
+            ...prev,
+            [name]: { ...prev[name], errorMsg: value }
+        }));
+        }
+         
+    const [errorInput, setErrorInput] = useState({
+        name: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        amount: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        price: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        category: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        description: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        status: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        }
+    });
+         
+    const onInputChange = useCallback((value, name) => {
+        setForm(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    }, []);
+        
+    const validateForm = () => {
+        let isInvalid = false;
+        Object.keys(errorInput).forEach(x => {
+            const errObj = errorInput[x];
+            if (errObj.errorMsg) {
+                isInvalid = true;
+            } else if (errObj.isReq && !form[x]) {
+                isInvalid = true;
+                onInputValidate(true, x);
             }
-        }
-        return isValid;
+        });
+        return !isInvalid;
     }
 
-    const submitHandler = (e) => {
-        e.preventDefault();
-        let isValid = checkValideInput();
-        if(isValid){
-            dispatch(createProductByCategoryId({productInfo, id:idCategory}));
+    const submitHandler = () => {
+        const isValid = validateForm();
+        if (isValid) {
+            dispatch(createProductByCategoryId({form}));
         }
     };
-    console.log("aaa",categories)
+
     if(!isShowing) return null;
     return (
         <>
@@ -96,34 +147,42 @@ const ProductCreate = ({isShowing, hide, categories}) => {
             <div className="modal-dialog modal-lg">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">Create A Category</h5>
+                        <h5 className="modal-title">Create Product</h5>
                         <button type="button" className="close" data-dismiss="modal" onClick={hide}>
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
                     <div className="modal-body">
                         <div className="py-1">
-                            <form className="form" novalidate="">
+                            <div className="form" novalidate="">
                                 <div className="row">
                                     <div className="col">
-                                            <div className="col">
-                                                <div className="form-group">
+                                                <div className="form-group mb-4">
                                                     <label>Create By</label>
                                                         <input 
-                                                            value={createdBy}
+                                                            value={form.createdBy}
                                                             className="form-control" type="text" name="createdBy" disabled/>
+                                                <div>        
                                                     <div className="row">
                                                             <div className="col">
-                                                                <div className="form-group">
-                                                                <label>Name</label>
-                                                                    <input 
-                                                                        value={name}
-                                                                        onChange={(e) => setName(e.target.value)}
-                                                                        className="form-control" type="text" name="name" placeholder/>  
-                                                                </div>
+                                                                <Input
+                                                                    name="name"
+                                                                    title="Name"
+                                                                    value={form.name}
+                                                                    onChangeFunc={onInputChange}
+                                                                    {...errorInput.name}
+                                                                />
                                                             </div>
                                                             <div className="col">
-                                                                <div className="form-group">
+                                                                <Select
+                                                                    name="category"
+                                                                    title="Category"
+                                                                    value={form.category}
+                                                                    options={categoryList}
+                                                                    onChangeFunc={onInputChange}
+                                                                    {...errorInput.category}
+                                                                />
+                                                                {/* <div className="form-group">
                                                                     <label>Category</label>
                                                                     <form class="ordering">
                                                                         <select class="orderby form-control" value={idCategory} onChange={(e)=>setIdCategory(e.target.value)}>
@@ -133,39 +192,44 @@ const ProductCreate = ({isShowing, hide, categories}) => {
                                                                             ))};
                                                                         </select>
                                                                     </form>
-                                                                </div>
+                                                                </div> */}
                                                             </div>
                                                         </div>
                                                     <div className="row">
                                                             <div className="col">
-                                                                <div className="form-group">
-                                                                    <label>Price</label>
-                                                                    <input 
-                                                                        value={price}
-                                                                        onChange={(e) => setPrice(e.target.value)}
-                                                                        className="form-control" type="text" name="price" placeholder/>
-                                                                </div>
+                                                                <Input
+                                                                    name="amount"
+                                                                    title="Amount"
+                                                                    value={form.amount}
+                                                                    onChangeFunc={onInputChange}
+                                                                    {...errorInput.amount}
+                                                                />
                                                             </div>
                                                             <div className="col">
-                                                                <div className="form-group">
-                                                                    <label>Amount</label>
-                                                                    <input 
-                                                                        value={amount}
-                                                                        onChange={(e) => setAmount(e.target.value)}
-                                                                        className="form-control" type="text" name="gender" placeholder/>
-                                                                </div>
+                                                                <Input
+                                                                    name="price"
+                                                                    title="Price"
+                                                                    value={form.price}
+                                                                    onChangeFunc={onInputChange}
+                                                                    {...errorInput.price}
+                                                                />   
                                                             </div>
                                                         </div>
-                                                    <label>Description</label>
-                                                        <input 
-                                                            value={description}
-                                                            onChange={(e) => setDescription(e.target.value)}
-                                                            className="form-control" type="text" name="description" placeholder/>
-                                                    <label>Status</label>
-                                                        <input 
-                                                        value={status}
-                                                        onChange={(e) => setStatus(e.target.value)}
-                                                        className="form-control" type="text" name="status" placeholder/>                
+                                                        <Input
+                                                            name="description"
+                                                            title="Description"
+                                                            value={form.description}
+                                                            onChangeFunc={onInputChange}
+                                                            {...errorInput.description}
+                                                        />
+                                                        <Radio
+                                                            name="status"
+                                                            title="Status"
+                                                            value={form.status}
+                                                            options={statusList}
+                                                            onChangeFunc={onInputChange}
+                                                            {...errorInput.status}
+                                                        />             
                                                 </div>
                                             </div>
                                         </div> 
@@ -173,7 +237,7 @@ const ProductCreate = ({isShowing, hide, categories}) => {
                                 <div className="col text-center px-xl-3">
                                     <button className="btn btn-primary btn-block" type="submit" onClick={submitHandler}>Save Changes</button>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -60,11 +60,10 @@ export const getAccountById = (id) => async (dispatch) => {
     }
 };
 
-  export const updateAccountByAdmin = ({accounts}) => async (dispatch, getState) => {
+  export const updateAccountByAdmin = ({form}) => async (dispatch, getState) => {
     try {
       dispatch({ type: ACCOUNT_UPDATE_REQUEST });
-      console.log("pass",accounts.password)
-      const { data } = await axios.put(`/api/accounts/${accounts.accountId}/mod`, accounts, {headers: authHeader()});
+      const { data } = await axios.put(`/api/accounts/${form.accountId}/mod`, form, {headers: authHeader()});
       dispatch({ type: ACCOUNT_UPDATE_SUCCESS, payload: data });
       dispatch({ type: ACCOUNT_DETAIL_SUCCESS, payload: data});
       toast("Update Account Successfull", {position: toast.POSITION.TOP_CENTER});
@@ -79,10 +78,14 @@ export const getAccountById = (id) => async (dispatch) => {
     }
   };
 
-  export const updateAccountByUser = ({id,currentPassword,newPassword}) => async (dispatch, getState) => {
+  export const updateAccountByUser = ({formChangePassword}) => async (dispatch, getState) => {
     try {
+      // {currentPassword,newPassword}
+      const {
+        userLogin: { userInfo },
+      } = getState();
       dispatch({ type: ACCOUNT_UPDATE_REQUEST });
-      const { data } = await axios.put(`/api/accounts/${id}`, {currentPassword,newPassword}, {headers: authHeader()});
+      const { data } = await axios.put(`/api/accounts/${userInfo.id}`, formChangePassword , {headers: authHeader()});
       dispatch({ type: ACCOUNT_UPDATE_SUCCESS, payload: data });
       dispatch({ type: ACCOUNT_DETAIL_SUCCESS, payload: data});
       toast("Update Account Successfull", {position: toast.POSITION.TOP_CENTER});
