@@ -128,7 +128,7 @@ const ProductDetail = () => {
             
                         <hr />
                         
-                        <h3 class="product-price">{product.price}<del></del></h3>
+                        <h3 class="product-price">$ {product.price}<del></del></h3>
                         
                         <p class="product-description my-4 ">
                         {product.description}
@@ -150,7 +150,7 @@ const ProductDetail = () => {
                             name="amount" value={amount} 
                             
                             title="Qty" size="4" />
-                            <button class="btn btn-main btn-small" onClick={()=>handleAddToCart()}>Add to cart</button>
+                            <button class="btn btn-primary btn-block fa-lg gradient-custom-2 col-8" onClick={()=>handleAddToCart()}>Add to cart</button>
                             </div>
                         
                         {/* <div class="color-swatches mt-4 d-flex align-items-center">
@@ -320,7 +320,7 @@ const ProductDetail = () => {
             </section>
             
             
-            <section class="products related-products section">
+            {/* <section class="products related-products section">
                 <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-6">
@@ -422,6 +422,7 @@ const ProductDetail = () => {
                 </div>
                 </div>
             </section>
+        */}
         </div>
 
     )}

@@ -100,6 +100,7 @@ const ProfileScreen = () => {
         },
         email: {
             isReq: true,
+            reqType: 'EMAIL',
             errorMsg: '',
             onValidateFunc: onInputValidate
         },
@@ -294,7 +295,6 @@ const ProfileScreen = () => {
                                                 <Input
                                                     name="email"
                                                     title="Email"
-                                                    type="Email"
                                                     value={form.email}
                                                     onChangeFunc={onInputChange}
                                                     {...errorInputProfile.email}

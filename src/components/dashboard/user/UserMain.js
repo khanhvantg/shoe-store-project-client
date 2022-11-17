@@ -51,7 +51,7 @@ const UserMain = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    { users && users.map((user, index) => (
+                                    { users && users.sort((a,b)=>(a.id-b.id)).map((user, index) => (
                                         <tr>
                                             <td className="align-middle">{user.id}</td>
                                             <td className="text-nowrap align-middle">{user.name}</td>
@@ -60,10 +60,10 @@ const UserMain = () => {
                                             <td className="text-nowrap align-middle">{user.address}</td>
                                             <td className="text-nowrap align-middle">{user.phone}</td>
                                             <td className="text-nowrap align-middle">{user.email}</td>
-                                            {user.type ==="0" ? (
-                                                <td className="text-nowrap align-middle" style={{color:"blue"}}>Normal</td>
-                                            ):(
+                                            {user.type ==="1" ? (
                                                 <td className="align-middle" style={{color:"gold"}}>Vip</td>
+                                            ):(
+                                                <td className="text-nowrap align-middle" style={{color:"blue"}}>Normal</td>
                                             )}
                                             {user.status ==="0" ? (
                                                 <td className="text-nowrap align-middle" style={{color:"red"}}>Inactive</td>

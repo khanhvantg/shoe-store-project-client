@@ -65,12 +65,12 @@ const Header = () => {
                             </div>
                             ))}
                             <div className="cart-summary">
-                                <span className="h6">Total</span>
-                                <span className="total-price h6">$1799.00</span>
+                                {/* <span className="h6">Total</span>
+                                <span className="total-price h6">$1799.00</span> */}
                         
                                 <div className="text-center cart-buttons mt-3">
-                                <Link to="/cart" className="btn btn-small btn-transparent btn-block">View Cart</Link>
-                                <a href="#" className="btn btn-small btn-transparent btn-block">Checkout</a>
+                                <Link to="/cart" className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">View Cart</Link>
+                                {/* <a href="#" className="btn btn-small btn-transparent btn-block">Checkout</a> */}
                                 </div>
                             </div>
                         </div>

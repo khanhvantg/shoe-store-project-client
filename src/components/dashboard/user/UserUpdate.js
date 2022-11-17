@@ -111,6 +111,7 @@ const UserUpdate = ({isShowing, hide, id}) => {
         },
         email: {
             isReq: true,
+            reqType: 'EMAIL',
             errorMsg: '',
             onValidateFunc: onInputValidate
         },
