@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, Navigate  } from "react-router-dom";
 import "./Header.scss";
 import { logout } from "../../redux/actions/AuthAction";
 import React, { useEffect, useState } from "react";
@@ -8,7 +8,7 @@ import { getWishListById, removeLineItem } from '../../redux/actions/WishlistAct
 const Header = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
+    const [isAdmin, setIsAdmin] = useState(false);
     const lineItemList = useSelector((state) => state.lineItemList);
     const { loading, error, lineItems} = lineItemList;
 
@@ -17,32 +17,38 @@ const Header = () => {
     useEffect(() => async () =>{
         if(userInfo){
             dispatch(getWishListById());
+            for (let i in userInfo.roles) {
+                if(userInfo.roles[i]==="ROLE_ADMIN" || userInfo.roles[i]==="ROLE_MODERATOR") {
+                    setIsAdmin(true);
+                    break;
+                }
+            }
         }
     },[dispatch,navigate,userInfo])
-
+    console.log(isAdmin)
     lineItems.sort((a,b)=>(a.id-b.id))
 
     const logoutHandler = () => {
       dispatch(logout());
+      navigate("/login")
     };
 
     const handleRemoveItem = (id) => {
         dispatch(removeLineItem(id));
 
     }
-
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white w-100 navigation flex-row-reverse" id="navbar">
-            <div className="container" style={{width: 165}}>
+            <div className="" style={{width: 165}}>
                 <ul className="top-menu list-inline mb-0 d-lg-block" id="top-menu">
-                    <li className="dropdown cart-nav dropdown-slide list-inline-item">
+                    {/* <li className="dropdown cart-nav dropdown-slide list-inline-item">
                         <a className="search_toggle" id="search-icon" data-toggle="dropdown" data-hover="dropdown">
                             <i className="tf-ion-android-search"></i>
                         </a>
                         <div className="dropdown-menu cart-dropdown">
                             <input></input>
                         </div>
-                    </li>
+                    </li> */}
                     <li className="dropdown cart-nav dropdown-slide list-inline-item">
                         <Link to="/cart" className="dropdown-toggle cart-icon" data-hover="dropdown">
                             <i className="tf-ion-android-cart"></i>
@@ -69,18 +75,38 @@ const Header = () => {
                                 <span className="total-price h6">$1799.00</span> */}
                         
                                 <div className="text-center cart-buttons mt-3">
-                                <Link to="/cart" className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">View Cart</Link>
-                                {/* <a href="#" className="btn btn-small btn-transparent btn-block">Checkout</a> */}
+                                    <Link to="/cart" className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">View Cart</Link>
                                 </div>
                             </div>
                         </div>
                     
                     </li>
-                    <li className="list-inline-item" style={{width: 35}}>
+                    <li className="dropdown cart-nav dropdown-slide list-inline-item">
                         <Link to="/profile" style={{width: "35px"}} >
                             <i className="tf-ion-ios-person mr-3"></i>
                         </Link>
+                        <div className="dropdown-menu cart-dropdown">
+                            <div className="cart-summary">
+                                {/* <span className="h6">Total</span>
+                                <span className="total-price h6">$1799.00</span> */}
+                        
+                                <div className="text-center cart-buttons mt-3">
+                                    {   isAdmin?
+                                        <Link to="/manage/accounts" className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Manage</Link>
+                                        :
+                                        <Link to="/profile" className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">View Profile</Link>
+                                    }
+                                    { userInfo ? <Link to="/login" onClick={logoutHandler} className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Logout</Link>:<></>}
+                                </div>
+                            </div>
+                        </div>
+                    
                     </li>
+                    {/* <li className="list-inline-item" style={{width: 35}}>
+                        <Link to="/profile" style={{width: "35px"}} >
+                            <i className="tf-ion-ios-person mr-3"></i>
+                        </Link>
+                    </li> */}
                 </ul>
             </div>
             <div className="container">
@@ -96,11 +122,15 @@ const Header = () => {
                         <Link className="nav-link" to={{ pathname: "/"}}>Home</Link>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href="#">About Us</a>
-                    </li>
-                    <li className="nav-item">
                         <Link className="nav-link" to={{ pathname: "/shop"}}>Shoes</Link>
                     </li>
+                    {
+                        !isAdmin ? 
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/order">Order History</Link>
+                        </li>
+                        :<></>
+                    }
                     {/* <li className="nav-item">
                         <Link className="nav-link" to={{ pathname: "/login"}}>Login Page</Link>
                     </li>
@@ -110,10 +140,16 @@ const Header = () => {
                     <li className="nav-item">
                         <Link className="nav-link" to={{ pathname: "/login"}} onClick={logoutHandler}>Logout</Link>
                     </li> */}
-                    <li className="nav-item">
-                        <Link className="nav-link" to={{ pathname: "/manage/accounts"}}>Manage</Link>
-                    </li>
-                
+                    {
+                        isAdmin ? 
+                            <li className="nav-item">
+                                <Link className="nav-link" to={{ pathname: "/manage/accounts"}}>Manage</Link>
+                            </li>
+                        :<></>    
+                    }
+                    {/* <li className="nav-item">
+                                <Link className="nav-link" to={{ pathname: "/manage/accounts"}}>Manage</Link>
+                            </li> */}
                     {/* <li className="nav-item dropdown dropdown-slide">
                     <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown4" role="button" data-delay="350"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -143,7 +179,7 @@ const Header = () => {
                     </li>
 
                  */}
-                    <li className="nav-item dropdown dropdown-slide">
+                    {/* <li className="nav-item dropdown dropdown-slide">
                     <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown5" role="button" data-delay="350"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Account
@@ -154,7 +190,7 @@ const Header = () => {
                         (<li><Link to={{ pathname: "/login"}}>Login Page</Link></li>)}
                         <li><Link to={{ pathname: "/signup"}}>SignUp Page</Link></li>
                     </ul>
-                    </li>
+                    </li> */}
                     {/* {userInfo ? (
                         <li className="nav-item dropdown dropdown-slide">
                         <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown5" role="button" data-delay="350"

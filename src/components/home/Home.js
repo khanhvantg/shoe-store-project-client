@@ -1,4 +1,26 @@
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllProducts} from '../../redux/actions/ProductAction';
+import { getAllcategories, getCategoryById, stopGetCategory } from '../../redux/actions/CategoryAction'
+import { Link } from "react-router-dom";
+import Loading from '../loadingError/Loading';
+import Message from "../loadingError/Message";
+import { createLineItem } from '../../redux/actions/WishlistAction'
 const Home = () => {
+    const [total, setTotal] = useState(0);
+    const [amount, setAmount] = useState(1);
+    const [productId,setProductId]=useState(null);
+    const dispatch = useDispatch();
+    const dispatchItem = useDispatch();
+
+    const productList = useSelector((state) => state.productList);
+    const { loading, error, products} = productList;
+    
+    //const { success, category, loading, error, products } = categoryDetail;
+    useEffect(() => {
+        dispatch(getAllProducts());
+    }, [dispatch]);
+
   return (
     <div class="home-container">
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
@@ -53,110 +75,41 @@ const Home = () => {
                 <div class="col-lg-4 col-sm-6 col-md-6">
                     <div class="widget-featured-entries mt-5 mt-lg-0">
                         <h4 class="mb-4 pb-3">Best selllers</h4>
-
-                        <div class="media mb-3">
-                            <a class="featured-entry-thumb" href="/product-single">
-                            <img src="assets/images/p-1.jpg" alt="Product thumb" width="64" class="img-fluid mr-3" />
-                            </a>
+                        { products&&products.sort((a, b) => (a.id-b.id)).map((product, index)=>(
+                            <>
+                            {index<4?(
+                                <div class="media mb-3">
+                            <Link class="featured-entry-thumb" to={`/product/${product.id}`}>
+                                <img src={product.images.sort((a, b) => (a.id-b.id))[0]?.link} alt="Product thumb" width="64" class="img-fluid mr-3" />
+                            </Link>
                             <div class="media-body">
-                                <h6 class="featured-entry-title mb-0"><a href="#">Keds - Kickstart Pom Pom</a></h6>
-                                <p class="featured-entry-meta">$42.99</p>
+                                <h6 class="featured-entry-title mb-0"><Link to={`/product/${product.id}`}>{product.name}</Link></h6>
+                                <p class="featured-entry-meta">${product.price}</p>
                             </div>
                         </div>
-
-                        <div class="media mb-3">
-                            <a class="featured-entry-thumb" href="#">
-                            <img src="assets/images/p-2.jpg" alt="Product thumb" width="64" class="img-fluid mr-3" />
-                            </a>
-                            <div class="media-body">
-                                <h6 class="featured-entry-title mb-0"><a href="#">Nike - Brasilia Medium Backpack</a></h6>
-                                <p class="featured-entry-meta">$27.99</p>
-                            </div>
-                        </div>
-
-                        <div class="media mb-3">
-                            <a class="featured-entry-thumb" href="#">
-                                <img src="assets/images/p-3.jpg" alt="Product thumb" width="64" class="img-fluid mr-3" />
-                            </a>
-                            <div class="media-body">
-                                <h6 class="featured-entry-title mb-0"><a href="#">Guess - GU7295</a></h6>
-                                <p>$38.00</p>
-                            </div>
-                        </div>
-
-                        <div class="media mb-3">
-                            <a class="featured-entry-thumb" href="#">
-                            <img src="assets/images/p-4.jpg" alt="Product thumb" width="64" class="img-fluid mr-3" />
-                            </a>
-                            <div class="media-body">
-                                <h6 class="featured-entry-title mb-0"><a href="#">Adidas Originals Cap</a></h6>
-                                <p class="featured-entry-meta">$35.00</p>
-                            </div>
-                        </div>
-
-                        <div class="media">
-                            <a class="featured-entry-thumb" href="#">
-                            <img src="assets/images/p-5.jpg" alt="Product thumb" width="64" class="img-fluid mr-3" />
-                            </a>
-                            <div class="media-body">
-                                <h6 class="featured-entry-title mb-0"><a href="#">Big Star Flip Tops</a></h6>
-                                <p class="featured-entry-meta">$10.60</p>
-                            </div>
-                        </div>
+                            ): (<></>)}
+                            </>
+                        ))}
                     </div>
                 </div>
                 <div class="col-lg-4 col-sm-6 col-md-6">
                     <div class="widget-featured-entries mt-5 mt-lg-0">
                         <h4 class="mb-4 pb-3">New Arrivals</h4>
-                        <div class="media mb-3">
-                            <a class="featured-entry-thumb" href="/product-single">
-                            <img src="assets/images/p-7.jpg" alt="Product thumb" width="64" class="img-fluid mr-3" />
-                            </a>
+                        { products&&products.sort((a, b) => (a.id-b.id)).map((product, index)=>(
+                            <>
+                            {index<4?(
+                                <div class="media mb-3">
+                            <Link class="featured-entry-thumb" to={`/product/${product.id}`}>
+                                <img src={product.images.sort((a, b) => (a.id-b.id))[0]?.link} alt="Product thumb" width="64" class="img-fluid mr-3" />
+                            </Link>
                             <div class="media-body">
-                                <h6 class="featured-entry-title mb-0"><a href="#">Keds - Kickstart Pom Pom</a></h6>
-                                <p class="featured-entry-meta">$42.99</p>
+                                <h6 class="featured-entry-title mb-0"><Link to={`/product/${product.id}`}>{product.name}</Link></h6>
+                                <p class="featured-entry-meta">${product.price}</p>
                             </div>
                         </div>
-
-                        <div class="media mb-3">
-                            <a class="featured-entry-thumb" href="#">
-                            <img src="assets/images/p-8.jpg" alt="Product thumb" width="64" class="img-fluid mr-3" />
-                            </a>
-                            <div class="media-body">
-                                <h6 class="featured-entry-title mb-0"><a href="#">Nike - Brasilia Medium Backpack</a></h6>
-                                <p class="featured-entry-meta">$27.99</p>
-                            </div>
-                        </div>
-
-                        <div class="media mb-3">
-                            <a class="featured-entry-thumb" href="#">
-                                <img src="assets/images/p-1.jpg" alt="Product thumb" width="64" class="img-fluid mr-3" />
-                            </a>
-                            <div class="media-body">
-                                <h6 class="featured-entry-title mb-0"><a href="#">Guess - GU7295</a></h6>
-                                <p>$38.00</p>
-                            </div>
-                        </div>
-
-                        <div class="media mb-3">
-                            <a class="featured-entry-thumb" href="#">
-                            <img src="assets/images/p-2.jpg" alt="Product thumb" width="64" class="img-fluid mr-3" />
-                            </a>
-                            <div class="media-body">
-                                <h6 class="featured-entry-title mb-0"><a href="#">Adidas Originals Cap</a></h6>
-                                <p class="featured-entry-meta">$35.00</p>
-                            </div>
-                        </div>
-
-                        <div class="media">
-                            <a class="featured-entry-thumb" href="#">
-                            <img src="assets/images/p-4.jpg" alt="Product thumb" width="64" class="img-fluid mr-3" />
-                            </a>
-                            <div class="media-body">
-                                <h6 class="featured-entry-title mb-0"><a href="#">Big Star Flip Tops</a></h6>
-                                <p class="featured-entry-meta">$10.60</p>
-                            </div>
-                        </div>
+                            ): (<></>)}
+                            </>
+                        ))}
                     </div>
                 </div>
               </div>

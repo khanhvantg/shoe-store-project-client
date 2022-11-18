@@ -80,6 +80,7 @@ const ProfileScreen = () => {
     const [errorInputProfile, setErrorInputProfile] = useState({
         name: {
             isReq: true,
+            reqType: 'NAME',
             errorMsg: '',
             onValidateFunc: onInputValidate
         },
@@ -95,6 +96,7 @@ const ProfileScreen = () => {
         },
         phone: {
             isReq: true,
+            reqType: 'PHONE',
             errorMsg: '',
             onValidateFunc: onInputValidate
         },
