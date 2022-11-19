@@ -30,12 +30,10 @@ const Header = () => {
 
     const logoutHandler = () => {
       dispatch(logout());
-      navigate("/login")
     };
 
     const handleRemoveItem = (id) => {
         dispatch(removeLineItem(id));
-
     }
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white w-100 navigation flex-row-reverse" id="navbar">
@@ -96,7 +94,9 @@ const Header = () => {
                                         :
                                         <Link to="/profile" className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">View Profile</Link>
                                     }
-                                    { userInfo ? <Link to="/login" onClick={logoutHandler} className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Logout</Link>:<></>}
+                                    { userInfo ? <button onClick={logoutHandler} className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Logout</button>:
+                                        <Link to={{ pathname:"/login"}} className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Login</Link>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -125,7 +125,7 @@ const Header = () => {
                         <Link className="nav-link" to={{ pathname: "/shop"}}>Shoes</Link>
                     </li>
                     {
-                        !isAdmin ? 
+                        !isAdmin&&userInfo ? 
                         <li className="nav-item">
                             <Link className="nav-link" to="/order">Order History</Link>
                         </li>

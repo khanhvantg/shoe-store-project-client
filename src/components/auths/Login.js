@@ -19,7 +19,7 @@ const Login = () => {
 
     useEffect(() => {
         if (userInfo) {
-            navigate("/shop");
+            navigate("/");
         }
     }, [userInfo, navigate]);
 
@@ -65,7 +65,7 @@ const Login = () => {
         return !isInvalid;
     }
      
-    const handleSubmit = (e) => {
+    const handleSubmit = () => {
         const isValid = validateForm();
         if (isValid) {
             dispatch(login({form}));
@@ -81,7 +81,7 @@ const Login = () => {
                             <div class="login-form border p-5 bg-white">
                                 <div class="text-center heading">
                                     <h2 class="mb-2">Login</h2>
-                                    <p class="lead">Don’t have an account? <Link to="/signup">Create a free account</Link></p>
+                                    <p class="lead">Don’t have an account? <Link to={{ pathname: "/signup" }} style={{color: "blue"}}>Create a free account</Link></p>
                                 </div>
                                 <div className="form">
                                     <Input

@@ -95,7 +95,7 @@ const SignUp = () => {
                     <div class="login-form border p-5 bg-white">
                         <div class="text-center">
                         <h2 class="mb-2">Sign Up</h2>
-                        <p class="lead">Already have an account? <Link to="/login"> Login now</Link></p>
+                        <p class="lead">Already have an account? <Link to="/login" style={{color: "blue"}}> Login now</Link></p>
                         </div>
                         <div class="form">
                             <Input
