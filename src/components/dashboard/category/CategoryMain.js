@@ -8,6 +8,7 @@ import Loading from '../../loadingError/Loading';
 import Message from "../../loadingError/Message";
 import useModal from '../useModal';
 import useModalCreate from '../useModalCreate';
+import Layout from "../../../screen/Layout";
 const CategoryMain = () => {
     const dispatch = useDispatch();
     const {isShowingCreate, toggleCreate} = useModalCreate();
@@ -21,8 +22,8 @@ const CategoryMain = () => {
 
     console.log(categories)
     return (
-        <div className="row flex-lg-nowrap">
-            <div className="col mb-3">
+        // <div className="row flex-lg-nowrap">
+        //     <div className="col mb-3">
                 <div className="e-panel card">
                     <div className="card-body">
                         <div className="text-center card-title">
@@ -84,15 +85,15 @@ const CategoryMain = () => {
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                {/* </div>
+            </div> */}
             <CategoryCreate
-                isShowing={isShowingCreate}
-                hide={toggleCreate}/>
-            <CategoryUpdate
-                isShowing={isShowing}
-                hide={toggle}
-                id={id}/>    
+                    isShowing={isShowingCreate}
+                    hide={toggleCreate}/>
+                <CategoryUpdate
+                    isShowing={isShowing}
+                    hide={toggle}
+                    id={id}/>    
         </div>
     )
 }

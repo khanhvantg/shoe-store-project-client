@@ -25,15 +25,15 @@ a:focus {
 }
 
 .navbar {
-    padding: 15px 10px;
+    padding: 15px 0px;
     background: #fff;
     border: none;
     border-radius: 0;
-    margin-bottom: 40px;
+    //margin-bottom: 40px;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.navbar-btn {
+.navbar1-btn {
     box-shadow: none;
     outline: none !important;
     border: none;
@@ -50,7 +50,7 @@ a:focus {
     SIDEBAR STYLE
 ----------------------------------------------------- */
 
-.wrapper {
+.wrapper1 {
     display: flex;
     width: 100%;
     align-items: stretch;
@@ -59,8 +59,8 @@ a:focus {
 #sidebar {
     min-width: 250px;
     max-width: 250px;
-    background: #7386D5;
-    color: #fff;
+    background:  rgb(233, 208, 208);
+    color: rgb(61, 59, 59);
     transition: all 0.3s;
 }
 
@@ -70,7 +70,7 @@ a:focus {
 
 #sidebar .sidebar-header {
     padding: 20px;
-    background: #6d7fcc;
+    background: #fff;
 }
 
 #sidebar ul.components {
@@ -79,7 +79,7 @@ a:focus {
 }
 
 #sidebar ul p {
-    color: #fff;
+    color: rgb(94, 90, 90);
     padding: 10px;
 }
 
@@ -91,20 +91,20 @@ a:focus {
 
 #sidebar ul li a:hover {
     color: #7386D5;
-    background: #fff;
+    background: rgb(252, 252, 252);
 }
 
 #sidebar ul li.active>a,
 a[aria-expanded="true"] {
     color: #fff;
-    background: #6d7fcc;
+    background: rgb(252, 252, 252);
 }
 
 a[data-toggle="collapse"] {
     position: relative;
 }
 
-.dropdown-toggle::after {
+.dropdown-toggle1::after {
     display: block;
     position: absolute;
     top: 50%;
@@ -145,7 +145,7 @@ a.article:hover {
     CONTENT STYLE
 ----------------------------------------------------- */
 
-#content {
+#content1 {
     width: 100%;
     padding: 20px;
     min-height: 100vh;
@@ -155,7 +155,6 @@ a.article:hover {
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
-
 @media (max-width: 768px) {
     #sidebar {
         margin-left: -250px;

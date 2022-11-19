@@ -28,6 +28,7 @@ import React, { useState, useEffect, useDispatch } from 'react'
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "./redux/actions/AuthAction";
 import { getWishListById, removeLineItem } from './redux/actions/WishlistAction'
+import AccountsScreen from './screen/manageScreen/AccountsScreen';
 const App = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { success, userInfo } = userLogin;
@@ -39,7 +40,8 @@ const App = () => {
     <div className="App">
         <ToastContainer/>
         <BrowserRouter>
-          {userInfo?<Header />:<></>}
+          {/* {userInfo?<Header />:<></>} */}
+          <Header />
           {/* <Header/> */}
           <Routes>
             <Route path="/" element={<Home />} />
@@ -56,6 +58,7 @@ const App = () => {
             <Route path="/order" element={<Order />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/test" element={<AccountsScreen />} />
           </Routes>
           {/* {userInfo?<Footer/>:<></>} */}
         </BrowserRouter>

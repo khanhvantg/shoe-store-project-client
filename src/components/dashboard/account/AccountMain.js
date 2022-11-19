@@ -22,8 +22,8 @@ const AccountMain = () => {
     }, [dispatch]);
 
     return (
-        <div className="row flex-lg-nowrap">
-            <div className="col mb-3">
+        // <div className="row flex-lg-nowrap">
+            // <div className="col mb-3">
                 <div className="e-panel card">
                     <div className="card-body">
                         <div className="text-center card-title">
@@ -80,13 +80,13 @@ const AccountMain = () => {
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <AccountUpdate 
+                {/* </div> */}
+                <AccountUpdate 
                 isShowing={isShowing}
                 hide={toggle}
                 id={id}/>
-        </div>
+            </div>
+            // </div>
     )
 }
 
