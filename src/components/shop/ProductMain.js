@@ -52,7 +52,7 @@ const ProductMain = ({idCategory}) => {
                             {/* <span class="onsale">Sale</span> */}
                             <div class="product-hover-overlay">
                                 <a className="circle" onClick={()=>handleAddToCart(product.id)}><i class="tf-ion-android-cart"></i></a>
-                                <a className="circle" ><i class="tf-ion-ios-heart"></i></a>
+                                {/* <a className="circle" ><i class="tf-ion-ios-heart"></i></a> */}
                             </div>
                             <div class="product-info">
                                 <h2 class="product-title h5 mb-0"><Link to={{ pathname: `/product/${product.id}`}}>{product.name}</Link></h2>

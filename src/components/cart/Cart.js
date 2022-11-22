@@ -113,7 +113,7 @@ const Cart = () => {
         clearTimeout(timer);
         const newTimer = setTimeout(() => {
             dispatch(updateLineItem({info}))
-        }, 2000);
+        }, 1000);
         setTimer(newTimer)
     };
 
@@ -144,7 +144,7 @@ const Cart = () => {
                 const id = info.itemId;
                 dispatch(removeLineItem(id));
             }else dispatch(updateLineItem({info}))
-        }, 2000);
+        }, 1000);
         setTimer(newTimer) 
         } 
     };

@@ -67,7 +67,7 @@ import {
       }
   };
 
-  export const lineItemRemoveReducer = (state = { }, action) => {
+  export const lineItemRemoveReducer = (state = {}, action) => {
     switch (action.type) {
         case LINE_ITEM_REMOVE_REQUEST:
           return { loading: true };
@@ -100,7 +100,7 @@ import {
       case LINE_ITEM_UPDATE_SUCCESS:
         return { loading: false, success: true, lineItem: action.payload };
       case LINE_ITEM_UPDATE_FAIL:
-        return { loading: false, error: action.payload };
+        return { loading: false, error: action.payload};
       case LINE_ITEM_UPDATE_RESET:
         return { lineItem: {} };
       default:
