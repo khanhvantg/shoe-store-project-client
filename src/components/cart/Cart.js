@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { getUserDetails } from '../../redux/actions/UserAction'
 import './Cart.scss'
 import {toast} from 'react-toastify';
+import Checkbox from '../checkValidate/Checkbox';
 const Cart = () => {
     const [timer,setTimer]=useState(null);
     const [form, setForm] = useState({
@@ -35,7 +36,7 @@ const Cart = () => {
 
     const orderCreate = useSelector((state) => state.orderCreate);
     const { success: succsesCreate } = orderCreate;
-    
+
     var today = new Date();
     var amountItem=0;
     const totalPrice = lineItems.reduce(function (result, item) {
@@ -252,6 +253,7 @@ const Cart = () => {
                             <table class="table shop_table shop_table_responsive cart" cellspacing="0">
                                 <thead>
                                     <tr>
+                                        {/* <th class="product-thumbnail text-center"> </th> */}
                                         <th class="product-thumbnail text-center"> </th>
                                         <th class="product-name text-center">Product</th>
                                         <th class="product-price text-center">Price</th>
@@ -264,6 +266,16 @@ const Cart = () => {
                                 <tbody>
                                     {amounts&&amounts.map((item,index)=>(
                                     <tr class="cart_item">
+                                        {/* <td class="product-thumbnail text-center" data-title="">
+                                            <span>{item.status}</span>
+                                            <input
+                                                name="status"
+                                                // value={item.status}
+                                                checked={(item.status===0)?"checked":""}
+                                                onChange={(e)=>updateItem(index,e)}
+                                                type="checkbox"
+                                                />
+                                        </td> */}
                                         <td class="product-thumbnail text-center" data-title="Image">
                                             <Link to={`/product/${item.product.id}`}><img src={item.product.images.sort((a,b)=>(a.id-b.id))[0].link} class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" /></Link>
                                         </td>
