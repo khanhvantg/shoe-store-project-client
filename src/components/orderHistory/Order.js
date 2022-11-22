@@ -2,35 +2,54 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeItemFromCart } from '../../redux/actions/CartAction'
 import { getWishListById,removeLineItem } from '../../redux/actions/WishlistAction'
-import { createOrder, getOrdersByUserId, getOrderById } from '../../redux/actions/OrderAction'
+import { createOrder, getOrdersByUserId, updateOrder } from '../../redux/actions/OrderAction'
 import OrderDetail from "./OrderDetail";
 import useModal from '../dashboard/useModal';
+import {
+    ORDER_UPDATE_RESET,
+} from '../../redux/constants/Constants'
 const Order = () => {
     const {isShowing, toggle, id} = useModal();
     const dispatch = useDispatch();
-
+    const [status, setStatus]=useState(0);
     const orderListByUserId = useSelector((state) => state.orderListByUserId);
     const { loading, error, orders} = orderListByUserId;
+
+    const orderUpdate = useSelector((state) => state.orderUpdate);
+    const {
+        loading: loadingUpdate,
+        error: errorUpdate,
+        success: successUpdate,
+    } = orderUpdate;
+
     useEffect(()=>{
+        if (successUpdate){
+            dispatch({type: ORDER_UPDATE_RESET});
+        }
         dispatch(getOrdersByUserId());
-    },[dispatch])
+    },[dispatch, successUpdate])
     orders.sort((a,b)=>(a.id-b.id))
-    // const handleCancel = () => {
-    //     setStatus(0);
-    //     setSubmit(true);
-    // }
+    const handleCancel = (orderId) => {
+        const orderInfo = {
+            orderId,
+            status
+        }
+        dispatch(updateOrder({orderInfo}));
+    }
   return (
+    <div className="checkout-container">
+    <section class="cart shopping page-wrapper">
             <div class="container">
-    <div class="row justify-content-center">
+                <div class="row justify-content-center">
                 <div class="col-lg-12">
                     <div class="product-list">
                         <form class="cart-form">
-                            <table class="table shop_table cart" cellspacing="0">
+                            <table class="table cart" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th class="product-thumbnail">Id</th>
-                                        <th class="product-name">Order Date</th>
-                                        <th class="product-quantity">Amount Item</th>
+                                        <th class="product-thumbnail">OrderId</th>
+                                        <th class="product-name">Date</th>
+                                        {/* <th class="product-quantity">Amount Item</th> */}
                                         <th class="product-subtotal">Total</th>
                                         <th class="product-price">State</th>
                                         <th class="product-remove">Action</th>
@@ -46,9 +65,9 @@ const Order = () => {
                                     <td class="product-name" data-title="Product">
                                         {item.createdDate}
                                     </td>
-                                    <td class="product-price" data-title="Price">
+                                    {/* <td class="product-price" data-title="Price">
                                         {item.amountItem}
-                                    </td>
+                                    </td> */}
                                     <td class="product-quantity" data-title="Quantity">
                                        {item.totalPrice}
                                     </td>
@@ -73,6 +92,7 @@ const Order = () => {
                                         </button>
                                         {item.status ==="1"?
                                             <button
+                                                onClick={()=>handleCancel(item.id)}
                                                 className="btn btn-sm btn-outline-secondary badge" type="button"> 
                                                 <i className="tf-ion-android-delete"></i>
                                             </button>
@@ -109,6 +129,8 @@ const Order = () => {
             id={id}
             // linItems={order}
             />
+            </div>
+            </section>
             </div>
   )
 }

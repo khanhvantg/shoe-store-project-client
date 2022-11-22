@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import Layout from './Layout'
 import UserMain from '../components/dashboard/user/UserMain'
 const ManageUserScreen = () => {
-  const [active, setActive] =useState(false);
+    const [active, setActive] =useState(false);
     const handle = useCallback(() => {
         if(!active) {
             setActive(true);
@@ -17,7 +17,7 @@ const ManageUserScreen = () => {
                     <div class="container-fluid">
                         <button type="button" id="sidebarCollapse" class="btn btn-info" onClick={handle}>
                             <i class="fas fa-align-left"></i>
-                            <span>Toggle Sidebar</span>
+                            {/* <span>Toggle Sidebar</span> */}
                         </button>
 
                     </div>

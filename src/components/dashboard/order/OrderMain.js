@@ -31,8 +31,8 @@ const OrderMain = () => {
     // const { order } = orderDetail;
 
   return (
-    <div className="row flex-lg-nowrap">
-        <div className="col mb-3">
+    // <div className="row flex-lg-nowrap">
+    //     <div className="col mb-3">
             <div className="e-panel card">
                 <div className="card-body">
                     <div className="text-center card-title">
@@ -90,27 +90,13 @@ const OrderMain = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            {/* </div>
+        </div> */}
         <OrderDetail
             isShowing={isShowing}
             hide={toggle}
             id={id}
             />
-        {/* <Ord 
-            isShowing={isShowingCreate}
-            hide={toggleCreate}
-            categories={categories}/> */}
-        {/* <ProductUpdate
-            isShowing={isShowing}
-            hide={toggle}
-            id={id}
-            idCategory={idCategory}/>
-        <ImageProduct
-            isShowing={isShowingImage}
-            hide={toggleImage}
-            id={idd}
-        /> */}
     </div>
     
   )

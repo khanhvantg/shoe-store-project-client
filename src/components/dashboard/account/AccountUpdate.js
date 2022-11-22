@@ -71,7 +71,7 @@ const AccountUpdate = ({isShowing, hide, id}) => {
                     ...prev,
                     accountId: id,
                     username: account.username,
-                    status: account.status,
+                    status: account.status ? account.status : "1",
                     role: str,
                     modifiedBy: userInfo.username,
                     modifiedDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()

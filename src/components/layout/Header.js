@@ -5,16 +5,20 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeItemFromCart } from '../../redux/actions/CartAction'
 import { getWishListById, removeLineItem } from '../../redux/actions/WishlistAction'
+import {
+    LINE_ITEM_LIST_RESET,
+} from '../../redux/constants/Constants'
 const Header = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [isAdmin, setIsAdmin] = useState(false);
     const lineItemList = useSelector((state) => state.lineItemList);
-    const { loading, error, lineItems} = lineItemList;
+    const { loading, error, wishList} = lineItemList;
+    const lineItems = wishList.lineItems;
 
     const userLogin = useSelector((state) => state.userLogin);
     const { success, userInfo } = userLogin;
-    useEffect(() => async () =>{
+    useEffect(() =>{
         if(userInfo){
             dispatch(getWishListById());
             for (let i in userInfo.roles) {
@@ -23,10 +27,11 @@ const Header = () => {
                     break;
                 }
             }
+        } else {
+            dispatch({type: LINE_ITEM_LIST_RESET})
+            setIsAdmin(false);
         }
-    },[dispatch,navigate,userInfo])
-    console.log(isAdmin)
-    lineItems.sort((a,b)=>(a.id-b.id))
+    },[dispatch,userInfo])
 
     const logoutHandler = () => {
       dispatch(logout());
@@ -52,7 +57,7 @@ const Header = () => {
                             <i className="tf-ion-android-cart"></i>
                         </Link>
                         <div className="dropdown-menu cart-dropdown">
-                        {lineItems&&lineItems.map(item=>(
+                        {lineItems&&lineItems.sort((a,b)=>(a.id-b.id)).map(item=>(
                                 <div className="media">
                                 <a href="/product-single">
                                     <img className="media-object img- mr-3" src={item.product.images[0]?.link} alt="image" />
@@ -94,7 +99,7 @@ const Header = () => {
                                         :
                                         <Link to="/profile" className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">View Profile</Link>
                                     }
-                                    { userInfo ? <button onClick={logoutHandler} className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Logout</button>:
+                                    { userInfo ? <Link to={{ pathname:"/login"}} onClick={logoutHandler} className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Logout</Link>:
                                         <Link to={{ pathname:"/login"}} className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Login</Link>
                                     }
                                 </div>

@@ -22,6 +22,7 @@ const ProductMain = () => {
     const productList = useSelector((state) => state.productList);
     const categoryDetail = useSelector((state) => state.categoryDetail);
     const { loading, error, products } = idCategory==="0" ? productList : categoryDetail;
+    products.sort((a,b)=>(a.id-b.id));
 
     const categoryList = useSelector((state) => state.categoryList);
     const { categories } = categoryList;
@@ -43,8 +44,8 @@ const ProductMain = () => {
         setIdCategory(e.target.value);
     }
   return (
-    <div className="row flex-lg-nowrap">
-        <div className="col mb-3">
+    // <div className="row flex-lg-nowrap">
+    //     <div className="col mb-3">
             <div className="e-panel card">
                 <div className="card-body">
                     <div className="text-center card-title">
@@ -117,8 +118,8 @@ const ProductMain = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            {/* </div>
+        </div> */}
         <ProductCreate 
             isShowing={isShowingCreate}
             hide={toggleCreate}

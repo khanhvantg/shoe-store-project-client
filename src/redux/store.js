@@ -37,6 +37,7 @@ import {
   lineItemCreateReducer,
   lineItemListReducer,
   lineItemRemoveReducer,
+  lineItemUpdateReducer,
   wishListClearReducer,
 } from "./reducers/WishListReducer";
 import {
@@ -94,6 +95,7 @@ const reducer = combineReducers({
   lineItemCreate: lineItemCreateReducer,
   lineItemList:lineItemListReducer,
   lineItemRemove:lineItemRemoveReducer,
+  lineItemUpdate:lineItemUpdateReducer,
   wishListClear:wishListClearReducer,
   //order
   orderList: orderListReducer,

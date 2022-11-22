@@ -15,7 +15,7 @@ const CategoryMain = () => {
     const {isShowing, toggle, id} = useModal();
     const categoryList = useSelector((state) => state.categoryList);
     const { loading, error, categories} = categoryList;
-
+    //categories.sort((a,b)=>(a.id-b.id));
     useEffect(() => {
         dispatch(getAllcategories());
     }, [dispatch]);

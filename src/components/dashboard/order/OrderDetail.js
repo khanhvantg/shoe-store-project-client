@@ -130,7 +130,7 @@ const OrderDetail = ({isShowing, hide, id}) => {
                                         <a href="/product-single"><img src={item.product.images.sort((a,b)=>(a.id-b.id))[0].link} class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" /></a>
                                     </td>
                                     <td class="product-name" data-title="Product">
-                                        <a href="#">aaaa</a>
+                                        <a href="#">{item.product.name}</a>
                                     </td>
                                     <td class="product-price" data-title="Price">
                                         <span class="amount"><span class="currencySymbol"><pre wp-pre-tag-3=""></pre>

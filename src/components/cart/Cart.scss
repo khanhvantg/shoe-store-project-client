@@ -1,0 +1,33 @@
+.input-group-field {
+  width: 50px;
+  height: 38px;
+  text-align: center;
+  border-radius: .25rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  border: 1px solid #ced4da;
+  padding: 1rem;
+
+  &::-webkit-inner-spin-button,
+  ::-webkit-outer-spin-button {
+    appearance: none;
+  }
+}
+.cart-qty-plus,
+.cart-qty-minus{
+    width: 38px;
+    height: 38px;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+}
+.cart-qty-plus:hover {
+  background-color: #0b8500;
+    color: #fff;
+}
+.cart-qty-minus:hover{
+    background-color: #ff1100;
+    color: #fff;
+}
+  
+  

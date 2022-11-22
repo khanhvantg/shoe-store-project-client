@@ -57,6 +57,7 @@ a:focus {
 }
 
 #sidebar {
+    padding-top: 20px;
     min-width: 250px;
     max-width: 250px;
     background:  rgb(233, 208, 208);
@@ -96,7 +97,7 @@ a:focus {
 
 #sidebar ul li.active>a,
 a[aria-expanded="true"] {
-    color: #fff;
+    color: #000000;
     background: rgb(252, 252, 252);
 }
 
@@ -150,6 +151,7 @@ a.article:hover {
     padding: 20px;
     min-height: 100vh;
     transition: all 0.3s;
+    background: rgb(233, 208, 208);
 }
 
 /* ---------------------------------------------------

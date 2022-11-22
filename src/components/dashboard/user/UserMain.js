@@ -21,8 +21,8 @@ const UserMain = () => {
     }, [dispatch]);
 
     return (
-        <div className="row flex-lg-nowrap">
-            <div className="col mb-3">
+        // <div className="row flex-lg-nowrap">
+        //     <div className="col mb-3">
                 <div className="e-panel card">
                     <div className="card-body">
                         <div className="text-center card-title">
@@ -88,8 +88,8 @@ const UserMain = () => {
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                {/* </div>
+            </div> */}
             <UserUpdate 
                 isShowing={isShowing}
                 hide={toggle}

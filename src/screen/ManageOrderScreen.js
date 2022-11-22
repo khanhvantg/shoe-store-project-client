@@ -17,7 +17,7 @@ const ManageOrderScreen = () => {
                     <div class="container-fluid">
                         <button type="button" id="sidebarCollapse" class="btn btn-info" onClick={handle}>
                             <i class="fas fa-align-left"></i>
-                            <span>Toggle Sidebar</span>
+                            {/* <span>Toggle Sidebar</span> */}
                         </button>
 
                     </div>

@@ -66,6 +66,7 @@ try {
         ? error.response.data.message
         : error.message,
   });
+  toast(`${error.response.data.message}`, {position: toast.POSITION.TOP_CENTER});
 }
 };
 
@@ -76,7 +77,7 @@ const {
   userLogin: { userInfo },
 } = getState();
 const { data } = await axios.get(`/api/wishList/${userInfo.id}`, {headers: authHeader()});
-// console.log("data",wishlist)
+console.log("data",data)
 dispatch({ type: LINE_ITEM_LIST_SUCCESS, payload: data });
 } catch (error) {
 dispatch({
@@ -128,22 +129,24 @@ export const clearWishList = () => async (dispatch, getState) => {
     });
   }
   };
-// export const updateProduct = ({productInfo}) => async (dispatch, getState) => {
-// try {
-//   dispatch({ type: LINE_ITEM_UPDATE_REQUEST });
+export const updateLineItem = ({itemInfo, info}) => async (dispatch, getState) => {
+try {
+  dispatch({ type: LINE_ITEM_UPDATE_REQUEST });
+  if(info){
+    itemInfo = info
+  }
+  const { data } = await axios.put(`/api/lineItem/${itemInfo.itemId}`, itemInfo, {headers: authHeader()});
 
-//   const { data } = await axios.put(`/api/product/${productInfo.productId}`, productInfo, {headers: authHeader()});
-
-//   dispatch({ type: LINE_ITEM_UPDATE_SUCCESS, payload: data });
-//   dispatch({ type: LINE_ITEM_DETAILS_SUCCESS, payload: data});
-//   toast("Update Product Successfull", {position: toast.POSITION.TOP_CENTER});
-// } catch (error) {
-//   dispatch({
-//     type: LINE_ITEM_UPDATE_FAIL,
-//     payload:
-//       error.response && error.response.data.message
-//         ? error.response.data.message
-//         : error.message,
-//   });
-// }
-// };
+  dispatch({ type: LINE_ITEM_UPDATE_SUCCESS, payload: data });
+  dispatch({ type: LINE_ITEM_DETAILS_SUCCESS, payload: data});
+  toast(`Update Amount ${itemInfo.name} Successfull`, {position: toast.POSITION.TOP_CENTER});
+} catch (error) {
+  dispatch({
+    type: LINE_ITEM_UPDATE_FAIL,
+    payload:
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message,
+  });
+}
+};

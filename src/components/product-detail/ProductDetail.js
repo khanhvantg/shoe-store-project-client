@@ -12,6 +12,7 @@ import { ADD_TO_CART, REMOVE_ITEM_CART, SAVE_SHIPPING_INFO } from '..//../redux/
 import { Link, useParams  } from "react-router-dom";
 import Loading from '../loadingError/Loading';
 import Message from "../loadingError/Message";
+import {toast} from 'react-toastify';
 const ProductDetail = () => {
 
     const dispatch = useDispatch();
@@ -23,15 +24,8 @@ const ProductDetail = () => {
     const [submit,setSubmit] = useState(false);
     const {id} = useParams();
     useEffect(() => {
-        // setActive("");
-        if(submit){
-            console.log(itemInfo);
-            dispatchItem(createLineItem({itemInfo,productId:id}))
-            setSubmit(false)
-        }else {
-            dispatch(getProductById(id))
-        }
-    }, [dispatch,submit])
+        dispatch(getProductById(id))
+    }, [dispatch])
 
     const [idImg,setIdImg]=useState("");
     const [index,setIndex]=useState(0);
@@ -41,12 +35,14 @@ const ProductDetail = () => {
         setIndex(1);
     }
     const itemInfo={
-        amount,
-        total
+        amount
     }
     const handleAddToCart = () => {
-        setSubmit(true);
-        setTotal(amount*product.price);
+        if (amount>0){
+            dispatchItem(createLineItem({itemInfo,productId:id}))
+        } else {
+            toast("Amount Is InValid", {position: toast.POSITION.TOP_CENTER});
+        }
         //dispatch(addItemToCart(product,amount));
        // console.log("id=",id,"amount=",amount)
     }

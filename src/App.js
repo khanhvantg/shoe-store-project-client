@@ -29,13 +29,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { logout } from "./redux/actions/AuthAction";
 import { getWishListById, removeLineItem } from './redux/actions/WishlistAction'
 import AccountsScreen from './screen/manageScreen/AccountsScreen';
+import PrivateRoute from "./PrivateRoute";
 const App = () => {
-  const userLogin = useSelector((state) => state.userLogin);
-  const { success, userInfo } = userLogin;
-  useEffect(() => async () =>{
-
-  },[userInfo])
-
   return (
     <div className="App">
         <ToastContainer/>
@@ -50,16 +45,33 @@ const App = () => {
             <Route path="/manage/categories" element={<ManageCategoryScreen/>}/>
             <Route path="/manage/products" element={<ManageProductScreen/>}/>
             <Route path="/manage/orders" element={<ManageOrderScreen/>}/>
-            <Route path="/profile" element={<ProfileScreen/>}> </Route>
+            {/* <Route path="/profile" element={<ProfileScreen/>}> </Route> */}
+            <Route
+              path="/profile"
+              element={
+                <PrivateRoute>
+                  <ProfileScreen />
+                </PrivateRoute>
+              }
+            />
             <Route path="/shop" element={<Shop />} />
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/checkout" element={<Checkout />} />
-            <Route path="/cart" element={<Cart />} />
+            {/* <Route path="/cart" element={<Cart />} /> */}
+            <Route
+              path="/cart"
+              element={
+                <PrivateRoute>
+                  <Cart />
+                </PrivateRoute>
+              }
+            />
             <Route path="/order" element={<Order />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/test" element={<AccountsScreen />} />
           </Routes>
+          <Footer/>
           {/* {userInfo?<Footer/>:<></>} */}
         </BrowserRouter>
     </div>

@@ -1,39 +1,169 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getWishListById,removeLineItem } from '../../redux/actions/WishlistAction'
+import { getWishListById,removeLineItem,updateLineItem } from '../../redux/actions/WishlistAction'
+import {
+    LINE_ITEM_UPDATE_RESET,
+    ORDER_CREATE_RESET
+} from '../../redux/constants/Constants'
 import { createOrder } from '../../redux/actions/OrderAction'
 import Input from '../checkValidate/Input'
+import { Link } from "react-router-dom";
+import { getUserDetails } from '../../redux/actions/UserAction'
+import './Cart.scss'
+import {toast} from 'react-toastify';
 const Cart = () => {
+    const [timer,setTimer]=useState(null);
+    const [form, setForm] = useState({
+        address: '',
+        phoneNumber: '',
+        name: '',
+        status: null,      //status = 0 : cancle, 1 : wait confirm, 2: shipping, 3: completed 
+        createdDate: '',
+        createdBy: '',
+        totalPrice: null
+    });
+    const [amounts, setAmounts] = useState([]);
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
     const dispatch = useDispatch();
 
     const lineItemList = useSelector((state) => state.lineItemList);
     const { loading, error, lineItems, user} = lineItemList;
+
+    const lineItemUpdate = useSelector((state) => state.lineItemUpdate);
+    const { success: succsesUpdate } = lineItemUpdate;
+
+    const orderCreate = useSelector((state) => state.orderCreate);
+    const { success: succsesCreate } = orderCreate;
+    
+    var today = new Date();
+    var amountItem=0;
     const totalPrice = lineItems.reduce(function (result, item) {
         amountItem++;
         return result + Number(item.total);
       },0);
-    useEffect(()=>{
-        dispatch(getWishListById());
-    }, [dispatch])
 
-    lineItems.sort((a,b)=>(a.id-b.id));
-    var amountItem=0;
-    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    var today = new Date();
-    const [form, setForm] = useState({
-        address: user.address,
-        phoneNumber: user.phone,
-        name: user.name,
-        status: 1,      //status = 0 : cancle, 1 : wait confirm, 2: shipping, 3: completed 
-        createdDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear(),
-        createdBy: userInfo.username,
-        modifiedBy: "",
-        modifiedDate: "",
-        totalPrice
-    });
-    console.log("b",form)
-  
-    
+    const [itemInfo,setItemInfo] = useState({
+        itemId: '',
+        amount: 0,
+        name: ''
+    }); 
+    useEffect(() =>{
+        if (succsesCreate) {
+            dispatch({type: ORDER_CREATE_RESET});
+            dispatch(getWishListById());
+        } else if(succsesUpdate){
+            dispatch({type: LINE_ITEM_UPDATE_RESET});
+            dispatch(getWishListById());
+        } else {
+            setAmounts(lineItems);
+            setForm({
+                address: user.address,
+                phoneNumber: user.phone,
+                name: user.name,
+                status: 1,      //status = 0 : cancle, 1 : wait confirm, 2: shipping, 3: completed 
+                createdDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear(),
+                createdBy: userInfo.username,
+                totalPrice: totalPrice
+            })
+        } 
+    },[succsesCreate,succsesUpdate, lineItems, user])
+
+    const updateItem = (index,e) => { 
+        const info = {
+            itemId:'',
+            amount:'',
+            name:'',
+        }
+        if(e.target.value < 0 ){
+            toast("Amount Is InValid", {position: toast.POSITION.TOP_CENTER});
+        } else {
+        const newArray = amounts.map((item, i) => {
+            if (index === i && e.target.value >= 0) {
+                info.itemId=item.id;
+                info.amount=e.target.value;
+                info.name=item.product.name;
+                return { ...item, [e.target.name]: e.target.value };
+            } else {
+                return item;
+            }});
+        setItemInfo(info);
+        setAmounts(newArray); 
+        }
+    };
+
+    const plusHandle = (index,e) => { 
+        const info = {
+            itemId:'',
+            amount: '',
+            name:'',
+        }
+        const newArray = amounts.map((item, i) => {
+            let v = Number(e.target.value)+1;
+            if (index === i) {
+                info.itemId=item.id;
+                info.name=item.product.name;
+                info.amount=v;
+                return { ...item, [e.target.name]: v };
+            } else {
+                return item;
+            }});
+        setAmounts(newArray); 
+        clearTimeout(timer);
+        const newTimer = setTimeout(() => {
+            dispatch(updateLineItem({info}))
+        }, 2000);
+        setTimer(newTimer)
+    };
+
+    const minusHandle = (index,e) => { 
+        const info = {
+            itemId:'',
+            amount:'',
+            name:'',
+        }
+        if(e.target.value < 1 ){
+            toast("Amount Is InValid", {position: toast.POSITION.TOP_CENTER});
+        } else {
+        const newArray = amounts.map((item, i) => {
+            let v = Number(e.target.value)-1;
+            if (index === i && e.target.value >= 0) {
+                info.itemId=item.id;
+                info.name=item.product.name;
+                info.amount=v;
+                return { ...item, [e.target.name]: v };
+            } else {
+                return item;
+            }});
+        setAmounts(newArray); 
+        clearTimeout(timer);
+        const newTimer = setTimeout(() => {
+            console.log(info.amount)
+            if(info.amount==0){
+                const id = info.itemId;
+                dispatch(removeLineItem(id));
+            }else dispatch(updateLineItem({info}))
+        }, 2000);
+        setTimer(newTimer) 
+        } 
+    };
+
+    const [valueCurrent, setValueCurrent]=useState();
+
+    const focusHandler = (event) => {
+        setValueCurrent(event.target.value);
+    }
+
+    const blurHandler = (event) => {
+        console.log(valueCurrent)
+        if(event.target.value>0&&event.target.value!==valueCurrent){
+            dispatch(updateLineItem({itemInfo}))
+        } else if (event.target.value==0){
+            const id = itemInfo.itemId;
+            dispatch(removeLineItem(id));
+        }
+    }
+
     const handleRemoveItem = (id) => {
         dispatch(removeLineItem(id));
     }
@@ -58,6 +188,7 @@ const Cart = () => {
         },
         phoneNumber: {
             isReq: true,
+            reqType: 'PHONE',
             errorMsg: '',
             onValidateFunc: onInputValidate
         }
@@ -117,51 +248,59 @@ const Cart = () => {
                 <div class="row justify-content-center">
                 <div class="col-lg-12">
                     <div class="product-list">
-                        <form class="cart-form">
+                        <div class="cart-form">
                             <table class="table shop_table shop_table_responsive cart" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th class="product-thumbnail"> </th>
-                                        <th class="product-name">Product</th>
-                                        <th class="product-price">Price</th>
-                                        <th class="product-quantity">Amount</th>
-                                        <th class="product-subtotal">Total</th>
-                                        <th class="product-remove"> </th>
+                                        <th class="product-thumbnail text-center"> </th>
+                                        <th class="product-name text-center">Product</th>
+                                        <th class="product-price text-center">Price</th>
+                                        <th class="product-name text-center">Amount</th>
+                                        <th class="product-subtotal text-center">Total</th>
+                                        <th class="product-remove text-center"> </th>
                                     </tr>
                                 </thead>
         
                                 <tbody>
-                                    {lineItems&&lineItems.map(item=>(
-                                        <tr class="cart_item">
-                                    <td class="product-thumbnail" data-title="Thumbnail">
-                                        <a href="/product-single"><img src={item.product.images.sort((a,b)=>(a.id-b.id))[0].link} class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" /></a>
+                                    {amounts&&amounts.map((item,index)=>(
+                                    <tr class="cart_item">
+                                        <td class="product-thumbnail text-center" data-title="Image">
+                                            <Link to={`/product/${item.product.id}`}><img src={item.product.images.sort((a,b)=>(a.id-b.id))[0].link} class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" /></Link>
+                                        </td>
+                                        <td class="product-name text-center" data-title="Product">
+                                            <Link to={`/product/${item.product.id}`}>{item.product.name}</Link>
+                                        </td>
+                                        <td class="product-price text-center" data-title="Price">
+                                            <span class="amount">${item.product.price}</span>
+                                        </td>
+                                        <td class="product-name text-center" data-title="Amount">
+                                            <div class="btn-group">
+                                                <button 
+                                                    name="amount"
+                                                    value={item.amount}
+                                                    onClick={(e)=>minusHandle(index,e)}
+                                                    class="cart-qty-minus" type="button">-</button>
+                                                <input 
+                                                    type="number"
+                                                    name="amount"
+                                                    value={item.amount}
+                                                    onBlur={blurHandler}
+                                                    onFocus={focusHandler}
+                                                    onChange={(e)=>updateItem(index,e)}
+                                                    class="input-group-field"/>
+                                                <button 
+                                                    name="amount"
+                                                    value={item.amount}
+                                                    onClick={(e)=>plusHandle(index,e)}
+                                                    class="cart-qty-plus" type="button">+</button>
+                                            </div>
                                     </td>
-                                    <td class="product-name" data-title="Product">
-                                        <a href="#">{item.product.name}</a>
-                                    </td>
-                                    <td class="product-price" data-title="Price">
-                                        <span class="amount"><span class="currencySymbol"><pre wp-pre-tag-3=""></pre>
-                                        </span>{item.product.price}</span>
-                                    </td>
-                                    <td class="product-quantity" data-title="Quantity">
-                                        <div class="quantity">
-                                            <label class="sr-only" >Amount</label>
-                                            <input 
-                                                //onChange={(e)=>handle(item.amount)}
-                                                name="item.amount" 
-                                                value={item.amount}
-                                                type="number" class="input-text qty text" step="1" min="0" max="9" title="Qty" size="4"  />
-                                        </div>
-                                    </td>
-                                    <td class="product-subtotal" data-title="Total">
+                                    <td class="product-subtotal text-center" data-title="Total">
                                         <span class="amount">
-                                            <span class="currencySymbol">
-                                                <pre wp-pre-tag-3=""></pre>
-                                            </span>
-                                            {item.total}
+                                            ${item.total}
                                         </span>
                                     </td>
-                                    <td class="product-remove" data-title="Remove">
+                                    <td class="product-remove text-center" data-title="Remove">
                                         <a onClick={()=>handleRemoveItem(item.id)} class="remove" aria-label="Remove this item" data-product_id="30" data-product_sku="">×</a>
                                     </td>
                                 </tr>
@@ -182,7 +321,7 @@ const Cart = () => {
                                 </tr> */}
                                 </tbody>
                             </table>
-                        </form>
+                        </div>
                     </div>
                 </div>
                 </div>
@@ -207,6 +346,7 @@ const Cart = () => {
                     </div>
                     </div>
                     <div class="col-lg-8">
+                    {lineItems&&lineItems.length!==0?
                     <div class="cart-info card p-4 mt-4">
                         <h4 class="text-center mb-4">Delivery Information</h4>
                         <div className="form">
@@ -259,11 +399,14 @@ const Cart = () => {
                         
                         </div>
                         <div className="col text-center px-xl-3">
-                        <button 
+                            <button 
                             onClick={handleOrder}
                             class="btn btn-primary btn-block">Order</button>
                         </div>
                     </div>
+                     :
+                    <></>                
+                    } 
                     </div>
                 </div>
                 </div>

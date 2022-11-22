@@ -62,6 +62,7 @@ export const createOrder = ({form}) => async (dispatch,getState) => {
             ? error.response.data.message
             : error.message,
       });
+      toast(`${error.response.data.message}`, {position: toast.POSITION.TOP_CENTER});
     }
     };
     

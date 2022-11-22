@@ -19,11 +19,6 @@ const ProductMain = ({idCategory}) => {
     
     //const { success, category, loading, error, products } = categoryDetail;
     useEffect(() => {
-        if(total!==0){
-            dispatchItem(createLineItem({itemInfo,productId}))
-            console.log(itemInfo)
-            setTotal(0);
-        }
         if (!loading) {
             if(idCategory==="0"){
                 dispatch(getAllProducts());
@@ -32,16 +27,14 @@ const ProductMain = ({idCategory}) => {
                 dispatch(getCategoryById(idCategory));
             }
         }
-    }, [dispatch,idCategory, total]);
+    }, [dispatch,idCategory]);
 
     const itemInfo = {
-        amount,
-        total
+        amount
     }
 
-    function handleAddToCart(product){
-        setTotal(product.price);
-        setProductId(product.id);
+    const handleAddToCart = (productId) => {
+        dispatchItem(createLineItem({itemInfo,productId}))
     }
 
     return (
@@ -58,7 +51,7 @@ const ProductMain = ({idCategory}) => {
                             </div>
                             {/* <span class="onsale">Sale</span> */}
                             <div class="product-hover-overlay">
-                                <a className="circle" onClick={()=>handleAddToCart(product)}><i class="tf-ion-android-cart"></i></a>
+                                <a className="circle" onClick={()=>handleAddToCart(product.id)}><i class="tf-ion-android-cart"></i></a>
                                 <a className="circle" ><i class="tf-ion-ios-heart"></i></a>
                             </div>
                             <div class="product-info">

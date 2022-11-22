@@ -65,7 +65,10 @@ const ProfileScreen = () => {
                 username: user.account.username,
             });
         }
-    }, [user, dispatch, id, successUpdate]);
+        if(hide){
+            setFormChangePassword({});
+        }
+    }, [user, dispatch, id, successUpdate, hide]);
     
     const onInputValidate = (value, name) => {
         setErrorInputProfile(prev => ({
@@ -86,6 +89,7 @@ const ProfileScreen = () => {
         },
         age: {
             isReq: true,
+            reqType: 'AGE',
             errorMsg: '',
             onValidateFunc: onInputValidate
         },
