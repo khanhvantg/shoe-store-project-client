@@ -52,7 +52,7 @@ const ProfileScreen = () => {
         {
             dispatch({type: ACCOUNT_UPDATE_RESET});
         }
-        if (user.id!==id) {
+        if (user&&user.id!==id) {
             dispatch(getUserDetails(id));
         }else {
             setForm({

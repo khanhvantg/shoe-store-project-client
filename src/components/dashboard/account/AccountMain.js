@@ -16,7 +16,6 @@ const AccountMain = () => {
     
     const accountList = useSelector((state) => state.accountList);
     const { loading, error, accounts} = accountList;
-    accounts.sort((a,b)=>(a.id-b.id));
     
     useEffect(() => {
         dispatch(getAllAccounts());
@@ -48,7 +47,7 @@ const AccountMain = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    { accounts && accounts.map((account, index) => (
+                                    { accounts && accounts.sort((a,b)=>(a.id-b.id)).map((account, index) => (
                                         <tr>
                                             <td className="align-middle">{account.id}</td>
                                             <td className="text-nowrap align-middle">{account.username}</td>

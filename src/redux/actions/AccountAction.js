@@ -27,7 +27,7 @@ export const authHeader = () => {
 export const getAllAccounts = () => async (dispatch) => {
     try {
         dispatch({ type: ACCOUNT_LIST_REQUEST });
-
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
         const { data } = await axios.get('/api/accounts', {headers: authHeader()})
 
         dispatch({ type: ACCOUNT_LIST_SUCCESS, payload: data });

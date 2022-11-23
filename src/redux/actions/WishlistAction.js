@@ -72,13 +72,13 @@ try {
 
 export const getWishListById = () => async (dispatch,getState) => {
 try {
-dispatch({ type: LINE_ITEM_LIST_REQUEST });
-const {
-  userLogin: { userInfo },
-} = getState();
-const { data } = await axios.get(`/api/wishList/${userInfo.id}`, {headers: authHeader()});
-console.log("data",data)
-dispatch({ type: LINE_ITEM_LIST_SUCCESS, payload: data });
+  dispatch({ type: LINE_ITEM_LIST_REQUEST });
+  const {
+    userLogin: { userInfo },
+  } = getState();
+  const { data } = await axios.get(`/api/wishList/${userInfo.id}`, {headers: authHeader()});
+  console.log("data",data)
+  dispatch({ type: LINE_ITEM_LIST_SUCCESS, payload: data });
 } catch (error) {
 dispatch({
     type: LINE_ITEM_LIST_FAIL,

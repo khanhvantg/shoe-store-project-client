@@ -38,10 +38,11 @@ const ProductDetail = () => {
         amount
     }
     const handleAddToCart = () => {
-        if (amount>0){
+        if (amount>0&&Number.isInteger(amount)){
             dispatchItem(createLineItem({itemInfo,productId:id}))
         } else {
             toast("Amount Is InValid", {position: toast.POSITION.TOP_CENTER});
+            setAmount(1)
         }
         //dispatch(addItemToCart(product,amount));
        // console.log("id=",id,"amount=",amount)

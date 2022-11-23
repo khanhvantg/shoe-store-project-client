@@ -13,8 +13,8 @@ const Header = () => {
     const navigate = useNavigate();
     const [isAdmin, setIsAdmin] = useState(false);
     const lineItemList = useSelector((state) => state.lineItemList);
-    const { loading, error, wishList} = lineItemList;
-    const lineItems = wishList.lineItems;
+    const { loading, error, lineItems} = lineItemList;
+    //const lineItems = wishList.lineItems;
 
     const userLogin = useSelector((state) => state.userLogin);
     const { success, userInfo } = userLogin;
@@ -42,7 +42,7 @@ const Header = () => {
     }
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white w-100 navigation flex-row-reverse" id="navbar">
-            <div className="" style={{width: 165}}>
+            <div className="container"style={{width: 160}}>
                 <ul className="top-menu list-inline mb-0 d-lg-block" id="top-menu">
                     {/* <li className="dropdown cart-nav dropdown-slide list-inline-item">
                         <a className="search_toggle" id="search-icon" data-toggle="dropdown" data-hover="dropdown">
@@ -116,7 +116,7 @@ const Header = () => {
             </div>
             <div className="container">
                 <Link className="navbar-brand font-weight-bold" to={{ pathname: "/"}}>E-Shop</Link>
-                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar"
+                <button style={{margin: "0 0 0 1rem"}} className="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar"
                     aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>

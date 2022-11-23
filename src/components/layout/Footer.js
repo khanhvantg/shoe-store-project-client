@@ -1,17 +1,16 @@
 function Footer() {
     return (
-        <div className="footer-container">
-            {/* <footer class="footer">
+        <div className="footer-container" style={{background:"white"}}>
+            <footer class="footer" style={{background:"white"}}>
                 <div class="container">
                     <div class="row">
                         <div class="col-md-6 col-lg-4 col-sm-6 mb-5 mb-lg-0 text-center text-sm-left mr-auto">
                             <div class="footer-widget">
                                     <h4 class="mb-4">E-Shop</h4>
                                     <p class="lead">Iste dolores iure quis excepturi, deserunt praesentium.</p>
-                                    
                                     <div class="">
-                                        <p class="mb-0"><strong>Location : </strong>North Punjab ,INDIA</p>
-                                        <p><strong>Support Email : </strong> support@email.com</p>
+                                        <p class="mb-0"><strong>Location: </strong>So 1, Vo Van Ngan</p>
+                                        <p><strong>Support Email: </strong> support@email.com</p>
                                     </div>
                             </div>
                         </div>
@@ -52,7 +51,7 @@ function Footer() {
                         </div>
                     </div>
                 </div>
-            </footer>*/}
+            </footer>
             <div class="footer-btm py-4 ">
                 <div class="container">
                     <div class="center">

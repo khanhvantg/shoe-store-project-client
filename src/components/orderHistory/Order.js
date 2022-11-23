@@ -28,7 +28,7 @@ const Order = () => {
         }
         dispatch(getOrdersByUserId());
     },[dispatch, successUpdate])
-    orders.sort((a,b)=>(a.id-b.id))
+    
     const handleCancel = (orderId) => {
         const orderInfo = {
             orderId,
@@ -57,7 +57,7 @@ const Order = () => {
                                 </thead>
         
                                 <tbody>
-                                    {orders&&orders.map(item=>(
+                                    {orders&&orders.sort((a,b)=>(a.id-b.id)).map(item=>(
                                         <tr class="cart_item">
                                     <td class="product-thumbnail" data-title="Thumbnail">
                                         {item.id}

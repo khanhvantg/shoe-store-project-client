@@ -14,10 +14,40 @@ import Message from "../../loadingError/Message";
 import Input from '../../checkValidate/Input'
 import Radio from '../../checkValidate/Radio'
 import Select from '../../checkValidate/Select'
+import ReactSelect from "react-select";
 
 const ProductCreate = ({isShowing, hide, categories}) => {
 
     
+    const sizeList = [
+        {
+          value: 38,
+          label: "38"
+        },
+        {
+          value: 39,
+          label: "39"
+        },
+        {
+          value: 40,
+          label: "40"
+        },
+        {
+          value: 41,
+          label: "41"
+        },
+        {
+          value: 42,
+          label: "42"
+        },
+        {
+          value: 43,
+          label: "43"
+        }
+      ];
+     
+      const [selectedOption, setSelectedOption] = useState(null);
+
     const statusList = [
         { value: 1, label: "Active" },
         { value: 0, label: "Inactive" }
@@ -41,6 +71,7 @@ const ProductCreate = ({isShowing, hide, categories}) => {
         createdDate: '',
         modifiedBy: '',
         modifiedDate: '',
+        size: [],
         status: 1
       });
     
@@ -116,6 +147,7 @@ const ProductCreate = ({isShowing, hide, categories}) => {
             ...prev,
             [name]: value
         }));
+        console.log(form.size);
     }, []);
         
     const validateForm = () => {
@@ -124,7 +156,7 @@ const ProductCreate = ({isShowing, hide, categories}) => {
             const errObj = errorInput[x];
             if (errObj.errorMsg) {
                 isInvalid = true;
-            } else if (errObj.isReq && !form[x]) {
+            } else if (errObj.isReq && (Array.isArray(form[x]) ? !form[x].length : !form[x]) /*!form[x]*/) {
                 isInvalid = true;
                 onInputValidate(true, x);
             }
@@ -162,19 +194,27 @@ const ProductCreate = ({isShowing, hide, categories}) => {
                                                         <input 
                                                             value={form.createdBy}
                                                             className="form-control" type="text" name="createdBy" disabled/>
-                                                <div>        
+                                                <div>  
                                                     <div className="row">
                                                             <div className="col">
-                                                                <Input
-                                                                    name="name"
-                                                                    title="Name"
-                                                                    value={form.name}
+                                                            {/* <ReactSelect
+                                                                    isMulti
+                                                                    value={form.size}
+                                                                    options={sizeList}
                                                                     onChangeFunc={onInputChange}
-                                                                    {...errorInput.name}
-                                                                />
+                                                                    // {...errorInput.category}
+                                                                /> */}
+                                                                <Input
+                                                            name="name"
+                                                            title="Name"
+                                                            value={form.name}
+                                                            onChangeFunc={onInputChange}
+                                                            {...errorInput.name}
+                                                        />  
                                                             </div>
                                                             <div className="col">
                                                                 <Select
+                                                                    isMulti={false}
                                                                     name="category"
                                                                     title="Category"
                                                                     value={form.category}

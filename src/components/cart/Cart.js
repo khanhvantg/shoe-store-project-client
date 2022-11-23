@@ -68,7 +68,7 @@ const Cart = () => {
                 totalPrice: totalPrice
             })
         } 
-    },[succsesCreate,succsesUpdate, lineItems, user])
+    },[succsesCreate, succsesUpdate, lineItems, user])
 
     const updateItem = (index,e) => { 
         const info = {
@@ -77,7 +77,14 @@ const Cart = () => {
             name:'',
         }
         if(e.target.value < 0 ){
-            toast("Amount Is InValid", {position: toast.POSITION.TOP_CENTER});
+            toast(e.target.value + " Is InValid", {position: toast.POSITION.TOP_CENTER});
+            const newArray = amounts.map((item, i) => {
+                if (index === i) {
+                    return { ...item, [e.target.name]: valueCurrent };
+                } else {
+                    return item;
+                }});
+                setAmounts(newArray); 
         } else {
         const newArray = amounts.map((item, i) => {
             if (index === i && e.target.value >= 0) {
