@@ -50,7 +50,7 @@ const OrderMain = () => {
                                     <tr>
                                         <th>Id</th>
                                         <th>Order Date</th>
-                                        <th>Amount Item</th>
+                                        {/* <th>Amount Item</th> */}
                                         <th>Total Price</th>
                                         <th>Status</th>
                                         <th>Actions</th>
@@ -61,7 +61,7 @@ const OrderMain = () => {
                                     <tr>
                                         <td className="align-middle">{item.id}</td>
                                         <td className="text-nowrap align-middle">{item.createdDate}</td>
-                                        <td className="text-nowrap align-middle">{item.amountItem}</td>
+                                        {/* <td className="text-nowrap align-middle">{item.amountItem}</td> */}
                                         <td className="text-nowrap align-middle">{item.totalPrice}</td>
                                         {item.status ==="0" ? (
                                             <td className="text-nowrap align-middle" style={{color:"red"}}>Cancelled</td>

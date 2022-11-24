@@ -6,6 +6,7 @@ import { CATEGORY_DETAILS_STOP, CATEGORY_DETAILS_SUCCESS } from '../../../redux/
 import Status from '../../status/Status';
 import ProductUpdate from "./ProductUpdate";
 import ProductCreate from "./ProductCreate";
+import SizeModal from "./SizeModal";
 import ImageProduct from '../image/ImageProduct'
 import Loading from '../../loadingError/Loading';
 import Message from "../../loadingError/Message";
@@ -13,6 +14,7 @@ import useModal from '../useModal';
 import useModalCreate from '../useModalCreate';
 const ProductMain = () => {
     const {isShowing, toggle, id} = useModal();
+    const {isShowing: isShowingSize, toggle: toggleSize, id: idSize} = useModal();
     const {isShowingImage, toggleImage, idd} = useModal();
     const {isShowingCreate, toggleCreate} = useModalCreate();
     const  [idCategory, setIdCategory] = useState('0');
@@ -78,8 +80,7 @@ const ProductMain = () => {
                                         <th>Id</th>
                                         <th>Name</th>
                                         <th>Decription</th>
-                                        <th>Price</th>
-                                        <th>Amount</th>   
+                                        <th>Price</th>   
                                         <th className="sortable">Status</th>
                                         <th>Actions</th>
                                     </tr>
@@ -91,7 +92,6 @@ const ProductMain = () => {
                                         <td className="text-nowrap align-middle">{product.name}</td>
                                         <td className="text-nowrap align-middle">{product.description}</td>
                                         <td className="text-nowrap align-middle">{product.price}</td>
-                                        <td className="text-nowrap align-middle">{product.amount}</td>
                                         {/* <td className="text-nowrap align-middle">
                                             {product.status ==="1" ? <Status check="checked" /> : <Status check=""/>}
                                         </td> */}
@@ -104,6 +104,9 @@ const ProductMain = () => {
                                             <div className="btn-group align-top">
                                                 <button className="btn btn-sm btn-outline-secondary badge" type="button" onClick={()=>{toggle(product.id)}}> 
                                                     <i className="tf-ion-edit"></i>
+                                                </button>
+                                                <button className="btn btn-sm btn-outline-secondary badge" type="button" onClick={()=>{toggleSize(product.id)}}> 
+                                                    <i className="tf-ion-levels"></i>
                                                 </button>
                                                 <button className="btn btn-sm btn-outline-secondary badge" type="button" onClick={()=>{toggleImage(product.id)}}> 
                                                     <i className="tf-ion-image"></i>
@@ -133,6 +136,11 @@ const ProductMain = () => {
             isShowing={isShowingImage}
             hide={toggleImage}
             id={idd}
+        />
+        <SizeModal
+            isShowing={isShowingSize}
+            hide={toggleSize}
+            id={idSize}
         />
     </div>
     

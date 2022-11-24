@@ -34,6 +34,12 @@ import {
   imageUpdateReducer,
 } from "./reducers/ImageReducer";
 import {
+  sizeCreateReducer,
+  sizeDetailsReducer,
+  sizeListReducer,
+  sizeUpdateReducer,
+} from "./reducers/SizeReducer";
+import {
   lineItemCreateReducer,
   lineItemListReducer,
   lineItemRemoveReducer,
@@ -89,6 +95,11 @@ const reducer = combineReducers({
   imageDetail: imageDetailsReducer,
   imageList: imageListReducer,
   imageUpdate: imageUpdateReducer,
+  //size
+  sizeCreate: sizeCreateReducer,
+  sizeDetail: sizeDetailsReducer,
+  sizeList: sizeListReducer,
+  sizeUpdate: sizeUpdateReducer,
   //cart
   cart:cartReducer,
   //wishList

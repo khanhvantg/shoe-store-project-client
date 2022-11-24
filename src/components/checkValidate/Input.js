@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
  
 const getRegExp = (type) => {
@@ -50,8 +50,38 @@ const Input = props => {
     className: props.className,
     value: props.value
   }
+  const [isShow, setIsShow ] = useState(false);
+  const show = useCallback(() => {
+    setIsShow(!isShow);
+  },[isShow])
  
   return (
+    <>
+    { props.type&&props.type==="password"?
+      <div className="mb-4">
+        <label className="form-label">{props.title}</label>
+          <div style={{position: "relative"}}>
+            <input style={{background:"white"}}
+              {...inputProps}
+              type={isShow ? 'text' : props.type }
+              onChange={e => props.onChangeFunc(e.target.value, e.target.name, e)}
+              onBlur={e => validationHandler(e, props)}
+            />
+              <span className = "text-center"
+                onClick={show}
+                style={{position: "absolute",
+                        fontSize:20,
+                        right: 10,
+                        top: 14,
+                        cursor: "pointer"}}
+                >
+              <i className={isShow?"tf-ion-eye":"tf-ion-eye-disabled"}></i>
+             </span>
+        </div>
+      
+      {props.errorMsg && <span className="text-danger">{props.errorMsg === true ? `Please Enter ${props.title}.` : props.errorMsg}</span>}
+    </div>
+    :
     <div className="mb-4">
       <label className="form-label">{props.title}</label>
       <input style={{background:"white"}}
@@ -61,7 +91,9 @@ const Input = props => {
       />
       {props.errorMsg && <span className="text-danger">{props.errorMsg === true ? `Please Enter ${props.title}.` : props.errorMsg}</span>}
     </div>
-  )
+    }
+    </>
+    )
 }
  
 Input.defaultProps = {

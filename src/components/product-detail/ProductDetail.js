@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { updateProduct, getProductById, getAllProducts} from '../../redux/actions/ProductAction'
 import { getImageById } from '../../redux/actions/ImageAction'
@@ -13,16 +13,30 @@ import { Link, useParams  } from "react-router-dom";
 import Loading from '../loadingError/Loading';
 import Message from "../loadingError/Message";
 import {toast} from 'react-toastify';
+import Select from '../checkValidate/Select'
 const ProductDetail = () => {
 
+    const [form,setForm]=useState({
+        amount: 1,
+        size: '',
+    })
     const dispatch = useDispatch();
     const dispatchItem = useDispatch();
     const productDetail = useSelector((state) => state.productDetail);
     const { loading, error, product} = productDetail;
-    const [amount,setAmount] = useState(1);
-    const [total,setTotal] = useState(0);
+    //const [amount,setAmount] = useState(1);
+    //const [total,setTotal] = useState(0);
     const [submit,setSubmit] = useState(false);
     const {id} = useParams();
+
+    const sizeList=[];
+    if(product){
+        for (let i in product.productInfors) {
+            const cate = { value: product.productInfors[i].size, label: product.productInfors[i].size + ' UK'};
+            sizeList.push(cate);
+        }
+    }
+    console.log(sizeList)
     useEffect(() => {
         dispatch(getProductById(id))
     }, [dispatch])
@@ -34,15 +48,31 @@ const ProductDetail = () => {
         setIdImg(ID);
         setIndex(1);
     }
-    const itemInfo={
-        amount
-    }
+    // const itemInfo={
+    //     amount
+    // }
+    const onAmountChange = (value, name) => {
+        setForm(prev => ({
+            ...prev,
+            amount: value
+        }));
+    };
+    const onInputChange = useCallback((value, name) => {
+        setForm(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    }, []);
+    console.log(form)
     const handleAddToCart = () => {
-        if (amount>0&&Number.isInteger(amount)){
-            dispatchItem(createLineItem({itemInfo,productId:id}))
+        if (form.amount>0&&Number.isInteger(Number(form.amount))){
+            dispatchItem(createLineItem({form,productId:id}))
         } else {
             toast("Amount Is InValid", {position: toast.POSITION.TOP_CENTER});
-            setAmount(1)
+            setForm(prev => ({
+                ...prev,
+                amount: 1
+            }));
         }
         //dispatch(addItemToCart(product,amount));
        // console.log("id=",id,"amount=",amount)
@@ -57,6 +87,7 @@ const ProductDetail = () => {
     //         </>
     // }
     //console.log(product.images?.length);
+    
     return (
         <div className="single-product-container">
             <section class="page-header">
@@ -143,8 +174,12 @@ const ProductDetail = () => {
                         </form> */}
                         <div class="amount d-flex align-items-center">
                         <input type="number" id="#" class="input-text qty text form-control w-25 mr-3" step="1" min="1" max="9" 
-                            onChange={(e) => setAmount(e.target.value)}
-                            name="amount" value={amount} 
+                            name="amount"
+                            onChange={(e)=>setForm(prev => ({
+                                ...prev,
+                                amount: e.target.value
+                            }))}
+                            value={form.amount} 
                             
                             title="Qty" size="4" />
                             <button class="btn btn-primary btn-block fa-lg gradient-custom-2 col-8" onClick={()=>handleAddToCart()}>Add to cart</button>
@@ -164,7 +199,18 @@ const ProductDetail = () => {
                             </li>
                         </ul>
                         </div> */}
-            
+                        
+                            <div className="form">
+                            <Select
+                                name="size"
+                                title="Size"
+                                value={form.size}
+                                options={sizeList}
+                                onChangeFunc={onInputChange}
+                                //{...errorInput.category}
+                            />
+                            </div>
+                        
                         {/* <div class="product-size d-flex align-items-center mt-4">
                         <span class="font-weight-bold text-capitalize product-meta-title">Size:</span>
                         <select class="form-control">

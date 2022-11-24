@@ -91,6 +91,7 @@ const Login = () => {
                                         onChangeFunc={onInputChange}
                                         {...errorInput.username}
                                         />
+                                    
                                     <Input
                                         name="password"
                                         title="Password"
@@ -98,7 +99,15 @@ const Login = () => {
                                         value={form.password}
                                         onChangeFunc={onInputChange}
                                         {...errorInput.password}
+                                        
                                     />
+                                    {/* <span>
+                                    
+                                    <i className="fa fa-eye" aria-hidden="true" style={{position: "absolute",
+                                            right: 5,
+                                            top: 10,
+                                            cursor: "pointer"}}></i>
+                                </span> */}
                                     <div className="text-center pt-1 mb-3 pb-1">
                                             <button className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" onClick={handleSubmit}>Login</button>
                                         </div>

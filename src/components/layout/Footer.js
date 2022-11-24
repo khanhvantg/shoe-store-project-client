@@ -14,7 +14,7 @@ function Footer() {
                                     </div>
                             </div>
                         </div>
-                        <div class="col-md-6 col-lg-2 col-sm-6 mb-5 mb-lg-0 text-center text-sm-left">
+                        {/* <div class="col-md-6 col-lg-2 col-sm-6 mb-5 mb-lg-0 text-center text-sm-left">
                             <div class="footer-widget">
                                 <h4 class="mb-4">Category</h4>
                                 <ul class="pl-0 list-unstyled mb-0">
@@ -37,7 +37,7 @@ function Footer() {
                                     <li><a href="#">Contact Us</a></li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> */}
                         <div class="col-md-6 col-lg-3 col-sm-6 text-center text-sm-left">
                             <div class="footer-widget">
                                 <h4 class="mb-4">Opening Hours</h4>

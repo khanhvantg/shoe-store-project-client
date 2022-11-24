@@ -42,7 +42,7 @@ const Header = () => {
     }
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white w-100 navigation flex-row-reverse" id="navbar">
-            <div className="container"style={{width: 160}}>
+            <div className="" style={{width:100, paddingRight:"0px"}}>
                 <ul className="top-menu list-inline mb-0 d-lg-block" id="top-menu">
                     {/* <li className="dropdown cart-nav dropdown-slide list-inline-item">
                         <a className="search_toggle" id="search-icon" data-toggle="dropdown" data-hover="dropdown">
@@ -53,15 +53,15 @@ const Header = () => {
                         </div>
                     </li> */}
                     <li className="dropdown cart-nav dropdown-slide list-inline-item">
-                        <Link to="/cart" className="dropdown-toggle cart-icon" data-hover="dropdown">
+                        <Link to="/cart" data-hover="dropdown">
                             <i className="tf-ion-android-cart"></i>
                         </Link>
                         <div className="dropdown-menu cart-dropdown">
                         {lineItems&&lineItems.sort((a,b)=>(a.id-b.id)).map(item=>(
                                 <div className="media">
-                                <a href="/product-single">
+                                <Link to={`/product/${item.id}`}>
                                     <img className="media-object img- mr-3" src={item.product.images[0]?.link} alt="image" />
-                                </a>
+                                </Link>
                                 <div className="media-body">
                                     <h6>{item.product.name}</h6>
                                     <div className="cart-price">
@@ -85,8 +85,8 @@ const Header = () => {
                     
                     </li>
                     <li className="dropdown cart-nav dropdown-slide list-inline-item">
-                        <Link to="/profile" style={{width: "35px"}} >
-                            <i className="tf-ion-ios-person mr-3"></i>
+                        <Link to="/profile" data-hover="dropdown">
+                            <i className="tf-ion-ios-person"></i>
                         </Link>
                         <div className="dropdown-menu cart-dropdown">
                             <div className="cart-summary">
@@ -116,13 +116,13 @@ const Header = () => {
             </div>
             <div className="container">
                 <Link className="navbar-brand font-weight-bold" to={{ pathname: "/"}}>E-Shop</Link>
-                <button style={{margin: "0 0 0 1rem"}} className="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar"
+                <button style={{margin: "0 15px 0 1rem"}} className="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar"
                     aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
   
                 <div className="collapse navbar-collapse" id="main-navbar">
-                <ul className="navbar-nav mx-auto">
+                <ul className="navbar-nav mx-auto text-center">
                     <li className="nav-item">
                         <Link className="nav-link" to={{ pathname: "/"}}>Home</Link>
                     </li>

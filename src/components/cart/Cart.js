@@ -12,7 +12,9 @@ import { getUserDetails } from '../../redux/actions/UserAction'
 import './Cart.scss'
 import {toast} from 'react-toastify';
 import Checkbox from '../checkValidate/Checkbox';
+import Loading from "../loadingError/Loading";
 const Cart = () => {
+    const [pos, setPos]=useState();
     const [timer,setTimer]=useState(null);
     const [form, setForm] = useState({
         address: '',
@@ -32,7 +34,7 @@ const Cart = () => {
     const { loading, error, lineItems, user} = lineItemList;
 
     const lineItemUpdate = useSelector((state) => state.lineItemUpdate);
-    const { success: succsesUpdate } = lineItemUpdate;
+    const { success: succsesUpdate, error: errorUpdate, loading: loadingUpdate } = lineItemUpdate;
 
     const orderCreate = useSelector((state) => state.orderCreate);
     const { success: succsesCreate } = orderCreate;
@@ -45,6 +47,7 @@ const Cart = () => {
       },0);
 
     const [itemInfo,setItemInfo] = useState({
+        size:'',
         itemId: '',
         amount: 0,
         name: ''
@@ -67,11 +70,15 @@ const Cart = () => {
                 createdBy: userInfo.username,
                 totalPrice: totalPrice
             })
-        } 
-    },[succsesCreate, succsesUpdate, lineItems, user])
+        }
+        if(errorUpdate){
+            setAmounts(lineItems);
+        }
+    },[succsesCreate, succsesUpdate, lineItems, user, errorUpdate])
 
     const updateItem = (index,e) => { 
         const info = {
+            size:'',
             itemId:'',
             amount:'',
             name:'',
@@ -88,6 +95,7 @@ const Cart = () => {
         } else {
         const newArray = amounts.map((item, i) => {
             if (index === i && e.target.value >= 0) {
+                info.size=item.size;
                 info.itemId=item.id;
                 info.amount=e.target.value;
                 info.name=item.product.name;
@@ -100,8 +108,10 @@ const Cart = () => {
         }
     };
 
-    const plusHandle = (index,e) => { 
+    const plusHandle = (index,e) => {
+        setPos(index); 
         const info = {
+            size:'',
             itemId:'',
             amount: '',
             name:'',
@@ -109,6 +119,7 @@ const Cart = () => {
         const newArray = amounts.map((item, i) => {
             let v = Number(e.target.value)+1;
             if (index === i) {
+                info.size=item.size;
                 info.itemId=item.id;
                 info.name=item.product.name;
                 info.amount=v;
@@ -126,6 +137,7 @@ const Cart = () => {
 
     const minusHandle = (index,e) => { 
         const info = {
+            size: '',
             itemId:'',
             amount:'',
             name:'',
@@ -136,6 +148,7 @@ const Cart = () => {
         const newArray = amounts.map((item, i) => {
             let v = Number(e.target.value)-1;
             if (index === i && e.target.value >= 0) {
+                info.size=item.size;
                 info.itemId=item.id;
                 info.name=item.product.name;
                 info.amount=v;
@@ -265,6 +278,7 @@ const Cart = () => {
                                         <th class="product-name text-center">Product</th>
                                         <th class="product-price text-center">Price</th>
                                         <th class="product-name text-center">Amount</th>
+                                        <th class="product-name text-center">Size</th>
                                         <th class="product-subtotal text-center">Total</th>
                                         <th class="product-remove text-center"> </th>
                                     </tr>
@@ -314,6 +328,9 @@ const Cart = () => {
                                                     class="cart-qty-plus" type="button">+</button>
                                             </div>
                                     </td>
+                                    <td class="product-price text-center" data-title="Size">
+                                            <span class="amount">{item.size} UK</span>
+                                        </td>
                                     <td class="product-subtotal text-center" data-title="Total">
                                         <span class="amount">
                                             ${item.total}
@@ -344,6 +361,8 @@ const Cart = () => {
                     </div>
                 </div>
                 </div>
+                {
+                    loadingUpdate ? <Loading /> :
                 <div class="row justify-content-end">
                 <div class="col-lg-4">
                     <div class="cart-info card p-4 mt-4">
@@ -427,7 +446,7 @@ const Cart = () => {
                     <></>                
                     } 
                     </div>
-                </div>
+                </div>}
                 </div>
             </section>
         </div>

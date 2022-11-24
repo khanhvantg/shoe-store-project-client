@@ -57,7 +57,7 @@ const ProductMain = ({idCategory}) => {
                             <div class="product-info">
                                 <h2 class="product-title h5 mb-0"><Link to={{ pathname: `/product/${product.id}`}}>{product.name}</Link></h2>
                                 <span class="price">
-                                    {product.price}
+                                    $ {product.price}
                                 </span>
                             </div>
                         </div>

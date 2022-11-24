@@ -17,64 +17,28 @@ import Select from '../../checkValidate/Select'
 import ReactSelect from "react-select";
 
 const ProductCreate = ({isShowing, hide, categories}) => {
-
-    
-    const sizeList = [
-        {
-          value: 38,
-          label: "38"
-        },
-        {
-          value: 39,
-          label: "39"
-        },
-        {
-          value: 40,
-          label: "40"
-        },
-        {
-          value: 41,
-          label: "41"
-        },
-        {
-          value: 42,
-          label: "42"
-        },
-        {
-          value: 43,
-          label: "43"
-        }
-      ];
-     
-      const [selectedOption, setSelectedOption] = useState(null);
-
     const statusList = [
         { value: 1, label: "Active" },
         { value: 0, label: "Inactive" }
       ];
-
     const categoryList=[];
     for (let i in categories) {
         const cate = { value: categories[i].id, label: categories[i].name};
         categoryList.push(cate);
     }
     // const categoryList = categories.map(item=>())
-    
-      console.log(categoryList)
     const [form, setForm] = useState({
         name: '',
         price: '',
-        amount: '',
         category: '',
         description: '',
         createdBy: '',
         createdDate: '',
         modifiedBy: '',
         modifiedDate: '',
-        size: [],
         status: 1
       });
-    
+      
     const dispatch = useDispatch();
 
     const userLogin = useSelector((state) => state.userLogin);
@@ -100,6 +64,7 @@ const ProductCreate = ({isShowing, hide, categories}) => {
                 createdDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()
             }))
         }
+        console.log(form.size)
     }, [dispatch, succsesCreate, isShowing]);
 
     const onInputValidate = (value, name) => {
@@ -111,11 +76,6 @@ const ProductCreate = ({isShowing, hide, categories}) => {
          
     const [errorInput, setErrorInput] = useState({
         name: {
-            isReq: true,
-            errorMsg: '',
-            onValidateFunc: onInputValidate
-        },
-        amount: {
             isReq: true,
             errorMsg: '',
             onValidateFunc: onInputValidate
@@ -147,7 +107,6 @@ const ProductCreate = ({isShowing, hide, categories}) => {
             ...prev,
             [name]: value
         }));
-        console.log(form.size);
     }, []);
         
     const validateForm = () => {
@@ -190,31 +149,12 @@ const ProductCreate = ({isShowing, hide, categories}) => {
                                 <div className="row">
                                     <div className="col">
                                                 <div className="form-group mb-4">
-                                                    <label>Create By</label>
+                                                    <label className="form-label">Create By</label>
                                                         <input 
                                                             value={form.createdBy}
                                                             className="form-control" type="text" name="createdBy" disabled/>
                                                 <div>  
-                                                    <div className="row">
-                                                            <div className="col">
-                                                            {/* <ReactSelect
-                                                                    isMulti
-                                                                    value={form.size}
-                                                                    options={sizeList}
-                                                                    onChangeFunc={onInputChange}
-                                                                    // {...errorInput.category}
-                                                                /> */}
-                                                                <Input
-                                                            name="name"
-                                                            title="Name"
-                                                            value={form.name}
-                                                            onChangeFunc={onInputChange}
-                                                            {...errorInput.name}
-                                                        />  
-                                                            </div>
-                                                            <div className="col">
-                                                                <Select
-                                                                    isMulti={false}
+                                                <Select
                                                                     name="category"
                                                                     title="Category"
                                                                     value={form.category}
@@ -222,20 +162,42 @@ const ProductCreate = ({isShowing, hide, categories}) => {
                                                                     onChangeFunc={onInputChange}
                                                                     {...errorInput.category}
                                                                 />
-                                                                {/* <div className="form-group">
-                                                                    <label>Category</label>
-                                                                    <form class="ordering">
-                                                                        <select class="orderby form-control" value={idCategory} onChange={(e)=>setIdCategory(e.target.value)}>
-                                                                            <option value="">---Select---</option>
-                                                                            {categories&&categories.map((item,index)=>(
-                                                                                <option value={item.id}>{item.name}</option>
-                                                                            ))};
-                                                                        </select>
-                                                                    </form>
-                                                                </div> */}
+                                                    <div className="row">
+                                                            <div className="col">
+                                                                <Input
+                                                                    name="name"
+                                                                    title="Name"
+                                                                    value={form.name}
+                                                                    onChangeFunc={onInputChange}
+                                                                    {...errorInput.name}
+                                                                />  
+                                                            </div>
+                                                            <div className="col">
+                                                            <Input
+                                                            name="price"
+                                                            title="Price"
+                                                            value={form.price}
+                                                            onChangeFunc={onInputChange}
+                                                            {...errorInput.price}
+                                                        /> 
+                                                                
                                                             </div>
                                                         </div>
-                                                    <div className="row">
+                                                        {/* <div className="form-group mb-4">
+                                                            <label>Add Size</label>
+                                                                <ReactSelect
+                                                               // required={true}
+                                                                    placeholder="Select Size"
+                                                                    isMulti
+                                                                    name="size"
+                                                                    value={form.size}
+                                                                    options={sizeList}
+                                                                    onChange={handleChange}
+                                                                    // {...errorInput.category}
+                                                                />
+                                                                {errSelect&&errSelect=="true" ? <span className="text-danger">Please Select Size</span>:<></>}
+                                                            </div> */}
+                                                    {/* <div className="row">
                                                             <div className="col">
                                                                 <Input
                                                                     name="amount"
@@ -254,7 +216,8 @@ const ProductCreate = ({isShowing, hide, categories}) => {
                                                                     {...errorInput.price}
                                                                 />   
                                                             </div>
-                                                        </div>
+                                                        </div> */}
+                                                          
                                                         <Input
                                                             name="description"
                                                             title="Description"

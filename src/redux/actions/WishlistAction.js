@@ -47,13 +47,13 @@ export const authHeader = () => {
 //   }
 // };
 
-export const createLineItem = ({itemInfo, productId}) => async (dispatch, getState) => {
+export const createLineItem = ({form, productId}) => async (dispatch, getState) => {
 try {
   dispatch({ type: LINE_ITEM_CREATE_REQUEST });
   const {
     userLogin: { userInfo },
   } = getState();
-  const { data } = await axios.post(`/api/wishList/${userInfo.id}/lineItems/${productId}`, itemInfo, {headers: authHeader()});
+  const { data } = await axios.post(`/api/wishList/${userInfo.id}/lineItems/${productId}`, form, {headers: authHeader()});
   dispatch({ type: LINE_ITEM_CREATE_SUCCESS, payload: data });
   dispatch(getWishListById());
   toast("Add To Cart Successfull", {position: toast.POSITION.TOP_CENTER});
