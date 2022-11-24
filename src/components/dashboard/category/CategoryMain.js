@@ -58,7 +58,7 @@ const CategoryMain = () => {
                                         <tr>
                                             <td className="align-middle">{category.id}</td>
                                             <td className="text-nowrap align-middle">{category.name}</td>
-                                            <td className="text-nowrap align-middle">{category.description}</td>
+                                            <td className="text-nowrap align-middle" style={{wordBreak:"break-word"}}>{category.description}</td>
                                             <td className="text-nowrap align-middle">{category.createdBy}</td>
                                             <td className="text-nowrap align-middle">{category.createdDate}</td>
                                             <td className="text-nowrap align-middle">{category.modifiedBy}</td>

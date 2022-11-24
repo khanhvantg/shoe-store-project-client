@@ -8,8 +8,13 @@ import useModal from '../dashboard/useModal';
 import {
     ORDER_UPDATE_RESET,
 } from '../../redux/constants/Constants'
+import CofirmBox from "../cofirmBox/CofirmBox";
+import '../cofirmBox/CofirmBox.css'
 const Order = () => {
     const {isShowing, toggle, id} = useModal();
+    const {isShowing:isShowConfirmBox, toggle:toggleConfirmBox, id: idOrder} = useModal();
+    //const [isShowConfirmBox, setIsShowConfirmBox]=useState(false)
+    //const {isShowing: isShowConfirmBox, toggle: toggleShow} = useModal();
     const dispatch = useDispatch();
     const [status, setStatus]=useState(0);
     const orderListByUserId = useSelector((state) => state.orderListByUserId);
@@ -29,11 +34,12 @@ const Order = () => {
         dispatch(getOrdersByUserId());
     },[dispatch, successUpdate])
     
-    const handleCancel = (orderId) => {
+    const handleCancel = () => {
         const orderInfo = {
-            orderId,
+            orderId: idOrder,
             status
         }
+        //setIsShowConfirmBox(true)
         dispatch(updateOrder({orderInfo}));
     }
   return (
@@ -92,7 +98,8 @@ const Order = () => {
                                         </button>
                                         {item.status ==="1"?
                                             <button
-                                                onClick={()=>handleCancel(item.id)}
+                                                onClick={()=>toggleConfirmBox(item.id)}
+                                                //onClick={()=>handleCancel(item.id)}
                                                 className="btn btn-sm btn-outline-secondary badge" type="button"> 
                                                 <i className="tf-ion-android-delete"></i>
                                             </button>
@@ -131,6 +138,13 @@ const Order = () => {
             />
             </div>
             </section>
+            <CofirmBox 
+                isShowing={isShowConfirmBox}
+                noHandle={toggleConfirmBox}
+                yesHanle={handleCancel}
+               // id={idOrder}
+            />
+                 
             </div>
   )
 }

@@ -4,7 +4,10 @@ import { createOrder, getOrdersByUserId, getOrderById, getAllOrders, updateOrder
 import {
     ORDER_UPDATE_RESET,
 } from '../../../redux/constants/Constants'
+import CofirmBox from "../../cofirmBox/CofirmBox";
+import useModal from "../useModal";
 const OrderDetail = ({isShowing, hide, id}) => {
+    const {isShowing:isShowConfirmBox, toggle:toggleConfirmBox} = useModal();
     const dispatch = useDispatch();
     const dispatchUpdate = useDispatch();
     const orderDetail = useSelector((state) => state.orderDetail);
@@ -43,8 +46,9 @@ const OrderDetail = ({isShowing, hide, id}) => {
         status
     }
     const handleCancel = () => {
-        setStatus(0);
-        setSubmit(true);
+        orderInfo.status=0;
+        //setStatus(0);
+        dispatchUpdate(updateOrder({orderInfo}));
     }
     const handleConfirm = () => {
         setStatus(2);
@@ -183,7 +187,7 @@ const OrderDetail = ({isShowing, hide, id}) => {
                             {order.status==="1"?(
                                 <div className="btn-group px-xl-3">
                                     <button 
-                                    onClick={handleCancel}
+                                    onClick={()=>toggleConfirmBox()}
                                     type="button" class="btn btn-danger">Cancel</button>
                                 <button 
                                     onClick={handleConfirm}
@@ -209,6 +213,11 @@ const OrderDetail = ({isShowing, hide, id}) => {
                 </div>
             </div>
         </div>
+        <CofirmBox 
+            isShowing={isShowConfirmBox}
+            noHandle={toggleConfirmBox}
+            yesHanle={handleCancel}
+        />
     </div>
 </>
 

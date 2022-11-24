@@ -9,12 +9,15 @@ import Message from "../../loadingError/Message";
 import Input from '../../checkValidate/Input'
 import Radio from '../../checkValidate/Radio'
 import Select from '../../checkValidate/Select'
+import CofirmBox from "../../cofirmBox/CofirmBox";
+import useModal from "../useModal";
 const SizeModal = ({isShowing, hide, id}) => {
     const [form, setForm] = useState({
         idSize: '',
         size: '',
         amount: '',
       });
+      const {isShowing:isShowConfirmBox, toggle:toggleConfirmBox, id: idSize} = useModal();
     const [isOpen,setIsOpen]=useState(false)
     const [edit,setEdit]=useState(false)
     const dispatch = useDispatch();
@@ -134,8 +137,8 @@ const SizeModal = ({isShowing, hide, id}) => {
         setIsOpen(true)
         dispatch(getSizeById({itemId}))
     }
-    const deleteHandler = (itemId) => {
-        dispatch(deleteSize({itemId}))
+    const deleteHandler = () => {
+        dispatch(deleteSize({idSize}));
     }
     const handleCancel = () => {
         setIsOpen(false)
@@ -248,7 +251,7 @@ const SizeModal = ({isShowing, hide, id}) => {
                                                     <i className="tf-ion-edit"></i>
                                                 </button>
                                                 <button 
-                                                    onClick={()=>deleteHandler(item.id)}
+                                                    onClick={()=>toggleConfirmBox(item.id)}
                                                     className="btn btn-sm btn-outline-secondary badge" type="button"> 
                                                     <i className="tf-ion-android-delete"></i>
                                                 </button>
@@ -268,6 +271,11 @@ const SizeModal = ({isShowing, hide, id}) => {
                     </div>
                 </div>
             </div>
+            <CofirmBox 
+                isShowing={isShowConfirmBox}
+                noHandle={toggleConfirmBox}
+                yesHanle={deleteHandler}
+            />
         </div>
     </>
   )

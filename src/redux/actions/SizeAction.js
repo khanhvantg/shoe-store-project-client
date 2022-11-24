@@ -101,11 +101,11 @@ export const updateSize = ({form}) => async (dispatch, getState) => {
     });
   }
 };
-export const deleteSize = ({itemId}) => async (dispatch, getState) => {
+export const deleteSize = ({idSize}) => async (dispatch, getState) => {
   try {
     dispatch({ type: SIZE_UPDATE_REQUEST });
 
-    const { data } = await axios.delete(`/api/productInfor/${itemId}`, {headers: authHeader()});
+    const { data } = await axios.delete(`/api/productInfor/${idSize}`, {headers: authHeader()});
     dispatch({ type: SIZE_UPDATE_SUCCESS, payload: data });
 
     // const {list} = dispatch(getAllSizes({id}));

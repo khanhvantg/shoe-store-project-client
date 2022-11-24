@@ -90,7 +90,7 @@ const ProductMain = () => {
                                     <tr>
                                         <td className="align-middle">{product.id}</td>
                                         <td className="text-nowrap align-middle">{product.name}</td>
-                                        <td className="text-nowrap align-middle">{product.description}</td>
+                                        <td className="text-nowrap align-middle" style={{wordBreak:"break-word"}}>{product.description}</td>
                                         <td className="text-nowrap align-middle">{product.price}</td>
                                         {/* <td className="text-nowrap align-middle">
                                             {product.status ==="1" ? <Status check="checked" /> : <Status check=""/>}
