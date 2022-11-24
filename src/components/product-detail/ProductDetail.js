@@ -15,6 +15,8 @@ import Message from "../loadingError/Message";
 import {toast} from 'react-toastify';
 import Select from '../checkValidate/Select'
 const ProductDetail = () => {
+    const userLogin = useSelector((state) => state.userLogin);
+    const { success, userInfo } = userLogin;
 
     const [form,setForm]=useState({
         amount: 1,
@@ -65,15 +67,18 @@ const ProductDetail = () => {
     }, []);
     console.log(form)
     const handleAddToCart = () => {
-        if (form.amount>0&&Number.isInteger(Number(form.amount))){
-            dispatchItem(createLineItem({form,productId:id}))
-        } else {
-            toast("Amount Is InValid", {position: toast.POSITION.TOP_CENTER});
-            setForm(prev => ({
-                ...prev,
-                amount: 1
-            }));
-        }
+        if(userInfo&&userInfo) {
+            if (form.amount>0&&Number.isInteger(Number(form.amount))){
+                dispatchItem(createLineItem({form,productId:id}))
+            } else {
+                toast("Amount Is InValid", {position: toast.POSITION.TOP_CENTER});
+                setForm(prev => ({
+                    ...prev,
+                    amount: 1
+                }));
+            }
+        } else  toast("Please Login To Buy Shoes", {position: toast.POSITION.TOP_CENTER});
+        
         //dispatch(addItemToCart(product,amount));
        // console.log("id=",id,"amount=",amount)
     }

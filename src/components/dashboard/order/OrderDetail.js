@@ -18,6 +18,11 @@ const OrderDetail = ({isShowing, hide, id}) => {
         error: errorUpdate,
         success: successUpdate,
     } = orderUpdate;
+
+    //var amountItem=0;
+    const amountItem = lineItems.reduce(function (result, item) {
+        return result + Number(item.amount);
+      },0);
     useEffect(() => {
         if (successUpdate) {
             dispatch({type: ORDER_UPDATE_RESET});
@@ -100,12 +105,16 @@ const OrderDetail = ({isShowing, hide, id}) => {
                             <span>{order.phoneNumber}</span>
                             </li>
                             <li class="d-flex justify-content-between pb-2 mb-3">
+                            <h5>Adress</h5>
+                            <span>{order.address}</span>
+                            </li>
+                            <li class="d-flex justify-content-between pb-2 mb-3">
                             <h5>Total Item</h5>
-                            <span>{lineItems.length}</span>
+                            <span>{amountItem}</span>
                             </li>
                             <li class="d-flex justify-content-between pb-2">
                             <h5>Total Price</h5>
-                            <span>{order.totalPrice}</span>
+                            <span>$ {order.totalPrice}</span>
                             </li>
                         </ul>
                     </div>
@@ -133,18 +142,14 @@ const OrderDetail = ({isShowing, hide, id}) => {
                                         <a href="#">{item.product.name}</a>
                                     </td>
                                     <td class="product-price" data-title="Price">
-                                        <span class="amount"><span class="currencySymbol"><pre wp-pre-tag-3=""></pre>
-                                        </span>{item.product.price}</span>
+                                        <span class="amount">{item.product.price}</span>
                                     </td>
                                     <td class="product-quantity" data-title="Quantity">
                                         {item.amount}
                                     </td>
                                     <td class="product-subtotal" data-title="Total">
                                         <span class="amount">
-                                            <span class="currencySymbol">
-                                                <pre wp-pre-tag-3=""></pre>
-                                            </span>
-                                            {item.total}
+                                            $ {item.total}
                                         </span>
                                     </td>
                                 </tr>
