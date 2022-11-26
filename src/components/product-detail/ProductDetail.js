@@ -71,8 +71,8 @@ const ProductDetail = () => {
                 content: ''
             }))
         }else{
-            dispatchCmt(getAllComments({id}));
             dispatch(getProductById(id));
+            dispatchCmt(getAllComments(id));
             
             // if(comment){
             //     setFormComment(prev => ({
@@ -81,7 +81,7 @@ const ProductDetail = () => {
             //     }));
             // }
         }
-        if(userInfo&&userInfo){
+        if(userInfo){
             for (let i in userInfo.roles) {
                 if(userInfo.roles[i]==="ROLE_ADMIN" || userInfo.roles[i]==="ROLE_MODERATOR") {
                     setIsAdmin(true);
@@ -280,9 +280,7 @@ const ProductDetail = () => {
                                 :<></>}
                                 <h4 class="card-title">Latest Comments</h4> 
                             </div>
-                            { loadingCmt ? ( <Loading />) : errorComment ? (<Message variant="alert-danger">{error}</Message>) : (
-                            <>
-                            {comments&&comments.map((item,index)=>(
+                            {comments&&comments.sort((a,b)=>(b.id-a.id)).map((item,index)=>(
                                 <div class="comment-widgets border-bottom">
                                     <div class="d-flex flex-row comment-row m-t-0">
                                         <div class="p-2"><img src="https://i.imgur.com/Ur43esv.jpg" alt="user" width="50" class="rounded-circle"/></div>
@@ -315,7 +313,6 @@ const ProductDetail = () => {
                             </div>
                               
                             ))}
-                            </>)}
                         </div>
                     </div>
                 </div>
