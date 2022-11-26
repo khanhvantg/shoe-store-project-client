@@ -4,8 +4,9 @@ import { updateProduct, getProductById, getAllProducts} from '../../redux/action
 import { getImageById } from '../../redux/actions/ImageAction'
 import { addItemToCart } from '../../redux/actions/CartAction'
 import { createLineItem } from '../../redux/actions/WishlistAction'
+import { createCommentByProductId, deleteComment, getAllComments, getCommentById, updateComment } from '../../redux/actions/CommentAction'
 import {
-    PRODUCT_UPDATE_RESET,
+    COMMENT_UPDATE_RESET,
 } from '../../redux/constants/Constants'
 import axios from 'axios'
 import { ADD_TO_CART, REMOVE_ITEM_CART, SAVE_SHIPPING_INFO } from '..//../redux/constants/Constants'
@@ -14,7 +15,10 @@ import Loading from '../loadingError/Loading';
 import Message from "../loadingError/Message";
 import {toast} from 'react-toastify';
 import Select from '../checkValidate/Select'
+import './Comment.css'
 const ProductDetail = () => {
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [isEdit, setIsEdit] = useState(false);
     const userLogin = useSelector((state) => state.userLogin);
     const { success, userInfo } = userLogin;
 
@@ -23,14 +27,33 @@ const ProductDetail = () => {
         size: '',
     })
     const dispatch = useDispatch();
+    const dispatchCmt = useDispatch();
     const dispatchItem = useDispatch();
     const productDetail = useSelector((state) => state.productDetail);
     const { loading, error, product} = productDetail;
+
+    const commentList = useSelector((state) => state.commentList);
+    const { loading: loadingCmt, comments} = commentList;
+
+    const commentDetail = useSelector((state) => state.commentDetail);
+    const { loading: loadingComment, comment } = commentDetail;
+
+    const commentCreate = useSelector((state) => state.commentCreate);
+    const { success : successCreate} = commentCreate;
+    
+    const commentUpdate = useSelector((state) => state.commentUpdate);
+    const { success : successUpdate} = commentUpdate;
     //const [amount,setAmount] = useState(1);
     //const [total,setTotal] = useState(0);
     const [submit,setSubmit] = useState(false);
     const {id} = useParams();
 
+    const [formComment, setFormComment] = useState ({
+        productId: id,
+        content: '',
+        commentId: null,
+    })
+    
     const sizeList=[];
     if(product){
         for (let i in product.productInfors) {
@@ -38,11 +61,36 @@ const ProductDetail = () => {
             sizeList.push(cate);
         }
     }
-    console.log(sizeList)
-    useEffect(() => {
-        dispatch(getProductById(id))
-    }, [dispatch])
 
+    useEffect(() => {
+        if(successCreate || successUpdate){
+            dispatch({type: COMMENT_UPDATE_RESET});
+            dispatchCmt(getAllComments(id));
+            setFormComment(prev => ({
+                ...prev,
+                content: ''
+            }))
+        }else{
+            dispatch(getProductById(id));
+            dispatchCmt(getAllComments(id));
+            // if(comment){
+            //     setFormComment(prev => ({
+            //         ...prev,
+            //         content: comment.content
+            //     }));
+            // }
+        }
+        if(userInfo){
+            for (let i in userInfo.roles) {
+                if(userInfo.roles[i]==="ROLE_ADMIN" || userInfo.roles[i]==="ROLE_MODERATOR") {
+                    setIsAdmin(true);
+                    break;
+                }
+            }
+        } else {
+            setIsAdmin(false);
+        }
+    }, [dispatch, dispatchCmt, successCreate, successUpdate, userInfo])
     const [idImg,setIdImg]=useState("");
     const [index,setIndex]=useState(0);
     const handleimg = (ID) => {
@@ -65,7 +113,7 @@ const ProductDetail = () => {
             [name]: value
         }));
     }, []);
-    console.log(form)
+
     const handleAddToCart = () => {
         if(userInfo&&userInfo) {
             if (form.amount>0&&Number.isInteger(Number(form.amount))){
@@ -82,17 +130,32 @@ const ProductDetail = () => {
         //dispatch(addItemToCart(product,amount));
        // console.log("id=",id,"amount=",amount)
     }
-    // const insertTag = () => {
-    //     if (product.images.length === 2) return <li><img src="/assets/images/phong.png" alt="" class="img-fluid" s/></li>
-    //     else if (product.images.length === 1) 
-    //     return 
-    //         <>
-    //             <li><img src="/assets/images/phong.png" alt="" class="img-fluid" s/></li>
-    //             <li><img src="/assets/images/phong.png" alt="" class="img-fluid" s/></li>
-    //         </>
-    // }
-    //console.log(product.images?.length);
-    
+    const CommentChange = (e) => {
+        setFormComment(prev => ({
+            ...prev,
+            [e.target.name]: e.target.value
+        }));
+    };
+    const handleComment = () => {
+        dispatch(createCommentByProductId({formComment}));
+    }
+
+    const handleEdit = (item) => {
+        setIsEdit(true)
+        //dispatch(getCommentById(id));
+        setFormComment(prev => ({
+            ...prev,
+            commentId: item.id,
+            content: item.content
+        }));
+    }
+    const handleSaveEdit = () => {
+        setIsEdit(false)
+        dispatch(updateComment({formComment}))
+    }
+    const handleDelete = (id) => {
+        dispatch(deleteComment(id));
+    }
     return (
         <div className="single-product-container">
             <section class="page-header">
@@ -163,20 +226,9 @@ const ProductDetail = () => {
                         
                         <h3 class="product-price">$ {product.price}<del></del></h3>
                         
-                        <p class="product-description my-4 ">
+                        <p class="product-description my-4">
                         {product.description}
                         </p>
-            
-                        {/* <form class="cart">
-                        <div class="amount d-flex align-items-center">
-                            <input type="number" id="#" class="input-text qty text form-control w-25 mr-3" step="1" min="1" max="9" 
-                            onChange={(e) => setAmount(e.target.value)}
-                            name="amount" value={amount} 
-                            
-                            title="Qty" size="4" />
-                            <button class="btn btn-main btn-small" onClick={()=>handleAddToCart()}>Add to cart</button>
-                        </div>
-                        </form> */}
                         <div class="amount d-flex align-items-center">
                         <input type="number" id="#" class="input-text qty text form-control w-25 mr-3" step="1" min="1" max="9" 
                             name="amount"
@@ -189,22 +241,6 @@ const ProductDetail = () => {
                             title="Qty" size="4" />
                             <button class="btn btn-primary btn-block fa-lg gradient-custom-2 col-8" onClick={()=>handleAddToCart()}>Add to cart</button>
                             </div>
-                        
-                        {/* <div class="color-swatches mt-4 d-flex align-items-center">
-                        <span class="font-weight-bold text-capitalize product-meta-title">color:</span>
-                        <ul class="list-inline mb-0">
-                            <li class="list-inline-item">
-                            <a routerLink="/product-single" class="bg-info"></a>
-                            </li>
-                            <li class="list-inline-item">
-                            <a routerLink="/product-single" class="bg-dark"></a>
-                            </li>
-                            <li class="list-inline-item">
-                            <a routerLink="/product-single" class="bg-danger"></a>
-                            </li>
-                        </ul>
-                        </div> */}
-                        
                             <div className="form">
                             <Select
                                 name="size"
@@ -215,263 +251,62 @@ const ProductDetail = () => {
                                 //{...errorInput.category}
                             />
                             </div>
-                        
-                        {/* <div class="product-size d-flex align-items-center mt-4">
-                        <span class="font-weight-bold text-capitalize product-meta-title">Size:</span>
-                        <select class="form-control">
-                            <option>S</option>
-                            <option>M</option>
-                            <option>L</option>
-                            <option>XL</option>
-                        </select>
-                        </div> */}
-            
-                        {/* <div class="products-meta mt-4">
-                        <div class="product-category d-flex align-items-center">
-                            <span class="font-weight-bold text-capitalize product-meta-title">Categories :</span>
-                            <a href="#">Products , </a>
-                            <a href="#">Soap</a>
                         </div>
-            
-                        <div class="product-share mt-5">
-                            <ul class="list-inline">
-                            <li class="list-inline-item">
-                                <a href="#"><i class="tf-ion-social-facebook"></i></a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href="#"><i class="tf-ion-social-twitter"></i></a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href="#"><i class="tf-ion-social-linkedin"></i></a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href="#"><i class="tf-ion-social-pinterest"></i></a>
-                            </li>
-                            </ul>
-                        </div>
-                        </div>*/}
-                    </div>
                     </div>
                 </div>)}
-            
-                
-                {/* <div class="row">
+                <div class="row d-flex justify-content-center mt-100 mb-100">
                     <div class="col-lg-12">
-                    <nav class="product-info-tabs wc-tabs mt-5 mb-5">
-                        <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Description</a>
-                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Additional Information</a>
-                        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Reviews(2)</a>
-                        </div>
-                    </nav>
-            
-                    <div class="tab-content" id="nav-tabContent">
-                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                        <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
-            
-                        <h4>Product Features</h4>
-            
-                        <ul class="">
-                        <li>Mapped with 3M™ Thinsulate™ Insulation [40G Body / Sleeves / Hood]</li>
-                        <li>Embossed Taffeta Lining</li>
-                        <li>DRYRIDE Durashell™ 2-Layer Oxford Fabric [10,000MM, 5,000G]</li>
-                        </ul>
-            
-                        </div>
-                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                        
-                        <ul class="list-unstyled info-desc">
-                        <li class="d-flex">
-                            <strong>Weight </strong>	
-                            <span>400 g</span>
-                        </li>
-                        <li class="d-flex">
-                            <strong>Dimensions </strong>
-                            <span>10 x 10 x 15 cm</span>
-                        </li>
-                        <li class="d-flex">
-                            <strong>Materials</strong>
-                            <span >60% cotton, 40% polyester</span>
-                        </li>
-                        <li class="d-flex">
-                            <strong>Color </strong>
-                            <span>Blue, Gray, Green, Red, Yellow</span>
-                        </li>
-                        <li class="d-flex">
-                            <strong>Size</strong>
-                            <span>L, M, S, XL, XXL</span>
-                        </li>
-                        </ul>
-                        </div>
-                        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                        <div class="row">
-                        <div class="col-lg-7">
-                            <div class="media review-block mb-4">
-                            <img src="assets/images/avater-1.jpg" alt="reviewimg" class="img-fluid mr-4" />
-                            <div class="media-body">
-                                <div class="product-review">
-                                <span><i class="tf-ion-android-star"></i></span>
-                                <span><i class="tf-ion-android-star"></i></span>
-                                <span><i class="tf-ion-android-star"></i></span>
-                                <span><i class="tf-ion-android-star"></i></span>
-                                <span><i class="tf-ion-android-star"></i></span>
-                                </div>
-                                <h6>Therichpost <span class="text-sm text-muted font-weight-normal ml-3">-June 23, 2019</span></h6>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum suscipit consequuntur in, perspiciatis laudantium ipsa fugit. Iure esse saepe error dolore quod.</p>
-                            </div>	
+                        <div class="card">
+
+                            <div class="card-body text-center">
+                            <h4 class="card-title">Comment</h4>
+                                {!isEdit?<div class="d-flex flex-row add-comment-section mt-4 mb-4">
+                                
+                                    <img class="img-fluid img-responsive rounded-circle mr-2" src="https://i.imgur.com/qdiP4DB.jpg" width="38"/>
+                                    <input onChange={CommentChange} name='content' value={formComment.content} type="text" class="form-control mr-3" placeholder="Add comment"/>
+                                    <button 
+                                            onClick = {handleComment}
+                                            class="btn btn-primary" type="button">Comment</button>
+                                </div>:<></>}
+                                <h4 class="card-title">Latest Comments</h4> 
                             </div>
-            
-                            <div class="media review-block">
-                            <img src="assets/images/avater-2.jpg" alt="reviewimg" class="img-fluid mr-4" />
-                            <div class="media-body">
-                                <div class="product-review">
-                                <span><i class="tf-ion-android-star"></i></span>
-                                <span><i class="tf-ion-android-star"></i></span>
-                                <span><i class="tf-ion-android-star"></i></span>
-                                <span><i class="tf-ion-android-star"></i></span>
-                                <span><i class="tf-ion-android-star-outline"></i></span>
+                            {comments&&comments.sort((a,b)=>(b.id-a.id)).map((item,index)=>(
+                                <div class="comment-widgets border-bottom">
+                                    <div class="d-flex flex-row comment-row m-t-0">
+                                        <div class="p-2"><img src="https://i.imgur.com/Ur43esv.jpg" alt="user" width="50" class="rounded-circle"/></div>
+                                        {isEdit&&item.id==formComment.commentId?
+                                        
+                                        <div class="comment-text w-100">
+                                            {loadingComment?<Loading/>:<>
+                                            <h6 class="font-medium">{item.user.account.username}</h6> 
+                                            <input style={{background:"white"}} onChange={CommentChange} name='content' value={formComment.content} type="text" class="form-control mr-3" placeholder="Add comment"/>
+                                            <div class="comment-footer"> 
+                                            <button type="button" class="btn btn-cyan btn-sm" onClick={handleSaveEdit}>Save</button>
+                                            <button type="button" class="btn btn-danger btn-sm" onClick={()=>setIsEdit(false)}>Cancel</button>
+                                            
+                                            </div>
+                                            </>}
+                                        </div>
+                                        :
+                                        <div class="comment-text w-100">
+                                            <h6 class="font-medium">{item.user.account.username}</h6> <span class="m-b-15 d-block">{item.content}.</span>
+                                            <div class="comment-footer"> 
+                                                <span class="text-muted float-right">{item.createdDate}</span> 
+                                                {item.user.id===userInfo.id ? <button type="button" class="btn btn-cyan btn-sm" onClick={()=>handleEdit(item)}>Edit</button>:<></>}
+                                                {item.user.id===userInfo.id || isAdmin ? <button type="button" class="btn btn-danger btn-sm" onClick={()=>handleDelete(item.id)}>Delete</button>:<></>}
+                                            </div>
+                                        </div>
+                                        }
                                 </div>
-                                <h6>Therichpost <span class="text-sm text-muted font-weight-normal ml-3">-June 23, 2019</span></h6>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum suscipit consequuntur in, perspiciatis laudantium ipsa fugit. Iure esse saepe error dolore quod.</p>
-                            </div>	
                             </div>
+                              
+                            ))}
                         </div>
-            
-            
-                        <div class="col-lg-5">
-                            <div class="review-comment mt-5 mt-lg-0">
-                            <h4 class="mb-3">Add a Review</h4>
-            
-                            <form action="#">
-                                <div class="starrr"></div>
-                                <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Your Name" />
-                                </div>
-                                <div class="form-group">
-                                <input type="email" class="form-control" placeholder="Your Email" />
-                                </div>
-                                <div class="form-group">
-                                <textarea name="comment" id="comment" class="form-control" cols="30" rows="4" placeholder="Your Review"></textarea>
-                                </div>
-            
-                                <a routerLink="/product-single" class="btn btn-main btn-small">Submit Review</a>
-                            </form>
-                            </div>
-                        </div>
-                        </div>
-                        </div>
-                    </div>
                     </div>
                 </div>
-                 */}
-                </div>
-            </section>
-            
-            
-            {/* <section class="products related-products section">
-                <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-6">
-                    <div class="title text-center">
-                        <h2>You may like this</h2>
-                        <p>The best Online sales to shop these weekend</p>
-                    </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-3 col-6" >
-                            <div class="product">
-                        <div class="product-wrap">
-                        <a routerLink="/product-single"><img class="img-fluid w-100 mb-3 img-first" src="assets/images/322.jpg" alt="product-img" /></a>
-                        <a routerLink="/product-single"><img class="img-fluid w-100 mb-3 img-second" src="assets/images/444.jpg" alt="product-img" /></a>
-                        </div>
-            
-                        <span class="onsale">Sale</span>
-                        <div class="product-hover-overlay">
-                        <a href="#"><i class="tf-ion-android-cart"></i></a>
-                        <a href="#"><i class="tf-ion-ios-heart"></i></a>
-                            </div>
-            
-                        <div class="product-info">
-                        <h2 class="product-title h5 mb-0"><a routerLink="/product-single">Kirby Shirt</a></h2>
-                        <span class="price">
-                            $329.10
-                        </span>
-                        </div>
-                    </div>
-                    </div>
-            
-                    <div class="col-lg-3 col-6" >
-                            <div class="product">
-                        <div class="product-wrap">
-                        <a routerLink="/product-single"><img class="img-fluid w-100 mb-3 img-first" src="assets/images/111.jpg" alt="product-img" /></a>
-                        <a routerLink="/product-single"><img class="img-fluid w-100 mb-3 img-second" src="assets/images/222.jpg" alt="product-img" /></a>
-                        </div>
-            
-                        <span class="onsale">Sale</span>
-                        <div class="product-hover-overlay">
-                        <a href="#"><i class="tf-ion-android-cart"></i></a>
-                        <a href="#"><i class="tf-ion-ios-heart"></i></a>
-                            </div>
-            
-                        <div class="product-info">
-                        <h2 class="product-title h5 mb-0"><a routerLink="/product-single">Kirby Shirt</a></h2>
-                        <span class="price">
-                            $329.10
-                        </span>
-                        </div>
-                    </div>
-                    </div>
-            
-            
-                    <div class="col-lg-3 col-6" >
-                            <div class="product">
-                        <div class="product-wrap">
-                        <a routerLink="/product-single"><img class="img-fluid w-100 mb-3 img-first" src="assets/images/111.jpg" alt="product-img" /></a>
-                        <a routerLink="/product-single"><img class="img-fluid w-100 mb-3 img-second" src="assets/images/322.jpg" alt="product-img" /></a>
-                        </div>
-            
-                        <span class="onsale">Sale</span>
-                        <div class="product-hover-overlay">
-                        <a href="#"><i class="tf-ion-android-cart"></i></a>
-                        <a href="#"><i class="tf-ion-ios-heart"></i></a>
-                            </div>
-            
-                        <div class="product-info">
-                        <h2 class="product-title h5 mb-0"><a routerLink="/product-single">Kirby Shirt</a></h2>
-                        <span class="price">
-                            $329.10
-                        </span>
-                        </div>
-                    </div>
-                    </div>
-            
-                    <div class="col-lg-3 col-6">
-                            <div class="product">
-                        <div class="product-wrap">
-                        <a routerLink="/product-single"><img class="img-fluid w-100 mb-3 img-first" src="assets/images/444.jpg" alt="product-img" /></a>
-                        <a routerLink="/product-single"><img class="img-fluid w-100 mb-3 img-second" src="assets/images/222.jpg" alt="product-img" /></a>
-                        </div>
-            
-                        <span class="onsale">Sale</span>
-                        <div class="product-hover-overlay">
-                        <a href="#"><i class="tf-ion-android-cart"></i></a>
-                        <a href="#"><i class="tf-ion-ios-heart"></i></a>
-                            </div>
-            
-                        <div class="product-info">
-                        <h2 class="product-title h5 mb-0"><a routerLink="/product-single">Kirby Shirt</a></h2>
-                        <span class="price">
-                            $329.10
-                        </span>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                </div>
-            </section>
-        */}
-        </div>
+            </div>
+        </section>
+     </div>
 
     )}
 export default ProductDetail;

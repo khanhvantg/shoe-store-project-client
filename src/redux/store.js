@@ -56,6 +56,13 @@ import {
 import {
   cartReducer,
   } from "./reducers/CartReducer";
+import {
+  commentCreateReducer,
+  commentDetailsReducer,
+  commentListReducer,
+  commentUpdateReducer,
+} from "./reducers/CommentReducer";
+
 const cartItemsFromStorage = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems"))
   : [];
@@ -114,6 +121,11 @@ const reducer = combineReducers({
   orderDetail: orderDetailsReducer,
   orderUpdate: orderUpdateReducer,
   orderListByUserId: orderListByUserIdReducer,
+  //comment
+  commentCreate: commentCreateReducer,
+  commentDetail: commentDetailsReducer,
+  commentList: commentListReducer,
+  commentUpdate: commentUpdateReducer,
 });
 const initialState = {
   cart: {

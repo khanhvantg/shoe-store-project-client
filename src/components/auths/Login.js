@@ -6,6 +6,7 @@ import { login } from "../../redux/actions/AuthAction";
 import Loading from '../loadingError/Loading';
 import Message from "../loadingError/Message";
 import Input from '../checkValidate/Input';
+import { getUserDetails } from '../../redux/actions/UserAction';
 const Login = () => {
     const [form, setForm] = useState({
         username: "",
@@ -17,13 +18,20 @@ const Login = () => {
     const userLogin = useSelector((state) => state.userLogin);
     const { error, loading, userInfo } = userLogin;
 
+    const userDetail = useSelector((state) => state.userDetail);
+    const { user } = userDetail;
     useEffect(() => {
         if (userInfo) {
-            navigate("/");
+            const id = userInfo.id;
+            dispatch(getUserDetails(id))
+            console.log(user)
+            if(user.name===null){
+                navigate("/profile");
+            }
+            else navigate("/");
         }
-    }, [userInfo, navigate]);
+    }, [dispatch, userInfo, navigate, user]);
 
-     
     const onInputValidate = (value, name) => {
     setErrorInput(prev => ({
         ...prev,

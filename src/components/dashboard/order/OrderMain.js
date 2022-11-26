@@ -29,7 +29,7 @@ const OrderMain = () => {
     }
     // const orderDetail = useSelector((state) => state.orderDetail);
     // const { order } = orderDetail;
-
+console.log(orders);
   return (
     // <div className="row flex-lg-nowrap">
     //     <div className="col mb-3">
@@ -51,6 +51,7 @@ const OrderMain = () => {
                                         <th>Id</th>
                                         <th>Order Date</th>
                                         {/* <th>Amount Item</th> */}
+                                        <th>Delivery Date</th>
                                         <th>Total Price</th>
                                         <th>Status</th>
                                         <th>Actions</th>
@@ -61,8 +62,16 @@ const OrderMain = () => {
                                     <tr>
                                         <td className="align-middle">{item.id}</td>
                                         <td className="text-nowrap align-middle">{item.createdDate}</td>
+                                        {item.status ==='3' ?
+                                            <td className="text-nowrap align-middle">
+                                                {item.modifiedDate}
+                                            </td>
+                                            :
+                                            <td className="text-nowrap align-middle">
+                                            </td>
+                                        }
                                         {/* <td className="text-nowrap align-middle">{item.amountItem}</td> */}
-                                        <td className="text-nowrap align-middle">{item.totalPrice}</td>
+                                        <td className="text-nowrap align-middle">$ {item.totalPrice}</td>
                                         {item.status ==="0" ? (
                                             <td className="text-nowrap align-middle" style={{color:"red"}}>Cancelled</td>
                                         ):item.status ==="1" ?(
@@ -70,7 +79,7 @@ const OrderMain = () => {
                                         ):item.status ==="2" ?(
                                             <td className="align-middle" style={{color:"blue"}}>Shipping</td>
                                         ):(
-                                            <td className="align-middle" style={{color:"green"}}>Shipped</td>
+                                            <td className="align-middle" style={{color:"green"}}>Completed</td>
                                         )}
                                         <td className="text-center align-middle">
                                             <div className="btn-group align-top">

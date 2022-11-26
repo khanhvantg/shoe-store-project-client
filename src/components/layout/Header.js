@@ -95,7 +95,7 @@ const Header = () => {
                         
                                 <div className="text-center cart-buttons mt-3">
                                     {   isAdmin?
-                                        <Link to="/manage/accounts" className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Manage</Link>
+                                        <Link to="/manage/users" className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Manage</Link>
                                         :
                                         <Link to="/profile" className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">View Profile</Link>
                                     }
@@ -148,7 +148,7 @@ const Header = () => {
                     {
                         isAdmin ? 
                             <li className="nav-item">
-                                <Link className="nav-link" to={{ pathname: "/manage/accounts"}}>Manage</Link>
+                                <Link className="nav-link" to={{ pathname: "/manage/users"}}>Manage</Link>
                             </li>
                         :<></>    
                     }

@@ -41,9 +41,11 @@ const OrderDetail = ({isShowing, hide, id}) => {
             }
         }
     }, [order, dispatch, id, isShowing, submit]);
+    var today = new Date();
     const orderInfo = {
         orderId: id,
-        status
+        status,
+        modifiedDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()
     }
     const handleCancel = () => {
         orderInfo.status=0;

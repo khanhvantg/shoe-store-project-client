@@ -21,7 +21,7 @@ const ProductUpdate = ({isShowing, hide, id, idCategory}) => {
         productId: id,
         name: '',
         price: '',
-        amount: '',
+        // amount: '',
         //category: '',
         description: '',
         createdBy: '',
@@ -65,7 +65,6 @@ const ProductUpdate = ({isShowing, hide, id, idCategory}) => {
                     ...prev,
                     productId: id,
                     name: product.name,
-                    amount: product.amount,
                     price: product.price,
                     status: product.status,
                     description: product.description,
@@ -87,11 +86,6 @@ const ProductUpdate = ({isShowing, hide, id, idCategory}) => {
 
     const [errorInput, setErrorInput] = useState({
         name: {
-            isReq: true,
-            errorMsg: '',
-            onValidateFunc: onInputValidate
-        },
-        amount: {
             isReq: true,
             errorMsg: '',
             onValidateFunc: onInputValidate
@@ -170,22 +164,16 @@ const ProductUpdate = ({isShowing, hide, id, idCategory}) => {
                                                             value={form.modifiedBy}
                                                             className="form-control" type="text" name="modifiedBy" disabled/>
                                                 </div>   
-                                                <Input
+                                                
+                                                <div className="row">
+                                                    <div className="col">
+                                                    <Input
                                                     name="name"
                                                     title="Name"
                                                     value={form.name}
                                                     onChangeFunc={onInputChange}
                                                     {...errorInput.name}
                                                 />
-                                                <div className="row">
-                                                    <div className="col">
-                                                        <Input
-                                                            name="amount"
-                                                            title="Amount"
-                                                            value={form.amount}
-                                                            onChangeFunc={onInputChange}
-                                                            {...errorInput.amount}
-                                                        />
                                                     </div>
                                                     <div className="col">
                                                         <Input

@@ -44,7 +44,7 @@ export const register = ({form}) => async (dispatch) => {
         "Content-Type": "application/json",
       },
     };
-    const { data } = await axios.post("/api/auth/signup", form);
+    const { data } = await axios.post("/api/auth/signup", form)
     dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
     toast("Signup Successfull", {position: toast.POSITION.TOP_CENTER});
   } catch (error) {

@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-import { register } from "../../redux/actions/AuthAction";
+import { register, l } from "../../redux/actions/AuthAction";
 import Loading from '../loadingError/Loading';
 import Message from "../loadingError/Message";
 import Input from '../checkValidate/Input';
@@ -26,7 +26,7 @@ const SignUp = () => {
         if (userInfo) {
             navigate("/login");
         }
-    }, [userInfo, navigate]);
+    }, [userInfo, navigate, dispatch]);
 
     const onInputValidate = (value, name) => {
         setErrorInput(prev => ({

@@ -1,20 +1,48 @@
-import React, { useState, useEffect,useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
+import { useDispatch, useSelector } from "react-redux";
 import {
     Link,
     useParams
   } from "react-router-dom";
 const Layout = ({active}) => {
+    const [isAdmin, setIsAdmin] = useState(false);
     const nameUrl = window.location.href.toString();
     let arrayStrig = nameUrl.split("/");
    // const [a, se] = arrayStrig[arrayStrig.length-1]
    // console.log(arrayStrig[arrayStrig.length-1]);
     const f = arrayStrig[arrayStrig.length-1];
 
+    const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin;
+    // for (let i in userInfo.roles) {
+    //     if(userInfo.roles[i]==="ROLE_ADMIN") {
+    //         setIsAdmin(true);
+    //         break;
+    //     }
+    //     //console.log(userInfo.roles[i]);
+    // }
+    useEffect(() =>{
+        if(userInfo){
+            for (let i in userInfo.roles) {
+                if(userInfo.roles[i]==="ROLE_ADMIN") {
+                    setIsAdmin(true);
+                    break;
+                }
+            }
+        } else {
+            setIsAdmin(false);
+        }
+    },[userInfo])
+    console.log(isAdmin)
     return (
         <nav id="sidebar" className={active?"active":""}>
             <ul class="list-unstyled">
-                <li className={f==="accounts"?"nav-item active":"nav-item"} ><Link to="/manage/accounts" className="nav-link">Accounts</Link></li>
                 <li className={f==="users"?"nav-item active":"nav-item"} ><Link to="/manage/users" className="nav-link">Users</Link></li>
+                {isAdmin?
+                    <li className={f==="accounts"?"nav-item active":"nav-item"} ><Link to="/manage/accounts" className="nav-link">Accounts</Link></li>
+                    :
+                    <></>
+                }
                 <li className={f==="categories"?"nav-item active":"nav-item"} ><Link to="/manage/categories" className="nav-link" >Categories</Link></li>
                 <li className={f==="products"?"nav-item active":"nav-item"} ><Link to="/manage/products" className="nav-link">Products</Link></li>
                 <li className={f==="orders"?"nav-item active":"nav-item"} ><Link to="/manage/orders" className="nav-link">Orders</Link></li>
