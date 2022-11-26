@@ -33,7 +33,7 @@ const ProductDetail = () => {
     const { loading, error, product} = productDetail;
 
     const commentList = useSelector((state) => state.commentList);
-    const { loading: loadingCmt, comments} = commentList;
+    const { loading: loadingCmt, error: errorComment, comments} = commentList;
 
     const commentDetail = useSelector((state) => state.commentDetail);
     const { loading: loadingComment, comment } = commentDetail;
@@ -71,8 +71,9 @@ const ProductDetail = () => {
                 content: ''
             }))
         }else{
+            dispatchCmt(getAllComments({id}));
             dispatch(getProductById(id));
-            dispatchCmt(getAllComments(id));
+            
             // if(comment){
             //     setFormComment(prev => ({
             //         ...prev,
@@ -80,7 +81,7 @@ const ProductDetail = () => {
             //     }));
             // }
         }
-        if(userInfo){
+        if(userInfo&&userInfo){
             for (let i in userInfo.roles) {
                 if(userInfo.roles[i]==="ROLE_ADMIN" || userInfo.roles[i]==="ROLE_MODERATOR") {
                     setIsAdmin(true);
@@ -91,6 +92,8 @@ const ProductDetail = () => {
             setIsAdmin(false);
         }
     }, [dispatch, dispatchCmt, successCreate, successUpdate, userInfo])
+
+    console.log(comments)
     const [idImg,setIdImg]=useState("");
     const [index,setIndex]=useState(0);
     const handleimg = (ID) => {
@@ -137,7 +140,9 @@ const ProductDetail = () => {
         }));
     };
     const handleComment = () => {
-        dispatch(createCommentByProductId({formComment}));
+        if(userInfo)
+            dispatch(createCommentByProductId({formComment}));
+        else toast("Please Login To Comment", {position: toast.POSITION.TOP_CENTER});
     }
 
     const handleEdit = (item) => {
@@ -264,13 +269,20 @@ const ProductDetail = () => {
                                 
                                     <img class="img-fluid img-responsive rounded-circle mr-2" src="https://i.imgur.com/qdiP4DB.jpg" width="38"/>
                                     <input onChange={CommentChange} name='content' value={formComment.content} type="text" class="form-control mr-3" placeholder="Add comment"/>
-                                    <button 
-                                            onClick = {handleComment}
-                                            class="btn btn-primary" type="button">Comment</button>
-                                </div>:<></>}
+                                    {formComment.content===''?<button 
+                                        onClick = {handleComment}
+                                        class="btn btn-primary" type="button" disabled>Comment</button>
+                                        :
+                                        <button 
+                                        onClick = {handleComment}
+                                        class="btn btn-primary" type="button">Comment</button>}
+                                </div>
+                                :<></>}
                                 <h4 class="card-title">Latest Comments</h4> 
                             </div>
-                            {comments&&comments.sort((a,b)=>(b.id-a.id)).map((item,index)=>(
+                            { loadingCmt ? ( <Loading />) : errorComment ? (<Message variant="alert-danger">{error}</Message>) : (
+                            <>
+                            {comments&&comments.map((item,index)=>(
                                 <div class="comment-widgets border-bottom">
                                     <div class="d-flex flex-row comment-row m-t-0">
                                         <div class="p-2"><img src="https://i.imgur.com/Ur43esv.jpg" alt="user" width="50" class="rounded-circle"/></div>
@@ -281,7 +293,9 @@ const ProductDetail = () => {
                                             <h6 class="font-medium">{item.user.account.username}</h6> 
                                             <input style={{background:"white"}} onChange={CommentChange} name='content' value={formComment.content} type="text" class="form-control mr-3" placeholder="Add comment"/>
                                             <div class="comment-footer"> 
-                                            <button type="button" class="btn btn-cyan btn-sm" onClick={handleSaveEdit}>Save</button>
+                                            {formComment.content===''?
+                                            <button type="button" class="btn btn-cyan btn-sm" onClick={handleSaveEdit} disabled>Save</button>:
+                                            <button type="button" class="btn btn-cyan btn-sm" onClick={handleSaveEdit}>Save</button>}
                                             <button type="button" class="btn btn-danger btn-sm" onClick={()=>setIsEdit(false)}>Cancel</button>
                                             
                                             </div>
@@ -292,8 +306,8 @@ const ProductDetail = () => {
                                             <h6 class="font-medium">{item.user.account.username}</h6> <span class="m-b-15 d-block">{item.content}.</span>
                                             <div class="comment-footer"> 
                                                 <span class="text-muted float-right">{item.createdDate}</span> 
-                                                {item.user.id===userInfo.id ? <button type="button" class="btn btn-cyan btn-sm" onClick={()=>handleEdit(item)}>Edit</button>:<></>}
-                                                {item.user.id===userInfo.id || isAdmin ? <button type="button" class="btn btn-danger btn-sm" onClick={()=>handleDelete(item.id)}>Delete</button>:<></>}
+                                                {userInfo&&item.user.id===userInfo.id ? <button type="button" class="btn btn-cyan btn-sm" onClick={()=>handleEdit(item)}>Edit</button>:<></>}
+                                                {userInfo&&item.user.id===userInfo.id || isAdmin ? <button type="button" class="btn btn-danger btn-sm" onClick={()=>handleDelete(item.id)}>Delete</button>:<></>}
                                             </div>
                                         </div>
                                         }
@@ -301,6 +315,7 @@ const ProductDetail = () => {
                             </div>
                               
                             ))}
+                            </>)}
                         </div>
                     </div>
                 </div>

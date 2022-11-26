@@ -25,7 +25,7 @@ import {toast} from 'react-toastify'
     }
   }
 
-export const getAllComments = (id) => async (dispatch) => {
+export const getAllComments = ({id}) => async (dispatch) => {
     try {
         dispatch({ type: COMMENT_LIST_REQUEST });
 
