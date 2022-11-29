@@ -62,6 +62,10 @@ import {
   commentListReducer,
   commentUpdateReducer,
 } from "./reducers/CommentReducer";
+import {
+  revenueOfDateReducer,
+  revenueOfMonthReducer,
+} from "./reducers/RevenueReducer";
 
 const cartItemsFromStorage = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems"))
@@ -126,6 +130,10 @@ const reducer = combineReducers({
   commentDetail: commentDetailsReducer,
   commentList: commentListReducer,
   commentUpdate: commentUpdateReducer,
+  //revenue
+  revenueOfDate:revenueOfDateReducer,
+  revenueOfMonth:revenueOfMonthReducer,
+
 });
 const initialState = {
   cart: {

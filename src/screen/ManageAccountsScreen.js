@@ -12,26 +12,16 @@ const ManageAccountsScreen = () => {
     return (
         <div class="wrapper1">
             <Layout active={active}/>
-            <div id="content1" style={{background:  'rgb(233, 208, 208)'}}>
-                <nav class="navbar navbar1-expand-lg navbar1-light bg-light">
-                    <div class="container-fluid">
-                        <button type="button" id="sidebarCollapse" class="btn btn-info" onClick={handle}>
-                            <i class="fas fa-align-left"></i>
-                            {/* <span>Toggle Sidebar</span> */}
-                        </button>
+            <nav class="navbar navbar1-expand-lg navbar1-light bg-light">
+                <div class="container-fluid">
+                    <button type="button" id="sidebarCollapse" class="btn btn-info" onClick={handle}>
+                        {!active?<i class="tf-ion-ios-arrow-left"></i>:
+                            <i class="tf-ion-ios-arrow-right"></i>}
+                    </button>
 
-                    </div>
+                </div>
                 </nav>
-                <AccountMain/>
-            {/* <div className="main_container">zz
-                <div className="container">
-                    <div className="">
-                        <div className="col">
-                            <Layout/>
-                            <AccountMain/>
-                        </div> 
-                    </div> */}
-            </div>
+            <AccountMain/>
         </div>
     )
 }

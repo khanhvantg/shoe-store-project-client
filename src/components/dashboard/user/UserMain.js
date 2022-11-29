@@ -23,7 +23,7 @@ const UserMain = () => {
     return (
         // <div className="row flex-lg-nowrap">
         //     <div className="col mb-3">
-                <div className="e-panel card">
+                <div className="e-panel cardcus" style={{width:"100%"}}>
                     <div className="card-body">
                         <div className="text-center card-title">
                             <h3 className="mr-2">Users Manage</h3>

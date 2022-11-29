@@ -4,6 +4,7 @@ import {
     Link,
     useParams
   } from "react-router-dom";
+  import './Layout.scss'
 const Layout = ({active}) => {
     const [isAdmin, setIsAdmin] = useState(false);
     const nameUrl = window.location.href.toString();
@@ -36,7 +37,18 @@ const Layout = ({active}) => {
     console.log(isAdmin)
     return (
         <nav id="sidebar" className={active?"active":""}>
-            <ul class="list-unstyled">
+            <div class="sidebar-header">
+                <h5>Sales</h5>
+                <hr></hr>
+            </div>
+            <ul class="list-unstyled" style={{paddingLeft:20}}>
+                <li className={f==="revenue"?"nav-item active":"nav-item"} ><Link to="/manage/revenue" className="nav-link">Revenue</Link></li>
+            </ul>
+            <div class="sidebar-header">
+                <h5>Dashboard</h5>
+                <hr></hr>
+            </div>
+            <ul class="list-unstyled" style={{paddingLeft:20}}>
                 <li className={f==="users"?"nav-item active":"nav-item"} ><Link to="/manage/users" className="nav-link">Users</Link></li>
                 {isAdmin?
                     <li className={f==="accounts"?"nav-item active":"nav-item"} ><Link to="/manage/accounts" className="nav-link">Accounts</Link></li>
@@ -46,19 +58,6 @@ const Layout = ({active}) => {
                 <li className={f==="categories"?"nav-item active":"nav-item"} ><Link to="/manage/categories" className="nav-link" >Categories</Link></li>
                 <li className={f==="products"?"nav-item active":"nav-item"} ><Link to="/manage/products" className="nav-link">Products</Link></li>
                 <li className={f==="orders"?"nav-item active":"nav-item"} ><Link to="/manage/orders" className="nav-link">Orders</Link></li>
-                {/* {
-                    <li className="nav-item"><Link to="/manage/users" className="nav-link">Users</Link></li>
-                    // activeItem&&activeItem.map((item, index)=>{
-                    //     <li className="nav-item">
-                    //         <Link to={item.url} className="nav-link">"aa"</Link>
-                    //     </li>
-                    // })
-                } */}
-                {/* <li className="nav-item"><Link to="/manage/accounts" className="nav-link">Accounts</Link></li>
-                <li className="nav-item"><Link to="/manage/users" className="nav-link">Users</Link></li>
-                <li className="nav-item"><Link to="/manage/categories" className="nav-link" >Categories</Link></li>
-                <li className="nav-item"><Link to="/manage/products" className="nav-link">Products</Link></li>
-                <li className="nav-item"><Link to="/manage/orders" className="nav-link">Orders</Link></li> */}
             </ul>
         </nav>
         // <div className="e-tabs mb-3 px-3">

@@ -12,42 +12,20 @@ const ManageCategoryScreen = () => {
     return (
         <div class="wrapper1">
             <Layout active={active}/>
-            <div id="content1">
-                <nav class="navbar navbar1-expand-lg navbar1-light bg-light">
-                    <div class="container-fluid">
-                        <button type="button" id="sidebarCollapse" class="btn btn-info" onClick={handle}>
-                            <i class="fas fa-align-left"></i>
-                            {/* <span>Toggle Sidebar</span> */}
-                        </button>
+            <nav class="navbar navbar1-expand-lg navbar1-light bg-light">
+                <div class="container-fluid">
+                    <button type="button" id="sidebarCollapse" class="btn btn-info" onClick={handle}>
+                    {!active?<i class="tf-ion-ios-arrow-left"></i>:
+                            <i class="tf-ion-ios-arrow-right"></i>}
+                    </button>
 
-                    </div>
-                </nav>
+                </div>
+            </nav>
+            <div className="e-panel cardcus"  style={{width:"100%", border: ""}}>
                 <CategoryMain/>
-            {/* <div className="main_container">zz
-                <div className="container">
-                    <div className="">
-                        <div className="col">
-                            <Layout/>
-                            <AccountMain/>
-                        </div> 
-                    </div> */}
             </div>
         </div>
     )
 }
-//     return (
-//         <div className="main_container">
-//             <div className="container">
-//                 <div className="">
-//                     <div className="col">
-//                         <Layout/>
-//                         <CategoryMain/>
-//                     </div> 
-//                 </div>
-//             </div>
-//         </div>
-    
-//     )
-// }
 
 export default ManageCategoryScreen

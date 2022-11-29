@@ -13,7 +13,7 @@ p {
     font-size: 1.1em;
     font-weight: 300;
     line-height: 1.7em;
-    color: #999;
+    color: rgb(189, 39, 39);
 }
 
 a,
@@ -31,6 +31,7 @@ a:focus {
     border-radius: 0;
     //margin-bottom: 40px;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    flex-direction: column;
 }
 
 .navbar1-btn {
@@ -54,13 +55,14 @@ a:focus {
     display: flex;
     width: 100%;
     align-items: stretch;
+    background: white;
 }
 
 #sidebar {
     padding-top: 20px;
     min-width: 250px;
     max-width: 250px;
-    background:  rgb(233, 208, 208);
+    background:  white;
     color: rgb(61, 59, 59);
     transition: all 0.3s;
 }
@@ -97,8 +99,9 @@ a:focus {
 
 #sidebar ul li.active>a,
 a[aria-expanded="true"] {
-    color: #000000;
-    background: rgb(252, 252, 252);
+    color: #1a8100;
+    font-size: larger;
+    font-style: Georgia;
 }
 
 a[data-toggle="collapse"] {
@@ -158,12 +161,12 @@ a.article:hover {
     MEDIAQUERIES
 ----------------------------------------------------- */
 @media (max-width: 768px) {
-    #sidebar {
-        margin-left: -250px;
-    }
-    #sidebar.active {
-        margin-left: 0;
-    }
+    // #sidebar {
+    //     margin-left: -250px;
+    // }
+    // #sidebar.active {
+    //     margin-left: 0;
+    // }
     #sidebarCollapse span {
         display: none;
     }

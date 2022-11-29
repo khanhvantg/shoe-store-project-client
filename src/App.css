@@ -32,4 +32,40 @@
         border-top-right-radius: .3rem;
         border-bottom-right-radius: .3rem;
         }
+    }
+
+    .cardcus {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: rgb(211, 236, 186);
+        background-clip: border-box;
+        border: 2px solid #000000e8;
+        border-radius: 20px;
+      }
+
+    .table {
+        background-color: whitesmoke;
+        border: 2px solid;
+        border-radius: 20px;
+    }
+    .parent {
+        width: 100vw;
+        /* additional style */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+        @media (max-width: 962px) {
+            .parent {
+                display: flex;
+                justify-content: center;
+                align-items: inherit;
+            }
         }
+    
+    .child {
+        background-color: #f7ccac;
+    }
