@@ -83,7 +83,7 @@ const ProductDetail = () => {
         }
         if(userInfo){
             for (let i in userInfo.roles) {
-                if(userInfo.roles[i]==="ROLE_ADMIN" || userInfo.roles[i]==="ROLE_MODERATOR") {
+                if(userInfo.roles[i]==="ROLE_ADMIN") {
                     setIsAdmin(true);
                     break;
                 }

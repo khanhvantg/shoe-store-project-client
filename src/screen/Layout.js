@@ -42,19 +42,21 @@ const Layout = ({active}) => {
                 <hr></hr>
             </div>
             <ul class="list-unstyled" style={{paddingLeft:20}}>
-                <li className={f==="revenue"?"nav-item active":"nav-item"} ><Link to="/manage/revenue" className="nav-link">Revenue</Link></li>
+                <li className={f==="d-revenue"?"nav-item active":"nav-item"} ><Link to="/manage/d-revenue" className="nav-link">Statistics By Day</Link></li>
+                <li className={f==="m-revenue"?"nav-item active":"nav-item"} ><Link to="/manage/m-revenue" className="nav-link">Statistics By Month</Link></li>
+                <li className={f==="y-revenue"?"nav-item active":"nav-item"} ><Link to="/manage/y-revenue" className="nav-link">Monthly Revenue By Year</Link></li>
             </ul>
             <div class="sidebar-header">
                 <h5>Dashboard</h5>
                 <hr></hr>
             </div>
             <ul class="list-unstyled" style={{paddingLeft:20}}>
-                <li className={f==="users"?"nav-item active":"nav-item"} ><Link to="/manage/users" className="nav-link">Users</Link></li>
                 {isAdmin?
                     <li className={f==="accounts"?"nav-item active":"nav-item"} ><Link to="/manage/accounts" className="nav-link">Accounts</Link></li>
                     :
                     <></>
                 }
+                <li className={f==="users"?"nav-item active":"nav-item"} ><Link to="/manage/users" className="nav-link">Users</Link></li>
                 <li className={f==="categories"?"nav-item active":"nav-item"} ><Link to="/manage/categories" className="nav-link" >Categories</Link></li>
                 <li className={f==="products"?"nav-item active":"nav-item"} ><Link to="/manage/products" className="nav-link">Products</Link></li>
                 <li className={f==="orders"?"nav-item active":"nav-item"} ><Link to="/manage/orders" className="nav-link">Orders</Link></li>

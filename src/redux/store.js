@@ -65,6 +65,7 @@ import {
 import {
   revenueOfDateReducer,
   revenueOfMonthReducer,
+  revenueOfAMonthReducer,
 } from "./reducers/RevenueReducer";
 
 const cartItemsFromStorage = localStorage.getItem("cartItems")
@@ -133,7 +134,7 @@ const reducer = combineReducers({
   //revenue
   revenueOfDate:revenueOfDateReducer,
   revenueOfMonth:revenueOfMonthReducer,
-
+  revenueOfAMonth:revenueOfAMonthReducer,
 });
 const initialState = {
   cart: {

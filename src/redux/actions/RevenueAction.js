@@ -7,6 +7,9 @@ import {
     REVENUE_LISTBYMONTH_REQUEST,
     REVENUE_LISTBYMONTH_SUCCESS,
     REVENUE_LISTBYMONTH_FAIL,
+    REVENUE_ALISTBYMONTH_REQUEST,
+    REVENUE_ALISTBYMONTH_SUCCESS,
+    REVENUE_ALISTBYMONTH_FAIL,
     PRODUCTBEST_LIST_REQUEST,
     PRODUCTBEST_LIST_SUCCESS,
     PRODUCTBEST_LIST_FAIL,
@@ -46,6 +49,22 @@ export const getRevenueByMonth = ({month}) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: REVENUE_LISTBYMONTH_FAIL,
+            payload: error.response && error.response.data.message
+                ? error.response.data.message
+                : error.message,
+        });
+    }
+};
+
+export const getARevenueByMonth = ({month}) => async (dispatch) => {
+    try {
+        dispatch({ type: REVENUE_ALISTBYMONTH_REQUEST });
+        //console.log(month)
+        const { data } = await axios.post('/api/revenuePerMonth', month, {headers: authHeader()})
+        dispatch({ type: REVENUE_ALISTBYMONTH_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: REVENUE_ALISTBYMONTH_FAIL,
             payload: error.response && error.response.data.message
                 ? error.response.data.message
                 : error.message,

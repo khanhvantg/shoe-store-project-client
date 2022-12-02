@@ -30,7 +30,9 @@ import { logout } from "./redux/actions/AuthAction";
 import { getWishListById, removeLineItem } from './redux/actions/WishlistAction'
 import AccountsScreen from './screen/manageScreen/AccountsScreen';
 import PrivateRoute from "./PrivateRoute";
-import ManageRevenueScreen from './screen/ManageRevenueScreen';
+import ManageRevenueYearScreen from './screen/ManageRevenueYearScreen';
+import ManageRevenueMonthScreen from './screen/ManageRevenueMonthScreen';
+import ManageRevenueDayScreen from './screen/ManageRevenueDayScreen';
 const App = () => {
   return (
     <div className="App">
@@ -70,7 +72,9 @@ const App = () => {
             <Route path="/order" element={<Order />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/manage/revenue" element={<ManageRevenueScreen />} />
+            <Route path="/manage/y-revenue" element={<ManageRevenueYearScreen/>} />
+            <Route path="/manage/m-revenue" element={<ManageRevenueMonthScreen/>} />
+            <Route path="/manage/d-revenue" element={<ManageRevenueDayScreen/>} />
             <Route path="/test" element={<AccountsScreen />} />
           </Routes>
           <Footer/>

@@ -7,21 +7,25 @@ import {
     REVENUE_LISTBYMONTH_SUCCESS,
     REVENUE_LISTBYMONTH_FAIL,
     REVENUE_LISTBYMONTH_RESET,
+    REVENUE_ALISTBYMONTH_REQUEST,
+    REVENUE_ALISTBYMONTH_SUCCESS,
+    REVENUE_ALISTBYMONTH_FAIL,
+    REVENUE_ALISTBYMONTH_RESET,
     PRODUCTBEST_LIST_REQUEST,
     PRODUCTBEST_LIST_SUCCESS,
     PRODUCTBEST_LIST_FAIL,
 } from "../constants/Constants";
 
-export const revenueOfDateReducer = (state = { revenue: {} }, action) => {
+export const revenueOfDateReducer = (state = { revenue: {}, revenueList: [] }, action) => {
     switch (action.type) {
       case REVENUE_LISTBYDATE_REQUEST:
         return { ...state, loading: true };
       case REVENUE_LISTBYDATE_SUCCESS:
-        return { loading: false, revenue: action.payload };
+        return { loading: false, revenue: action.payload, revenueList: action.payload.irevenueByDateResponses };
       case REVENUE_LISTBYDATE_FAIL:
         return { loading: false, error: action.payload };
       case REVENUE_LISTBYDATE_RESET:
-        return { revenue: {} };
+        return { revenue: {}, revenueList: [] };
       default:
         return state;
     }
@@ -40,4 +44,17 @@ export const revenueOfMonthReducer = (state = { revenue: {}, revenueList: [] }, 
       default:
         return state;
     }
+};
+
+export const revenueOfAMonthReducer = (state = { arevenueList: [] }, action) => {
+  switch (action.type) {
+    case REVENUE_ALISTBYMONTH_REQUEST:
+      return { loading: true, arevenueList: [] };
+    case REVENUE_ALISTBYMONTH_SUCCESS:
+      return { loading: false, arevenueList: action.payload };
+    case REVENUE_ALISTBYMONTH_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
 };
