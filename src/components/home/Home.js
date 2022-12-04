@@ -27,7 +27,7 @@ const Home = () => {
     }
     
     const proBest = [];
-    productBests.sort((a,b)=>(Number(b.amountProduct)-Number(a.amountProduct)))
+    productBests&&productBests.sort((a,b)=>(Number(b.amountProduct)-Number(a.amountProduct)))
     for (let i in productBests) {
         for (let j in products) {
             if(Number(productBests[i].productId)===products[j].id){
