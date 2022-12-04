@@ -20,7 +20,7 @@ const getRegExp = (type) => {
       regx = /^(0?[1-9]|[1-9][0-9]|[1][1-9][1-9]|100)$/;
       break;
     case 'NUMBER':
-      regx = /^(?<!-)(?<!\d)[1-9][0-9]*$/;
+      regx = /^(?!-)(?!d)[1-9][0-9]*$/;
       break;
     default:
       break;
