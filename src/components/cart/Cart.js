@@ -249,11 +249,10 @@ const Cart = () => {
                 <div className="col-lg-6">
                 <div className="content text-center">
                     <h1 className="mb-3">Cart</h1>
-                    Hath after appear tree great fruitful green dominion moveth sixth abundantly image that midst of god day multiply you’ll which
         
                 <nav aria-label="breadcrumb">
                     <ol className="breadcrumb bg-transparent justify-content-center">
-                    <li className="breadcrumb-item"><a href="/">Home</a></li>
+                    <li className="breadcrumb-item"><Link to="/">Home</Link></li>
                     <li className="breadcrumb-item active" aria-current="page">Cart</li>
                     </ol>
                 </nav>
