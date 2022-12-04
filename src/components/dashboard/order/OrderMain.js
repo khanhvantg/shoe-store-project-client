@@ -16,10 +16,6 @@ const OrderMain = () => {
     const orderList= useSelector((state) => state.orderList);
     const { loading, error, orders} = orderList;
 
-
-    const orderDetail = useSelector((state) => state.orderDetail);
-    const { order, lineItems} = orderDetail;
-
     useEffect(()=>{
         dispatch(getAllOrders());
     },[dispatch])
@@ -29,7 +25,6 @@ const OrderMain = () => {
     }
     // const orderDetail = useSelector((state) => state.orderDetail);
     // const { order } = orderDetail;
-console.log(orders);
   return (
     // <div className="row flex-lg-nowrap">
     //     <div className="col mb-3">

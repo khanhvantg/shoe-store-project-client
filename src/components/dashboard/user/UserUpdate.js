@@ -4,7 +4,7 @@ import { updateUserProfileByAdmin, getUserDetails, getAllUsers} from '../../../r
 import {
     USER_UPDATE_PROFILE_RESET,
 } from '../../../redux/constants/Constants'
-import '../Modal.scss'
+import '../Modal.css'
 import Loading from '../../loadingError/Loading';
 import Message from "../../loadingError/Message";
 

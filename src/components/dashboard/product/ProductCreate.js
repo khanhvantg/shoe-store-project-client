@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import '../Modal.scss'
+import '../Modal.css'
 
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts, createProductByCategoryId} from '../../../redux/actions/ProductAction'
@@ -64,7 +64,6 @@ const ProductCreate = ({isShowing, hide, categories}) => {
                 createdDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()
             }))
         }
-        console.log(form.size)
     }, [dispatch, succsesCreate, isShowing]);
 
     const onInputValidate = (value, name) => {
@@ -82,6 +81,7 @@ const ProductCreate = ({isShowing, hide, categories}) => {
         },
         price: {
             isReq: true,
+            reqType: 'NUMBER',
             errorMsg: '',
             onValidateFunc: onInputValidate
         },
@@ -238,7 +238,7 @@ const ProductCreate = ({isShowing, hide, categories}) => {
                                         </div> 
                                 </div>
                                 <div className="col text-center px-xl-3">
-                                    <button className="btn btn-primary btn-block" type="submit" onClick={submitHandler}>Save Changes</button>
+                                    <button className="btn btn-primary btn-block" type="submit" onClick={submitHandler}>Save</button>
                                 </div>
                             </div>
                         </div>

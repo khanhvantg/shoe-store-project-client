@@ -22,10 +22,8 @@ const Login = () => {
     const { user } = userDetail;
     useEffect(() => {
         if (userInfo) {
-            const id = userInfo.id;
-            dispatch(getUserDetails(id))
-            console.log(user)
-            if(user.name===null){
+            console.log(userInfo)
+            if(userInfo.name===null){
                 navigate("/profile");
             }
             else navigate("/");
@@ -82,14 +80,14 @@ const Login = () => {
     
     return (
         <div className="login-container gradient-custom">
-            <div class="account section">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-6">
-                            <div class="login-form border p-5 bg-white">
-                                <div class="text-center heading">
-                                    <h2 class="mb-2">Login</h2>
-                                    <p class="lead">Don’t have an account? <Link to={{ pathname: "/signup" }} style={{color: "blue"}}>Create a free account</Link></p>
+            <div className="account section">
+                <div className="container">
+                    <div className="row justify-content-center">
+                        <div className="col-lg-6">
+                            <div className="login-form border p-5 bg-white">
+                                <div className="text-center heading">
+                                    <h2 className="mb-2">Login</h2>
+                                    <p className="lead">Don’t have an account? <Link to={{ pathname: "/signup" }} style={{color: "blue"}}>Create a free account</Link></p>
                                 </div>
                                 <div className="form">
                                     <Input

@@ -42,22 +42,22 @@ const ProductMain = ({idCategory}) => {
             {loading ? ( <Loading />) : error ? (<Message variant="alert-danger">{error}</Message>) : (
             <div className="row">
                 { products&&products.sort((a, b) => (a.id-b.id)).map((product)=>(
-                    <div class="col-lg-3 col-12 col-md-6 col-sm-6 mb-5" >
-                        <div class="product">
-                            <div class="product-wrap">
+                    <div className="col-lg-3 col-12 col-md-6 col-sm-6 mb-5" >
+                        <div className="product">
+                            <div className="product-wrap">
                                 <Link to={{ pathname: `/product/${product.id}`}}>
                                     <img className="img-thumbnail w-100 mb-3 img-first"  src={product.images.sort((a, b) => (a.id-b.id))[0]?.link} />
                                 </Link>                      
                             </div>
-                            {/* <span class="onsale">Sale</span> */}
-                            {/* <div class="product-hover-overlay">
-                                <a className="circle" onClick={()=>handleAddToCart(product.id)}><i class="tf-ion-android-cart"></i></a>
+                            {/* <span className="onsale">Sale</span> */}
+                            {/* <div className="product-hover-overlay">
+                                <a className="circle" onClick={()=>handleAddToCart(product.id)}><i className="tf-ion-android-cart"></i></a>
                                 
                             </div> */}
-                            {/* <a className="circle" ><i class="tf-ion-ios-heart"></i></a> */}
-                            <div class="product-info">
-                                <h2 class="product-title h5 mb-0"><Link to={{ pathname: `/product/${product.id}`}}>{product.name}</Link></h2>
-                                <span class="price">
+                            {/* <a className="circle" ><i className="tf-ion-ios-heart"></i></a> */}
+                            <div className="product-info">
+                                <h2 className="product-title h5 mb-0"><Link to={{ pathname: `/product/${product.id}`}}>{product.name}</Link></h2>
+                                <span className="price">
                                     $ {product.price}
                                 </span>
                             </div>

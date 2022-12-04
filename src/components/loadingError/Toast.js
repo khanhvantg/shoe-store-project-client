@@ -5,7 +5,6 @@ const Toast = (message) => {
 
   const show = () => {
     toast(message, {position: toast.POSITION.TOP_CENTER});
-    console.log("aaaa")
   }
   return (
     <>

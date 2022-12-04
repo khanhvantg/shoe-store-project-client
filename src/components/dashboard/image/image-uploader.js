@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllImages, createImageByProductId, updateImage } from '../../../redux/actions/ImageAction'
-import './border.scss'
+import './border.css'
 const ImageUploader = ({isOpen, isCreate, imageId, id, hide}) => {
   const dispatch = useDispatch();
   const [imageSrc, setImageSrc] = useState();
@@ -35,7 +35,6 @@ const ImageUploader = ({isOpen, isCreate, imageId, id, hide}) => {
     // Update progress (can be used to show progress indicator)
     xhr.upload.addEventListener("progress", (e) => {
       setProgress(Math.round((e.loaded * 100.0) / e.total));
-      console.log(Math.round((e.loaded * 100.0) / e.total));
     });
     xhr.onreadystatechange = (e) => {
       if (xhr.readyState == 4 && xhr.status == 200) {
@@ -51,7 +50,6 @@ const ImageUploader = ({isOpen, isCreate, imageId, id, hide}) => {
           }
           dispatch(updateImage({id,imageId,image}))
         }
-        console.log(response.secure_url);
       }
     };
 
@@ -83,10 +81,10 @@ const ImageUploader = ({isOpen, isCreate, imageId, id, hide}) => {
              <div className="btn-group">
              <button 
                  onClick={handleCancel}
-                 type="button" class="btn btn-danger">Cancel</button>
+                 type="button" className="btn btn-danger">Cancel</button>
            <button 
                onClick={handleOnSubmit}
-               type="button" class="btn btn-success">Save</button>
+               type="button" className="btn btn-success">Save</button>
          </div>
              </div>
        </div>

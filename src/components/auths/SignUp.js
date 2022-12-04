@@ -88,16 +88,16 @@ const SignUp = () => {
 
     return (
         <div className="signUp-container gradient-custom">
-            <div class="account section">
-                <div class="container">
-                <div class="row justify-content-center ">
-                    <div class="col-lg-6">
-                    <div class="login-form border p-5 bg-white">
-                        <div class="text-center">
-                        <h2 class="mb-2">Sign Up</h2>
-                        <p class="lead">Already have an account? <Link to="/login" style={{color: "blue"}}> Login now</Link></p>
+            <div className="account section">
+                <div className="container">
+                <div className="row justify-content-center ">
+                    <div className="col-lg-6">
+                    <div className="login-form border p-5 bg-white">
+                        <div className="text-center">
+                        <h2 className="mb-2">Sign Up</h2>
+                        <p className="lead">Already have an account? <Link to="/login" style={{color: "blue"}}> Login now</Link></p>
                         </div>
-                        <div class="form">
+                        <div className="form">
                             <Input
                                 name="username"
                                 title="Username"
@@ -121,8 +121,8 @@ const SignUp = () => {
                                 onChangeFunc={onInputChange}
                                 {...errorInput.confirmPassword}
                             />
-                            <div class="form-group">
-                                        <button onClick={handleSubmit} class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Signup</button>
+                            <div className="form-group">
+                                        <button onClick={handleSubmit} className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Signup</button>
                                     </div>
                             {loading ? (
                                 <Loading />

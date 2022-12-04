@@ -33,7 +33,6 @@ export const getAllProducts = () => async (dispatch) => {
 
       const { data } = await axios.get('/api/products', {headers: authHeader()})
       dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
-      console.log(data)
   } catch (error) {
       dispatch({
           type: PRODUCT_LIST_FAIL,

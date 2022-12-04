@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import '../Modal.scss'
+import '../Modal.css'
 
 import { useDispatch, useSelector } from "react-redux";
 import { updateAccountByAdmin, getAccountById, getAllAccounts} from '../../../redux/actions/AccountAction'

@@ -32,7 +32,6 @@ const ProductMain = () => {
     const { success, category } = categoryDetail;
     useEffect(() => {
         dispatchCategory(getAllcategories());
-        console.log(idCategory)
         if(idCategory==='0'){
             dispatchProduct(getAllProducts());
         } 
@@ -93,7 +92,7 @@ const ProductMain = () => {
                                         <td className="align-middle" style={{width:400,wordBreak:"break-word"}}>
                                             {product.description}
                                         </td>
-                                        <td className="text-nowrap align-middle">{product.price}</td>
+                                        <td className="text-nowrap align-middle">$ {product.price}</td>
                                         {/* <td className="text-nowrap align-middle">
                                             {product.status ==="1" ? <Status check="checked" /> : <Status check=""/>}
                                         </td> */}

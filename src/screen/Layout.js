@@ -4,24 +4,16 @@ import {
     Link,
     useParams
   } from "react-router-dom";
-  import './Layout.scss'
+  import './Layout.css'
 const Layout = ({active}) => {
     const [isAdmin, setIsAdmin] = useState(false);
     const nameUrl = window.location.href.toString();
     let arrayStrig = nameUrl.split("/");
-   // const [a, se] = arrayStrig[arrayStrig.length-1]
-   // console.log(arrayStrig[arrayStrig.length-1]);
     const f = arrayStrig[arrayStrig.length-1];
 
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
-    // for (let i in userInfo.roles) {
-    //     if(userInfo.roles[i]==="ROLE_ADMIN") {
-    //         setIsAdmin(true);
-    //         break;
-    //     }
-    //     //console.log(userInfo.roles[i]);
-    // }
+
     useEffect(() =>{
         if(userInfo){
             for (let i in userInfo.roles) {
@@ -34,23 +26,22 @@ const Layout = ({active}) => {
             setIsAdmin(false);
         }
     },[userInfo])
-    console.log(isAdmin)
     return (
         <nav id="sidebar" className={active?"active":""}>
-            <div class="sidebar-header">
+            <div className="sidebar-header">
                 <h5>Sales</h5>
                 <hr></hr>
             </div>
-            <ul class="list-unstyled" style={{paddingLeft:20}}>
+            <ul className="list-unstyled" style={{paddingLeft:20}}>
                 <li className={f==="d-revenue"?"nav-item active":"nav-item"} ><Link to="/manage/d-revenue" className="nav-link">Statistics By Day</Link></li>
                 <li className={f==="m-revenue"?"nav-item active":"nav-item"} ><Link to="/manage/m-revenue" className="nav-link">Statistics By Month</Link></li>
                 <li className={f==="y-revenue"?"nav-item active":"nav-item"} ><Link to="/manage/y-revenue" className="nav-link">Monthly Revenue By Year</Link></li>
             </ul>
-            <div class="sidebar-header">
+            <div className="sidebar-header">
                 <h5>Dashboard</h5>
                 <hr></hr>
             </div>
-            <ul class="list-unstyled" style={{paddingLeft:20}}>
+            <ul className="list-unstyled" style={{paddingLeft:20}}>
                 {isAdmin?
                     <li className={f==="accounts"?"nav-item active":"nav-item"} ><Link to="/manage/accounts" className="nav-link">Accounts</Link></li>
                     :

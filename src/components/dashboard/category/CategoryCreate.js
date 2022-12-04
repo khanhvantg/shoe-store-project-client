@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import '../Modal.scss'
+import '../Modal.css'
 
 import { useDispatch, useSelector } from "react-redux";
 import { updateCategory, getCategoryById, getAllcategories, creatCategory} from '../../../redux/actions/CategoryAction'
@@ -155,7 +155,7 @@ const CategoryCreate = ({isShowing, hide}) => {
                                             </div>
                                 </div>
                                 <div className="col text-center px-xl-3">
-                                    <button className="btn btn-primary btn-block" type="submit" onClick={submitHandler}>Save Changes</button>
+                                    <button className="btn btn-primary btn-block" type="submit" onClick={submitHandler}>Save</button>
                                 </div>
                             </div>
                         </div>

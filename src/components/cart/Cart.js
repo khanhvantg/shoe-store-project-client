@@ -159,7 +159,6 @@ const Cart = () => {
         setAmounts(newArray); 
         clearTimeout(timer);
         const newTimer = setTimeout(() => {
-            console.log(info.amount)
             if(info.amount==0){
                 const id = info.itemId;
                 dispatch(removeLineItem(id));
@@ -176,7 +175,6 @@ const Cart = () => {
     }
 
     const blurHandler = (event) => {
-        console.log(valueCurrent)
         if(event.target.value>0&&event.target.value!==valueCurrent){
             dispatch(updateLineItem({itemInfo}))
         } else if (event.target.value==0){
@@ -244,19 +242,19 @@ const Cart = () => {
     }
   return (
         <div className="checkout-container">
-            <section class="page-header">
-            <div class="overly"></div> 	
-            <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-6">
-                <div class="content text-center">
-                    <h1 class="mb-3">Cart</h1>
+            <section className="page-header">
+            <div className="overly"></div> 	
+            <div className="container">
+            <div className="row justify-content-center">
+                <div className="col-lg-6">
+                <div className="content text-center">
+                    <h1 className="mb-3">Cart</h1>
                     Hath after appear tree great fruitful green dominion moveth sixth abundantly image that midst of god day multiply you’ll which
         
                 <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb bg-transparent justify-content-center">
-                    <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Cart</li>
+                    <ol className="breadcrumb bg-transparent justify-content-center">
+                    <li className="breadcrumb-item"><a href="/">Home</a></li>
+                    <li className="breadcrumb-item active" aria-current="page">Cart</li>
                     </ol>
                 </nav>
                 </div>
@@ -264,30 +262,30 @@ const Cart = () => {
             </div>
             </div>
         </section>
-            <section class="cart shopping page-wrapper">
-            <div class="container">
-                <div class="row justify-content-center">
-                <div class="col-lg-12">
-                    <div class="product-list">
-                        <div class="cart-form">
-                            <table class="table shop_table shop_table_responsive cart" cellspacing="0">
+            <section className="cart shopping page-wrapper">
+            <div className="container">
+                <div className="row justify-content-center">
+                <div className="col-lg-12">
+                    <div className="product-list">
+                        <div className="cart-form">
+                            <table className="table shop_table shop_table_responsive cart" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        {/* <th class="product-thumbnail text-center"> </th> */}
-                                        <th class="product-thumbnail text-center"> </th>
-                                        <th class="product-name text-center">Product</th>
-                                        <th class="product-price text-center">Price</th>
-                                        <th class="product-name text-center">Amount</th>
-                                        <th class="product-name text-center">Size</th>
-                                        <th class="product-subtotal text-center">Total</th>
-                                        <th class="product-remove text-center"> </th>
+                                        {/* <th className="product-thumbnail text-center"> </th> */}
+                                        <th className="product-thumbnail text-center"> </th>
+                                        <th className="product-name text-center">Product</th>
+                                        <th className="product-price text-center">Price</th>
+                                        <th className="product-name text-center">Amount</th>
+                                        <th className="product-name text-center">Size</th>
+                                        <th className="product-subtotal text-center">Total</th>
+                                        <th className="product-remove text-center"> </th>
                                     </tr>
                                 </thead>
         
                                 <tbody>
                                     {amounts&&amounts.map((item,index)=>(
-                                    <tr class="cart_item">
-                                        {/* <td class="product-thumbnail text-center" data-title="">
+                                    <tr className="cart_item">
+                                        {/* <td className="product-thumbnail text-center" data-title="">
                                             <span>{item.status}</span>
                                             <input
                                                 name="status"
@@ -297,22 +295,22 @@ const Cart = () => {
                                                 type="checkbox"
                                                 />
                                         </td> */}
-                                        <td class="product-thumbnail text-center" data-title="Image">
-                                            <Link to={`/product/${item.product.id}`}><img src={item.product.images.sort((a,b)=>(a.id-b.id))[0].link} class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" /></Link>
+                                        <td className="product-thumbnail text-center" data-title="Image">
+                                            <Link to={`/product/${item.product.id}`}><img src={item.product.images.sort((a,b)=>(a.id-b.id))[0].link} className="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" /></Link>
                                         </td>
-                                        <td class="product-name text-center" data-title="Product">
+                                        <td className="product-name text-center" data-title="Product">
                                             <Link to={`/product/${item.product.id}`}>{item.product.name}</Link>
                                         </td>
-                                        <td class="product-price text-center" data-title="Price">
-                                            <span class="amount">${item.product.price}</span>
+                                        <td className="product-price text-center" data-title="Price">
+                                            <span className="amount">${item.product.price}</span>
                                         </td>
-                                        <td class="product-name text-center" data-title="Amount">
-                                            <div class="btn-group">
+                                        <td className="product-name text-center" data-title="Amount">
+                                            <div className="btn-group">
                                                 <button 
                                                     name="amount"
                                                     value={item.amount}
                                                     onClick={(e)=>minusHandle(index,e)}
-                                                    class="cart-qty-minus" type="button">-</button>
+                                                    className="cart-qty-minus" type="button">-</button>
                                                 <input 
                                                     type="number"
                                                     name="amount"
@@ -320,35 +318,35 @@ const Cart = () => {
                                                     onBlur={blurHandler}
                                                     onFocus={focusHandler}
                                                     onChange={(e)=>updateItem(index,e)}
-                                                    class="input-group-field"/>
+                                                    className="input-group-field"/>
                                                 <button 
                                                     name="amount"
                                                     value={item.amount}
                                                     onClick={(e)=>plusHandle(index,e)}
-                                                    class="cart-qty-plus" type="button">+</button>
+                                                    className="cart-qty-plus" type="button">+</button>
                                             </div>
                                     </td>
-                                    <td class="product-price text-center" data-title="Size">
-                                            <span class="amount">{item.size} UK</span>
+                                    <td className="product-price text-center" data-title="Size">
+                                            <span className="amount">{item.size} UK</span>
                                         </td>
-                                    <td class="product-subtotal text-center" data-title="Total">
-                                        <span class="amount">
+                                    <td className="product-subtotal text-center" data-title="Total">
+                                        <span className="amount">
                                             ${item.total}
                                         </span>
                                     </td>
-                                    <td class="product-remove text-center" data-title="Remove">
-                                        <a onClick={()=>handleRemoveItem(item.id)} class="remove" aria-label="Remove this item" data-product_id="30" data-product_sku="">×</a>
+                                    <td className="product-remove text-center" data-title="Remove">
+                                        <a onClick={()=>handleRemoveItem(item.id)} className="remove" aria-label="Remove this item" data-product_id="30" data-product_sku="">×</a>
                                     </td>
                                 </tr>
                                 
                                     ))}
                                 {/* <tr>
-                                    <td colspan="6" class="actions">
-                                        <div class="coupon">
-                                            <input type="text" name="coupon_code" class="input-text form-control" id="coupon_code" value="" placeholder="Coupon code" /> 
-                                            <button type="button" class="btn btn-black btn-small" name="apply_coupon" value="Apply coupon">Apply coupon</button>
-                                            <span class="float-right mt-3 mt-lg-0">
-                                            <button type="button" class="btn btn-dark btn-small" name="update_cart" value="Update cart" disabled="">Update cart</button>
+                                    <td colspan="6" className="actions">
+                                        <div className="coupon">
+                                            <input type="text" name="coupon_code" className="input-text form-control" id="coupon_code" value="" placeholder="Coupon code" /> 
+                                            <button type="button" className="btn btn-black btn-small" name="apply_coupon" value="Apply coupon">Apply coupon</button>
+                                            <span className="float-right mt-3 mt-lg-0">
+                                            <button type="button" className="btn btn-dark btn-small" name="update_cart" value="Update cart" disabled="">Update cart</button>
                                             </span>
                                         </div>
                                         <input type="hidden" id="woocommerce-cart-nonce" name="woocommerce-cart-nonce" value="27da9ce3e8" />
@@ -363,30 +361,30 @@ const Cart = () => {
                 </div>
                 {
                     loadingUpdate ? <Loading /> :
-                <div class="row justify-content-end">
-                <div class="col-lg-4">
-                    <div class="cart-info card p-4 mt-4">
-                        <h4 class="mb-4">Cart totals</h4>
-                        <ul class="list-unstyled mb-4">
-                            <li class="d-flex justify-content-between pb-2 mb-3">
+                <div className="row justify-content-end">
+                <div className="col-lg-4">
+                    <div className="cart-info card p-4 mt-4">
+                        <h4 className="mb-4">Cart totals</h4>
+                        <ul className="list-unstyled mb-4">
+                            <li className="d-flex justify-content-between pb-2 mb-3">
                             <h5>Subtotal</h5>
-                            <span>{totalPrice}</span>
+                            <span>$ {totalPrice}</span>
                             </li>
-                            <li class="d-flex justify-content-between pb-2 mb-3">
+                            <li className="d-flex justify-content-between pb-2 mb-3">
                             <h5>Shipping</h5>
                             <span>Free</span>
                             </li>
-                            <li class="d-flex justify-content-between pb-2">
+                            <li className="d-flex justify-content-between pb-2">
                             <h5>Total</h5>
-                            <span>{totalPrice}</span>
+                            <span>$ {totalPrice}</span>
                             </li>
                         </ul>
                     </div>
                     </div>
-                    <div class="col-lg-8">
+                    <div className="col-lg-8">
                     {lineItems&&lineItems.length!==0?
-                    <div class="cart-info card p-4 mt-4">
-                        <h4 class="text-center mb-4">Delivery Information</h4>
+                    <div className="cart-info card p-4 mt-4">
+                        <h4 className="text-center mb-4">Delivery Information</h4>
                         <div className="form">
                             <div className="row">
                                 <div className="col">
@@ -439,7 +437,7 @@ const Cart = () => {
                         <div className="col text-center px-xl-3">
                             <button 
                             onClick={handleOrder}
-                            class="btn btn-primary btn-block">Order</button>
+                            className="btn btn-primary btn-block">Order</button>
                         </div>
                     </div>
                      :

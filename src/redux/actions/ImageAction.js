@@ -45,8 +45,6 @@ export const getAllImages = ({id}) => async (dispatch) => {
 export const createImageByProductId = ({id,image}) => async (dispatch) => {
   try {
     dispatch({ type: IMAGE_CREATE_REQUEST });
-    console.log(id);
-    console.log(image);
     const { data } = await axios.post(`/api/product/${id}/images`, image, {headers: authHeader()});
     dispatch({ type: IMAGE_CREATE_SUCCESS, payload: data });
     const {list} = dispatch(getAllImages({id}));

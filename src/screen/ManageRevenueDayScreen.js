@@ -48,8 +48,8 @@ const ManageRevenueDateScreen = () => {
             text: getSubtitle(),
             floating: true,
             align: 'right',
-            verticalAlign: 'middle',
-            y: -20,
+            verticalAlign: 'top',
+            y: 30,
             x: 10
         },
 
@@ -63,7 +63,7 @@ const ManageRevenueDateScreen = () => {
             opposite: true,
             tickPixelInterval: 150,
             title: {
-                text: null
+                text: 'Quantity'
             }
         },
         plotOptions: {
@@ -86,7 +86,7 @@ const ManageRevenueDateScreen = () => {
         series: [
           {
             type:'bar',
-            name: 'Total',
+            name: 'Quantity',
             data: dataproduct.data,
           }
 
@@ -165,14 +165,6 @@ const ManageRevenueDateScreen = () => {
         }
     }, [date]);
 
-    console.log('b',revenueList)
-    // const handleClick = () => {
-    //   if(option==='YEAR')
-    //     setOption('PRODUCT')
-    //   else setOption('YEAR')
-    //   console.log(option)
-    // }
-
     const [active, setActive] =useState(false);
     const handle = () => {
         if(!active) {
@@ -180,37 +172,53 @@ const ManageRevenueDateScreen = () => {
         }
         else setActive(false);
     };
+
+    const [isOpen, setIsOpen] = useState(false);
+    const handleClick = (e) => {
+      e.preventDefault();
+      setIsOpen(!isOpen);
+    };
   return (
-    <div class="wrapper1">
+    <div className="wrapper1">
         <Layout active={active}/>
-        <nav class="navbar navbar1-expand-lg navbar1-light bg-light">
-            <div class="container-fluid">
-                <button type="button" id="sidebarCollapse" class="btn btn-info"  onClick={handle}>
-                    {!active?<i class="tf-ion-ios-arrow-left"></i>:
-                    <i class="tf-ion-ios-arrow-right"></i>}
+        <nav className="navbar navbar1-expand-lg navbar1-light bg-light">
+            <div className="container-fluid">
+                <button type="button" id="sidebarCollapse" className="btn btn-info"  onClick={handle}>
+                    {!active?<i className="tf-ion-ios-arrow-left"></i>:
+                    <i className="tf-ion-ios-arrow-right"></i>}
                 </button>
 
             </div>
         </nav>
-   
-                <div className="e-panel cardcus parent">
+
+          <div className="e-panel cardcus parent">
                 <div className="card-body">
-                <DatePicker
-                      selected={startDate}
-                      onChange={(date) => {
-                        setStartDate(date);
-                        setDate({modifiedDate: date.getDate() + '/' + (date.getMonth()+1) +'/'+ date.getFullYear()})
-                      }
-                    }
-                      dateFormat="dd/MM/yyyy"
-                      // showMonthYearPicker
-                      // showMonthFullYearPicker
-                    />
+                
                     <div className="e-table">
                         <div className="table-responsive table-lg mt-3">
-                            <table className="child">
-                              <div ref={refContainer}/>
-                            </table>
+                        <button className="btn btn-info" onClick={handleClick}>
+                          Date: {startDate.getDate()}/{startDate.getMonth()+1}/{startDate.getFullYear()}
+                          <i>  </i>
+                          <i className="tf-ion-android-calendar"></i>
+                        </button>
+                        {isOpen && (
+                                <DatePicker
+                                selected={startDate}
+                                onChange={(date) => {
+                                  setStartDate(date);
+                                  setDate({modifiedDate: date.getDate() + '/' + (date.getMonth()+1) +'/'+ date.getFullYear()});
+                                  setIsOpen(!isOpen);
+                                }
+                              }
+                                dateFormat="dd/MM/yyyy"
+                                inline
+                              />
+                        )}
+                        
+                        <table className="child" ref={refContainer} style={{border:"2px soild"}}/>
+                            {/* <table className="table table-bordered">
+                              <div className="child" ref={refContainer}/>
+                            </table> */}
                         </div>
                     </div>
                 </div>

@@ -1,71 +1,48 @@
 function Footer() {
     return (
         <div className="footer-container" style={{background:"white"}}>
-            <footer class="footer" style={{background:"white"}}>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-6 col-lg-4 col-sm-6 mb-5 mb-lg-0 text-center text-sm-left mr-auto">
-                            <div class="footer-widget">
-                                    <h4 class="mb-4">E-Shop</h4>
-                                    <p class="lead">Iste dolores iure quis excepturi, deserunt praesentium.</p>
-                                    <div class="">
-                                        <p class="mb-0"><strong>Location: </strong>So 1, Vo Van Ngan</p>
-                                        <p><strong>Support Email: </strong> support@email.com</p>
+            <footer className="footer" style={{background:"white"}}>
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-6 col-lg-4 col-sm-6 mb-5 mb-lg-0 text-center text-sm-left mr-auto">
+                            <div className="footer-widget">
+                                    <h4 className="mb-4">E-Shop</h4>
+                                    <p className="lead">Welcome To E-Shop. We Are Very Happy To Serve You.</p>
+                                    <div className="">
+                                        <p className="mb-0"><strong>Location: </strong>So 1, Vo Van Ngan</p>
+                                        <p><strong>Support Email: </strong> TLCN@gmail.com</p>
                                     </div>
                             </div>
                         </div>
-                        {/* <div class="col-md-6 col-lg-2 col-sm-6 mb-5 mb-lg-0 text-center text-sm-left">
-                            <div class="footer-widget">
-                                <h4 class="mb-4">Category</h4>
-                                <ul class="pl-0 list-unstyled mb-0">
-                                    <li><a href="#">Men's Fashion</a></li>
-                                    <li><a href="#">Women's Fashion</a></li>
-                                    <li><a href="#">Kids Fashion</a></li>
-                                    <li><a href="#">Accessories</a></li>
-                                    <li><a href="#">Shoe Collection</a></li>
+                       
+                        <div className="col-md-6 col-lg-3 col-sm-6 text-center text-sm-left">
+                            <div className="footer-widget">
+                                <h4 className="mb-4">Opening Hours</h4>
+                                <ul className="pl-0 list-unstyled mb-5">
+                                    <li className="d-lg-flex justify-content-between">Monday-Friday <span>8.00-20.00</span></li>
+                                    <li className="d-lg-flex justify-content-between">Saturday <span>10.00-20.00</span></li>
+                                    <li className="d-lg-flex justify-content-between">Sunday <span>12.0020.00</span></li>
                                 </ul>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-2 col-sm-6 mb-5 mb-lg-0 text-center text-sm-left">
-                            <div class="footer-widget">
-                                <h4 class="mb-4">Useful Link</h4>
-                                <ul class="pl-0 list-unstyled mb-0">
-                                    <li><a href="#">News &amp; Tips</a></li>
-                                    <li><a href="#">About Us</a></li>
-                                    <li><a href="#">Support</a></li>
-                                    <li><a href="#">Our Shop</a></li>
-                                    <li><a href="#">Contact Us</a></li>
-                                </ul>
-                            </div>
-                        </div> */}
-                        <div class="col-md-6 col-lg-3 col-sm-6 text-center text-sm-left">
-                            <div class="footer-widget">
-                                <h4 class="mb-4">Opening Hours</h4>
-                                <ul class="pl-0 list-unstyled mb-5">
-                                    <li class="d-lg-flex justify-content-between">Monday-Friday <span>8.00-20.00</span></li>
-                                    <li class="d-lg-flex justify-content-between">Saturday <span>10.00-20.00</span></li>
-                                    <li class="d-lg-flex justify-content-between">Sunday <span>12-20.00</span></li>
-                                </ul>
-                                <h5>Call Now : +(000) 000-000</h5>
+                                <h5>Call Now : +(84) 94 529 1068</h5>
                             </div>
                         </div>
                     </div>
                 </div>
             </footer>
-            <div class="footer-btm py-4 ">
-                <div class="container">
-                    <div class="center">
-                        <div class="col-lg-9">
-                            <ul class="list-inline mb-0 footer-btm-links text-lg-right mt-2 mt-lg-0">
-                            <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
-                            <li class="list-inline-item"><a href="#">Terms &amp; Conditions</a></li>
-                            <li class="list-inline-item"><a href="#">Cookie Policy</a></li>
-                            <li class="list-inline-item"><a href="#">Terms of Sale</a></li>
+            {/* <div className="footer-btm py-4 ">
+                <div className="container">
+                    <div className="center">
+                        <div className="col-lg-9">
+                            <ul className="list-inline mb-0 footer-btm-links text-lg-right mt-2 mt-lg-0">
+                            <li className="list-inline-item"><a href="#">Privacy Policy</a></li>
+                            <li className="list-inline-item"><a href="#">Terms &amp; Conditions</a></li>
+                            <li className="list-inline-item"><a href="#">Cookie Policy</a></li>
+                            <li className="list-inline-item"><a href="#">Terms of Sale</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
         </div>
    );
 }

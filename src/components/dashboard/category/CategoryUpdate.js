@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import '../Modal.scss'
+import '../Modal.css'
 
 import { useDispatch, useSelector } from "react-redux";
 import { updateCategory, getCategoryById, getAllcategories} from '../../../redux/actions/CategoryAction'

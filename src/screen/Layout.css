@@ -13,7 +13,7 @@ p {
     font-size: 1.1em;
     font-weight: 300;
     line-height: 1.7em;
-    color: rgb(189, 39, 39);
+    /* color: rgb(189, 39, 39); */
 }
 
 a,
@@ -29,7 +29,7 @@ a:focus {
     background: #fff;
     border: none;
     border-radius: 0;
-    //margin-bottom: 40px;
+    /* margin-bottom: 40px; */
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
     flex-direction: column;
 }
@@ -53,7 +53,7 @@ a:focus {
 
 .wrapper1 {
     display: flex;
-    width: 100%;
+    width: auto;
     align-items: stretch;
     background: white;
 }
@@ -161,12 +161,12 @@ a.article:hover {
     MEDIAQUERIES
 ----------------------------------------------------- */
 @media (max-width: 768px) {
-    // #sidebar {
-    //     margin-left: -250px;
-    // }
-    // #sidebar.active {
-    //     margin-left: 0;
-    // }
+    #sidebar {
+       margin-left: -250px;
+    }
+    #sidebar.active {
+         margin-left: 0;
+    }
     #sidebarCollapse span {
         display: none;
     }

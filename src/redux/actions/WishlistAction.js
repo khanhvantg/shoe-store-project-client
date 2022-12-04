@@ -30,23 +30,6 @@ export const authHeader = () => {
   }
 }
 
-// export const getAllProducts = () => async (dispatch) => {
-//   try {
-//       dispatch({ type: LINE_ITEM_LIST_REQUEST });
-
-//       const { data } = await axios.get('/api/products', {headers: authHeader()})
-//       dispatch({ type: LINE_ITEM_LIST_SUCCESS, payload: data });
-//       console.log(data)
-//   } catch (error) {
-//       dispatch({
-//           type: LINE_ITEM_LIST_FAIL,
-//           payload: error.response && error.response.data.message
-//               ? error.response.data.message
-//               : error.message,
-//       });
-//   }
-// };
-
 export const createLineItem = ({form, productId}) => async (dispatch, getState) => {
 try {
   dispatch({ type: LINE_ITEM_CREATE_REQUEST });
@@ -57,7 +40,6 @@ try {
   dispatch({ type: LINE_ITEM_CREATE_SUCCESS, payload: data });
   dispatch(getWishListById());
   toast("Add To Cart Successfull", {position: toast.POSITION.TOP_CENTER});
-  console.log("a",data);
 } catch (error) {
   dispatch({
     type: LINE_ITEM_CREATE_FAIL,
@@ -77,7 +59,6 @@ try {
     userLogin: { userInfo },
   } = getState();
   const { data } = await axios.get(`/api/wishList/${userInfo.id}`, {headers: authHeader()});
-  console.log("data",data)
   dispatch({ type: LINE_ITEM_LIST_SUCCESS, payload: data });
 } catch (error) {
 dispatch({

@@ -4,9 +4,9 @@ const Status = ({check}) => {
     
     // var a="checked"
   return (
-    <label class="switch">
+    <label className="switch">
         <input type="radio" checked={check=="checked"}/>
-        <span class="slider round"></span>
+        <span className="slider round"></span>
     </label>
   )
 }

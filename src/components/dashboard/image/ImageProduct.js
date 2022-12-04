@@ -53,16 +53,16 @@ const ImageProduct = ({isShowing, hide, id}) => {
                     <ImageUploader isOpen={isOpen} isCreate={isCreate} imageId={imageId} id={id} hide={handleOpenWiget}/>
                     <div className="modal-body">
                         <div className="py-1 ">
-                            <div class="container">
+                            <div className="container">
                             {loading ? (
                                 <Loading />
                                 ) : error ? (
                                     <Message variant="alert-danger">{error}</Message>
                                 ) : (
-                                <div class="row">
+                                <div className="row">
                                     {images&&images.map((item,index)=>(
-                                        <div class="col-lg-3 mx-auto d-block" >
-                                            <img src={item.link} alt="" class="img-thumbnail mx-auto d-block"/>
+                                        <div className="col-lg-3 mx-auto d-block" >
+                                            <img src={item.link} alt="" className="img-thumbnail mx-auto d-block"/>
                                             <button className="btn btn-sm btn-outline-secondary mx-auto d-block " type="button" onClick={()=>{handleEditImg(item.id)}}> 
                                                 <i className="tf-ion-edit"></i>
                                             </button>

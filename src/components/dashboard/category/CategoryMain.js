@@ -20,7 +20,6 @@ const CategoryMain = () => {
         dispatch(getAllcategories());
     }, [dispatch]);
 
-    console.log(categories)
     return (
                 <div className="card-body">
                     <div className="text-center card-title">
@@ -51,7 +50,7 @@ const CategoryMain = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                { categories && categories.map((category, index) => (
+                                { categories && categories.sort((a,b)=>(a.id-b.id)).map((category, index) => (
                                     <tr>
                                         <td className="align-middle">{category.id}</td>
                                         <td className="text-nowrap align-middle">{category.name}</td>

@@ -195,13 +195,13 @@ const ProfileScreen = () => {
 
     
   return (
-      <div class="container rounded bg-white mt-5">
-        <div class="row">
-            <div class="col-md-4 border-right">
-                <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                    <img class="rounded-circle mt-5" src="https://i.imgur.com/0eg0aG0.jpg" width="90"/>
-                    <span class="font-weight-bold">{form.username}</span>
-                    <span class="text-black-50">{form.email}</span>
+      <div className="container rounded bg-white mt-5">
+        <div className="row">
+            <div className="col-md-4 border-right">
+                <div className="d-flex flex-column align-items-center text-center p-3 py-5">
+                    <img className="rounded-circle mt-5" src="https://i.imgur.com/0eg0aG0.jpg" width="90"/>
+                    <span className="font-weight-bold">{form.username}</span>
+                    <span className="text-black-50">{form.email}</span>
                     <span>{form.address}</span></div>
                     <button className="btn btn-primary btn-block" type="submit" onClick={()=>setHide(!hide)}>Change Password</button>
                         { hide ? (
@@ -246,9 +246,9 @@ const ProfileScreen = () => {
                     </div>):(<></>)}
                     
             </div>
-            <div class="col-md-8">
-                    <div class="text-center">
-                        {/* <div class="d-flex flex-row align-items-center back"><i class="fa fa-long-arrow-left mr-1 mb-1"></i>
+            <div className="col-md-8">
+                    <div className="text-center">
+                        {/* <div className="d-flex flex-row align-items-center back"><i className="fa fa-long-arrow-left mr-1 mb-1"></i>
                             <h6>Back to home</h6>
                         </div> */}
                         <h4>Edit Profile</h4>

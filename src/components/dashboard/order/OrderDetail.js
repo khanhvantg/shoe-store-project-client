@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { createOrder, getOrdersByUserId, getOrderById, getAllOrders, updateOrder } from '../../../redux/actions/OrderAction'
 import {
     ORDER_UPDATE_RESET,
@@ -12,7 +13,6 @@ const OrderDetail = ({isShowing, hide, id}) => {
     const dispatchUpdate = useDispatch();
     const orderDetail = useSelector((state) => state.orderDetail);
     const {order, lineItems} = orderDetail;
-    console.log(order.status)
     const [status, setStatus]=useState(order.status);
     const [submit,setSubmit]=useState(false)
     const orderUpdate = useSelector((state) => state.orderUpdate);
@@ -80,13 +80,13 @@ const OrderDetail = ({isShowing, hide, id}) => {
                         ) : error ? (
                             <Message variant="alert-danger">{error}</Message>
                         ) : ( */}
-                        <section class="cart shopping">
-            <div class="container">
-                <div class="row justify-content-center">
-                <div class="col-lg-12">
-                    <div class="cart-info card p-4 mt-4">
-                    <li class="d-flex justify-content-between pb-2 mb-3">
-                        <h4 class="mb-4">Information Order</h4>
+                        <section className="cart shopping">
+            <div className="container">
+                <div className="row justify-content-center">
+                <div className="col-lg-12">
+                    <div className="cart-info card p-4 mt-4">
+                    <li className="d-flex justify-content-between pb-2 mb-3">
+                        <h4 className="mb-4">Information Order</h4>
                         {order.status ==="0" ? (
                             <h3 className="text-nowrap align-middle" style={{color:"red"}}>Cancelled</h3>
                         ):order.status ==="1" ?(
@@ -94,67 +94,67 @@ const OrderDetail = ({isShowing, hide, id}) => {
                         ):order.status ==="2" ?(
                             <h3 className="align-middle" style={{color:"blue"}}>Shipping</h3>
                         ):(
-                            <h3 className="align-middle" style={{color:"green"}}>Shipped</h3>
+                            <h3 className="align-middle" style={{color:"green"}}>Completed</h3>
                         )}
                     </li>
-                        <ul class="list-unstyled mb-4">
-                            <li class="d-flex justify-content-between pb-2 mb-3">
+                        <ul className="list-unstyled mb-4">
+                            <li className="d-flex justify-content-between pb-2 mb-3">
                             <h5>Orderer</h5>
                             <span>{order.createdBy}</span>
                             </li>
-                            <li class="d-flex justify-content-between pb-2 mb-3">
+                            <li className="d-flex justify-content-between pb-2 mb-3">
                             <h5>Receiver</h5>
                             <span>{order.name}</span>
                             </li>
-                            <li class="d-flex justify-content-between pb-2 mb-3">
+                            <li className="d-flex justify-content-between pb-2 mb-3">
                             <h5>Phone</h5>
                             <span>{order.phoneNumber}</span>
                             </li>
-                            <li class="d-flex justify-content-between pb-2 mb-3">
+                            <li className="d-flex justify-content-between pb-2 mb-3">
                             <h5>Adress</h5>
                             <span>{order.address}</span>
                             </li>
-                            <li class="d-flex justify-content-between pb-2 mb-3">
+                            <li className="d-flex justify-content-between pb-2 mb-3">
                             <h5>Total Item</h5>
                             <span>{amountItem}</span>
                             </li>
-                            <li class="d-flex justify-content-between pb-2">
+                            <li className="d-flex justify-content-between pb-2">
                             <h5>Total Price</h5>
                             <span>$ {order.totalPrice}</span>
                             </li>
                         </ul>
                     </div>
-                    <div class="product-list">
-                        <form class="cart-form">
-                            <table class="table shop_table shop_table_responsive cart" cellspacing="0">
+                    <div className="product-list">
+                        <form className="cart-form">
+                            <table className="table shop_table shop_table_responsive cart" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th class="product-thumbnail"> </th>
-                                        <th class="product-name">Product</th>
-                                        <th class="product-price">Price</th>
-                                        <th class="product-quantity">Amount</th>
-                                        <th class="product-subtotal">Total</th>
+                                        <th className="product-thumbnail"> </th>
+                                        <th className="product-name">Product</th>
+                                        <th className="product-price">Price</th>
+                                        <th className="product-quantity">Amount</th>
+                                        <th className="product-subtotal">Total</th>
                                     </tr>
                                 </thead>
         
                                 <tbody>
                             
                                     {lineItems&&lineItems.map(item=>(
-                                        <tr class="cart_item">
-                                    <td class="product-thumbnail" data-title="Thumbnail">
-                                        <a href="/product-single"><img src={item.product.images.sort((a,b)=>(a.id-b.id))[0].link} class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" /></a>
+                                        <tr className="cart_item">
+                                    <td className="product-thumbnail" data-title="Image">
+                                        <Link to={`/product/${item.product.id}`}><img src={item.product.images.sort((a,b)=>(a.id-b.id))[0].link} className="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" /></Link>
                                     </td>
-                                    <td class="product-name" data-title="Product">
-                                        <a href="#">{item.product.name}</a>
+                                    <td className="product-name" data-title="Product">
+                                        <span className="amount">{item.product.name}</span>
                                     </td>
-                                    <td class="product-price" data-title="Price">
-                                        <span class="amount">{item.product.price}</span>
+                                    <td className="product-price" data-title="Price">
+                                        <span className="amount">$ {item.product.price}</span>
                                     </td>
-                                    <td class="product-quantity" data-title="Quantity">
+                                    <td className="product-quantity" data-title="Quantity">
                                         {item.amount}
                                     </td>
-                                    <td class="product-subtotal" data-title="Total">
-                                        <span class="amount">
+                                    <td className="product-subtotal" data-title="Total">
+                                        <span className="amount">
                                             $ {item.total}
                                         </span>
                                     </td>
@@ -162,12 +162,12 @@ const OrderDetail = ({isShowing, hide, id}) => {
                                 
                                     ))}
                                 {/* <tr>
-                                    <td colspan="6" class="actions">
-                                        <div class="coupon">
-                                            <input type="text" name="coupon_code" class="input-text form-control" id="coupon_code" value="" placeholder="Coupon code" /> 
-                                            <button type="button" class="btn btn-black btn-small" name="apply_coupon" value="Apply coupon">Apply coupon</button>
-                                            <span class="float-right mt-3 mt-lg-0">
-                                            <button type="button" class="btn btn-dark btn-small" name="update_cart" value="Update cart" disabled="">Update cart</button>
+                                    <td colspan="6" className="actions">
+                                        <div className="coupon">
+                                            <input type="text" name="coupon_code" className="input-text form-control" id="coupon_code" value="" placeholder="Coupon code" /> 
+                                            <button type="button" className="btn btn-black btn-small" name="apply_coupon" value="Apply coupon">Apply coupon</button>
+                                            <span className="float-right mt-3 mt-lg-0">
+                                            <button type="button" className="btn btn-dark btn-small" name="update_cart" value="Update cart" disabled="">Update cart</button>
                                             </span>
                                         </div>
                                         <input type="hidden" id="woocommerce-cart-nonce" name="woocommerce-cart-nonce" value="27da9ce3e8" />
@@ -181,25 +181,25 @@ const OrderDetail = ({isShowing, hide, id}) => {
                             {/* <div className="btn-group px-xl-3">
                                     <button 
                                     onClick={handleCancel}
-                                    type="button" class="btn btn-danger" >Cancel</button>
+                                    type="button" className="btn btn-danger" >Cancel</button>
                                 <button 
                                     onClick={handleConfirm}
-                                    type="button" class="btn btn-success">Confirm</button>
+                                    type="button" className="btn btn-success">Confirm</button>
                                     </div> */}
                             {order.status==="1"?(
                                 <div className="btn-group px-xl-3">
                                     <button 
                                     onClick={()=>toggleConfirmBox()}
-                                    type="button" class="btn btn-danger">Cancel</button>
+                                    type="button" className="btn btn-danger">Cancel</button>
                                 <button 
                                     onClick={handleConfirm}
-                                    type="button" class="btn btn-success">Confirm And Ship</button>
+                                    type="button" className="btn btn-success">Confirm And Ship</button>
                                     </div>
                                 ): order.status==="2" ? (
                                     <div className="btn-group"> 
                                 <button 
                                     onClick={handleShip}
-                                    type="button" class="btn btn-success" >Complete</button>
+                                    type="button" className="btn btn-success" >Complete</button>
                                     </div>
                             ):(<></>)}
                             

@@ -13,8 +13,6 @@ import '../cofirmBox/CofirmBox.css'
 const Order = () => {
     const {isShowing, toggle, id} = useModal();
     const {isShowing:isShowConfirmBox, toggle:toggleConfirmBox, id: idOrder} = useModal();
-    //const [isShowConfirmBox, setIsShowConfirmBox]=useState(false)
-    //const {isShowing: isShowConfirmBox, toggle: toggleShow} = useModal();
     const dispatch = useDispatch();
     const [status, setStatus]=useState(0);
     const orderListByUserId = useSelector((state) => state.orderListByUserId);
@@ -39,45 +37,45 @@ const Order = () => {
             orderId: idOrder,
             status
         }
-        //setIsShowConfirmBox(true)
         dispatch(updateOrder({orderInfo}));
     }
   return (
     <div className="checkout-container">
-    <section class="cart shopping page-wrapper">
-            <div class="container">
-                <div class="row justify-content-center">
-                <div class="col-lg-12">
-                    <div class="product-list">
-                        <form class="cart-form">
-                            <table class="table cart" cellspacing="0">
+    <section className="cart shopping page-wrapper">
+            <div className="container">
+                <div className="row justify-content-center">
+                    <h3>Order History</h3>
+                <div className="col-lg-12">
+                    <div className="product-list">
+                        <form className="cart-form">
+                            <table className="table cart" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th class="product-thumbnail">OrderId</th>
-                                        <th class="product-name">Date</th>
-                                        {/* <th class="product-quantity">Amount Item</th> */}
-                                        <th class="product-subtotal">Total</th>
-                                        <th class="product-price">State</th>
-                                        <th class="product-remove">Action</th>
+                                        <th className="product-thumbnail">OrderId</th>
+                                        <th className="product-name">Date</th>
+                                        {/* <th className="product-quantity">Amount Item</th> */}
+                                        <th className="product-subtotal">Total</th>
+                                        <th className="product-price">State</th>
+                                        <th className="product-remove">Action</th>
                                     </tr>
                                 </thead>
         
                                 <tbody>
                                     {orders&&orders.sort((a,b)=>(a.id-b.id)).map(item=>(
-                                        <tr class="cart_item">
-                                    <td class="product-thumbnail" data-title="Thumbnail">
+                                        <tr className="cart_item">
+                                    <td className="product-thumbnail" data-title="Thumbnail">
                                         {item.id}
                                     </td>
-                                    <td class="product-name" data-title="Product">
+                                    <td className="product-name" data-title="Product">
                                         {item.createdDate}
                                     </td>
-                                    {/* <td class="product-price" data-title="Price">
+                                    {/* <td className="product-price" data-title="Price">
                                         {item.amountItem}
                                     </td> */}
-                                    <td class="product-quantity" data-title="Quantity">
-                                       {item.totalPrice}
+                                    <td className="product-quantity" data-title="Quantity">
+                                       $ {item.totalPrice}
                                     </td>
-                                    {/* <td class="product-subtotal" data-title="Total">
+                                    {/* <td className="product-subtotal" data-title="Total">
                                             {item.status}
                                     </td> */}
                                     {item.status ==="0" ? (
@@ -87,9 +85,9 @@ const Order = () => {
                                         ):item.status ==="2" ?(
                                             <td className="align-middle" style={{color:"blue"}}>Shipping</td>
                                         ):(
-                                            <td className="align-middle" style={{color:"green"}}>Shipped</td>
+                                            <td className="align-middle" style={{color:"green"}}>Completed</td>
                                         )}
-                                    <td class="product-remove" data-title="Remove">
+                                    <td className="product-remove" data-title="Remove">
                                     <div className="btn-group align-top">
                                         <button 
                                             onClick={()=>toggle(item.id)}
@@ -111,12 +109,12 @@ const Order = () => {
                                 
                                     ))}
                                 {/* <tr>
-                                    <td colspan="6" class="actions">
-                                        <div class="coupon">
-                                            <input type="text" name="coupon_code" class="input-text form-control" id="coupon_code" value="" placeholder="Coupon code" /> 
-                                            <button type="button" class="btn btn-black btn-small" name="apply_coupon" value="Apply coupon">Apply coupon</button>
-                                            <span class="float-right mt-3 mt-lg-0">
-                                            <button type="button" class="btn btn-dark btn-small" name="update_cart" value="Update cart" disabled="">Update cart</button>
+                                    <td colspan="6" className="actions">
+                                        <div className="coupon">
+                                            <input type="text" name="coupon_code" className="input-text form-control" id="coupon_code" value="" placeholder="Coupon code" /> 
+                                            <button type="button" className="btn btn-black btn-small" name="apply_coupon" value="Apply coupon">Apply coupon</button>
+                                            <span className="float-right mt-3 mt-lg-0">
+                                            <button type="button" className="btn btn-dark btn-small" name="update_cart" value="Update cart" disabled="">Update cart</button>
                                             </span>
                                         </div>
                                         <input type="hidden" id="woocommerce-cart-nonce" name="woocommerce-cart-nonce" value="27da9ce3e8" />

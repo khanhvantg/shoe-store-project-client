@@ -100,6 +100,7 @@ const SizeModal = ({isShowing, hide, id}) => {
         },
         amount: {
             isReq: true,
+            reqType: 'NUMBER',
             errorMsg: '',
             onValidateFunc: onInputValidate
         },
@@ -145,9 +146,7 @@ const SizeModal = ({isShowing, hide, id}) => {
         setForm({})
     }
     const handleOnSubmit = () => {
-        //console.log(form)
         dispatch(updateSize({form}))
-        //setForm({})
     }
     if(!isShowing)return null;
     return (
@@ -200,10 +199,10 @@ const SizeModal = ({isShowing, hide, id}) => {
                                         <div className="btn-group">
                                         <button 
                                             onClick={handleCancel}
-                                            type="button" class="btn btn-danger">Cancel</button>
+                                            type="button" className="btn btn-danger">Cancel</button>
                                     <button 
                                         onClick={handleOnSubmit}
-                                        type="button" class="btn btn-success">Save</button>
+                                        type="button" className="btn btn-success">Save</button>
                                     </div>
                                     </div>
                                     :
@@ -211,7 +210,7 @@ const SizeModal = ({isShowing, hide, id}) => {
                                 }
                                     </div>
                             </div>
-                        <div class="">
+                        <div className="">
 
                             <div className="e-table">
                         <div className="table-responsive table-lg mt-3">

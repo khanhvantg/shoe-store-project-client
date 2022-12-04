@@ -1,5 +1,5 @@
 import { Link, useNavigate, Navigate  } from "react-router-dom";
-import "./Header.scss";
+import "./Header.css";
 import { logout } from "../../redux/actions/AuthAction";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -59,15 +59,15 @@ const Header = () => {
                         <div className="dropdown-menu cart-dropdown">
                         {lineItems&&lineItems.sort((a,b)=>(a.id-b.id)).map(item=>(
                                 <div className="media">
-                                <Link to={`/product/${item.id}`}>
+                                <Link to={{pathname:`/product/${item.product.id}`}}>
                                     <img className="media-object img- mr-3" src={item.product.images[0]?.link} alt="image" />
                                 </Link>
                                 <div className="media-body">
                                     <h6>{item.product.name}</h6>
                                     <div className="cart-price">
                                         <span>{item.amount} x </span>
-                                        <span>{item.product.price} =</span>
-                                        <span>{item.total}</span>
+                                        <span>${item.product.price} = </span>
+                                        <span>${item.total}</span>
                                     </div>
                                 </div>
                                 <a className="remove circle" onClick={()=>handleRemoveItem(item.id)}><i className="tf-ion-close"></i></a>
@@ -96,8 +96,9 @@ const Header = () => {
                                 <div className="text-center cart-buttons mt-3">
                                     {   isAdmin?
                                         <Link to="/manage/d-revenue" className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Manage</Link>
-                                        :
+                                        : userInfo ?
                                         <Link to="/profile" className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">View Profile</Link>
+                                        : <></>
                                     }
                                     { userInfo ? <Link to={{ pathname:"/login"}} onClick={logoutHandler} className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Logout</Link>:
                                         <Link to={{ pathname:"/login"}} className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Login</Link>
@@ -136,15 +137,6 @@ const Header = () => {
                         </li>
                         :<></>
                     }
-                    {/* <li className="nav-item">
-                        <Link className="nav-link" to={{ pathname: "/login"}}>Login Page</Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link className="nav-link" to={{ pathname: "/signup"}}>SignUp Page</Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link className="nav-link" to={{ pathname: "/login"}} onClick={logoutHandler}>Logout</Link>
-                    </li> */}
                     {
                         isAdmin ? 
                             <li className="nav-item">
@@ -152,63 +144,6 @@ const Header = () => {
                             </li>
                         :<></>    
                     }
-                    {/* <li className="nav-item">
-                                <Link className="nav-link" to={{ pathname: "/manage/accounts"}}>Manage</Link>
-                            </li> */}
-                    {/* <li className="nav-item dropdown dropdown-slide">
-                    <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown4" role="button" data-delay="350"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Pages
-                    </a>
-                    <ul className="dropdown-menu" aria-labelledby="navbarDropdown4">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Blog Single</a></li>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">404 Page</a></li>
-                        <li><a href="#">FAQ</a></li>
-                    </ul>
-                    </li> */}
-
-                    {/* <li className="nav-item dropdown dropdown-slide">
-                    <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-delay="350"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Shop
-                    </a>
-                    <ul className="dropdown-menu" aria-labelledby="navbarDropdown3">
-                        <li><Link to={{ pathname: "/shop"}}>Shop</Link></li>
-                        <li><Link to={{ pathname: "/single-product"}}>Product Details</Link></li>
-                        <li><Link to={{ pathname: "/checkout"}}>Checkout</Link></li>
-                        <li><Link to={{ pathname: "/cart"}}>Cart</Link></li>
-                    </ul>
-                    </li>
-
-                 */}
-                    {/* <li className="nav-item dropdown dropdown-slide">
-                    <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown5" role="button" data-delay="350"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Account
-                    </a>
-                    <ul className="dropdown-menu" aria-labelledby="navbarDropdown5">
-                        {userInfo ? 
-                        (<li><Link onClick={logoutHandler} to={{ pathname: "/login"}}>Logout</Link></li>):
-                        (<li><Link to={{ pathname: "/login"}}>Login Page</Link></li>)}
-                        <li><Link to={{ pathname: "/signup"}}>SignUp Page</Link></li>
-                    </ul>
-                    </li> */}
-                    {/* {userInfo ? (
-                        <li className="nav-item dropdown dropdown-slide">
-                        <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown5" role="button" data-delay="350"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Manage
-                        </a>
-                        <ul className="dropdown-menu" aria-labelledby="navbarDropdown5">
-                    
-                            <li><Link to={{ pathname: "/manage/accounts"}}>account</Link></li>
-                            <li><Link to={{ pathname: "/forgot-password"}}>Forgot Password</Link></li>
-                        </ul>
-                        </li>
-                    ): (<></>)} */}
                 </ul>
                 </div>
             </div>

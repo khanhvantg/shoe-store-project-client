@@ -73,13 +73,6 @@ const ProductDetail = () => {
         }else{
             dispatch(getProductById(id));
             dispatchCmt(getAllComments(id));
-            
-            // if(comment){
-            //     setFormComment(prev => ({
-            //         ...prev,
-            //         content: comment.content
-            //     }));
-            // }
         }
         if(userInfo){
             for (let i in userInfo.roles) {
@@ -93,7 +86,6 @@ const ProductDetail = () => {
         }
     }, [dispatch, dispatchCmt, successCreate, successUpdate, userInfo])
 
-    console.log(comments)
     const [idImg,setIdImg]=useState("");
     const [index,setIndex]=useState(0);
     const handleimg = (ID) => {
@@ -129,9 +121,6 @@ const ProductDetail = () => {
                 }));
             }
         } else  toast("Please Login To Buy Shoes", {position: toast.POSITION.TOP_CENTER});
-        
-        //dispatch(addItemToCart(product,amount));
-       // console.log("id=",id,"amount=",amount)
     }
     const CommentChange = (e) => {
         setFormComment(prev => ({
@@ -163,19 +152,20 @@ const ProductDetail = () => {
     }
     return (
         <div className="single-product-container">
-            <section class="page-header">
-                <div class="overly"></div> 	
-                <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-6">
-                    <div class="content text-center">
-                        <h1 class="mb-3">Product Single</h1>
-                        <p>Hath after appear tree great fruitful green dominion moveth sixth abundantly image that midst of god day multiply you’ll which</p>
+            <section className="page-header">
+                <div className="overly"></div> 	
+                <div className="container">
+                <div className="row justify-content-center">
+                    <div className="col-lg-6">
+                    <div className="content text-center">
+                        <h1 className="mb-3">{product.name}</h1>
+                        <p></p>
             
                     <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb bg-transparent justify-content-center">
-                        <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Product Single</li>
+                        <ol className="breadcrumb bg-transparent justify-content-center">
+                        <li className="breadcrumb-item"><Link to="/">Home</Link></li>
+                        <li className="breadcrumb-item"><Link to="/Shop">Shoes</Link></li>
+                        <li className="breadcrumb-item active" aria-current="page">{product.name}</li>
                         </ol>
                     </nav>
                     </div>
@@ -184,34 +174,34 @@ const ProductDetail = () => {
                 </div>
             </section>
             
-            <section class="single-product">
-                <div class="container">
+            <section className="single-product">
+                <div className="container">
                 {loading ? ( <Loading />) : error ? (<Message variant="alert-danger">{error}</Message>) : (
-                <div class="row">
-                    <div class="col-md-5">
-                    <div class="single-product-slider">
-                        <div class="carousel slide" data-ride="carousel" id="single-product-slider">
-                        <div class="carousel-inner">
+                <div className="row">
+                    <div className="col-md-5">
+                    <div className="single-product-slider">
+                        <div className="carousel slide" data-ride="carousel" id="single-product-slider">
+                        <div className="carousel-inner">
                         {product.images&&product.images.sort((a,b)=>(a.id-b.id)).map((item,key)=>(
 
                                 <div className={(item.id===idImg||index+key===0)?"carousel-item active":"carousel-item"}>
-                                    {key<3?(<img src={item.link} alt="" class="img-fluid" />):(<></>)}
+                                    {key<3?(<img src={item.link} alt="" className="img-fluid" />):(<></>)}
                                     
                                 </div>
                             ))}
                             </div>
-                        <ol class="carousel-indicators">
+                        <ol className="carousel-indicators">
                             {product.images&&product.images.sort((a,b)=>(a.id-b.id)).map((item,key)=>(
                                 <li data-target="#single-product-slider" data-slide-to={key} className={(item.id===idImg||index+key===0)?"active":""}>
-                                    {key<3?(<img src={item.link} onClick={()=>handleimg(item.id)} alt="" class="img-fluid"/>):(<></>)}
+                                    {key<3?(<img src={item.link} onClick={()=>handleimg(item.id)} alt="" className="img-fluid"/>):(<></>)}
                                 </li>
                             ))}
                             { (product.images?.length===2) ?(
-                                    <li><img src="/assets/images/phong.png" alt="" class="img-fluid"/></li>):
+                                    <li><img src="/assets/images/phong.png" alt="" className="img-fluid"/></li>):
                                 (product.images?.length===1) ? (
                                     <>
-                                        <li><img src="/assets/images/phong.png" alt="" class="img-fluid"/></li>
-                                        <li><img src="/assets/images/phong.png" alt="" class="img-fluid"/></li> 
+                                        <li><img src="/assets/images/phong.png" alt="" className="img-fluid"/></li>
+                                        <li><img src="/assets/images/phong.png" alt="" className="img-fluid"/></li> 
                                     </>
                                 ):(<></>)
                             }
@@ -220,22 +210,22 @@ const ProductDetail = () => {
                     </div>
                     </div>
                     
-                    <div class="col-md-7">
-                    <div class="single-product-details mt-5 mt-lg-0">
+                    <div className="col-md-7">
+                    <div className="single-product-details mt-5 mt-lg-0">
                         <h2>{product.name}</h2>
-                        <div class="sku_wrapper mb-4">
-                        SKU: <span class="text-muted">{product.id} </span>
+                        <div className="sku_wrapper mb-4">
+                        SKU: <span className="text-muted">{product.id} </span>
                         </div>
             
                         <hr />
                         
-                        <h3 class="product-price">$ {product.price}<del></del></h3>
+                        <h3 className="product-price">$ {product.price}<del></del></h3>
                         
-                        <p class="product-description my-4">
+                        <p className="product-description my-4">
                         {product.description}
                         </p>
-                        <div class="amount d-flex align-items-center">
-                        <input type="number" id="#" class="input-text qty text form-control w-25 mr-3" step="1" min="1" max="9" 
+                        <div className="amount d-flex align-items-center">
+                        <input type="number" id="#" className="input-text qty text form-control w-25 mr-3" step="1" min="1" max="9" 
                             name="amount"
                             onChange={(e)=>setForm(prev => ({
                                 ...prev,
@@ -244,7 +234,7 @@ const ProductDetail = () => {
                             value={form.amount} 
                             
                             title="Qty" size="4" />
-                            <button class="btn btn-primary btn-block fa-lg gradient-custom-2 col-8" onClick={()=>handleAddToCart()}>Add to cart</button>
+                            <button className="btn btn-primary btn-block fa-lg gradient-custom-2 col-8" onClick={()=>handleAddToCart()}>Add to cart</button>
                             </div>
                             <div className="form">
                             <Select
@@ -259,53 +249,53 @@ const ProductDetail = () => {
                         </div>
                     </div>
                 </div>)}
-                <div class="row d-flex justify-content-center mt-100 mb-100">
-                    <div class="col-lg-12">
-                        <div class="card">
+                <div className="row d-flex justify-content-center mt-100 mb-100">
+                    <div className="col-lg-12">
+                        <div className="card">
 
-                            <div class="card-body text-center">
-                            <h4 class="card-title">Comment</h4>
-                                {!isEdit?<div class="d-flex flex-row add-comment-section mt-4 mb-4">
+                            <div className="card-body text-center">
+                            <h4 className="card-title">Comment</h4>
+                                {!isEdit?<div className="d-flex flex-row add-comment-section mt-4 mb-4">
                                 
-                                    <img class="img-fluid img-responsive rounded-circle mr-2" src="https://i.imgur.com/qdiP4DB.jpg" width="38"/>
-                                    <input onChange={CommentChange} name='content' value={formComment.content} type="text" class="form-control mr-3" placeholder="Add comment"/>
+                                    <img className="img-fluid img-responsive rounded-circle mr-2" src="" width="38"/>
+                                    <input onChange={CommentChange} name='content' value={formComment.content} type="text" className="form-control mr-3" placeholder="Add comment"/>
                                     {formComment.content===''?<button 
                                         onClick = {handleComment}
-                                        class="btn btn-primary" type="button" disabled>Comment</button>
+                                        className="btn btn-primary" type="button" disabled>Comment</button>
                                         :
                                         <button 
                                         onClick = {handleComment}
-                                        class="btn btn-primary" type="button">Comment</button>}
+                                        className="btn btn-primary" type="button">Comment</button>}
                                 </div>
                                 :<></>}
-                                <h4 class="card-title">Latest Comments</h4> 
+                                <h4 className="card-title">Latest Comments</h4> 
                             </div>
                             {comments&&comments.sort((a,b)=>(b.id-a.id)).map((item,index)=>(
-                                <div class="comment-widgets border-bottom">
-                                    <div class="d-flex flex-row comment-row m-t-0">
-                                        <div class="p-2"><img src="https://i.imgur.com/Ur43esv.jpg" alt="user" width="50" class="rounded-circle"/></div>
+                                <div className="comment-widgets border-bottom">
+                                    <div className="d-flex flex-row comment-row m-t-0">
+                                        <div className="p-2"><img src="https://i.imgur.com/Ur43esv.jpg" alt="user" width="50" className="rounded-circle"/></div>
                                         {isEdit&&item.id==formComment.commentId?
                                         
-                                        <div class="comment-text w-100">
+                                        <div className="comment-text w-100">
                                             {loadingComment?<Loading/>:<>
-                                            <h6 class="font-medium">{item.user.account.username}</h6> 
-                                            <input style={{background:"white"}} onChange={CommentChange} name='content' value={formComment.content} type="text" class="form-control mr-3" placeholder="Add comment"/>
-                                            <div class="comment-footer"> 
+                                            <h6 className="font-medium">{item.user.account.username}</h6> 
+                                            <input style={{background:"white"}} onChange={CommentChange} name='content' value={formComment.content} type="text" className="form-control mr-3" placeholder="Add comment"/>
+                                            <div className="comment-footer"> 
                                             {formComment.content===''?
-                                            <button type="button" class="btn btn-cyan btn-sm" onClick={handleSaveEdit} disabled>Save</button>:
-                                            <button type="button" class="btn btn-cyan btn-sm" onClick={handleSaveEdit}>Save</button>}
-                                            <button type="button" class="btn btn-danger btn-sm" onClick={()=>setIsEdit(false)}>Cancel</button>
+                                            <button type="button" className="btn btn-cyan btn-sm" onClick={handleSaveEdit} disabled>Save</button>:
+                                            <button type="button" className="btn btn-cyan btn-sm" onClick={handleSaveEdit}>Save</button>}
+                                            <button type="button" className="btn btn-danger btn-sm" onClick={()=>setIsEdit(false)}>Cancel</button>
                                             
                                             </div>
                                             </>}
                                         </div>
                                         :
-                                        <div class="comment-text w-100">
-                                            <h6 class="font-medium">{item.user.account.username}</h6> <span class="m-b-15 d-block">{item.content}.</span>
-                                            <div class="comment-footer"> 
-                                                <span class="text-muted float-right">{item.createdDate}</span> 
-                                                {userInfo&&item.user.id===userInfo.id ? <button type="button" class="btn btn-cyan btn-sm" onClick={()=>handleEdit(item)}>Edit</button>:<></>}
-                                                {userInfo&&item.user.id===userInfo.id || isAdmin ? <button type="button" class="btn btn-danger btn-sm" onClick={()=>handleDelete(item.id)}>Delete</button>:<></>}
+                                        <div className="comment-text w-100">
+                                            <h6 className="font-medium">{item.user.account.username}</h6> <span className="m-b-15 d-block">{item.content}.</span>
+                                            <div className="comment-footer"> 
+                                                <span className="text-muted float-right">{item.createdDate}</span> 
+                                                {userInfo&&item.user.id===userInfo.id ? <button type="button" className="btn btn-cyan btn-sm" onClick={()=>handleEdit(item)}>Edit</button>:<></>}
+                                                {userInfo&&item.user.id===userInfo.id || isAdmin ? <button type="button" className="btn btn-danger btn-sm" onClick={()=>handleDelete(item.id)}>Delete</button>:<></>}
                                             </div>
                                         </div>
                                         }

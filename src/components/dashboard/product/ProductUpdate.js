@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import '../Modal.scss';
+import '../Modal.css';
 import { useDispatch, useSelector } from "react-redux";
 import { updateProduct, getProductById, getAllProducts} from '../../../redux/actions/ProductAction'
 import { getAllcategories, getCategoryById, stopGetCategory } from '../../../redux/actions/CategoryAction'
@@ -92,6 +92,7 @@ const ProductUpdate = ({isShowing, hide, id, idCategory}) => {
         },
         price: {
             isReq: true,
+            reqType: 'NUMBER',
             errorMsg: '',
             onValidateFunc: onInputValidate
         },

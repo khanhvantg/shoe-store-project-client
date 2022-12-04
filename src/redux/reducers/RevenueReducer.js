@@ -58,3 +58,16 @@ export const revenueOfAMonthReducer = (state = { arevenueList: [] }, action) => 
       return state;
   }
 };
+
+export const bestSellerReducer = (state = { productBests: [] }, action) => {
+  switch (action.type) {
+    case PRODUCTBEST_LIST_REQUEST:
+      return { loading: true, productBests: [] };
+    case PRODUCTBEST_LIST_SUCCESS:
+      return { loading: false, productBests: action.payload.irevenueByMonthResponses };
+    case PRODUCTBEST_LIST_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};

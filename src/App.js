@@ -22,13 +22,7 @@ import Home from './components/home/Home'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Order from './components/orderHistory/Order';
-
-import { useSelector } from "react-redux";
-import React, { useState, useEffect, useDispatch } from 'react'
-import { Link, useNavigate } from "react-router-dom";
-import { logout } from "./redux/actions/AuthAction";
-import { getWishListById, removeLineItem } from './redux/actions/WishlistAction'
-import AccountsScreen from './screen/manageScreen/AccountsScreen';
+import React from 'react'
 import PrivateRoute from "./PrivateRoute";
 import ManageRevenueYearScreen from './screen/ManageRevenueYearScreen';
 import ManageRevenueMonthScreen from './screen/ManageRevenueMonthScreen';
@@ -38,17 +32,9 @@ const App = () => {
     <div className="App">
         <ToastContainer/>
         <BrowserRouter>
-          {/* {userInfo?<Header />:<></>} */}
           <Header />
-          {/* <Header/> */}
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/manage/accounts" element={<ManageAccountsScreen/>}/>
-            <Route path="/manage/users" element={<ManageUserScreen/>}/>
-            <Route path="/manage/categories" element={<ManageCategoryScreen/>}/>
-            <Route path="/manage/products" element={<ManageProductScreen/>}/>
-            <Route path="/manage/orders" element={<ManageOrderScreen/>}/>
-            {/* <Route path="/profile" element={<ProfileScreen/>}> </Route> */}
             <Route
               path="/profile"
               element={
@@ -59,8 +45,7 @@ const App = () => {
             />
             <Route path="/shop" element={<Shop />} />
             <Route path="/product/:id" element={<ProductDetail />} />
-            <Route path="/checkout" element={<Checkout />} />
-            {/* <Route path="/cart" element={<Cart />} /> */}
+            {/* <Route path="/checkout" element={<Checkout />} /> */}
             <Route
               path="/cart"
               element={
@@ -72,13 +57,16 @@ const App = () => {
             <Route path="/order" element={<Order />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/manage/accounts" element={<ManageAccountsScreen/>}/>
+            <Route path="/manage/users" element={<ManageUserScreen/>}/>
+            <Route path="/manage/categories" element={<ManageCategoryScreen/>}/>
+            <Route path="/manage/products" element={<ManageProductScreen/>}/>
+            <Route path="/manage/orders" element={<ManageOrderScreen/>}/>
             <Route path="/manage/y-revenue" element={<ManageRevenueYearScreen/>} />
             <Route path="/manage/m-revenue" element={<ManageRevenueMonthScreen/>} />
             <Route path="/manage/d-revenue" element={<ManageRevenueDayScreen/>} />
-            <Route path="/test" element={<AccountsScreen />} />
           </Routes>
           <Footer/>
-          {/* {userInfo?<Footer/>:<></>} */}
         </BrowserRouter>
     </div>
   );

@@ -43,7 +43,6 @@ export const getRevenueByDate = ({date}) => async (dispatch) => {
 export const getRevenueByMonth = ({month}) => async (dispatch) => {
     try {
         dispatch({ type: REVENUE_LISTBYMONTH_REQUEST });
-        //console.log(month)
         const { data } = await axios.post('/api/revenue/month', month, {headers: authHeader()})
         dispatch({ type: REVENUE_LISTBYMONTH_SUCCESS, payload: data });
     } catch (error) {
@@ -59,7 +58,6 @@ export const getRevenueByMonth = ({month}) => async (dispatch) => {
 export const getARevenueByMonth = ({month}) => async (dispatch) => {
     try {
         dispatch({ type: REVENUE_ALISTBYMONTH_REQUEST });
-        //console.log(month)
         const { data } = await axios.post('/api/revenuePerMonth', month, {headers: authHeader()})
         dispatch({ type: REVENUE_ALISTBYMONTH_SUCCESS, payload: data });
     } catch (error) {
@@ -72,10 +70,10 @@ export const getARevenueByMonth = ({month}) => async (dispatch) => {
     }
 };
 
-export const getProductBest = () => async (dispatch) => {
+export const getProductBest = ({month}) => async (dispatch) => {
     try {
         dispatch({ type: PRODUCTBEST_LIST_REQUEST });
-        const { data } = await axios.get('/api/bestSeller/date', {headers: authHeader()})
+        const { data } = await axios.post('/api/bestSeller', month, {headers: authHeader()})
         dispatch({ type: PRODUCTBEST_LIST_SUCCESS, payload: data });
     } catch (error) {
         dispatch({

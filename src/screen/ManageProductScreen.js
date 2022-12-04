@@ -10,14 +10,14 @@ const ManageProductScreen = () => {
         else setActive(false);
     }, [active]);
     return (
-        <div class="wrapper1">
+        <div className="wrapper1">
             <Layout active={active}/>
             {/* <div id="content1"> */}
-                <nav class="navbar navbar1-expand-lg navbar1-light bg-light">
-                    <div class="container-fluid">
-                        <button type="button" id="sidebarCollapse" class="btn btn-info" onClick={handle}>
-                        {!active?<i class="tf-ion-ios-arrow-left"></i>:
-                            <i class="tf-ion-ios-arrow-right"></i>}
+                <nav className="navbar navbar1-expand-lg navbar1-light bg-light">
+                    <div className="container-fluid">
+                        <button type="button" id="sidebarCollapse" className="btn btn-info" onClick={handle}>
+                        {!active?<i className="tf-ion-ios-arrow-left"></i>:
+                            <i className="tf-ion-ios-arrow-right"></i>}
                         </button>
 
                     </div>

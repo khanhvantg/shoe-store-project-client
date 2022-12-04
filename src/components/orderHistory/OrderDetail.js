@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createOrder, getOrdersByUserId, getOrderById, getAllOrders } from '../../redux/actions/OrderAction'
-
+import { Link } from "react-router-dom";
 const OrderDetail = ({isShowing, hide, id}) => {
     const dispatch = useDispatch();
 
@@ -10,11 +10,10 @@ const OrderDetail = ({isShowing, hide, id}) => {
     const { order, lineItems} = orderDetail;
 
     useEffect(() => {
-        if(isShowing&&order.id!=id){
+        if(isShowing&&order.id!==id){
             dispatch(getOrderById(id));
         }
     }, [dispatch, order, id, isShowing]);
-    console.log(orderDetail);
   if(!isShowing) return null;
   return (
     <>
@@ -35,44 +34,46 @@ const OrderDetail = ({isShowing, hide, id}) => {
                         ) : error ? (
                             <Message variant="alert-danger">{error}</Message>
                         ) : ( */}
-                        <section class="cart shopping page-wrapper">
-            <div class="container">
-                <div class="row justify-content-center">
-                <div class="col-lg-12">
-                    <div class="product-list">
-                        <form class="cart-form">
-                            <table class="table shop_table shop_table_responsive cart" cellspacing="0">
+                        <section className="cart shopping page-wrapper">
+            <div className="container">
+                <div className="row justify-content-center">
+                <div className="col-lg-12">
+                    <div className="product-list">
+                        <form className="cart-form">
+                            <table className="table shop_table shop_table_responsive cart" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th class="product-thumbnail"> </th>
-                                        <th class="product-name">Product</th>
-                                        <th class="product-price">Price</th>
-                                        <th class="product-quantity">Amount</th>
-                                        <th class="product-subtotal">Total</th>
+                                        <th className="product-thumbnail"> </th>
+                                        <th className="product-name">Product</th>
+                                        <th className="product-price">Price</th>
+                                        <th className="product-quantity">Amount</th>
+                                        <th className="product-subtotal">Total</th>
                                     </tr>
                                 </thead>
         
                                 <tbody>
                                     {lineItems&&lineItems.map(item=>(
-                                        <tr class="cart_item">
-                                    <td class="product-thumbnail" data-title="Thumbnail">
-                                        <a href="/product-single"><img src={item.product.images.sort((a,b)=>(a.id-b.id))[0].link} class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" /></a>
+                                        <tr className="cart_item">
+                                    <td className="product-thumbnail" data-title="Image">
+                                        <Link to={{ pathname: `/product/${item.product.id}`}}><img src={item.product.images.sort((a,b)=>(a.id-b.id))[0].link} className="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" /></Link>
                                     </td>
-                                    <td class="product-name" data-title="Product">
-                                        <a href="#">aaaa</a>
+                                    <td className="product-name" data-title="Product">
+                                        <span className="amount">$ {item.product.price}</span>
                                     </td>
-                                    <td class="product-price" data-title="Price">
-                                        <span class="amount"><span class="currencySymbol"><pre wp-pre-tag-3=""></pre>
-                                        </span>{item.product.price}</span>
+                                    <td className="product-price" data-title="Price">
+                                        <span className="amount">
+                                            {/* <span className="currencySymbol"><pre wp-pre-tag-3=""></pre>
+                                        </span> */}
+                                        $ {item.product.price}</span>
                                     </td>
-                                    <td class="product-quantity" data-title="Quantity">
+                                    <td className="product-quantity" data-title="Amount">
                                         {item.amount}
                                     </td>
-                                    <td class="product-subtotal" data-title="Total">
-                                        <span class="amount">
-                                            <span class="currencySymbol">
+                                    <td className="product-subtotal" data-title="Total">
+                                        <span className="amount">
+                                            {/* <span className="currencySymbol">
                                                 <pre wp-pre-tag-3=""></pre>
-                                            </span>
+                                            </span> */}
                                             {item.total}
                                         </span>
                                     </td>
@@ -80,12 +81,12 @@ const OrderDetail = ({isShowing, hide, id}) => {
                                 
                                     ))}
                                 {/* <tr>
-                                    <td colspan="6" class="actions">
-                                        <div class="coupon">
-                                            <input type="text" name="coupon_code" class="input-text form-control" id="coupon_code" value="" placeholder="Coupon code" /> 
-                                            <button type="button" class="btn btn-black btn-small" name="apply_coupon" value="Apply coupon">Apply coupon</button>
-                                            <span class="float-right mt-3 mt-lg-0">
-                                            <button type="button" class="btn btn-dark btn-small" name="update_cart" value="Update cart" disabled="">Update cart</button>
+                                    <td colspan="6" className="actions">
+                                        <div className="coupon">
+                                            <input type="text" name="coupon_code" className="input-text form-control" id="coupon_code" value="" placeholder="Coupon code" /> 
+                                            <button type="button" className="btn btn-black btn-small" name="apply_coupon" value="Apply coupon">Apply coupon</button>
+                                            <span className="float-right mt-3 mt-lg-0">
+                                            <button type="button" className="btn btn-dark btn-small" name="update_cart" value="Update cart" disabled="">Update cart</button>
                                             </span>
                                         </div>
                                         <input type="hidden" id="woocommerce-cart-nonce" name="woocommerce-cart-nonce" value="27da9ce3e8" />

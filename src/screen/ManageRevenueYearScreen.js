@@ -7,6 +7,7 @@ import Highcharts from 'highcharts';
 import { useDispatch,useSelector } from "react-redux";
 import { getRevenueByMonth, getARevenueByMonth} from '../redux/actions/RevenueAction'
 import { getAllProducts } from '../redux/actions/ProductAction'
+import { Fragment } from "react";
 const ManageRevenueYearScreen = () => {
   const [isMonthPicker, setMonthPicker] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
@@ -37,7 +38,7 @@ const ManageRevenueYearScreen = () => {
           type: 'column'
         }, // type of the chart
         title: {
-          text: 'Monthly Revenue Chart Of The Year'
+          text: `Monthly Revenue Chart In ${month.year}`
         }, // title of the chart
         // subtitle: {
         //   text: 'Lorem Ipsum is simply dummy text'
@@ -94,40 +95,52 @@ const ManageRevenueYearScreen = () => {
         }
         else setActive(false);
     };
+
+    const [isOpen, setIsOpen] = useState(false);
+    
+    const handleClick = (e) => {
+      e.preventDefault();
+      setIsOpen(!isOpen);
+    };
   return (
-    <div class="wrapper1">
+    <div className="wrapper1">
         <Layout active={active}/>
-        <nav class="navbar navbar1-expand-lg navbar1-light bg-light">
-            <div class="container-fluid">
-                <button type="button" id="sidebarCollapse" class="btn btn-info"  onClick={handle}>
-                    {!active?<i class="tf-ion-ios-arrow-left"></i>:
-                    <i class="tf-ion-ios-arrow-right"></i>}
+        <nav className="navbar navbar1-expand-lg navbar1-light bg-light">
+            <div className="container-fluid">
+                <button type="button" id="sidebarCollapse" className="btn btn-info"  onClick={handle}>
+                    {!active?<i className="tf-ion-ios-arrow-left"></i>:
+                    <i className="tf-ion-ios-arrow-right"></i>}
                 </button>
 
             </div>
         </nav>
-   
-                <div className="e-panel cardcus parent">
+        <div className="e-panel cardcus parent">
                 <div className="card-body">
-                <DatePicker
-                      selected={startDate}
-                      onChange={(date) => {
-                        setMonthPicker(false);
-                        setStartDate(date);
-                        setMonth({'year':date.getFullYear()})
-                      }
-                    }
-                    showYearPicker
-      dateFormat="yyyy"
-                      // dateFormat="yyyy"
-                      // showYearPicker
-                      // showFullYearPicker
-                    />
+          
                     <div className="e-table">
-                        <div className="table-responsive table-lg mt-3">
-                            <table className="child">
-                              <div ref={refContainer}/>
-                            </table>
+                        <div className="table-responsive table-lg mt-3 align-top">
+                        <button className="btn btn-info" type="button" onClick={handleClick}>
+                          Year: {startDate.getFullYear()}
+                          <i>  </i>
+                          <i className="tf-ion-android-calendar"></i>
+                        </button>
+                        {isOpen && (
+                        <DatePicker
+                            selected={startDate}
+                            onChange={(date) => {
+                              setMonthPicker(false);
+                              setStartDate(date);
+                              setMonth({'year':date.getFullYear()});
+                              setIsOpen(!isOpen);
+                            }
+                            
+                          }
+                            dateFormat="yyyy"
+                            showYearPicker
+                            showFullYearPicker
+                            inline
+                          />)}
+                            <table className="child" ref={refContainer}/>
                         </div>
                     </div>
                 </div>
@@ -136,7 +149,8 @@ const ManageRevenueYearScreen = () => {
               </div>
           </div>
        
-        </div>
+          </div>
+       
   )
 }
 
