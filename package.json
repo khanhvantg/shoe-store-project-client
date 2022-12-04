@@ -21,7 +21,6 @@
     "react-router-dom": "^6.4.1",
     "react-scripts": "5.0.1",
     "react-select": "^5.6.1",
-    "react-simple-datepicker": "^0.1.4",
     "react-toastify": "^8.2.0",
     "redux": "^4.2.0",
     "redux-devtools-extension": "^2.13.9",
