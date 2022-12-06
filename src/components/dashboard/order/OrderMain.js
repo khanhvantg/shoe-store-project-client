@@ -66,7 +66,7 @@ const OrderMain = () => {
                                             </td>
                                         }
                                         {/* <td className="text-nowrap align-middle">{item.amountItem}</td> */}
-                                        <td className="text-nowrap align-middle">$ {item.totalPrice}</td>
+                                        <td className="text-nowrap align-middle">${item.totalPrice}</td>
                                         {item.status ==="0" ? (
                                             <td className="text-nowrap align-middle" style={{color:"red"}}>Cancelled</td>
                                         ):item.status ==="1" ?(

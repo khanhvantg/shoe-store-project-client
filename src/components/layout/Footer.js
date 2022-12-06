@@ -9,7 +9,7 @@ function Footer() {
                                     <h4 className="mb-4">E-Shop</h4>
                                     <p className="lead">Welcome To E-Shop. We Are Very Happy To Serve You.</p>
                                     <div className="">
-                                        <p className="mb-0"><strong>Location: </strong>So 1, Vo Van Ngan</p>
+                                        <p className="mb-0"><strong>Location: </strong>1St, Vo Van Ngan, Thu Duc City</p>
                                         <p><strong>Support Email: </strong> TLCN@gmail.com</p>
                                     </div>
                             </div>
@@ -21,7 +21,7 @@ function Footer() {
                                 <ul className="pl-0 list-unstyled mb-5">
                                     <li className="d-lg-flex justify-content-between">Monday-Friday <span>8.00-20.00</span></li>
                                     <li className="d-lg-flex justify-content-between">Saturday <span>10.00-20.00</span></li>
-                                    <li className="d-lg-flex justify-content-between">Sunday <span>12.0020.00</span></li>
+                                    <li className="d-lg-flex justify-content-between">Sunday <span>12.00-20.00</span></li>
                                 </ul>
                                 <h5>Call Now : +(84) 94 529 1068</h5>
                             </div>

@@ -84,7 +84,7 @@ const ProductDetail = () => {
         } else {
             setIsAdmin(false);
         }
-    }, [dispatch, dispatchCmt, successCreate, successUpdate, userInfo])
+    }, [dispatch, dispatchCmt, successCreate, successUpdate, userInfo, id])
 
     const [idImg,setIdImg]=useState("");
     const [index,setIndex]=useState(0);

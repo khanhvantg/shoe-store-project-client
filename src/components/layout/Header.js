@@ -59,7 +59,7 @@ const Header = () => {
                         <div className="dropdown-menu cart-dropdown">
                         {lineItems&&lineItems.sort((a,b)=>(a.id-b.id)).map(item=>(
                                 <div className="media">
-                                <Link to={{pathname:`/product/${item.product.id}`}}>
+                                <Link to={`/product/${item.product.id}`}>
                                     <img className="media-object img- mr-3" src={item.product.images[0]?.link} alt="image" />
                                 </Link>
                                 <div className="media-body">

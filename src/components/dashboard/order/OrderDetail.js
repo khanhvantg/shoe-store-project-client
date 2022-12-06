@@ -133,6 +133,7 @@ const OrderDetail = ({isShowing, hide, id}) => {
                                         <th className="product-name">Product</th>
                                         <th className="product-price">Price</th>
                                         <th className="product-quantity">Amount</th>
+                                        <th className="product-quantity">Size</th>
                                         <th className="product-subtotal">Total</th>
                                     </tr>
                                 </thead>
@@ -152,6 +153,9 @@ const OrderDetail = ({isShowing, hide, id}) => {
                                     </td>
                                     <td className="product-quantity" data-title="Quantity">
                                         {item.amount}
+                                    </td>
+                                    <td className="product-quantity" data-title="Size">
+                                        {item.size} UK
                                     </td>
                                     <td className="product-subtotal" data-title="Total">
                                         <span className="amount">

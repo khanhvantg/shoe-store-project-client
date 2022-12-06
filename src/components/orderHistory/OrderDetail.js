@@ -9,6 +9,7 @@ const OrderDetail = ({isShowing, hide, id}) => {
     const orderDetail = useSelector((state) => state.orderDetail);
     const { order, lineItems} = orderDetail;
 
+    console.log(lineItems)
     useEffect(() => {
         if(isShowing&&order.id!==id){
             dispatch(getOrderById(id));
@@ -47,6 +48,7 @@ const OrderDetail = ({isShowing, hide, id}) => {
                                         <th className="product-name">Product</th>
                                         <th className="product-price">Price</th>
                                         <th className="product-quantity">Amount</th>
+                                        <th className="product-quantity">Size</th>
                                         <th className="product-subtotal">Total</th>
                                     </tr>
                                 </thead>
@@ -64,17 +66,20 @@ const OrderDetail = ({isShowing, hide, id}) => {
                                         <span className="amount">
                                             {/* <span className="currencySymbol"><pre wp-pre-tag-3=""></pre>
                                         </span> */}
-                                        $ {item.product.price}</span>
+                                        ${item.product.price}</span>
                                     </td>
                                     <td className="product-quantity" data-title="Amount">
                                         {item.amount}
+                                    </td>
+                                    <td className="product-quantity" data-title="Size">
+                                        {item.size} UK
                                     </td>
                                     <td className="product-subtotal" data-title="Total">
                                         <span className="amount">
                                             {/* <span className="currencySymbol">
                                                 <pre wp-pre-tag-3=""></pre>
                                             </span> */}
-                                            {item.total}
+                                            ${item.total}
                                         </span>
                                     </td>
                                 </tr>
