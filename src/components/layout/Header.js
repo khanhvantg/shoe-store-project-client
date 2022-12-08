@@ -116,7 +116,11 @@ const Header = () => {
                 </ul>
             </div>
             <div className="container">
-                <Link className="navbar-brand font-weight-bold" to={{ pathname: "/"}}>E-Shop</Link>
+                <Link className="navbar-brand" to={{ pathname: "/"}}>
+                    <img src="assets/images/Untitled.png" style={{width:"30px", height:"30px"}}></img>
+                    <h7 className="font-weight-bold">E-Shop</h7>
+                </Link>
+                
                 <button style={{margin: "0 15px 0 1rem"}} className="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar"
                     aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>

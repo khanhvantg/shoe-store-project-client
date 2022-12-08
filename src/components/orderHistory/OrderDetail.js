@@ -60,7 +60,7 @@ const OrderDetail = ({isShowing, hide, id}) => {
                                         <Link to={{ pathname: `/product/${item.product.id}`}}><img src={item.product.images.sort((a,b)=>(a.id-b.id))[0].link} className="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" /></Link>
                                     </td>
                                     <td className="product-name" data-title="Product">
-                                        <span className="amount">$ {item.product.price}</span>
+                                        <span className="amount">${item.product.price}</span>
                                     </td>
                                     <td className="product-price" data-title="Price">
                                         <span className="amount">

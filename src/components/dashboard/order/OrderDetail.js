@@ -120,7 +120,7 @@ const OrderDetail = ({isShowing, hide, id}) => {
                             </li>
                             <li className="d-flex justify-content-between pb-2">
                             <h5>Total Price</h5>
-                            <span>$ {order.totalPrice}</span>
+                            <span>${order.totalPrice}</span>
                             </li>
                         </ul>
                     </div>
@@ -149,7 +149,7 @@ const OrderDetail = ({isShowing, hide, id}) => {
                                         <span className="amount">{item.product.name}</span>
                                     </td>
                                     <td className="product-price" data-title="Price">
-                                        <span className="amount">$ {item.product.price}</span>
+                                        <span className="amount">${item.product.price}</span>
                                     </td>
                                     <td className="product-quantity" data-title="Quantity">
                                         {item.amount}
@@ -159,7 +159,7 @@ const OrderDetail = ({isShowing, hide, id}) => {
                                     </td>
                                     <td className="product-subtotal" data-title="Total">
                                         <span className="amount">
-                                            $ {item.total}
+                                            ${item.total}
                                         </span>
                                     </td>
                                 </tr>
