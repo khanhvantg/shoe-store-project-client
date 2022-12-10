@@ -56,36 +56,6 @@ const UserUpdate = ({isShowing, hide, id}) => {
         success: successUpdate,
     } = userUpdate;
 
-    var today = new Date();
-    useEffect(() => {
-        setForm({});
-        if (successUpdate) {
-            dispatch({type: USER_UPDATE_PROFILE_RESET});
-            dispatch(getAllUsers());
-        } else {
-            if (isShowing&&user.id!==id) {
-                dispatch(getUserDetails(id));
-            }else if (isShowing){
-                setForm(prev => ({
-                    ...prev,
-                    userId: id,
-                    name: user.name,
-                    age: user.age,
-                    gender: user.gender ? user.gender : 'Male',
-                    address: user.address,
-                    phone: user.phone,
-                    email: user.email,
-                    username: user.account.username,
-                    status: user.status ? user.status : "1",
-                    type: user.type ? user.type : "0",
-                    modifiedBy: userInfo.username,
-                    modifiedDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear(),
-                }))
-            }
-        }
-    }, [user, dispatch, id, successUpdate]);
-
-
     const onInputValidate = (value, name) => {
         setErrorInput(prev => ({
             ...prev,
@@ -121,6 +91,65 @@ const UserUpdate = ({isShowing, hide, id}) => {
             onValidateFunc: onInputValidate
         }
     });
+
+    var today = new Date();
+    useEffect(() => {
+        setForm({});
+        if (successUpdate) {
+            dispatch({type: USER_UPDATE_PROFILE_RESET});
+            dispatch(getAllUsers());
+        } else {
+            if (isShowing&&user.id!==id) {
+                dispatch(getUserDetails(id));
+            }else if (isShowing){
+                setForm(prev => ({
+                    ...prev,
+                    userId: id,
+                    name: user.name,
+                    age: user.age,
+                    gender: user.gender ? user.gender : 'Male',
+                    address: user.address,
+                    phone: user.phone,
+                    email: user.email,
+                    username: user.account.username,
+                    status: user.status ? user.status : "1",
+                    type: user.type ? user.type : "0",
+                    modifiedBy: userInfo.username,
+                    modifiedDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear(),
+                }))
+            }
+        }
+        if(!isShowing){
+            setErrorInput({
+                name: {
+                    isReq: true,
+                    errorMsg: '',
+                    onValidateFunc: onInputValidate
+                },
+                age: {
+                    isReq: true,
+                    errorMsg: '',
+                    onValidateFunc: onInputValidate
+                },
+                phone: {
+                    isReq: true,
+                    errorMsg: '',
+                    onValidateFunc: onInputValidate
+                },
+                email: {
+                    isReq: true,
+                    reqType: 'EMAIL',
+                    errorMsg: '',
+                    onValidateFunc: onInputValidate
+                },
+                address: {
+                    isReq: true,
+                    errorMsg: '',
+                    onValidateFunc: onInputValidate
+                }
+            })
+        }
+    }, [user, dispatch, id, successUpdate]);
          
     const onInputChange = useCallback((value, name) => {
         setForm(prev => ({
@@ -147,6 +176,7 @@ const UserUpdate = ({isShowing, hide, id}) => {
         const isValid = validateForm();
         if (isValid) {
             dispatch(updateUserProfileByAdmin({form}));
+            hide();
         }
     };
 
@@ -266,7 +296,7 @@ const UserUpdate = ({isShowing, hide, id}) => {
                                         </div>
                                     </div>
                                     <div className="col text-center px-xl-3">
-                                            <button className="btn btn-primary btn-block" type="submit" onClick={submitHandler}>Save Changes</button>
+                                            <button className="btn btn-primary btn-block" type="submit" onClick={()=>{submitHandler();}}>Save Changes</button>
                                         </div>
                                     {/* <div className="">
                                         <div className="col d-flex justify-content-end">

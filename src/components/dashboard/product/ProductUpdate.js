@@ -51,32 +51,6 @@ const ProductUpdate = ({isShowing, hide, id, idCategory}) => {
         success: successUpdate,
     } = productUpdate;
 
-    useEffect(() => {
-        setForm({})
-        if (successUpdate) {
-            dispatch({type: PRODUCT_UPDATE_RESET});
-            dispatch(getAllProducts());
-            dispatchCategory(getCategoryById(idCategory))
-        } else {
-            if (isShowing&&product.id!==id) {
-                dispatch(getProductById(id));
-            }else if (isShowing){
-                setForm(prev => ({
-                    ...prev,
-                    productId: id,
-                    name: product.name,
-                    price: product.price,
-                    status: product.status,
-                    description: product.description,
-                    createdBy: product.createBy,
-                    createdDate: product.createdDate,
-                    modifiedBy: userInfo.username,
-                    modifiedDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()
-                }))
-            }
-        }
-    }, [product, dispatch, dispatchCategory, id, successUpdate, idCategory]);
-    
     const onInputValidate = (value, name) => {
         setErrorInput(prev => ({
             ...prev,
@@ -107,6 +81,57 @@ const ProductUpdate = ({isShowing, hide, id, idCategory}) => {
             onValidateFunc: onInputValidate
         }
     });
+
+    useEffect(() => {
+        setForm({})
+        if (successUpdate) {
+            dispatch({type: PRODUCT_UPDATE_RESET});
+            dispatch(getAllProducts());
+            dispatchCategory(getCategoryById(idCategory))
+        } else {
+            if (isShowing&&product.id!==id) {
+                dispatch(getProductById(id));
+            }else if (isShowing){
+                setForm(prev => ({
+                    ...prev,
+                    productId: id,
+                    name: product.name,
+                    price: product.price,
+                    status: product.status,
+                    description: product.description,
+                    createdBy: product.createBy,
+                    createdDate: product.createdDate,
+                    modifiedBy: userInfo.username,
+                    modifiedDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()
+                }))
+            }
+        }
+        if(!isShowing){
+            setErrorInput({
+                name: {
+                    isReq: true,
+                    errorMsg: '',
+                    onValidateFunc: onInputValidate
+                },
+                price: {
+                    isReq: true,
+                    reqType: 'NUMBER',
+                    errorMsg: '',
+                    onValidateFunc: onInputValidate
+                },
+                description: {
+                    isReq: true,
+                    errorMsg: '',
+                    onValidateFunc: onInputValidate
+                },
+                status: {
+                    isReq: true,
+                    errorMsg: '',
+                    onValidateFunc: onInputValidate
+                }
+            })
+        }
+    }, [product, dispatch, dispatchCategory, id, successUpdate, idCategory]);
          
     const onInputChange = useCallback((value, name) => {
         setForm(prev => ({
@@ -133,6 +158,7 @@ const ProductUpdate = ({isShowing, hide, id, idCategory}) => {
         const isValid = validateForm();
         if (isValid) {
             dispatch(updateProduct({form}));
+            hide();
         }
     };
 
@@ -204,7 +230,7 @@ const ProductUpdate = ({isShowing, hide, id, idCategory}) => {
                                             </div>
                                 </div>
                                 <div className="col text-center px-xl-3">
-                                    <button className="btn btn-primary btn-block" type="submit" onClick={submitHandler}>Save Changes</button>
+                                    <button className="btn btn-primary btn-block" type="submit" onClick={()=>{submitHandler();}}>Save Changes</button>
                                 </div>
                             </div>)}
                         </div>

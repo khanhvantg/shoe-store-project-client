@@ -51,21 +51,6 @@ const ProductCreate = ({isShowing, hide, categories}) => {
         success: succsesCreate,
     } = productCreate;
 
-    var today = new Date();
-    useEffect(() => {
-        setForm({});
-        if (succsesCreate) {
-            dispatch({type: PRODUCT_CREATE_RESET});
-            dispatch(getAllProducts());
-        }else if(isShowing){
-            setForm(prev => ({
-                ...prev,
-                createdBy: userInfo.username,
-                createdDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()
-            }))
-        }
-    }, [dispatch, succsesCreate, isShowing]);
-
     const onInputValidate = (value, name) => {
         setErrorInput(prev => ({
             ...prev,
@@ -101,6 +86,51 @@ const ProductCreate = ({isShowing, hide, categories}) => {
             onValidateFunc: onInputValidate
         }
     });
+
+    var today = new Date();
+    useEffect(() => {
+        setForm({});
+        if (succsesCreate) {
+            dispatch({type: PRODUCT_CREATE_RESET});
+            dispatch(getAllProducts());
+        }else if(isShowing){
+            setForm(prev => ({
+                ...prev,
+                createdBy: userInfo.username,
+                createdDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()
+            }))
+        }
+        if(!isShowing){
+            setErrorInput({
+                name: {
+                    isReq: true,
+                    errorMsg: '',
+                    onValidateFunc: onInputValidate
+                },
+                price: {
+                    isReq: true,
+                    reqType: 'NUMBER',
+                    errorMsg: '',
+                    onValidateFunc: onInputValidate
+                },
+                category: {
+                    isReq: true,
+                    errorMsg: '',
+                    onValidateFunc: onInputValidate
+                },
+                description: {
+                    isReq: true,
+                    errorMsg: '',
+                    onValidateFunc: onInputValidate
+                },
+                status: {
+                    isReq: true,
+                    errorMsg: '',
+                    onValidateFunc: onInputValidate
+                }
+            })
+        }
+    }, [dispatch, succsesCreate, isShowing]);
          
     const onInputChange = useCallback((value, name) => {
         setForm(prev => ({

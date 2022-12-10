@@ -44,31 +44,6 @@ const CategoryUpdate = ({isShowing, hide, id}) => {
         success: successUpdate,
     } = categoryUpdate;
 
-    var today = new Date();
-    useEffect(() => {
-        setForm({})
-        if (successUpdate) {
-            dispatch({type: CATEGORY_UPDATE_RESET});
-            dispatch(getAllcategories());
-        } else {
-            if (isShowing&&category.id!==id) {
-                dispatch(getCategoryById(id));
-            }else if (isShowing){
-                setForm(prev => ({
-                ...prev,
-                categoryId: id,
-                name: category.name,
-                description: category.description,
-                status: category.status,
-                createdBy: category.createdBy,
-                createdDate: category.createdDate,
-                modifiedBy: userInfo.username,
-                modifiedDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()
-            }))
-            }
-        }
-    }, [category, dispatch, id, successUpdate]);
-    
     const onInputValidate = (value, name) => {
         setErrorInput(prev => ({
             ...prev,
@@ -93,6 +68,50 @@ const CategoryUpdate = ({isShowing, hide, id}) => {
             onValidateFunc: onInputValidate
         }
     });
+
+    var today = new Date();
+    useEffect(() => {
+        setForm({})
+        if (successUpdate) {
+            dispatch({type: CATEGORY_UPDATE_RESET});
+            dispatch(getAllcategories());
+        } else {
+            if (isShowing&&category.id!==id) {
+                dispatch(getCategoryById(id));
+            }else if (isShowing){
+                setForm(prev => ({
+                ...prev,
+                categoryId: id,
+                name: category.name,
+                description: category.description,
+                status: category.status,
+                createdBy: category.createdBy,
+                createdDate: category.createdDate,
+                modifiedBy: userInfo.username,
+                modifiedDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()
+            }))
+            }
+        }
+        if(!isShowing){
+            setErrorInput({
+                name: {
+                    isReq: true,
+                    errorMsg: '',
+                    onValidateFunc: onInputValidate
+                },
+                description: {
+                    isReq: true,
+                    errorMsg: '',
+                    onValidateFunc: onInputValidate
+                },
+                status: {
+                    isReq: true,
+                    errorMsg: '',
+                    onValidateFunc: onInputValidate
+                }
+            })
+        }
+    }, [category, dispatch, id, successUpdate]);
          
     const onInputChange = useCallback((value, name) => {
         setForm(prev => ({
@@ -119,6 +138,7 @@ const CategoryUpdate = ({isShowing, hide, id}) => {
         const isValid = validateForm();
         if (isValid) {
             dispatch(updateCategory({form}));
+            hide();
         }
     };
 
@@ -176,7 +196,7 @@ const CategoryUpdate = ({isShowing, hide, id}) => {
                                     </div> 
                                 </div>
                                 <div className="col text-center px-xl-3">
-                                    <button className="btn btn-primary btn-block" type="submit" onClick={submitHandler}>Save Changes</button>
+                                    <button className="btn btn-primary btn-block" type="submit" onClick={()=>{submitHandler();}}>Save Changes</button>
                                 </div>
                             </div>)}
                         </div>

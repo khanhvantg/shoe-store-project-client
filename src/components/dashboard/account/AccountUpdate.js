@@ -50,6 +50,31 @@ const AccountUpdate = ({isShowing, hide, id}) => {
         success: successUpdate,
     } = accountUpdate;
 
+    const onInputValidate = (value, name) => {
+        setErrorInput(prev => ({
+            ...prev,
+            [name]: { ...prev[name], errorMsg: value }
+        }));
+        }
+         
+    const [errorInput, setErrorInput] = useState({
+        status: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        password: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        role: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        }
+    });
+
     useEffect(() => {
         setForm({});
         if (successUpdate) {
@@ -78,32 +103,26 @@ const AccountUpdate = ({isShowing, hide, id}) => {
                 }))
             }
         }
+        if(!isShowing){
+            setErrorInput({
+                status: {
+                    isReq: true,
+                    errorMsg: '',
+                    onValidateFunc: onInputValidate
+                },
+                password: {
+                    isReq: true,
+                    errorMsg: '',
+                    onValidateFunc: onInputValidate
+                },
+                role: {
+                    isReq: true,
+                    errorMsg: '',
+                    onValidateFunc: onInputValidate
+                }
+            });
+        }
     }, [account, dispatch, id, successUpdate, hide]);
-
-    const onInputValidate = (value, name) => {
-        setErrorInput(prev => ({
-            ...prev,
-            [name]: { ...prev[name], errorMsg: value }
-        }));
-        }
-         
-    const [errorInput, setErrorInput] = useState({
-        status: {
-            isReq: true,
-            errorMsg: '',
-            onValidateFunc: onInputValidate
-        },
-        password: {
-            isReq: true,
-            errorMsg: '',
-            onValidateFunc: onInputValidate
-        },
-        role: {
-            isReq: true,
-            errorMsg: '',
-            onValidateFunc: onInputValidate
-        }
-    });
          
     const onInputChange = useCallback((value, name) => {
         setForm(prev => ({
@@ -130,6 +149,7 @@ const AccountUpdate = ({isShowing, hide, id}) => {
         const isValid = validateForm();
         if (isValid) {
             dispatch(updateAccountByAdmin({form}));
+            hide();
         }
     };
 
@@ -202,7 +222,7 @@ const AccountUpdate = ({isShowing, hide, id}) => {
                                     </div>
                                     <div className="row">
                                         <div className="col d-flex justify-content-end">
-                                            <button className="btn btn-primary" type="submit" onClick={submitHandler}>Save Changes</button>
+                                            <button className="btn btn-primary" type="submit" onClick={()=>{submitHandler()}}>Save Changes</button>
                                         </div>
                                     </div>
                                 </div>)}

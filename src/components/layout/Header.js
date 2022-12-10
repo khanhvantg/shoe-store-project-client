@@ -36,7 +36,6 @@ const Header = () => {
     const logoutHandler = () => {
       dispatch(logout());
     };
-
     const handleRemoveItem = (id) => {
         dispatch(removeLineItem(id));
     }
@@ -117,7 +116,7 @@ const Header = () => {
             </div>
             <div className="container">
                 <Link className="navbar-brand" to={{ pathname: "/"}}>
-                    <img src="assets/images/Untitled.png" style={{width:"30px", height:"30px"}}></img>
+                    <img src="assets/images/Untitled.png" style={{width:"30px", height:"30px"}}/>
                     <h7 className="font-weight-bold">E-Shop</h7>
                 </Link>
                 

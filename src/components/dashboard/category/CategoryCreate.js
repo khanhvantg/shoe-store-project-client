@@ -39,19 +39,6 @@ const CategoryCreate = ({isShowing, hide}) => {
     } = categoryCreate;
     
     var today = new Date();
-    useEffect(() => {
-        setForm({});
-        if (succsesCreate) {
-            dispatch({type: CATEGORY_CREATE_RESET});
-            dispatch(getAllcategories());
-        }else if(isShowing){
-            setForm(prev => ({
-                ...prev,
-                createdBy: userInfo.username,
-                createdDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()
-            }))
-        }
-    }, [dispatch, succsesCreate, isShowing]);
 
     const onInputValidate = (value, name) => {
         setErrorInput(prev => ({
@@ -77,6 +64,39 @@ const CategoryCreate = ({isShowing, hide}) => {
             onValidateFunc: onInputValidate
         }
     });
+
+    useEffect(() => {
+        setForm({});
+        if (succsesCreate) {
+            dispatch({type: CATEGORY_CREATE_RESET});
+            dispatch(getAllcategories());
+        }else if(isShowing){
+            setForm(prev => ({
+                ...prev,
+                createdBy: userInfo.username,
+                createdDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()
+            }))
+        }
+        if(!isShowing){
+            setErrorInput({
+                name: {
+                    isReq: true,
+                    errorMsg: '',
+                    onValidateFunc: onInputValidate
+                },
+                description: {
+                    isReq: true,
+                    errorMsg: '',
+                    onValidateFunc: onInputValidate
+                },
+                status: {
+                    isReq: true,
+                    errorMsg: '',
+                    onValidateFunc: onInputValidate
+                }
+            })
+        }
+    }, [dispatch, succsesCreate, isShowing]);
          
     const onInputChange = useCallback((value, name) => {
         setForm(prev => ({

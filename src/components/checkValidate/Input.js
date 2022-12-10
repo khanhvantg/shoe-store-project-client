@@ -22,6 +22,9 @@ const getRegExp = (type) => {
     case 'NUMBER':
       regx = /^(?!-)(?!d)[1-9][0-9]*$/;
       break;
+    case 'USERNAME':
+      regx = /^[A-Za-z][A-Za-z0-9_]{0,29}$/;
+      break;
     default:
       break;
   }

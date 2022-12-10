@@ -15,14 +15,13 @@ const OrderMain = () => {
 
     const orderList= useSelector((state) => state.orderList);
     const { loading, error, orders} = orderList;
-
     useEffect(()=>{
         dispatch(getAllOrders());
-    },[dispatch])
 
-    if(!error){
-        orders.sort((a,b)=>(a.id-b.id))
-    }
+    },[dispatch])
+    // if(!error){
+    //     orders.sort((a,b)=>(a.id-b.id));
+    // }
     // const orderDetail = useSelector((state) => state.orderDetail);
     // const { order } = orderDetail;
   return (
@@ -53,7 +52,7 @@ const OrderMain = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {orders&&orders.map((item, index)  => (
+                                {orders&&orders.sort((a,b)=>(a.id-b.id)).map((item, index)  => (
                                     <tr>
                                         <td className="align-middle">{item.id}</td>
                                         <td className="text-nowrap align-middle">{item.createdDate}</td>

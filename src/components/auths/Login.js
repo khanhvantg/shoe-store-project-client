@@ -22,13 +22,20 @@ const Login = () => {
     const { user } = userDetail;
     useEffect(() => {
         if (userInfo) {
-            console.log(userInfo)
-            if(userInfo.name===null){
-                navigate("/profile");
+            if(userInfo.roles[0]==="ROLE_ADMIN" || userInfo.roles[0]==="ROLE_MODERATOR" || userInfo.roles[1]==="ROLE_ADMIN" || userInfo.roles[1]==="ROLE_MODERATOR"){
+                navigate("/manage/d-revenue");
+            } else {
+                if(userInfo.name===null){
+                    navigate("/profile");
+                }
+                else navigate("/");
             }
-            else navigate("/");
+            // if(userInfo.name===null){
+            //     navigate("/profile");
+            // }
+            // else navigate("/");
         }
-    }, [dispatch, userInfo, navigate, user]);
+    }, [dispatch, userInfo, navigate]);
 
     const onInputValidate = (value, name) => {
     setErrorInput(prev => ({
@@ -40,6 +47,7 @@ const Login = () => {
     const [errorInput, setErrorInput] = useState({
         username: {
             isReq: true,
+            reqType: 'USERNAME',
             errorMsg: '',
             onValidateFunc: onInputValidate
         },

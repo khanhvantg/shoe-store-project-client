@@ -38,6 +38,7 @@ const SignUp = () => {
     const [errorInput, setErrorInput] = useState({
         username: {
             isReq: true,
+            reqType: 'USERNAME',
             errorMsg: '',
             onValidateFunc: onInputValidate
         },

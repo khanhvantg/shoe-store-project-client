@@ -12,36 +12,84 @@ const ProductMain = ({idCategory}) => {
     const [productId,setProductId]=useState(null);
     const dispatch = useDispatch();
     const dispatchItem = useDispatch();
-
     const productList = useSelector((state) => state.productList);
     const categoryDetail = useSelector((state) => state.categoryDetail);
-    const { loading, error, products} = idCategory==="0" ? productList : categoryDetail;
-    
+    const { loading, error, products } = idCategory==="0" ? productList : categoryDetail;
+
+    const [data, setData] = useState([])
+    //setData(dataList);
     //const { success, category, loading, error, products } = categoryDetail;
+    
     useEffect(() => {
-        if (!loading) {
-            if(idCategory==="0"){
-                dispatch(getAllProducts());
-            } 
-            else {
-                dispatch(getCategoryById(idCategory));
-            }
+        // if (!loading) {
+        //     if(idCategory==="0"){
+        //         dispatch(getAllProducts());
+        //     } 
+        //     else {
+        //         dispatch(getCategoryById(idCategory));
+        //     }         
+        // }
+        if(idCategory==="0"){
+            dispatch(getAllProducts());
+        } 
+        else {
+            dispatch(getCategoryById(idCategory));
         }
-    }, [dispatch,idCategory]);
+    }, [idCategory]);
 
     const itemInfo = {
         amount
     }
 
-    const handleAddToCart = (productId) => {
-        dispatchItem(createLineItem({itemInfo,productId}))
-    }
+    // const handleAddToCart = (productId) => {
+    //     dispatchItem(createLineItem({itemInfo,productId}))
+    // }
 
+    const [searchText, setSearchText] = useState("");
+    const excludeColumns = ["id", "productInfors", "images", "status", "description", 
+                             "createdBy", "createdDate", "modifiedBy", "modifiedDate"];
+    const handleChange = value => {
+        setSearchText(value);
+        filterData(value);
+      };
+     const[check,setCheck]=useState(true);
+      // filter records by search text
+      const filterData = (value) => {
+        const lowercasedValue = value.toLowerCase().trim();
+        if (lowercasedValue === "") {
+            setData([]);
+            setCheck(true)
+        } else {
+            //console.log(products)
+          const filteredData = products.filter(item => {
+            return Object.keys(item).some(key =>
+                excludeColumns.includes(key) ? false : item[key].toString().toLowerCase().includes(lowercasedValue)
+            );
+          });
+          if(filteredData.length===0){
+            setCheck(false);
+        }else(setCheck(true))
+          setData(filteredData)
+        }
+      }
     return (
         <div className="container">
+            <input
+                style={{ width: "100%", marginBottom:"2.5rem", background:"white"}}
+                type="text"
+                placeholder="Type to search..."
+                value={searchText}
+                onChange={(e) => {
+                    setSearchText(e.target.value);
+                    filterData(e.target.value);
+                }}
+            />
             {loading ? ( <Loading />) : error ? (<Message variant="alert-danger">{error}</Message>) : (
             <div className="row">
-                { products&&products.sort((a, b) => (a.id-b.id)).map((product)=>(
+                {
+                    (check&&products.length!==0)? 
+                    <>
+                    { (data.length===0?products:data).sort((a, b) => (a.id-b.id)).map((product)=>(
                     <div className="col-lg-3 col-12 col-md-6 col-sm-6 mb-5" >
                         <div className="product">
                             <div className="product-wrap">
@@ -63,7 +111,16 @@ const ProductMain = ({idCategory}) => {
                             </div>
                         </div>
                     </div>))}
+                    </>
+                    :
+                    <div className="text-center" style={{width: "100%"}}>
+                        <span >No Products Found To Display!</span>
+                    </div>
+                }
+                
+                    {/* //{data.length === 0 && <span className="text-center">No records found to display!</span>} */}
             </div>)}
+            
         </div>
     )
 }
