@@ -77,7 +77,7 @@ const ProductMain = ({idCategory}) => {
             <div class="form-group has-search">
                 <span class="tf-ion-search form-control-feedback"></span>
                 <input 
-                    style={{ width: "100%", marginBottom:"2.5rem", background:"white"}}
+                    style={{marginBottom:"1rem", background:"white"}}
                     type="text" class="form-control" placeholder="Search"
                     placeholder="Type to search..."
                     value={searchText}
