@@ -74,16 +74,21 @@ const ProductMain = ({idCategory}) => {
       }
     return (
         <div className="container">
-            <input
-                style={{ width: "100%", marginBottom:"2.5rem", background:"white"}}
-                type="text"
-                placeholder="Type to search..."
-                value={searchText}
-                onChange={(e) => {
-                    setSearchText(e.target.value);
-                    filterData(e.target.value);
-                }}
-            />
+            <div class="form-group has-search">
+                <span class="tf-ion-search form-control-feedback"></span>
+                <input 
+                    style={{ width: "100%", marginBottom:"2.5rem", background:"white"}}
+                    type="text" class="form-control" placeholder="Search"
+                    placeholder="Type to search..."
+                    value={searchText}
+                    onChange={(e) => {
+                        setSearchText(e.target.value);
+                        filterData(e.target.value);
+                    }}
+                    />
+                <p style={{color: "black"}}>Results: {(check&&products.length!==0&&data.length===0)?products.length:data.length}</p>
+            </div>
+            
             {loading ? ( <Loading />) : error ? (<Message variant="alert-danger">{error}</Message>) : (
             <div className="row">
                 {
