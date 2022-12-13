@@ -15,7 +15,7 @@ const ProductMain = ({idCategory}) => {
     const productList = useSelector((state) => state.productList);
     const categoryDetail = useSelector((state) => state.categoryDetail);
     const { loading, error, products } = idCategory==="0" ? productList : categoryDetail;
-
+    const dataList = products&&products.filter(item=>item.status==="1");
     const [data, setData] = useState([])
     //setData(dataList);
     //const { success, category, loading, error, products } = categoryDetail;
@@ -48,6 +48,7 @@ const ProductMain = ({idCategory}) => {
     const [searchText, setSearchText] = useState("");
     const excludeColumns = ["id", "productInfors", "images", "status", "description", 
                              "createdBy", "createdDate", "modifiedBy", "modifiedDate"];
+    const impCol = ["status"];
     const handleChange = value => {
         setSearchText(value);
         filterData(value);
@@ -61,24 +62,30 @@ const ProductMain = ({idCategory}) => {
             setCheck(true)
         } else {
             //console.log(products)
-          const filteredData = products.filter(item => {
+          const filteredData = dataList.filter(item => {
             return Object.keys(item).some(key =>
                 excludeColumns.includes(key) ? false : item[key].toString().toLowerCase().includes(lowercasedValue)
             );
           });
+
           if(filteredData.length===0){
             setCheck(false);
-        }else(setCheck(true))
+          }else(setCheck(true));
+
           setData(filteredData)
         }
       }
+
+    //   const amountProduct = ((check&&products.length!==0&&data.length===0)?products.length:data.length).reduce(function (result, item) {
+    //     return result + Number(item.amount);
+    //   },0);
     return (
         <div className="container">
-            <div class="form-group has-search">
-                <span class="tf-ion-search form-control-feedback"></span>
+            <div className="form-group has-search">
+                <span className="tf-ion-search form-control-feedback"></span>
                 <input 
                     style={{marginBottom:"1rem", background:"white"}}
-                    type="text" class="form-control" placeholder="Search"
+                    type="text" className="form-control" placeholder="Search"
                     placeholder="Type to search..."
                     value={searchText}
                     onChange={(e) => {
@@ -86,16 +93,17 @@ const ProductMain = ({idCategory}) => {
                         filterData(e.target.value);
                     }}
                     />
-                <p style={{color: "black"}}>Results: {(check&&products.length!==0&&data.length===0)?products.length:data.length}</p>
+                <p style={{color: "black"}}>Results: {(check&&dataList.length!==0&&data.length===0)?dataList.length:data.length}</p>
             </div>
             
             {loading ? ( <Loading />) : error ? (<Message variant="alert-danger">{error}</Message>) : (
             <div className="row">
                 {
-                    (check&&products.length!==0)? 
+                    (check&&dataList.length!==0)? 
                     <>
-                    { (data.length===0?products:data).sort((a, b) => (a.id-b.id)).map((product)=>(
-                    <div className="col-lg-3 col-12 col-md-6 col-sm-6 mb-5" >
+                    { (data.length===0?dataList:data).sort((a, b) => (a.id-b.id)).map((product)=>(
+                    <>
+                    {product.status!=="0"&&(<div className="col-lg-3 col-12 col-md-6 col-sm-6 mb-5" >
                         <div className="product">
                             <div className="product-wrap">
                                 <Link to={{ pathname: `/product/${product.id}`}}>
@@ -115,7 +123,9 @@ const ProductMain = ({idCategory}) => {
                                 </span>
                             </div>
                         </div>
-                    </div>))}
+                    </div>)}
+                    </>
+                    ))}
                     </>
                     :
                     <div className="text-center" style={{width: "100%"}}>

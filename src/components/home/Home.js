@@ -16,7 +16,7 @@ const Home = () => {
 
     const productList = useSelector((state) => state.productList);
     const { loading, error, products} = productList;
-    
+    const dataList = products&&products.filter(item=>item.status==="1");
     const bestSeller = useSelector((state) => state.bestSeller);
     const { productBests } = bestSeller;
     //const { success, category, loading, error, products } = categoryDetail;
@@ -30,7 +30,7 @@ const Home = () => {
     productBests&&productBests.sort((a,b)=>(Number(b.amountProduct)-Number(a.amountProduct)))
     for (let i in productBests) {
         for (let j in products) {
-            if(Number(productBests[i].productId)===products[j].id){
+            if(Number(productBests[i].productId)===products[j].id&&products[j].status==="1"){
                 proBest.push(products[j]);
                 break;
             }
@@ -115,7 +115,7 @@ const Home = () => {
                 <div className="col-lg-4 col-sm-6 col-md-6">
                     <div className="widget-featured-entries mt-5 mt-lg-0">
                         <h4 className="mb-4 pb-3">New Arrivals</h4>
-                        { products&&products.sort((a, b) => (b.id-a.id)).map((product, index)=>(
+                        { dataList&&dataList.sort((a, b) => (b.id-a.id)).map((product, index)=>(
                             <>
                             {index<4?(
                                 <div className="media mb-3">

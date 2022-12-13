@@ -57,7 +57,9 @@ const Shop = () => {
                                                 onChange={handleC} >
                                                 <option value="0">All</option>
                                                 {categories&&categories.map((item,index)=>(
-                                                    <option key={index} value={item.id}>{item.name}</option>
+                                                    <>
+                                                        {item.status!=="0"&&(<option key={index} value={item.id}>{item.name}</option>)}
+                                                    </>
                                                 ))};
                                         </select>
                                         <input type="hidden" name="paged" value="1" />
