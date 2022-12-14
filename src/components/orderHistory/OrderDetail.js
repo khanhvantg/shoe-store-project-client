@@ -3,11 +3,12 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createOrder, getOrdersByUserId, getOrderById, getAllOrders } from '../../redux/actions/OrderAction'
 import { Link } from "react-router-dom";
+import Loading from "../loadingError/Loading";
 const OrderDetail = ({isShowing, hide, id}) => {
     const dispatch = useDispatch();
 
     const orderDetail = useSelector((state) => state.orderDetail);
-    const { order, lineItems} = orderDetail;
+    const { loading, order, lineItems} = orderDetail;
 
     console.log(lineItems)
     useEffect(() => {
@@ -39,7 +40,9 @@ const OrderDetail = ({isShowing, hide, id}) => {
             <div className="container">
                 <div className="row justify-content-center">
                 <div className="col-lg-12">
-                    <div className="product-list">
+                    {loading?(<Loading/>):
+                        (
+                        <div className="product-list">
                         <form className="cart-form">
                             <table className="table shop_table shop_table_responsive cart" cellspacing="0">
                                 <thead>
@@ -102,6 +105,8 @@ const OrderDetail = ({isShowing, hide, id}) => {
                             </table>
                         </form>
                     </div>
+                        )
+                    }
                 </div>
                 </div>
                 </div>

@@ -10,6 +10,7 @@ import {
 } from '../../redux/constants/Constants'
 import CofirmBox from "../cofirmBox/CofirmBox";
 import '../cofirmBox/CofirmBox.css'
+import Loading from "../loadingError/Loading";
 const Order = () => {
     const {isShowing, toggle, id} = useModal();
     const {isShowing:isShowConfirmBox, toggle:toggleConfirmBox, id: idOrder} = useModal();
@@ -41,11 +42,13 @@ const Order = () => {
     }
   return (
     <div className="checkout-container">
-    <section className="cart shopping page-wrapper">
+        <section className="cart shopping page-wrapper">
             <div className="container">
                 <div className="row justify-content-center">
                     <h3>Order History</h3>
-                <div className="col-lg-12">
+                    <div className="col-lg-12">
+                    {
+                        loading ? (<Loading/>):(
                     <div className="product-list">
                         <form className="cart-form">
                             <table className="table cart" cellspacing="0">
@@ -125,25 +128,26 @@ const Order = () => {
                             </table>
                         </form>
                     </div>
+                    )
+                }
                 </div>
             </div>
-            <OrderDetail 
-            isShowing={isShowing}
-            hide={toggle}
-            // lineItems={lineItems}
-            id={id}
-            // linItems={order}
-            />
+                <OrderDetail 
+                isShowing={isShowing}
+                hide={toggle}
+                // lineItems={lineItems}
+                id={id}
+                // linItems={order}
+                />
             </div>
-            </section>
+        </section>
             <CofirmBox 
                 isShowing={isShowConfirmBox}
                 noHandle={toggleConfirmBox}
                 yesHanle={handleCancel}
                // id={idOrder}
-            />
-                 
-            </div>
+            />       
+    </div>
   )
 }
 
