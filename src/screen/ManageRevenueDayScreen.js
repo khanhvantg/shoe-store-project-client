@@ -151,7 +151,7 @@ const ManageRevenueDateScreen = () => {
     function getSubtitle() {
       return `
           <span style="font-size: 22px">
-              Total: <b>: ${revenue.revenue}</b> $
+              Total: <b>${revenue.revenue}</b> $
           </span>`;
   }
 

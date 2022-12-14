@@ -152,7 +152,7 @@ const ManageRevenueMonthScreen = () => {
     function getSubtitle() {
       return `
           <span style="font-size: 22px">
-              Total: <b>: ${revenue.revenueByMonth}</b> $
+              Total: <b>${revenue.revenueByMonth}</b> $
           </span>`;
   }
     useEffect(() => {
