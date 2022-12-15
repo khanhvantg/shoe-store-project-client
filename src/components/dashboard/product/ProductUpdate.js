@@ -87,7 +87,8 @@ const ProductUpdate = ({isShowing, hide, id, idCategory}) => {
         if (successUpdate) {
             dispatch({type: PRODUCT_UPDATE_RESET});
             dispatch(getAllProducts());
-            dispatchCategory(getCategoryById(idCategory))
+            dispatchCategory(getCategoryById(idCategory));
+            hide();
         } else {
             if (isShowing&&product.id!==id) {
                 dispatch(getProductById(id));
@@ -158,7 +159,6 @@ const ProductUpdate = ({isShowing, hide, id, idCategory}) => {
         const isValid = validateForm();
         if (isValid) {
             dispatch(updateProduct({form}));
-            hide();
         }
     };
 

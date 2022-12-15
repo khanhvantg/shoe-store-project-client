@@ -57,6 +57,7 @@ try {
         ? error.response.data.message
         : error.message,
   });
+  toast(`${error.response.data.message}`, {position: toast.POSITION.TOP_CENTER});
 }
 };
 
@@ -95,5 +96,6 @@ try {
         ? error.response.data.message
         : error.message,
   });
+  toast(`${error.response.data.message}`, {position: toast.POSITION.TOP_CENTER});
 }
 };
