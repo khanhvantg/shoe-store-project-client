@@ -55,6 +55,7 @@ const Order = () => {
                                 <thead>
                                     <tr>
                                         <th className="product-thumbnail">OrderId</th>
+                                        <th className="product-name">Shipping Code</th>
                                         <th className="product-name">Date</th>
                                         {/* <th className="product-quantity">Amount Item</th> */}
                                         <th className="product-subtotal">Total</th>
@@ -68,6 +69,9 @@ const Order = () => {
                                         <tr className="cart_item">
                                     <td className="product-thumbnail" data-title="Thumbnail">
                                         {item.id}
+                                    </td>
+                                    <td className="product-name" data-title="Product">
+                                        {item.number!==null?item.number:"None"}
                                     </td>
                                     <td className="product-name" data-title="Product">
                                         {item.createdDate}
