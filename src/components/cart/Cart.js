@@ -17,6 +17,7 @@ const Cart = () => {
     const [pos, setPos]=useState();
     const [timer,setTimer]=useState(null);
     const [form, setForm] = useState({
+        email: '',
         address: '',
         phoneNumber: '',
         name: '',
@@ -62,6 +63,7 @@ const Cart = () => {
         } else {
             setAmounts(lineItems);
             setForm({
+                email: user.email,
                 address: user.address,
                 phoneNumber: user.phone,
                 name: user.name,
@@ -202,6 +204,12 @@ const Cart = () => {
         },
         address: {
             isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        email: {
+            isReq: true,
+            reqType: 'EMAIL',
             errorMsg: '',
             onValidateFunc: onInputValidate
         },
@@ -402,6 +410,13 @@ const Cart = () => {
                                                 value={form.address}
                                                 onChangeFunc={onInputChange}
                                                 {...errorInput.address}
+                                            />
+                                            <Input
+                                                name="email"
+                                                title="Email"
+                                                value={form.email}
+                                                onChangeFunc={onInputChange}
+                                                {...errorInput.email}
                                             />
                                             <Input
                                                 name="phoneNumber"
