@@ -71,7 +71,7 @@ const Order = () => {
                                         {item.id}
                                     </td>
                                     <td className="product-name" data-title="Product">
-                                        {item.number!==null?item.number:"None"}
+                                        {item.number}
                                     </td>
                                     <td className="product-name" data-title="Product">
                                         {item.createdDate}

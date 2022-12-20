@@ -99,7 +99,7 @@ const OrderDetail = ({isShowing, hide, id}) => {
                                         <ul className="list-unstyled mb-4">
                                             <li className="d-flex justify-content-between pb-2 mb-3">
                                             <h5>Shipping Code</h5>
-                                            <span>{order.number!==null?order.number:"None"}</span>
+                                            <span>{order.number}</span>
                                             </li>
                                             <li className="d-flex justify-content-between pb-2 mb-3">
                                             <h5>Orderer</h5>
