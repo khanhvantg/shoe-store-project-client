@@ -35,7 +35,7 @@ const CategoryMain = () => {
                         ) : error ? (
                             <Message variant="alert-danger">{error}</Message>
                         ) : (
-                            <table className="table table-bordered">
+                            <table className="table table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th>Id</th>
@@ -50,8 +50,8 @@ const CategoryMain = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                { categories && categories.sort((a,b)=>(a.id-b.id)).map((category, index) => (
-                                    <tr>
+                                { categories && categories.sort((a,b)=>(b.id-a.id)).map((category, index) => (
+                                    <tr onClick={()=>{toggle(category.id)}}>
                                         <td className="align-middle">{category.id}</td>
                                         <td className="text-nowrap align-middle">{category.name}</td>
                                         <td className="align-middle" style={{width:400,wordBreak:"break-word"}}>{category.description}</td>

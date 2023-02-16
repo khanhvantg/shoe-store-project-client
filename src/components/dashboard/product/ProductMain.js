@@ -24,7 +24,7 @@ const ProductMain = () => {
     const productList = useSelector((state) => state.productList);
     const categoryDetail = useSelector((state) => state.categoryDetail);
     const { loading, error, products } = idCategory==="0" ? productList : categoryDetail;
-    products.sort((a,b)=>(a.id-b.id));
+    products.sort((a,b)=>(b.id-a.id));
 
     const categoryList = useSelector((state) => state.categoryList);
     const { categories } = categoryList;
@@ -73,7 +73,7 @@ const ProductMain = () => {
                         ) : error ? (
                             <Message variant="alert-danger">{error}</Message>
                         ) : (
-                            <table className="table table-bordered">
+                            <table className="table table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th>Id</th>

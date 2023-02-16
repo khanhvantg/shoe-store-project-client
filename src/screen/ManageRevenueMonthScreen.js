@@ -181,6 +181,12 @@ const ManageRevenueMonthScreen = () => {
     e.preventDefault();
     setIsOpen(!isOpen);
   };
+  const [isTable, setIsTable] = useState(true);
+    const handleClick1 = (e) => {
+      e.preventDefault();
+      setIsTable(!isTable);
+    };
+    
   return (
     <div className="wrapper1">
         <Layout active={active}/>
@@ -194,11 +200,15 @@ const ManageRevenueMonthScreen = () => {
             </div>
         </nav>
    
-                <div className="e-panel cardcus parent">
+                <div className={isTable?"e-panel cardcus":"e-panel cardcus parent"} style={{width:"100%"}}>
                 <div className="card-body">
                     <div className="e-table">
                         <div className="table-responsive table-lg mt-3">
-                     
+                        <button className="btn btn-info" onClick={handleClick1}>
+                          {isTable?"Table":"Graph"}
+                        </button>
+                        <br></br>
+                        <br></br>
                         <button className="btn btn-info" onClick={handleClick}>
                           Month: {startDate.getMonth()+1}/{startDate.getFullYear()}
                           <i>  </i>
@@ -221,7 +231,40 @@ const ManageRevenueMonthScreen = () => {
                                 inline 
                               />
                           )}
-                          <table className="child" ref={refContainer}/>
+                        {isTable?
+                      <>
+                          <div ref={refContainer} hidden>
+                          </div>
+                          <table className="table table-bordered table-hover">
+                            <thead align="center">
+                            <tr>
+                                <th>Name</th>
+                                <th>Sold</th>
+                                <th>Revenue</th>
+                            </tr>
+                            </thead>
+                            <tbody align="center">
+                            {revenueList&&revenueList.sort((a,b)=>(b.amountProduct-a.amountProduct)).map((item)=> (
+                            <tr>
+                              <td className="align-middle">{item.productId}</td>
+                              <td className="text-nowrap align-middle">{item.amountProduct}</td>
+                              <td className="text-nowrap align-middle">${item.totalPrice}</td>
+                            </tr>
+                            
+                            ))}          
+                            </tbody>
+                            <tfoot align="center">
+                            <tr>
+                              <th colspan="2">Total</th>
+                              <th colspan="1">${revenue.revenueByMonth}</th>
+                            </tr>
+                            </tfoot>
+                          </table>
+                          </>
+                        :
+                        <table className="child" ref={refContainer} style={{border:"2px soild"}}>
+                        </table>
+}
                         </div>
                     </div>
                 </div>

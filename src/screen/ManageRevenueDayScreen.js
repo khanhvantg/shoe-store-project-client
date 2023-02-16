@@ -178,12 +178,18 @@ const ManageRevenueDateScreen = () => {
       e.preventDefault();
       setIsOpen(!isOpen);
     };
+    const [isTable, setIsTable] = useState(true);
+    const handleClick1 = (e) => {
+      e.preventDefault();
+      setIsTable(!isTable);
+    };
+    
   return (
     <div className="wrapper1">
         <Layout active={active}/>
         <nav className="navbar navbar1-expand-lg navbar1-light bg-light">
             <div className="container-fluid">
-                <button type="button" id="sidebarCollapse" className="btn btn-info"  onClick={handle}>
+                <button type="button" id="sidebarCollapse" className="btn btn-info" onClick={handle}>
                     {!active?<i className="tf-ion-ios-arrow-left"></i>:
                     <i className="tf-ion-ios-arrow-right"></i>}
                 </button>
@@ -191,16 +197,22 @@ const ManageRevenueDateScreen = () => {
             </div>
         </nav>
 
-          <div className="e-panel cardcus parent">
+          <div className={isTable?"e-panel cardcus":"e-panel cardcus parent"} style={{width:"100%"}}>
                 <div className="card-body">
                 
                     <div className="e-table">
                         <div className="table-responsive table-lg mt-3">
+                        <button className="btn btn-info" onClick={handleClick1}>
+                          {isTable?"Table":"Graph"}
+                        </button>
+                        <br></br>
+                        <br></br>
                         <button className="btn btn-info" onClick={handleClick}>
                           Date: {startDate.getDate()}/{startDate.getMonth()+1}/{startDate.getFullYear()}
                           <i>  </i>
                           <i className="tf-ion-android-calendar"></i>
                         </button>
+                        
                         {isOpen && (
                                 <DatePicker
                                 selected={startDate}
@@ -214,11 +226,40 @@ const ManageRevenueDateScreen = () => {
                                 inline
                               />
                         )}
-                        
-                        <table className="child" ref={refContainer} style={{border:"2px soild"}}/>
-                            {/* <table className="table table-bordered">
-                              <div className="child" ref={refContainer}/>
-                            </table> */}
+                        {isTable?
+                      <>
+                          <div ref={refContainer} hidden>
+                          </div>
+                          <table className="table table-bordered table-hover">
+                            <thead align="center">
+                            <tr>
+                                <th>Name</th>
+                                <th>Sold</th>
+                                <th>Revenue</th>
+                            </tr>
+                            </thead>
+                            <tbody align="center">
+                            {revenueList&&revenueList.sort((a,b)=>(b.productAmount-a.productAmount)).map((item)=> (
+                            <tr>
+                              <td className="align-middle">{item.productId}</td>
+                              <td className="text-nowrap align-middle">{item.productAmount}</td>
+                              <td className="text-nowrap align-middle">${item.totalPrice}</td>
+                            </tr>
+                            
+                            ))}          
+                            </tbody>
+                            <tfoot align="center">
+                            <tr>
+                              <th colspan="2">Total</th>
+                              <th colspan="1">${revenue.revenue}</th>
+                            </tr>
+                            </tfoot>
+                          </table>
+                          </>
+                        :
+                        <table className="child" ref={refContainer} style={{border:"2px soild"}}>
+                        </table>
+}
                         </div>
                     </div>
                 </div>

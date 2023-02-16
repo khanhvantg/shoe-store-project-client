@@ -102,6 +102,7 @@ const ManageRevenueYearScreen = () => {
       e.preventDefault();
       setIsOpen(!isOpen);
     };
+    console.log("data", revenueList)
   return (
     <div className="wrapper1">
         <Layout active={active}/>

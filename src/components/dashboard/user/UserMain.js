@@ -35,7 +35,7 @@ const UserMain = () => {
                             ) : error ? (
                                 <Message variant="alert-danger">{error}</Message>
                             ) : (
-                                <table className="table table-bordered">
+                                <table className="table table-bordered table-hover">
                                     <thead>
                                         <tr>
                                             <th>Id</th>
@@ -51,8 +51,8 @@ const UserMain = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    { users && users.sort((a,b)=>(a.id-b.id)).map((user, index) => (
-                                        <tr>
+                                    { users && users.sort((a,b)=>(b.id-a.id)).map((user, index) => (
+                                        <tr onClick={()=>{toggle(user.id)}}>
                                             <td className="align-middle">{user.id}</td>
                                             <td className="text-nowrap align-middle">{user.name}</td>
                                             <td className="text-nowrap align-middle">{user.age}</td>
