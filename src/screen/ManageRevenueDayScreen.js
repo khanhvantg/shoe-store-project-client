@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback, useRef } from "react";
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import Layout from './Layout'
+import Loading from '../components/loadingError/Loading';
 import UserMain from '../components/dashboard/user/UserMain'
 import Highcharts from 'highcharts';
 import { useDispatch,useSelector } from "react-redux";
@@ -22,7 +23,7 @@ const ManageRevenueDateScreen = () => {
     const { products } = productList;
     const [re,setRe]=useState([]);
     const revenueOfDate = useSelector((state) => state.revenueOfDate);
-    const { revenue, revenueList } = revenueOfDate;
+    const { loading, revenue, revenueList } = revenueOfDate;
     // const revenueOfAMonth = useSelector((state) => state.revenueOfDate);
     // const { arevenueList } = revenueOfAMonth;
     const [date, setDate]=useState({
@@ -138,11 +139,12 @@ const ManageRevenueDateScreen = () => {
       dataproduct.id.push(products[j].id);
       dataproduct.data.push(0);
     }
-
     for(let j in dataproduct.data){
       for(let i in revenueList){
         if(Number(dataproduct.id[j])===Number(revenueList[i].productId)){
           dataproduct.data[j]=revenueList[i].productAmount;
+          revenueList[i].nameProduct=dataproduct.name[j];
+          
           break;
         }
       }
@@ -183,7 +185,6 @@ const ManageRevenueDateScreen = () => {
       e.preventDefault();
       setIsTable(!isTable);
     };
-    
   return (
     <div className="wrapper1">
         <Layout active={active}/>
@@ -230,6 +231,8 @@ const ManageRevenueDateScreen = () => {
                       <>
                           <div ref={refContainer} hidden>
                           </div>
+                          {((revenueList.length>0 && !revenueList[revenueList.length-1].nameProduct) || (loading))? (
+                                <Loading />):
                           <table className="table table-bordered table-hover">
                             <thead align="center">
                             <tr>
@@ -241,7 +244,7 @@ const ManageRevenueDateScreen = () => {
                             <tbody align="center">
                             {revenueList&&revenueList.sort((a,b)=>(b.productAmount-a.productAmount)).map((item)=> (
                             <tr>
-                              <td className="align-middle">{item.productId}</td>
+                              <td className="align-middle">{item.nameProduct}</td>
                               <td className="text-nowrap align-middle">{item.productAmount}</td>
                               <td className="text-nowrap align-middle">${item.totalPrice}</td>
                             </tr>
@@ -254,7 +257,7 @@ const ManageRevenueDateScreen = () => {
                               <th colspan="1">${revenue.revenue}</th>
                             </tr>
                             </tfoot>
-                          </table>
+                          </table>}
                           </>
                         :
                         <table className="child" ref={refContainer} style={{border:"2px soild"}}>

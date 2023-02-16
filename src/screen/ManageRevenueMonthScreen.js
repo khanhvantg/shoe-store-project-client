@@ -7,6 +7,7 @@ import Highcharts from 'highcharts';
 import { useDispatch,useSelector } from "react-redux";
 import { getRevenueByMonth, getARevenueByMonth} from '../redux/actions/RevenueAction'
 import { getAllProducts } from '../redux/actions/ProductAction'
+import Loading from "../components/loadingError/Loading";
 const ManageRevenueMonthScreen = () => {
   const [isMonthPicker, setMonthPicker] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
@@ -22,7 +23,7 @@ const ManageRevenueMonthScreen = () => {
     const { products } = productList;
     const [re,setRe]=useState([]);
     const revenueOfMonth = useSelector((state) => state.revenueOfMonth);
-    const { revenue, revenueList } = revenueOfMonth;
+    const { loading, revenue, revenueList } = revenueOfMonth;
     const revenueOfAMonth = useSelector((state) => state.revenueOfAMonth);
     const { arevenueList } = revenueOfAMonth;
     const [month, setMonth]=useState({
@@ -144,6 +145,7 @@ const ManageRevenueMonthScreen = () => {
       for(let i in revenueList){
         if(Number(dataproduct.id[j])===Number(revenueList[i].productId)){
           dataproduct.data[j]=revenueList[i].amountProduct;
+          revenueList[i].nameProduct=dataproduct.name[j];
           break;
         }
       }
@@ -235,6 +237,8 @@ const ManageRevenueMonthScreen = () => {
                       <>
                           <div ref={refContainer} hidden>
                           </div>
+                          {((revenueList.length>0 && !revenueList[revenueList.length-1].nameProduct) || (loading))? (
+                                <Loading />):
                           <table className="table table-bordered table-hover">
                             <thead align="center">
                             <tr>
@@ -246,7 +250,7 @@ const ManageRevenueMonthScreen = () => {
                             <tbody align="center">
                             {revenueList&&revenueList.sort((a,b)=>(b.amountProduct-a.amountProduct)).map((item)=> (
                             <tr>
-                              <td className="align-middle">{item.productId}</td>
+                              <td className="align-middle">{item.nameProduct}</td>
                               <td className="text-nowrap align-middle">{item.amountProduct}</td>
                               <td className="text-nowrap align-middle">${item.totalPrice}</td>
                             </tr>
@@ -259,7 +263,7 @@ const ManageRevenueMonthScreen = () => {
                               <th colspan="1">${revenue.revenueByMonth}</th>
                             </tr>
                             </tfoot>
-                          </table>
+                          </table>}
                           </>
                         :
                         <table className="child" ref={refContainer} style={{border:"2px soild"}}>

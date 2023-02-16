@@ -8,6 +8,7 @@ import { useDispatch,useSelector } from "react-redux";
 import { getRevenueByMonth, getARevenueByMonth} from '../redux/actions/RevenueAction'
 import { getAllProducts } from '../redux/actions/ProductAction'
 import { Fragment } from "react";
+import Loading from "../components/loadingError/Loading";
 const ManageRevenueYearScreen = () => {
   const [isMonthPicker, setMonthPicker] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
@@ -25,7 +26,7 @@ const ManageRevenueYearScreen = () => {
     const revenueOfMonth = useSelector((state) => state.revenueOfMonth);
     const { revenue, revenueList } = revenueOfMonth;
     const revenueOfAMonth = useSelector((state) => state.revenueOfAMonth);
-    const { arevenueList } = revenueOfAMonth;
+    const { loading, arevenueList } = revenueOfAMonth;
     const [month, setMonth]=useState({
         year: startDate.getFullYear(),
     })
@@ -76,12 +77,23 @@ const ManageRevenueYearScreen = () => {
         chart.showLoading();
       }
     }, [dataMotnh]);
-    
+
+    var total = 0;
     for(let i in arevenueList){
         dataMotnh[0].data[Number(arevenueList[i].month)-1]=Number(arevenueList[i].totalPrice);
+        console.log(Number(arevenueList[i].totalPrice))
+        total=total+Number(arevenueList[i].totalPrice);
     }
-
-
+    for (let i in dataMotnh[0].data){
+      if(dataMotnh[0].data[i]===0 && arevenueList.length<12){
+        arevenueList.push({
+          month: (Number(i)+1).toString(),
+          totalPrice: 0,
+        })
+      }
+    }
+    
+    console.log("a",arevenueList)
     useEffect(() => {
         dispatch(getARevenueByMonth({month}))
         if(month){
@@ -102,7 +114,13 @@ const ManageRevenueYearScreen = () => {
       e.preventDefault();
       setIsOpen(!isOpen);
     };
-    console.log("data", revenueList)
+    
+    const [isTable, setIsTable] = useState(true);
+    const handleClick1 = (e) => {
+      e.preventDefault();
+      setIsTable(!isTable);
+    };
+    console.log(startDate.getMonth()+1)
   return (
     <div className="wrapper1">
         <Layout active={active}/>
@@ -115,11 +133,15 @@ const ManageRevenueYearScreen = () => {
 
             </div>
         </nav>
-        <div className="e-panel cardcus parent">
+        <div className={isTable?"e-panel cardcus":"e-panel cardcus parent"} style={{width:"100%"}}>
                 <div className="card-body">
-          
                     <div className="e-table">
-                        <div className="table-responsive table-lg mt-3 align-top">
+                        <div className="table-responsive table-lg mt-3">
+                        <button className="btn btn-info" onClick={handleClick1}>
+                          {isTable?"Table":"Graph"}
+                        </button>
+                        <br></br>
+                        <br></br>
                         <button className="btn btn-info" type="button" onClick={handleClick}>
                           Year: {startDate.getFullYear()}
                           <i>  </i>
@@ -141,7 +163,40 @@ const ManageRevenueYearScreen = () => {
                             showFullYearPicker
                             inline
                           />)}
-                            <table className="child" ref={refContainer}/>
+                            {isTable?
+                      <>
+                          <div ref={refContainer} hidden>
+                          </div>
+                          {((revenueList.length>0 && !revenueList[revenueList.length-1].nameProduct) || (loading))? (
+                                <Loading />):
+                          <table className="table table-bordered table-hover">
+                            <thead align="center">
+                            <tr>
+                                <th>Month</th>
+                                <th>Revenue</th>
+                            </tr>
+                            </thead>
+                            <tbody align="center">
+                            {arevenueList&&arevenueList.sort((a,b)=>(a.month-b.month)).map((item)=> (
+                            <tr>
+                              <td className="align-middle">{item.month}</td>
+                              <td className="text-nowrap align-middle">${item.totalPrice}</td>
+                            </tr>
+                            
+                            ))}          
+                            </tbody>
+                            <tfoot align="center">
+                            <tr>
+                              <th colspan="1">Total</th>
+                              <th colspan="1">${total}</th>
+                            </tr>
+                            </tfoot>
+                          </table>}
+                          </>
+                        :
+                        <table className="child" ref={refContainer} style={{border:"2px soild"}}>
+                        </table>
+}
                         </div>
                     </div>
                 </div>
