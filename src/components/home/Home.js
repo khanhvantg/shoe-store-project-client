@@ -23,7 +23,7 @@ const Home = () => {
     var today = new Date();
     const month = {
         month: today.getMonth()+1,
-        year: 2022
+        year: today.getFullYear()
     }
     
     const proBest = [];
