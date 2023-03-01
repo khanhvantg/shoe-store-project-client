@@ -37,44 +37,63 @@ const ProductMain1 = () => {
         if(e.target.value!==filters.size){
             setFilters(prev=>({...prev,size:e.target.value}));
         }else setFilters(prev=>({...prev,size:null}));
-        setIdCategory("0")
-
     }
 
     const [timer,setTimer]=useState(null);
     const changePrice = (e) => {
-        setFilters(prev=>({...prev, price: e.target.value!=='0'?e.target.value:null}))
-        //setIdCategory("0")
+        // setFilters(prev=>({...prev, price: e.target.value!=='0'?e.target.value:null}))
+        if(e.target.value!==filters.price){
+            setFilters(prev=>({...prev,price:e.target.value!=='0'?e.target.value:null}));
+        }
     }
     const productList = useSelector((state) => state.productList);
     const categoryDetail = useSelector((state) => state.categoryDetail);
     const { loading, error, products } = idCategory==="0" ? productList : categoryDetail;
     const dataList = products&&products.filter(item=>item.status==="1");
     const [data, setData] = useState([])
-    console.log("data",dataList)
+    console.log("data",products)
     useEffect(() => {
-        if(filters.size!=null||filters.price!=null){
-            // dispatchFilter(getProductFilter({filters}))
+        if(check1===0){
+            dispatchCategory(getAllcategories());
+            setCheck1(1);
+        }
+        if(idCategory==="0"){
             clearTimeout(timer);
             const newTimer = setTimeout(() => {
                 dispatchFilter(getProductFilter({filters}))
             }, 1000);
             setTimer(newTimer) 
-        } else {
-            if(check1===0){
-                dispatchCategory(getAllcategories());
-                setCheck1(1);
-            }
-            if(idCategory==="0"){
-                dispatch(getAllProducts());
-            } 
-            else {
-                dispatch(getCategoryById(idCategory));
-            }
+            // dispatch(getAllProducts());
+            // if(filters.size!=null||filters.price!=null){
+            //     clearTimeout(timer);
+            //     const newTimer = setTimeout(() => {
+            //         dispatchFilter(getProductFilter({filters}))
+            //     }, 1000);
+            //     setTimer(newTimer) 
+            // } 
+        } 
+        else {
+            dispatch(getCategoryById(idCategory));
         }
+        // if(filters.size!=null||filters.price!=null){
+        //     clearTimeout(timer);
+        //     const newTimer = setTimeout(() => {
+        //         dispatchFilter(getProductFilter({filters}))
+        //     }, 1000);
+        //     setTimer(newTimer) 
+        // } else {
+        //     // dispatch(getAllProducts());
+        //     if(idCategory!=="0"){
+        //         // dispatch(getAllProducts());
+        //         dispatch(getCategoryById(idCategory))
+        //     } 
+        //     // else {
+        //     //     dispatch(getCategoryById(idCategory));
+        //     // }
+        // }
         setSearchText("")
         setData([]);
-    }, [idCategory, check1, filters.size,filters.price]);
+    }, [idCategory, check1, filters.size, filters.price]);
 
     const itemInfo = {
         amount
