@@ -37,19 +37,19 @@ const AccountMain = () => {
                                 <Message variant="alert-danger">{error}</Message>
                             ) : (
                                 <table className="table table-bordered table-hover">
-                                    <thead>
+                                    <thead align="center">
                                         <tr>
-                                            <th>Id</th>
-                                            <th >User Name</th>
+                                            {/* <th>Id</th> */}
+                                            <th>User Name</th>
                                             <th> Roles </th>
                                             <th className="sortable">Status</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody align="center">
                                     { accounts && accounts.sort((a,b)=>(b.id-a.id)).map((account, index) => (
                                         <tr onClick={()=>{toggle(account.id)}}>
-                                            <td className="align-middle">{account.id}</td>
+                                            {/* <td className="align-middle">{account.id}</td> */}
                                             <td className="text-nowrap align-middle">{account.username}</td>
                                             <td className="text-nowrap align-middle">
                                             {account.roles && account.roles.map((item,index) => (

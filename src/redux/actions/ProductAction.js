@@ -15,6 +15,9 @@ import {
   PRODUCT_LIST_FAIL,
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
+  PRODUCT_FILTER_FAIL,
+  PRODUCT_FILTER_REQUEST,
+  PRODUCT_FILTER_SUCCESS,
   CATEGORY_DETAILS_FAIL,
 } from "../constants/Constants";
 import {toast} from 'react-toastify'
@@ -32,6 +35,22 @@ export const getAllProducts = () => async (dispatch) => {
       dispatch({ type: PRODUCT_LIST_REQUEST });
 
       const { data } = await axios.get('/api/products', {headers: authHeader()})
+      dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
+  } catch (error) {
+      dispatch({
+          type: PRODUCT_LIST_FAIL,
+          payload: error.response && error.response.data.message
+              ? error.response.data.message
+              : error.message,
+      });
+  }
+};
+
+export const getProductFilter = ({filters}) => async (dispatch) => {
+  try {
+      dispatch({ type: PRODUCT_LIST_REQUEST });
+
+      const { data } = await axios.post('/api/products/filter', filters, {headers: authHeader()})
       dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
   } catch (error) {
       dispatch({

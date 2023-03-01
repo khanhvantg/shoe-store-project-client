@@ -52,9 +52,9 @@ const Order = () => {
                     <div className="product-list">
                         <form className="cart-form">
                             <table className="table cart" cellspacing="0">
-                                <thead>
+                                <thead align="center">
                                     <tr>
-                                        <th className="product-thumbnail">OrderId</th>
+                                        {/* <th className="product-thumbnail">OrderId</th> */}
                                         <th className="product-name">Shipping Code</th>
                                         <th className="product-name">Date</th>
                                         {/* <th className="product-quantity">Amount Item</th> */}
@@ -64,12 +64,12 @@ const Order = () => {
                                     </tr>
                                 </thead>
         
-                                <tbody>
+                                <tbody align="center">
                                     {orders&&orders.sort((a,b)=>(a.id-b.id)).map(item=>(
                                         <tr className="cart_item">
-                                    <td className="product-thumbnail" data-title="Thumbnail">
+                                    {/* <td className="product-thumbnail" data-title="Thumbnail">
                                         {item.id}
-                                    </td>
+                                    </td> */}
                                     <td className="product-name" data-title="Product">
                                         {item.number}
                                     </td>

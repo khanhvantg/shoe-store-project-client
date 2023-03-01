@@ -1,6 +1,6 @@
 function Footer() {
     return (
-        <div className="footer-container" style={{background:"white"}}>
+        <div className="footer-container border-top" style={{background:"white"}}>
             <footer className="footer" style={{background:"white"}}>
                 <div className="container">
                     <div className="row">

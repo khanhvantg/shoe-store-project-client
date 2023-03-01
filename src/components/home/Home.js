@@ -51,13 +51,13 @@ const Home = () => {
             </ol>
             <div className="carousel-inner">
                 <div className="carousel-item active">
-                    <img src="assets/images/slideshow1-2.jpg" className="d-block w-100" alt="..."/>
+                    <img src="assets/images/img/hero/hero-1.jpg" className="d-block w-100" alt="..."/>
                 </div>
                 {/* <div className="carousel-item">
                     <img src="assets/images/slideshow1-2.jpg" className="d-block w-100" alt="..."/>
                 </div> */}
                 <div className="carousel-item">
-                    <img src="assets/images/slider_3.jpg" className="d-block w-100" alt="..."/>
+                    <img src="assets/images/img/hero/hero-2.jpg" className="d-block w-100" alt="..."/>
                 </div>
             </div>
             <a className="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">

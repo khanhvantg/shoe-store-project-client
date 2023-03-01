@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import ProductMain from './ProductMain';
+import ProductMain1 from './ProductMain1';
 import { getAllcategories, getCategoryById, stopGetCategory } from '../../redux/actions/CategoryAction'
 import { Link } from "react-router-dom";
 const Shop = () => {
@@ -68,15 +68,16 @@ const Shop = () => {
                                 </div>
                             </div>
                         </div>
-                    <div className="row">
+                    {/* <div className="row">
                     
-                        <ProductMain idCategory={idCategory}/>
+                        <ProductMain1 idCategory={idCategory}/>
                 
-                    </div>				
+                    </div>				 */}
                     </div>
                 </div>
                 </div>
             </section>
+            <ProductMain1 idCategory={idCategory}/>
         </div>
     )
 }

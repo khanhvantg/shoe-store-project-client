@@ -36,9 +36,9 @@ const UserMain = () => {
                                 <Message variant="alert-danger">{error}</Message>
                             ) : (
                                 <table className="table table-bordered table-hover">
-                                    <thead>
+                                    <thead align="center">
                                         <tr>
-                                            <th>Id</th>
+                                            {/* <th>Id</th> */}
                                             <th >Name</th>
                                             <th>Age</th>
                                             <th>Gender</th>
@@ -50,10 +50,10 @@ const UserMain = () => {
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody align="center">
                                     { users && users.sort((a,b)=>(b.id-a.id)).map((user, index) => (
                                         <tr onClick={()=>{toggle(user.id)}}>
-                                            <td className="align-middle">{user.id}</td>
+                                            {/* <td className="align-middle">{user.id}</td> */}
                                             <td className="text-nowrap align-middle">{user.name}</td>
                                             <td className="text-nowrap align-middle">{user.age}</td>
                                             <td className="text-nowrap align-middle">{user.gender}</td>

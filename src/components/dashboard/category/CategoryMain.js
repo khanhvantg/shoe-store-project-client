@@ -25,9 +25,7 @@ const CategoryMain = () => {
                     <div className="text-center card-title">
                         <h3 className="mr-2">Categories Manage</h3>
                     </div>
-                    <div className="text-center px-xl-3">
-                        <button className="btn btn-success btn-block" type="button" onClick={toggleCreate}>New Category</button>
-                    </div>
+                    <button className="btn btn-success" style={{marginBottom: "5px"}} type="button" onClick={toggleCreate}>New Category</button>
                     <div className="e-table">
                         <div className="table-responsive table-lg mt-3">
                         {loading ? (
@@ -36,9 +34,9 @@ const CategoryMain = () => {
                             <Message variant="alert-danger">{error}</Message>
                         ) : (
                             <table className="table table-bordered table-hover">
-                                <thead>
+                                <thead align="center">
                                     <tr>
-                                        <th>Id</th>
+                                        {/* <th>Id</th> */}
                                         <th>Name</th>
                                         <th>Description</th>
                                         <th>Create By</th>
@@ -49,10 +47,10 @@ const CategoryMain = () => {
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody align="center">
                                 { categories && categories.sort((a,b)=>(b.id-a.id)).map((category, index) => (
                                     <tr onClick={()=>{toggle(category.id)}}>
-                                        <td className="align-middle">{category.id}</td>
+                                        {/* <td className="align-middle">{category.id}</td> */}
                                         <td className="text-nowrap align-middle">{category.name}</td>
                                         <td className="align-middle" style={{width:400,wordBreak:"break-word"}}>{category.description}</td>
                                         <td className="text-nowrap align-middle">{category.createdBy}</td>

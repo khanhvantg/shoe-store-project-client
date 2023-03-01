@@ -18,6 +18,7 @@ const ProductMain = () => {
     const {isShowingImage, toggleImage, idd} = useModal();
     const {isShowingCreate, toggleCreate} = useModalCreate();
     const  [idCategory, setIdCategory] = useState('0');
+    const  [check, setCheck] = useState(0);
     const dispatch = useDispatch();
     const dispatchProduct = useDispatch();
     const dispatchCategory = useDispatch();
@@ -31,7 +32,10 @@ const ProductMain = () => {
 
     const { success, category } = categoryDetail;
     useEffect(() => {
-        dispatchCategory(getAllcategories());
+        if(check===0){
+            dispatchCategory(getAllcategories());
+            setCheck(1);
+        }
         if(idCategory==='0'){
             dispatchProduct(getAllProducts());
         } 
@@ -51,21 +55,39 @@ const ProductMain = () => {
                 <div className="card-body">
                     <div className="text-center card-title">
                         <h3 className="mr-2">Products Manage</h3>
-                        <form className="ordering">
-                            <select className="orderby form-control"
-                                    value={idCategory}
-                                    onChange={handleC} >
-                                    <option value="0">All</option>
-                                    {categories&&categories.map((item,index)=>(
-                                        <option key={index} value={item.id}>{item.name}</option>
-                                    ))};
-                            </select>
+                        <header class="mb-3">
+                                <div class="form-inline">
+                                    <button className="btn btn-success mr-auto" type="button" onClick={toggleCreate}>New Product</button>
+                                    <select class="form-control mt-2" value={idCategory}
+                                        onChange={handleC} >
+                                        <option value="0">All</option>
+                                        {categories&&categories.map((item,index)=>(
+                                            <>
+                                                {item.status!=="0"&&(<option key={index} value={item.id}>{item.name}</option>)}
+                                            </>
+                                        ))};
+
+                                    </select>
+                                    <input type="hidden" name="paged" value="1" />
+                                </div>
+                            </header>
+                        {/* <div className="text-center" style={{width:"125px"}}>
+                            <button className="btn btn-success btn-block" type="button" onClick={toggleCreate}>New Product</button>
+                            <form className="ordering" style={{width:"125px"}}>
+                                <select className="orderby form-control"
+                                        value={idCategory}
+                                        onChange={handleC} >
+                                        <option value="0">All</option>
+                                        {categories&&categories.map((item,index)=>(
+                                            <option key={index} value={item.id}>{item.name}</option>
+                                        ))};
+                                </select>
                             <input type="hidden" name="paged" value="1" />
                         </form>
+                        </div> */}
                     </div>
-                    <div className="text-center px-xl-3">
-                        <button className="btn btn-success btn-block" type="button" onClick={toggleCreate}>New Product</button>
-                    </div>
+                    
+                
                     <div className="e-table">
                         <div className="table-responsive table-lg mt-3">
                         {loading ? (
@@ -74,9 +96,9 @@ const ProductMain = () => {
                             <Message variant="alert-danger">{error}</Message>
                         ) : (
                             <table className="table table-bordered table-hover">
-                                <thead>
+                                <thead align="center">
                                     <tr>
-                                        <th>Id</th>
+                                        {/* <th>Id</th> */}
                                         <th>Name</th>
                                         <th>Decription</th>
                                         <th>Price</th>   
@@ -84,10 +106,10 @@ const ProductMain = () => {
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody align="center">
                                 {products&&products.map((product, index)  => (
                                     <tr>
-                                        <td className="align-middle">{product.id}</td>
+                                        {/* <td className="align-middle">{product.id}</td> */}
                                         <td className="text-nowrap align-middle">{product.name}</td>
                                         <td className="align-middle" style={{width:400,wordBreak:"break-word"}}>
                                             {product.description}

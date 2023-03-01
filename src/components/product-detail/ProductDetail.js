@@ -185,7 +185,7 @@ const ProductDetail = () => {
                         {product.images&&product.images.sort((a,b)=>(a.id-b.id)).map((item,key)=>(
 
                                 <div className={(item.id===idImg||index+key===0)?"carousel-item active":"carousel-item"}>
-                                    {key<3?(<img src={item.link} alt="" className="img-fluid" />):(<></>)}
+                                    {key<3?(<img src={item.link} alt="" className="img-thumbnail img-fluid" />):(<></>)}
                                     
                                 </div>
                             ))}
@@ -193,7 +193,7 @@ const ProductDetail = () => {
                         <ol className="carousel-indicators">
                             {product.images&&product.images.sort((a,b)=>(a.id-b.id)).map((item,key)=>(
                                 <li data-target="#single-product-slider" data-slide-to={key} className={(item.id===idImg||index+key===0)?"active":""}>
-                                    {key<3?(<img src={item.link} onClick={()=>handleimg(item.id)} alt="" className="img-fluid"/>):(<></>)}
+                                    {key<3?(<img src={item.link} onClick={()=>handleimg(item.id)} alt="" className="img-thumbnail img-fluid"/>):(<></>)}
                                 </li>
                             ))}
                             { (product.images?.length===2) ?(

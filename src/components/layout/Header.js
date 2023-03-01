@@ -8,7 +8,12 @@ import { getWishListById, removeLineItem } from '../../redux/actions/WishlistAct
 import {
     LINE_ITEM_LIST_RESET,
 } from '../../redux/constants/Constants'
+import { color } from "highcharts";
 const Header = () => {
+    const nameUrl = window.location.href.toString();
+    let arrayStrig = nameUrl.split("/");
+    const f = arrayStrig[3];
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [isAdmin, setIsAdmin] = useState(false);
@@ -18,6 +23,9 @@ const Header = () => {
 
     const userLogin = useSelector((state) => state.userLogin);
     const { success, userInfo } = userLogin;
+    const amountItem = lineItems.reduce(function (result, item) {
+        return result + Number(item.amount);
+      },0);
     useEffect(() =>{
         if(userInfo){
             dispatch(getWishListById());
@@ -39,6 +47,7 @@ const Header = () => {
     const handleRemoveItem = (id) => {
         dispatch(removeLineItem(id));
     }
+    console.log("a",f)
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white w-100 navigation flex-row-reverse" id="navbar">
             <div className="" style={{width:100, paddingRight:"0px"}}>
@@ -52,8 +61,11 @@ const Header = () => {
                         </div>
                     </li> */}
                     <li className="dropdown cart-nav dropdown-slide list-inline-item">
+                    
                         <Link to="/cart" data-hover="dropdown">
-                            <i className="tf-ion-android-cart"></i>
+                            <i className="tf-ion-android-cart">
+                            {/* <sup style={{fontSize: "15px"}}>{amountItem}</sup> */}
+                            </i>
                         </Link>
                         <div className="dropdown-menu cart-dropdown">
                         {lineItems&&lineItems.sort((a,b)=>(a.id-b.id)).map(item=>(
@@ -81,8 +93,27 @@ const Header = () => {
                                 </div>
                             </div>
                         </div>
-                    
+                        {amountItem>0&&
+                        <li className="list-inline-item">
+                            <sup>
+                                <sup>
+                                    <span className="" style={{
+                                            fontSize: "15px",
+                                            backgroundColor: "red",
+                                            color: "white",
+                                            marginLeft:"-12px",
+                                            borderRadius:"20px",
+                                            padding: "0px 5px"
+                                        }}>
+                                        {amountItem}
+                                    </span>
+                                    
+                                </sup>
+                            </sup>
+                            
+                    </li>}
                     </li>
+                    
                     <li className="dropdown cart-nav dropdown-slide list-inline-item">
                         <Link to="/profile" data-hover="dropdown">
                             <i className="tf-ion-ios-person"></i>
@@ -117,7 +148,7 @@ const Header = () => {
             <div className="container">
                 <Link className="navbar-brand" to={{ pathname: "/"}}>
                     {/* <img src="assets/images/Untitled.png" style={{width:"30px", height:"30px"}}/> */}
-                    <h7 className="font-weight-bold">E-Shop</h7>
+                    <h4 className="font-weight-bold">E-Shop</h4>
                 </Link>
                 
                 <button style={{margin: "0 15px 0 1rem"}} className="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar"
@@ -125,24 +156,24 @@ const Header = () => {
                     <span className="navbar-toggler-icon"></span>
                 </button>
   
-                <div className="collapse navbar-collapse" id="main-navbar">
+                <div className="collapse navbar-collapse" id="main-navbar" style={{fontSize: "20px"}}>
                 <ul className="navbar-nav mx-auto text-center">
-                    <li className="nav-item">
+                    <li className={f===""?"nav-item active":"nav-item"}>
                         <Link className="nav-link" to={{ pathname: "/"}}>Home</Link>
                     </li>
-                    <li className="nav-item">
+                    <li className={f==="shop"||f==="product"?"nav-item active":"nav-item"}>
                         <Link className="nav-link" to={{ pathname: "/shop"}}>Shoes</Link>
                     </li>
                     {
                         !isAdmin&&userInfo ? 
-                        <li className="nav-item">
+                        <li className={f==="order"?"nav-item active":"nav-item"}>
                             <Link className="nav-link" to="/order">Order History</Link>
                         </li>
                         :<></>
                     }
                     {
                         isAdmin ? 
-                            <li className="nav-item">
+                            <li className={f==="manage"?"nav-item active":"nav-item"}>
                                 <Link className="nav-link" to={{ pathname: "/manage/d-revenue"}}>Manage</Link>
                             </li>
                         :<></>    

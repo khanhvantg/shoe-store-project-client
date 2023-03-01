@@ -17,18 +17,8 @@ const ProductMain = ({idCategory}) => {
     const { loading, error, products } = idCategory==="0" ? productList : categoryDetail;
     const dataList = products&&products.filter(item=>item.status==="1");
     const [data, setData] = useState([])
-    //setData(dataList);
-    //const { success, category, loading, error, products } = categoryDetail;
-    
     useEffect(() => {
-        // if (!loading) {
-        //     if(idCategory==="0"){
-        //         dispatch(getAllProducts());
-        //     } 
-        //     else {
-        //         dispatch(getCategoryById(idCategory));
-        //     }         
-        // }
+
         if(idCategory==="0"){
             dispatch(getAllProducts());
         } 
@@ -40,11 +30,6 @@ const ProductMain = ({idCategory}) => {
     const itemInfo = {
         amount
     }
-
-    // const handleAddToCart = (productId) => {
-    //     dispatchItem(createLineItem({itemInfo,productId}))
-    // }
-
     const [searchText, setSearchText] = useState("");
     const excludeColumns = ["id", "productInfors", "images", "status", "description", 
                              "createdBy", "createdDate", "modifiedBy", "modifiedDate"];
@@ -75,10 +60,6 @@ const ProductMain = ({idCategory}) => {
           setData(filteredData)
         }
       }
-
-    //   const amountProduct = ((check&&products.length!==0&&data.length===0)?products.length:data.length).reduce(function (result, item) {
-    //     return result + Number(item.amount);
-    //   },0);
     return (
         <div className="container">
             <div className="form-group has-search">
@@ -103,7 +84,8 @@ const ProductMain = ({idCategory}) => {
                     <>
                     { (data.length===0?dataList:data).sort((a, b) => (a.id-b.id)).map((product)=>(
                     <>
-                    {product.status!=="0"&&(<div className="col-lg-3 col-12 col-md-6 col-sm-6 mb-5" >
+                    {product.status!=="0"&&(
+                    <div className="col-lg-3 col-12 col-md-6 col-sm-6 mb-5" >
                         <div className="product">
                             <div className="product-wrap">
                                 <Link to={{ pathname: `/product/${product.id}`}}>

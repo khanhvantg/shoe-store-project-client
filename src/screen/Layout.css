@@ -67,10 +67,6 @@ a:focus {
     transition: all 0.3s;
 }
 
-#sidebar.active {
-    margin-left: -250px;
-}
-
 #sidebar .sidebar-header {
     padding: 20px;
     background: #fff;
@@ -160,14 +156,31 @@ a.article:hover {
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
+@media (min-width: 768px) {
+    #sidebar {
+       margin-left: 0;
+    }
+    
+    /* #sidebarCollapse span {
+        display: none;
+    } */
+}
 @media (max-width: 768px) {
     #sidebar {
        margin-left: -250px;
     }
-    #sidebar.active {
-         margin-left: 0;
+}
+#sidebar.active {
+    margin-left: 0;
+}
+/* @media (max-width: 768px) {
+    #sidebar {
+       margin-left: -250px;
     }
     #sidebarCollapse span {
         display: none;
     }
 }
+#sidebar.active {
+    margin-left: 0;
+} */

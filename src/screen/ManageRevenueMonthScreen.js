@@ -191,23 +191,14 @@ const ManageRevenueMonthScreen = () => {
     
   return (
     <div className="wrapper1">
-        <Layout active={active}/>
-        <nav className="navbar navbar1-expand-lg navbar1-light bg-light">
-            <div className="container-fluid">
-                <button type="button" id="sidebarCollapse" className="btn btn-info"  onClick={handle}>
-                    {!active?<i className="tf-ion-ios-arrow-left"></i>:
-                    <i className="tf-ion-ios-arrow-right"></i>}
-                </button>
-
-            </div>
-        </nav>
-   
+        <Layout/>
                 <div className={isTable?"e-panel cardcus":"e-panel cardcus parent"} style={{width:"100%"}}>
                 <div className="card-body">
                     <div className="e-table">
                         <div className="table-responsive table-lg mt-3">
-                        <button className="btn btn-info" onClick={handleClick1}>
-                          {isTable?"Table":"Graph"}
+                        <div className="mb-3 form-inline">
+                        <button className="btn btn-info mr-2" onClick={handleClick1}>
+                          {!isTable?"Table":"Graphic"}
                         </button>
                         <br></br>
                         <br></br>
@@ -216,6 +207,7 @@ const ManageRevenueMonthScreen = () => {
                           <i>  </i>
                           <i className="tf-ion-android-calendar"></i>
                         </button>
+                        </div>
                         {isOpen && (
                                 <DatePicker
                                 selected={startDate}

@@ -4,8 +4,13 @@ import {
     Link,
     useParams
   } from "react-router-dom";
+import AccountMain from '../components/dashboard/account/AccountMain';
   import './Layout.css'
-const Layout = ({active}) => {
+const Layout = () => {
+    const [windowSize, setWindowSize] = useState({
+        width: undefined
+      });
+    
     const [isAdmin, setIsAdmin] = useState(false);
     const nameUrl = window.location.href.toString();
     let arrayStrig = nameUrl.split("/");
@@ -13,7 +18,13 @@ const Layout = ({active}) => {
 
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
-
+    const [active, setActive] =useState(false);
+    const handle = useCallback(() => {
+        if(!active) {
+            setActive(true);
+        }
+        else setActive(false);
+    }, [active]);
     useEffect(() =>{
         if(userInfo){
             for (let i in userInfo.roles) {
@@ -25,8 +36,19 @@ const Layout = ({active}) => {
         } else {
             setIsAdmin(false);
         }
-    },[userInfo])
+        if (windowSize.width>768){
+            setActive(false);
+        }
+        const handleResize = () => setWindowSize({ width: window.innerWidth });
+        window.addEventListener('resize', handleResize);
+        handleResize();
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    },[userInfo, windowSize.width])
+    console.log(active)
     return (
+        <>
         <nav id="sidebar" className={active?"active":""}>
             <div className="sidebar-header">
                 <h5>Sales</h5>
@@ -53,16 +75,17 @@ const Layout = ({active}) => {
                 <li className={f==="orders"?"nav-item active":"nav-item"} ><Link to="/manage/orders" className="nav-link">Orders</Link></li>
             </ul>
         </nav>
-        // <div className="e-tabs mb-3 px-3">
-        //     <ul className="nav nav-tabs">
-        //         <li className="nav-item" onClick={()=>setObj("account")}><Link to="/manage/accounts" className={obj==="account"?"nav-link active":"nav-link"}>Accounts</Link></li>
-        //         <li className="nav-item" onClick={()=>setObj("user")}><Link to="/manage/users" className={obj==="user"?"nav-link active":"nav-link"}>Users</Link></li>
-        //         <li className="nav-item" onClick={()=>setObj("category")}><Link to="/manage/categories" className={obj==="category"?"nav-link active":"nav-link"} >Categories</Link></li>
-        //         <li className="nav-item" onClick={()=>setObj("product")}><Link to="/manage/products" className={obj==="product"?"nav-link active":"nav-link"}>Products</Link></li>
-        //         <li className="nav-item" onClick={()=>setObj("order")}><Link to="/manage/orders" className={obj==="order"?"nav-link active":"nav-link"}>Orders</Link></li>
-        //         {/* //<li className="nav-item"><Link to="/manage/images" className="nav-link" onClick={setObj("images")}>Images</Link></li> */}
-        //     </ul>
-        // </div>
+        {windowSize.width<768&&(
+            <nav className="navbar navbar1-expand-lg navbar1-light bg-light">
+                <div className="container-fluid">
+                    <button type="button" id="sidebarCollapse" className="btn btn-outline-secondary" onClick={handle}>
+                        {!active?<i className="tf-ion-ios-arrow-right" style={{color:"black"}}></i>:
+                            <i className="tf-ion-ios-arrow-left" style={{color:"black"}}></i>}
+                    </button>
+                </div>
+            </nav>)
+        }
+        </>
   )
 }
 

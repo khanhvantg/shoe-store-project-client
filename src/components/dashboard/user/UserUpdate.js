@@ -41,6 +41,7 @@ const UserUpdate = ({isShowing, hide, id}) => {
         modifiedDate: '',
     })
 
+    console.log(form);
     const dispatch = useDispatch();
 
     const userLogin = useSelector((state) => state.userLogin);
