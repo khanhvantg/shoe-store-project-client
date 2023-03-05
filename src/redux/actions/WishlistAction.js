@@ -48,7 +48,7 @@ try {
         ? error.response.data.message
         : error.message,
   });
-  toast(`${error.response.data.message}`, {position: toast.POSITION.TOP_CENTER});
+  toast('Please Select Size Of Shoe', {position: toast.POSITION.TOP_CENTER});
 }
 };
 

@@ -1,3 +1,52 @@
 .hide {
     display: none;
 }
+.gallery-wrap .img-big-wrap {
+    margin-bottom: 10px;
+    border-radius: 0.37rem;
+    overflow: hidden;
+    background-color: #fff;
+  }
+  .gallery-wrap .img-big-wrap a {
+    text-align: center;
+    display: block;
+  }
+  .gallery-wrap .img-big-wrap img {
+    height: 450px;
+    width: auto;
+    display: inline-block;
+  }
+  .gallery-wrap .thumbs-wrap {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .gallery-wrap .thumbs-wrap .item-thumb {
+    width: 87.5px;
+    height: 112px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin: 3px;
+    display: inline-block;
+    overflow: hidden;
+  }
+  .gallery-wrap .thumbs-wrap img {
+    max-width: 100%;
+    max-height: 100%;
+    -o-object-fit: cover;
+       object-fit: cover;
+    border-radius: 4px;
+  }
+  .gallery-wrap .thumbs-wrap img:hover {
+    -webkit-filter: brightness(1.1);
+            filter: brightness(1.1);
+  }
+  
+  .item-option-select {
+    margin-bottom: 1rem;
+    display: inline-block;
+    margin-right: 15px;
+  }
+  .item-option-select .btn {
+    min-width: 80px;
+  }
+  

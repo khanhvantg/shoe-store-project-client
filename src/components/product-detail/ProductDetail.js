@@ -178,25 +178,27 @@ const ProductDetail = () => {
                 <div className="container">
                 {loading ? ( <Loading />) : error ? (<Message variant="alert-danger">{error}</Message>) : (
                 <div className="row">
-                    <div className="col-md-5">
-                    <div className="single-product-slider">
+                    <div className="col-md-1"/>
+                    <div className="col-md-4">
+                    <div className="single-product-slider gallery-wrap">
                         <div className="carousel slide" data-ride="carousel" id="single-product-slider">
                         <div className="carousel-inner">
                         {product.images&&product.images.sort((a,b)=>(a.id-b.id)).map((item,key)=>(
 
                                 <div className={(item.id===idImg||index+key===0)?"carousel-item active":"carousel-item"}>
-                                    {key<3?(<img src={item.link} alt="" className="img-thumbnail img-fluid" />):(<></>)}
-                                    
+                                    {/* <img src={item.link} alt="" className="img-thumbnail img-fluid" style={{width: "100%"}}/> */}
+                                    {key<4&&(<img src={item.link} alt="" className="img-thumbnail img-fluid" style={{width: "100%"}}/>)}
                                 </div>
                             ))}
                             </div>
+                        <div className="thumbs-wrap">
                         <ol className="carousel-indicators">
                             {product.images&&product.images.sort((a,b)=>(a.id-b.id)).map((item,key)=>(
-                                <li data-target="#single-product-slider" data-slide-to={key} className={(item.id===idImg||index+key===0)?"active":""}>
-                                    {key<3?(<img src={item.link} onClick={()=>handleimg(item.id)} alt="" className="img-thumbnail img-fluid"/>):(<></>)}
-                                </li>
+                                <li data-target="#single-product-slider" data-slide-to={key} className={(item.id===idImg||index+key===0)?"active item-thumb":"item-thumb"}>
+                                    {<img src={item.link} onClick={()=>handleimg(item.id)} alt="" className="img-fluid"/>}
+                                </li> 
                             ))}
-                            { (product.images?.length===2) ?(
+                            {/* { (product.images?.length===2) ?(
                                     <li><img src="/assets/images/phong.png" alt="" className="img-fluid"/></li>):
                                 (product.images?.length===1) ? (
                                     <>
@@ -204,28 +206,43 @@ const ProductDetail = () => {
                                         <li><img src="/assets/images/phong.png" alt="" className="img-fluid"/></li> 
                                     </>
                                 ):(<></>)
-                            }
+                            } */}
                         </ol>
+                        </div>
                         </div>
                     </div>
                     </div>
                     
-                    <div className="col-md-7">
+                    <div className="col-md-6">
                     <div className="single-product-details mt-5 mt-lg-0">
                         <h2>{product.name}</h2>
                         <div className="sku_wrapper mb-4">
                         SKU: <span className="text-muted">{product.id} </span>
                         </div>
-            
+                        <hr />
+                        <h3 className="product-price">$ {product.price}<del></del></h3>
                         <hr />
                         
-                        <h3 className="product-price">$ {product.price}<del></del></h3>
-                        
-                        <p className="product-description my-4">
-                        {product.description}
-                        </p>
-                        <div className="amount d-flex align-items-center">
-                        <input type="number" id="#" className="input-text qty text form-control w-25 mr-3" step="1" min="1" max="9" 
+                        <div class="form-group">
+                                <h5>Short description</h5>
+                                <div class="card-body">
+                                    <p className="product-description mr-1">
+                                        {product.description}
+                                    </p>
+                                </div>
+                                <h5 class="">Available sizes</h5>
+                                    <div class="card-body"> 
+                                        {sizeList&&sizeList.sort((a,b)=>a.value-b.value).map(item=>(
+                                            <label class="checkbox-btn mr-1">
+                                                <input type="radio" className="hide" name="myfilter_radio" value={item.value} onClick={(e)=>setForm(prev => ({...prev,size: e.target.value}))} />
+                                                <span class={form.size===item.value?"btn btn-light active":"btn btn-light"} >{item.label}</span>
+                                            </label>
+                                        ))}
+                                    </div>						
+                                </div>
+                                <h5 style={{marginTop: "-1rem"}}>Quantity</h5>
+                        <div className="amount d-flex align-items-center card-body">
+                        <input type="number" id="#" className="input-text qty text form-control w-25 mr-1" step="1" min="1" max="20" 
                             name="amount"
                             onChange={(e)=>setForm(prev => ({
                                 ...prev,
@@ -234,9 +251,9 @@ const ProductDetail = () => {
                             value={form.amount} 
                             
                             title="Qty" size="4" />
-                            <button className="btn btn-primary btn-block fa-lg gradient-custom-2 col-8" onClick={()=>handleAddToCart()}>Add to cart</button>
+                            <button className="btn btn-primary fa-lg" onClick={()=>handleAddToCart()}>Add to cart</button>
                             </div>
-                            <div className="form">
+                            {/* <div className="form">
                             <Select
                                 name="size"
                                 title="Size"
@@ -245,9 +262,11 @@ const ProductDetail = () => {
                                 onChangeFunc={onInputChange}
                                 //{...errorInput.category}
                             />
-                            </div>
+                            </div> */}
+                            
                         </div>
                     </div>
+                    <div className="col-md-1"/>
                 </div>)}
                 <div className="row d-flex justify-content-center mt-100 mb-100">
                     <div className="col-lg-12">
@@ -268,7 +287,7 @@ const ProductDetail = () => {
                                         className="btn btn-primary" type="button">Comment</button>}
                                 </div>
                                 :<></>}
-                                <h4 className="card-title">Latest Comments</h4> 
+                                {comments&&comments.length>0&&<h4 className="card-title">Latest Comments</h4>}
                             </div>
                             {comments&&comments.sort((a,b)=>(b.id-a.id)).map((item,index)=>(
                                 <div className="comment-widgets border-bottom">
