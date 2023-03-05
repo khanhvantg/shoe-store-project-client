@@ -54,13 +54,13 @@ const ProductDetail = () => {
         commentId: null,
     })
     
-    const sizeList=[];
-    if(product){
-        for (let i in product.productInfors) {
-            const cate = { value: product.productInfors[i].size, label: product.productInfors[i].size + ' UK'};
-            sizeList.push(cate);
-        }
-    }
+    // const sizeList=[];
+    // if(product){
+    //     for (let i in product.productInfors) {
+    //         const cate = { value: product.productInfors[i].size, label: product.productInfors[i].size + ' UK'};
+    //         sizeList.push(cate);
+    //     }
+    // }
 
     useEffect(() => {
         if(successCreate || successUpdate){
@@ -150,6 +150,7 @@ const ProductDetail = () => {
     const handleDelete = (id) => {
         dispatch(deleteComment(id));
     }
+    console.log(product.productInfors)
     return (
         <div className="single-product-container">
             <section className="page-header">
@@ -232,11 +233,15 @@ const ProductDetail = () => {
                                 </div>
                                 <h5 class="">Available sizes</h5>
                                     <div class="card-body"> 
-                                        {sizeList&&sizeList.sort((a,b)=>a.value-b.value).map(item=>(
+                                        {product.productInfors&&product.productInfors.sort((a,b)=>a.value-b.value).map(item=>(
+                                            <>
+                                            {item.amount>0&&
                                             <label class="checkbox-btn mr-1">
-                                                <input type="radio" className="hide" name="myfilter_radio" value={item.value} onClick={(e)=>setForm(prev => ({...prev,size: e.target.value}))} />
-                                                <span class={form.size===item.value?"btn btn-light active":"btn btn-light"} >{item.label}</span>
+                                                <input type="radio" className="hide" name="myfilter_radio" value={item.size} onClick={(e)=>setForm(prev => ({...prev,size: e.target.value}))} />
+                                                <span class={form.size===item.size?"btn btn-light active":"btn btn-light"} >{item.size} UK</span>
                                             </label>
+                                            }
+                                            </>
                                         ))}
                                     </div>						
                                 </div>

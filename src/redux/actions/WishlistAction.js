@@ -48,7 +48,9 @@ try {
         ? error.response.data.message
         : error.message,
   });
-  toast('Please Select Size Of Shoe', {position: toast.POSITION.TOP_CENTER});
+  if(form.size===''){
+    toast('Please Select Size Of Shoe', {position: toast.POSITION.TOP_CENTER});
+  } else toast(`${error.response.data.message}`, {position: toast.POSITION.TOP_CENTER});
 }
 };
 
