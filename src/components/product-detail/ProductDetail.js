@@ -233,7 +233,7 @@ const ProductDetail = () => {
                                 </div>
                                 <h5 class="">Available sizes</h5>
                                     <div class="card-body"> 
-                                        {product.productInfors&&product.productInfors.sort((a,b)=>a.value-b.value).map(item=>(
+                                        {product.productInfors&&product.productInfors.sort((a,b)=>a.size-b.size).map(item=>(
                                             <>
                                             {item.amount>0&&
                                             <label class="checkbox-btn mr-1">
