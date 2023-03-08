@@ -29,6 +29,7 @@ import ManageRevenueYearScreen from './screen/ManageRevenueYearScreen';
 import ManageRevenueMonthScreen from './screen/ManageRevenueMonthScreen';
 import ManageRevenueDayScreen from './screen/ManageRevenueDayScreen';
 import Home1 from './components/home/Home1';
+import ManageVoucherScreen from './screen/ManageVoucherScreen';
 const App = () => {
   return (
     <div className="App" style={{backgroundColor: "white"}}>
@@ -48,7 +49,7 @@ const App = () => {
             {/* <Route path="/shop" element={<Shop />} /> */}
             <Route path="/shop" element={<ProductMain1 />} />
             <Route path="/product/:id" element={<ProductDetail />} />
-            {/* <Route path="/checkout" element={<Checkout />} /> */}
+            <Route path="/checkout" element={<Checkout />} />
             <Route
               path="/cart"
               element={
@@ -64,6 +65,7 @@ const App = () => {
             <Route path="/manage/users" element={<ManageUserScreen/>}/>
             <Route path="/manage/categories" element={<ManageCategoryScreen/>}/>
             <Route path="/manage/products" element={<ManageProductScreen/>}/>
+            <Route path="/manage/vouchers" element={<ManageVoucherScreen/>}/>
             <Route path="/manage/orders" element={<ManageOrderScreen/>}/>
             <Route path="/manage/y-revenue" element={<ManageRevenueYearScreen/>} />
             <Route path="/manage/m-revenue" element={<ManageRevenueMonthScreen/>} />

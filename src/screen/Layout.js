@@ -72,6 +72,7 @@ const Layout = () => {
                 <li className={f==="users"?"nav-item active":"nav-item"} ><Link to="/manage/users" className="nav-link">Users</Link></li>
                 <li className={f==="categories"?"nav-item active":"nav-item"} ><Link to="/manage/categories" className="nav-link" >Categories</Link></li>
                 <li className={f==="products"?"nav-item active":"nav-item"} ><Link to="/manage/products" className="nav-link">Products</Link></li>
+                <li className={f==="vouchers"?"nav-item active":"nav-item"} ><Link to="/manage/vouchers" className="nav-link">Vouchers</Link></li>
                 <li className={f==="orders"?"nav-item active":"nav-item"} ><Link to="/manage/orders" className="nav-link">Orders</Link></li>
             </ul>
         </nav>

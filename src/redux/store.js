@@ -68,6 +68,12 @@ import {
   revenueOfAMonthReducer,
   bestSellerReducer,
 } from "./reducers/RevenueReducer";
+import {
+  voucherCreateReducer,
+  voucherDetailsReducer,
+  voucherListReducer,
+  voucherUpdateReducer,
+} from "./reducers/VoucherReducer";
 
 const cartItemsFromStorage = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems"))
@@ -137,6 +143,11 @@ const reducer = combineReducers({
   revenueOfMonth:revenueOfMonthReducer,
   revenueOfAMonth:revenueOfAMonthReducer,
   bestSeller: bestSellerReducer,
+  //voucher
+  voucherCreate: voucherCreateReducer,
+  voucherDetail: voucherDetailsReducer,
+  voucherList: voucherListReducer,
+  voucherUpdate: voucherUpdateReducer,
 });
 const initialState = {
   cart: {

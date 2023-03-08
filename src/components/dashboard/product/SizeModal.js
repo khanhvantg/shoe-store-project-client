@@ -17,7 +17,7 @@ const SizeModal = ({isShowing, hide, id}) => {
         size: '',
         amount: '',
       });
-      const {isShowing:isShowConfirmBox, toggle:toggleConfirmBox, id: idSize} = useModal();
+    const {isShowing:isShowConfirmBox, toggle:toggleConfirmBox, id: idSize} = useModal();
     const [isOpen,setIsOpen]=useState(false)
     const [edit,setEdit]=useState(false)
     const dispatch = useDispatch();

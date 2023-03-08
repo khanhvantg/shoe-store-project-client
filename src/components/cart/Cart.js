@@ -269,6 +269,7 @@ const Cart = () => {
             </div>
             </div>
         </section>
+            {lineItems&&lineItems.length>0?
             <section className="cart shopping page-wrapper">
             <div className="container">
                 <div className="row justify-content-center">
@@ -279,7 +280,7 @@ const Cart = () => {
                                 <thead>
                                     <tr>
                                         {/* <th className="product-thumbnail text-center"> </th> */}
-                                        <th className="product-thumbnail text-center"> </th>
+                                        <th className="product-thumbnail text-center">Image</th>
                                         <th className="product-name text-center">Product</th>
                                         <th className="product-price text-center">Price</th>
                                         <th className="product-name text-center">Amount</th>
@@ -361,106 +362,120 @@ const Cart = () => {
                                         </td>
                                 </tr> */}
                                 </tbody>
+                                <tfoot align="right">
+                                <tr>
+                                    <th colspan="7">
+                                    <Link to="/checkout" className="btn btn-primary btn-small">Check Out</Link>
+                                    </th>
+                                </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
                 </div>
                 </div>
                 {
-                    loadingUpdate ? <Loading /> :
-                <div className="row justify-content-end">
-                <div className="col-lg-4">
-                    <div className="cart-info card p-4 mt-4">
-                        <h4 className="mb-4">Cart totals</h4>
-                        <ul className="list-unstyled mb-4">
-                            <li className="d-flex justify-content-between pb-2 mb-3">
-                            <h5>Subtotal</h5>
-                            <span>$ {totalPrice}</span>
-                            </li>
-                            <li className="d-flex justify-content-between pb-2 mb-3">
-                            <h5>Shipping</h5>
-                            <span>Free</span>
-                            </li>
-                            <li className="d-flex justify-content-between pb-2">
-                            <h5>Total</h5>
-                            <span>$ {totalPrice}</span>
-                            </li>
-                        </ul>
-                    </div>
-                    </div>
-                    <div className="col-lg-8">
-                    {lineItems&&lineItems.length!==0?
-                    <div className="cart-info card p-4 mt-4">
-                        <h4 className="text-center mb-4">Delivery Information</h4>
-                        <div className="form">
-                            <div className="row">
-                                <div className="col">
-                                    <div className="col">
-                                        <div className="form-group">
-                                            <Input
-                                                name="name"
-                                                title="Name"
-                                                value={form.name}
-                                                onChangeFunc={onInputChange}
-                                                {...errorInput.name}
-                                                />
-                                            <Input
-                                                name="address"
-                                                title="Address"
-                                                value={form.address}
-                                                onChangeFunc={onInputChange}
-                                                {...errorInput.address}
-                                            />
-                                            <Input
-                                                name="email"
-                                                title="Email"
-                                                value={form.email}
-                                                onChangeFunc={onInputChange}
-                                                {...errorInput.email}
-                                            />
-                                            <Input
-                                                name="phoneNumber"
-                                                title="Phone Number"
-                                                value={form.phoneNumber}
-                                                onChangeFunc={onInputChange}
-                                                {...errorInput.phoneNumber}
-                                            />
-                                            {/* <label>Name</label>
-                                                <input 
-                                                    value={name}
-                                                    onChange={(e) => setName(e.target.value)}
-                                                    className="form-control" type="text" name="name" placeholder/>
+                //     loadingUpdate ? <Loading /> :
+                // <div className="row justify-content-end">
+                // <div className="col-lg-4">
+                //     <div className="cart-info card p-4 mt-4">
+                //         <h4 className="mb-4">Cart totals</h4>
+                //         <ul className="list-unstyled mb-4">
+                //             <li className="d-flex justify-content-between pb-2 mb-3">
+                //             <h5>Subtotal</h5>
+                //             <span>$ {totalPrice}
+                //             </span>
                             
-                                <label>Phone</label>
-                                <input 
-                                    value={phoneNumber}
-                                    onChange={(e) => setPhoneNumber(e.target.value)}
-                                    className="form-control" type="text" name="phoneNumber" placeholder/>            
+                //             </li>
+                //             <li className="d-flex justify-content-between pb-2 mb-3">
+                //             <h5>Shipping</h5>
+                //             <span>Free</span>
+                //             </li>
+                //             <li className="d-flex justify-content-between pb-2">
+                //             <h5>Total</h5>
+                //             <span>$ {totalPrice}</span>
+                //             </li>
+                //         </ul>
+                //     </div>
+                //     </div>
+                //     <div className="col-lg-8">
+                //     {lineItems&&lineItems.length!==0?
+                //     <div className="cart-info card p-4 mt-4">
+                //         <h4 className="text-center mb-4">Delivery Information</h4>
+                //         <div className="form">
+                //             <div className="row">
+                //                 <div className="col">
+                //                     <div className="col">
+                //                         <div className="form-group">
+                //                             <Input
+                //                                 name="name"
+                //                                 title="Name"
+                //                                 value={form.name}
+                //                                 onChangeFunc={onInputChange}
+                //                                 {...errorInput.name}
+                //                                 />
+                //                             <Input
+                //                                 name="address"
+                //                                 title="Address"
+                //                                 value={form.address}
+                //                                 onChangeFunc={onInputChange}
+                //                                 {...errorInput.address}
+                //                             />
+                //                             <Input
+                //                                 name="email"
+                //                                 title="Email"
+                //                                 value={form.email}
+                //                                 onChangeFunc={onInputChange}
+                //                                 {...errorInput.email}
+                //                             />
+                //                             <Input
+                //                                 name="phoneNumber"
+                //                                 title="Phone Number"
+                //                                 value={form.phoneNumber}
+                //                                 onChangeFunc={onInputChange}
+                //                                 {...errorInput.phoneNumber}
+                //                             />
+                //                             {/* <label>Name</label>
+                //                                 <input 
+                //                                     value={name}
+                //                                     onChange={(e) => setName(e.target.value)}
+                //                                     className="form-control" type="text" name="name" placeholder/>
                             
-                                <label>Address</label>
-                                    <input 
-                                        value={address}
-                                        onChange={(e) => setAddress(e.target.value)}
-                                        className="form-control" type="text" name="addrees" placeholder/> */}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                //                 <label>Phone</label>
+                //                 <input 
+                //                     value={phoneNumber}
+                //                     onChange={(e) => setPhoneNumber(e.target.value)}
+                //                     className="form-control" type="text" name="phoneNumber" placeholder/>            
+                            
+                //                 <label>Address</label>
+                //                     <input 
+                //                         value={address}
+                //                         onChange={(e) => setAddress(e.target.value)}
+                //                         className="form-control" type="text" name="addrees" placeholder/> */}
+                //                         </div>
+                //                     </div>
+                //                 </div>
+                //             </div>
                         
-                        </div>
-                        <div className="col text-center px-xl-3">
-                            <button 
-                            onClick={handleOrder}
-                            className="btn btn-primary btn-block">Order</button>
-                        </div>
-                    </div>
-                     :
-                    <></>                
-                    } 
-                    </div>
-                </div>}
+                //         </div>
+                //         <div className="col text-center px-xl-3">
+                //             <button 
+                //             onClick={handleOrder}
+                //             className="btn btn-primary btn-block">Order</button>
+                //         </div>
+                //     </div>
+                //      :
+                //     <></>                
+                //     } 
+                //     </div>
+                // </div>
+                }
                 </div>
             </section>
+            :<div className="text-center">
+                 <img className="mt-100 mb-100" src="/assets/images/empty-cart.jpg"/>
+            </div>
+            }
         </div>
     )
 }

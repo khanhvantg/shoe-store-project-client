@@ -259,7 +259,7 @@ const ProfileScreen = () => {
                             ) : (error || errorUpdate) ? (
                                 <Message variant="alert-danger">{error}</Message>
                             ) : (
-                        <div className="form">
+                        <div className="form m-3">
                         <div className="row">
                             <div className="col">
                                     <div className="col">

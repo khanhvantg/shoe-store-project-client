@@ -1,29 +1,45 @@
 import React, { useEffect, useState } from "react";
+import VoucherCreate from './VoucherCreate';
+import VoucherUpdate from './VoucherUpdate';
 import { useDispatch, useSelector } from "react-redux";
 import { getAllcategories } from '../../../redux/actions/CategoryAction'
-import CategoryUpdate from "./CategoryUpdate";
-import CategoryCreate from "./CategoryCreate";
+import { deleteVoucher, getAllVouchers } from '../../../redux/actions/VoucherAction'
 import Loading from '../../loadingError/Loading';
 import Message from "../../loadingError/Message";
 import useModal from '../useModal';
 import useModalCreate from '../useModalCreate';
-const CategoryMain = () => {
+import CofirmBox from "../../cofirmBox/CofirmBox";
+import { VOUCHER_UPDATE_RESET } from "../../../redux/constants/Constants";
+const VoucherMain = () => {
     const dispatch = useDispatch();
     const {isShowingCreate, toggleCreate} = useModalCreate();
     const {isShowing, toggle, id} = useModal();
-    const categoryList = useSelector((state) => state.categoryList);
-    const { loading, error, categories} = categoryList;
+    const voucherList = useSelector((state) => state.voucherList);
+    const { loading, error, vouchers} = voucherList;
+    const voucherUpdate = useSelector((state) => state.voucherUpdate);
+    const { success: succsesUpdate} = voucherUpdate;
+    const {isShowing: isShowConfirmBox, toggle:toggleConfirmBox, id: idVoucher} = useModal();
     //categories.sort((a,b)=>(a.id-b.id));
+    
     useEffect(() => {
-        dispatch(getAllcategories());
-    }, [dispatch]);
+        if(succsesUpdate){
+            dispatch({type: VOUCHER_UPDATE_RESET});
+            dispatch(getAllVouchers());
+        } else {
+            dispatch(getAllVouchers());
+        }
+    }, [dispatch, succsesUpdate]);
 
+    const deleteHandler = () => {
+        dispatch(deleteVoucher({idVoucher}));
+    }
+    console.log(vouchers)
     return (
                 <div className="card-body">
                     <div className="text-center card-title">
-                        <h3 className="mr-2">Categories Manage</h3>
+                        <h3 className="mr-2">Voucher Manage</h3>
                     </div>
-                    <button className="btn btn-success" style={{marginBottom: "5px"}} type="button" onClick={toggleCreate}>New Category</button>
+                    <button className="btn btn-success" style={{marginBottom: "5px"}} type="button" onClick={toggleCreate}>New Voucher</button>
                     <div className="e-table">
                         <div className="table-responsive table-lg mt-3">
                         {loading ? (
@@ -36,39 +52,39 @@ const CategoryMain = () => {
                                     <tr>
                                         {/* <th>Id</th> */}
                                         <th>Name</th>
-                                        <th>Description</th>
-                                        <th>Create By</th>
-                                        <th>Create Date</th>
-                                        <th>Modified By</th>
-                                        <th>Modified Date</th>
-                                        <th className="sortable">Status</th>
+                                        <th>Value</th>
+                                        <th>Quantity</th>
+                                        <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody align="center">
-                                { categories && categories.sort((a,b)=>(b.id-a.id)).map((category, index) => (
-                                    <tr onClick={()=>{toggle(category.id)}}>
+                                { vouchers && vouchers.sort((a,b)=>(b.id-a.id)).map((item, index) => (
+                                    <tr>
                                         {/* <td className="align-middle">{category.id}</td> */}
-                                        <td className="text-nowrap align-middle">{category.name}</td>
-                                        <td className="align-middle" style={{width:400,wordBreak:"break-word"}}>{category.description}</td>
-                                        <td className="text-nowrap align-middle">{category.createdBy}</td>
-                                        <td className="text-nowrap align-middle">{category.createdDate}</td>
-                                        <td className="text-nowrap align-middle">{category.modifiedBy}</td>
-                                        <td className="text-nowrap align-middle">{category.modifiedDate}</td>
+                                        <td className="text-nowrap align-middle">{item.name}</td>
+                                        <td className="text-nowrap align-middle">{Math.round(item.value*100)}%</td>
+                                        <td className="text-nowrap align-middle">{item.quantity}</td>
                                         {/* <td className="text-nowrap align-middle">
                                             {category.status ==="1" ? <Status check="checked" /> : <Status check=""/>}
                                         </td> */}
-                                        {category.status ==="0" ? (
+                                        {item.status ==="0" ? (
                                             <td className="text-nowrap align-middle" style={{color:"red"}}>Inactive</td>
                                         ):(
                                             <td className="align-middle" style={{color:"green"}}>Active</td>
                                         )}
                                         <td className="text-center align-middle">
                                             <div className="btn-group align-top">
-                                                <button className="btn btn-sm btn-outline-secondary badge" type="button" onClick={()=>{toggle(category.id)}}> 
+                                                <button className="btn btn-sm btn-outline-secondary badge" type="button" onClick={()=>{toggle(item.id)}}> 
                                                     <i className="tf-ion-edit"></i>
                                                 </button>
+                                                <button 
+                                                    onClick={()=>toggleConfirmBox(item.id)}
+                                                    className="btn btn-sm btn-outline-secondary badge" type="button"> 
+                                                <i className="tf-ion-android-delete"></i>
+                                            </button>
                                             </div>
+                                            
                                         </td>
                                     </tr>
                                 ))}
@@ -76,15 +92,21 @@ const CategoryMain = () => {
                             </table>)}
                         </div>
                     </div>
-                    <CategoryCreate
+                    <VoucherCreate
                         isShowing={isShowingCreate}
                         hide={toggleCreate}/>
-                    <CategoryUpdate
+                    <VoucherUpdate
                         isShowing={isShowing}
                         hide={toggle}
-                        id={id}/>    
+                        id={id}/>  
+                    <CofirmBox 
+                        isShowing={isShowConfirmBox}
+                        noHandle={toggleConfirmBox}
+                        yesHanle={deleteHandler}
+                    // id={idOrder}
+                    />         
                 </div>
     )
 }
 
-export default CategoryMain
+export default VoucherMain

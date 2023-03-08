@@ -93,7 +93,6 @@ const ManageRevenueYearScreen = () => {
       }
     }
     
-    console.log("a",arevenueList)
     useEffect(() => {
         dispatch(getARevenueByMonth({month}))
         if(month){

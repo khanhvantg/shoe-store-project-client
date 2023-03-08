@@ -23,7 +23,7 @@ const Header = () => {
 
     const userLogin = useSelector((state) => state.userLogin);
     const { success, userInfo } = userLogin;
-    const amountItem = lineItems.reduce(function (result, item) {
+    const amountItem = lineItems&&lineItems.reduce(function (result, item) {
         return result + Number(item.amount);
       },0);
     useEffect(() =>{
@@ -71,7 +71,7 @@ const Header = () => {
                         {lineItems&&lineItems.sort((a,b)=>(a.id-b.id)).map(item=>(
                                 <div className="media">
                                 <Link to={`/product/${item.product.id}`}>
-                                    <img className="media-object img- mr-3" src={item.product.images[0]?.link} alt="image" />
+                                    <img className="media-object img- mr-3" src={item.product.images.sort((a,b)=>(a.id-b.id))[0]?.link} alt="image" />
                                 </Link>
                                 <div className="media-body">
                                     <h6>{item.product.name}</h6>
@@ -87,10 +87,13 @@ const Header = () => {
                             <div className="cart-summary">
                                 {/* <span className="h6">Total</span>
                                 <span className="total-price h6">$1799.00</span> */}
-                        
+                            {lineItems&&lineItems.length>0&&
                                 <div className="text-center cart-buttons mt-3">
-                                    <Link to="/cart" className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">View Cart</Link>
-                                </div>
+                                    <Link to="/checkout" className="btn btn-primary btn-small fa-lg gradient-custom-2 mb-3">Check Out</Link>
+                                    <Link to="/cart" className="btn btn-primary btn-small fa-lg gradient-custom-2 mb-3">View Cart</Link>
+                                </div>||<div className="text-center">
+                                            <img className="w-100 h-100" src="/assets/images/empty-cart.jpg"/>
+                                        </div>}
                             </div>
                         </div>
                         {amountItem>0&&
