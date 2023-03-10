@@ -3,16 +3,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { getWishListById,removeLineItem,updateLineItem } from '../../redux/actions/WishlistAction'
 import {
     LINE_ITEM_UPDATE_RESET,
-    ORDER_CREATE_RESET
+    ORDER_CREATE_RESET,
+    VOUCHER_DETAILS_STOP
 } from '../../redux/constants/Constants'
 import { createOrder } from '../../redux/actions/OrderAction'
 import Input from '../checkValidate/Input'
+import Radio from '../checkValidate/Radio'
 import { Link } from "react-router-dom";
 import { getUserDetails } from '../../redux/actions/UserAction'
 
 import {toast} from 'react-toastify';
 import Checkbox from '../checkValidate/Checkbox';
 import Loading from "../loadingError/Loading";
+import { searchVoucher } from "../../redux/actions/VoucherAction";
+import Message from "../loadingError/Message";
 
 const paymentList = [
     { value: "0", label: "At Store" },
@@ -24,6 +28,9 @@ const paymentList = [
 const Checkout = () => {
     const [pos, setPos]=useState();
     const [timer,setTimer]=useState(null);
+    const [infoVoucher, setInfoVoucher]=useState({
+        name: ''
+    })
     const [form, setForm] = useState({
         email: '',
         address: '',
@@ -32,7 +39,13 @@ const Checkout = () => {
         status: null,      //status = 0 : cancle, 1 : wait confirm, 2: shipping, 3: completed 
         createdDate: '',
         createdBy: '',
-        totalPrice: null
+        totalPrice: null,
+        feeShip: "0",
+        voucher: "0",
+        vat: "0.1",
+        paymentStatus: "0",
+        paymentType: "0",
+        orderPrice: null
     });
     const [amounts, setAmounts] = useState([]);
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -48,6 +61,9 @@ const Checkout = () => {
     const orderCreate = useSelector((state) => state.orderCreate);
     const { success: succsesCreate } = orderCreate;
 
+    const voucherDetail = useSelector((state) => state.voucherDetail);
+    const { success: successgetVoucher, error: errorVoucher, voucher } = voucherDetail;
+
     var today = new Date();
     var amountItem=0;
     const totalPrice = lineItems.reduce(function (result, item) {
@@ -58,12 +74,9 @@ const Checkout = () => {
         if (succsesCreate) {
             dispatch({type: ORDER_CREATE_RESET});
             dispatch(getWishListById());
-        } else if(succsesUpdate){
-            dispatch({type: LINE_ITEM_UPDATE_RESET});
-            dispatch(getWishListById());
         } else {
-            setAmounts(lineItems);
-            setForm({
+            setForm(prev => ({
+                ...prev,
                 email: user.email,
                 address: user.address,
                 phoneNumber: user.phone,
@@ -71,17 +84,19 @@ const Checkout = () => {
                 status: 1,      //status = 0 : cancle, 1 : wait confirm, 2: shipping, 3: completed 
                 createdDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear(),
                 createdBy: userInfo.username,
-                totalPrice: totalPrice
-            })
+                totalPrice: totalPrice,
+                orderPrice: totalPrice + form.feeShip
+            }))
         }
-        if(errorUpdate){
-            setAmounts(lineItems);
+        if(successgetVoucher){
+            dispatch({type: VOUCHER_DETAILS_STOP});
+            setForm(prev => ({
+                ...prev,
+                voucher: voucher.value
+            }))
         }
-    },[succsesCreate, succsesUpdate, lineItems, user, errorUpdate])
+    },[succsesCreate, user, form.paymentType, successgetVoucher])
 
-   
-  
-  
     const [valueCurrent, setValueCurrent]=useState();
 
     const onInputValidate = (value, name) => {
@@ -98,6 +113,11 @@ const Checkout = () => {
             onValidateFunc: onInputValidate
         },
         address: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        paymentType: {
             isReq: true,
             errorMsg: '',
             onValidateFunc: onInputValidate
@@ -143,6 +163,17 @@ const Checkout = () => {
             dispatch(createOrder({form}));
         }
     }
+    const handleVoucher = () => {
+        dispatch(searchVoucher({infoVoucher}))
+    }
+    const handleDeleteVoucher = () => {
+        setForm(prev=>({
+            ...prev,
+            voucher:"0"
+        }))
+        setInfoVoucher({name: ''})
+    }
+    console.log(form)
     return (
         <div className="checkout-container">
             <section className="page-header">
@@ -179,7 +210,7 @@ const Checkout = () => {
                                             <Link to={`/product/${item.product.id}`}>
                                                 <img className="media-object mr-3" style={{width: "70px"}} src={item.product.images[0]?.link} alt="image" />
                                             </Link>
-                                            <span style={{width: "150px"}}>
+                                            <span style={{width: "160px"}}>
                                                 <h6 className="font-weight-bold">{item.product.name}</h6>
                                                 Size: {item.size} UK   
                                                 <br/>
@@ -190,20 +221,57 @@ const Checkout = () => {
                                    
                             ))}
                            
-                             
-                            
+                           
+                           <form className="mb-1">
+                           {form.voucher==="0"&&
+                           <>
+                                <div className="form-group">
+                                    <input className="form-control" type="text" placeholder="Enter Coupon Code" onChange={(e)=>setInfoVoucher({name: e.target.value})} />
+                                </div>
+                                {errorVoucher &&
+                                        <Message variant="alert-danger">Not Found Voucher</Message>
+                                    }
+                                {infoVoucher.name!=''&&
+                                <div className="text-right">
+                                    <button type="button" className="btn btn-success btn-small r-0"onClick={handleVoucher}>Apply Voucher</button> 
+                                </div>
+                                }
+                                </>||
+                                <div className="text-center" style={{backgroundColor: "#99FF66", borderRadius: "10px", width: "300px", height:"100px"}}>
+                                
+                                <li className="d-flex h-100">
+                                    <span className="" style={{borderRight: "dashed", width: "100px"}}>
+                                        <h6 className="font-weight-bold mt-4">Discout</h6>
+                                        {Math.round(voucher.value*100)}%
+                                    </span>
+                                    <span style={{width: "180px"}}>
+                                        <h6 className="font-weight-bold mt-4">Voucher</h6>
+                                        {voucher.name}
+                                    </span>
+                                    <span style={{width: "20px"}}>
+                                        <h6 className="font-weight-bold" style={{cursor: "pointer", color: "white", height: "20px"}} onClick={handleDeleteVoucher} >x</h6>
+                                        <div className="mt-10" style={{backgroundColor: "white", borderRadius: "40px", width: "40px", height:"40px"}}></div>
+                                    </span>
+                                </li>
+                                </div> }
+                            </form>
                             <ul className="summary-prices list-unstyled mb-4">
                                 <li className="d-flex justify-content-between">
                                     <span >Subtotal:</span>
                                     <span className="h5" style={{width: "60px"}}>${totalPrice}</span>
                                 </li>
+                                {form.paymentType!=="0"&&
                                 <li className="d-flex justify-content-between">
                                     <span >Shipping:</span>
                                     <span className="h5" style={{width: "60px"}}>$30</span>
+                                </li>}
+                                <li className="d-flex justify-content-between">
+                                    <span >VAT:</span>
+                                    <span className="h5" style={{width: "60px"}}>10%</span>
                                 </li>
                                 <li className="d-flex justify-content-between">
-                                    <span>Total</span>
-                                    <span className="h5" style={{width: "60px"}}>${totalPrice+30}</span>
+                                    <span>Total:</span>
+                                    <span className="h5" style={{width: "60px"}}>${Number(totalPrice)+Number(form.feeShip)+Number(totalPrice)*0.1-totalPrice*Number(form.voucher)}</span>
                                 </li>
                             </ul>
         
@@ -232,10 +300,7 @@ const Checkout = () => {
                                     </div>
                             </form>
          */}
-                            <div className="info mt-4 border-top pt-4 mb-5">
-                                Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <a href="#">privacy policy</a>.
-                            </div>
-                            <a href="/checkout" className="btn btn-main btn-small">Place Order</a>
+                            
                         </div>
                     </div>
                 
@@ -280,11 +345,20 @@ const Checkout = () => {
                                             {/* <Radio
                                                 name="paymentType"
                                                 title="Payment Type"
-                                                // value={form.gender}
-                                                options={genderList}
+                                                value={form.paymentType}
+                                                options={paymentList}
                                                 onChangeFunc={onInputChange}
-                                                {...errorInput.gender}
+                                                {...errorInput.paymentType}
                                             /> */}
+                                            <label className="form-label">Payment Type</label>
+                                    <div class="card-body"> 
+                                        {paymentList.map(item=>(
+                                            <label class="checkbox-btn mr-1">
+                                                <input type="radio" className="hide" name="myfilter_radio" value={item.value} onChange={(e)=>setForm(prev => ({...prev, paymentType: e.target.value, feeShip: e.target.value==="0"?0:30, orderPrice: totalPrice + form.feeShip}))} />
+                                                <span class={form.paymentType===item.value?"btn btn-light active":"btn btn-light"}>{item.label}</span>
+                                            </label>
+                                        ))}
+                                    </div>		
                                         </div>
                                     </div>
                                 </div>

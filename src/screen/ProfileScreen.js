@@ -48,13 +48,12 @@ const ProfileScreen = () => {
     } = userUpdate;
 
     useEffect(() => {
-        if (successUpdateAccount)
-        {
+        if (successUpdateAccount) {
             dispatch({type: ACCOUNT_UPDATE_RESET});
         }
         if (user&&user.id!==id) {
             dispatch(getUserDetails(id));
-        }else {
+        } else {
             setForm({
                 name: user.name,
                 age: user.age,

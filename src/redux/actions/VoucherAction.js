@@ -44,15 +44,14 @@ export const getAllVouchers = () => async (dispatch) => {
     }
 };
 
-export const searchVoucher = ({info}) => async (dispatch) => {
+export const searchVoucher = ({infoVoucher}) => async (dispatch) => {
     try {
-        dispatch({ type: VOUCHER_LIST_REQUEST });
-  
-        const { data } = await axios.post('/api/vouchers/search', info, {headers: authHeader()})
-        dispatch({ type: VOUCHER_LIST_SUCCESS, payload: data });
+        dispatch({ type: VOUCHER_DETAILS_REQUEST });
+        const { data } = await axios.post('/api/vouchers/search', infoVoucher, {headers: authHeader()})
+        dispatch({ type: VOUCHER_DETAILS_SUCCESS, payload: data });
     } catch (error) {
         dispatch({
-            type: VOUCHER_LIST_FAIL,
+            type: VOUCHER_DETAILS_FAIL,
             payload: error.response && error.response.data.message
                 ? error.response.data.message
                 : error.message,

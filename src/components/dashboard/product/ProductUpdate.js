@@ -228,7 +228,7 @@ const ProductUpdate = ({isShowing, hide, id, idCategory}) => {
                                                     {...errorInput.status}
                                                 />             
                                             </div>
-                                </div>
+                                    </div>
                                 <div className="col text-center px-xl-3">
                                     <button className="btn btn-primary btn-block" type="submit" onClick={()=>{submitHandler();}}>Save Changes</button>
                                 </div>

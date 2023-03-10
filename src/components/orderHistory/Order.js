@@ -80,7 +80,7 @@ const Order = () => {
                                         {item.amountItem}
                                     </td> */}
                                     <td className="product-quantity" data-title="Quantity">
-                                       ${item.totalPrice}
+                                       ${item.orderPrice}
                                     </td>
                                     {/* <td className="product-subtotal" data-title="Total">
                                             {item.status}
