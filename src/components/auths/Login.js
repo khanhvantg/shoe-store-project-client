@@ -59,10 +59,10 @@ const Login = () => {
     });
      
     const onInputChange = useCallback((value, name) => {
-    setForm(prev => ({
-        ...prev,
-        [name]: value
-    }));
+        setForm(prev => ({
+            ...prev,
+            [name]: value
+        }));
     }, []);
      
     const validateForm = () => {

@@ -6,15 +6,24 @@ import { Link } from "react-router-dom";
 import Loading from '../loadingError/Loading';
 import Message from "../loadingError/Message";
 import { createLineItem } from '../../redux/actions/WishlistAction'
-
+import {toast} from 'react-toastify';
 const ProductMain1 = () => {
+    const [form,setForm]=useState({
+        amount: 1,
+        size: '',
+    })
     const [total, setTotal] = useState(0);
     const [amount, setAmount] = useState(1);
     const [productId,setProductId]=useState(null);
     const dispatch = useDispatch();
+    const dispatchItem = useDispatch();
     const dispatchFilter = useDispatch();
     const dispatchCategory = useDispatch();
     const [check1,setCheck1] = useState(0);
+
+    const userLogin = useSelector((state) => state.userLogin);
+    const { success, userInfo } = userLogin;
+
     const categoryList = useSelector((state) => state.categoryList);
     const { categories } = categoryList;
     const  [idCategory, setIdCategory] = useState('0');
@@ -36,6 +45,7 @@ const ProductMain1 = () => {
     const handelSize = (e) => {
         if(e.target.value!==filters.size){
             setFilters(prev=>({...prev,size:e.target.value}));
+            setForm(prev=>({...prev,size:e.target.value}));
         }else setFilters(prev=>({...prev,size:null}));
     }
 
@@ -63,34 +73,10 @@ const ProductMain1 = () => {
                 dispatchFilter(getProductFilter({filters}))
             }, 1000);
             setTimer(newTimer) 
-            // dispatch(getAllProducts());
-            // if(filters.size!=null||filters.price!=null){
-            //     clearTimeout(timer);
-            //     const newTimer = setTimeout(() => {
-            //         dispatchFilter(getProductFilter({filters}))
-            //     }, 1000);
-            //     setTimer(newTimer) 
-            // } 
         } 
         else {
             dispatch(getCategoryById(idCategory));
         }
-        // if(filters.size!=null||filters.price!=null){
-        //     clearTimeout(timer);
-        //     const newTimer = setTimeout(() => {
-        //         dispatchFilter(getProductFilter({filters}))
-        //     }, 1000);
-        //     setTimer(newTimer) 
-        // } else {
-        //     // dispatch(getAllProducts());
-        //     if(idCategory!=="0"){
-        //         // dispatch(getAllProducts());
-        //         dispatch(getCategoryById(idCategory))
-        //     } 
-        //     // else {
-        //     //     dispatch(getCategoryById(idCategory));
-        //     // }
-        // }
         setSearchText("")
         setData([]);
     }, [idCategory, check1, filters.size, filters.price]);
@@ -165,7 +151,11 @@ const ProductMain1 = () => {
             label: "7.5UK"
         },
         ];
-        console.log(filters)
+        const handleAddToCart = (id) => {
+            if(userInfo&&userInfo) {
+                dispatchItem(createLineItem({form,productId:id}))
+            } else  toast("Please Login To Buy Shoes", {position: toast.POSITION.TOP_CENTER});
+        }
     return (
         <div>
             <section className="page-header" style={{marginBottom: "15px"}}>
@@ -386,14 +376,18 @@ const ProductMain1 = () => {
                                     <>
                                     {product.status!=="0"&&(
                                     <div class="col-md-4">
-                                        <figure class="card card-product-grid">
-                                            <div class="img-wrap"> 
+                                        <figure class="card card-product-grid product">
+                                            <div class="img-wrap product-wrap"> 
                                                 {/* <span class="badge badge-danger"> NEW </span> */}
                                                 <Link to={{ pathname: `/product/${product.id}`}}>
                                                     <img className="img-thumbnail w-100 mb-3 img-first" src={product.images.sort((a, b) => (a.id-b.id))[0]?.link} />
-                                                </Link>  
+                                                </Link>
                                                 {/* <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a> */}
                                             </div> 
+                                            {filters&&filters.size!==null&&
+                                             <div className="product-hover-overlay">
+                                                <a className="circle" onClick={()=>handleAddToCart(product.id)}><i className="tf-ion-android-cart"></i></a>
+                                            </div>}
                                             <figcaption class="info-wrap">
                                                 <div class="fix-height text-center">
                                                     <a href="#" class="title">{product.name}</a>

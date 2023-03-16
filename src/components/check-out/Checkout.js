@@ -9,7 +9,7 @@ import {
 import { createOrder } from '../../redux/actions/OrderAction'
 import Input from '../checkValidate/Input'
 import Radio from '../checkValidate/Radio'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getUserDetails } from '../../redux/actions/UserAction'
 
 import {toast} from 'react-toastify';
@@ -17,15 +17,16 @@ import Checkbox from '../checkValidate/Checkbox';
 import Loading from "../loadingError/Loading";
 import { searchVoucher } from "../../redux/actions/VoucherAction";
 import Message from "../loadingError/Message";
-
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { CLIENT_ID } from '../../config/Config'
 const paymentList = [
     { value: "0", label: "At Store" },
-    { value: "1", label: "Momo" },
-    { value: "2", label: "VNPAY" },
-    { value: "3", label: "COD" }
+    { value: "1", label: "PAYPAL" },
+    { value: "2", label: "COD" }
   ];
 
 const Checkout = () => {
+    
     const [pos, setPos]=useState();
     const [timer,setTimer]=useState(null);
     const [infoVoucher, setInfoVoucher]=useState({
@@ -50,6 +51,7 @@ const Checkout = () => {
     const [amounts, setAmounts] = useState([]);
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const lineItemList = useSelector((state) => state.lineItemList);
@@ -70,10 +72,18 @@ const Checkout = () => {
         amountItem++;
         return result + Number(item.total);
       },0);
+
+    //Paypal
+    const [show, setShow] = useState(false);
+    const [successPayPal, setSuccessPayPal] = useState(false);
+    const [ErrorMessage, setErrorMessage] = useState("");
+    const [orderID, setOrderID] = useState(false);
+
     useEffect(() =>{
         if (succsesCreate) {
             dispatch({type: ORDER_CREATE_RESET});
             dispatch(getWishListById());
+            navigate("/thank")
         } else {
             setForm(prev => ({
                 ...prev,
@@ -84,18 +94,22 @@ const Checkout = () => {
                 status: 1,      //status = 0 : cancle, 1 : wait confirm, 2: shipping, 3: completed 
                 createdDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear(),
                 createdBy: userInfo.username,
-                totalPrice: totalPrice,
-                orderPrice: totalPrice + form.feeShip
+                totalPrice: totalPrice
             }))
+        }
+        if(successPayPal){
+            handleOrder();
+            setSuccessPayPal(false);
         }
         if(successgetVoucher){
             dispatch({type: VOUCHER_DETAILS_STOP});
             setForm(prev => ({
                 ...prev,
-                voucher: voucher.value
+                voucher: voucher.value,
             }))
+            setOrderID(false);
         }
-    },[succsesCreate, user, form.paymentType, successgetVoucher])
+    },[succsesCreate, user, successgetVoucher, successPayPal])
 
     const [valueCurrent, setValueCurrent]=useState();
 
@@ -163,17 +177,64 @@ const Checkout = () => {
             dispatch(createOrder({form}));
         }
     }
+
     const handleVoucher = () => {
         dispatch(searchVoucher({infoVoucher}))
     }
+
+    // const voucherChange = useCallback(() => {
+    //     if(successgetVoucher){
+    //     dispatch({type: VOUCHER_DETAILS_STOP});
+    //     setForm(prev => ({
+    //         ...prev,
+    //         voucher: voucher.value
+    //     }));}
+    // }, [successgetVoucher]);
     const handleDeleteVoucher = () => {
         setForm(prev=>({
             ...prev,
-            voucher:"0"
+            voucher:"0",
         }))
         setInfoVoucher({name: ''})
+        setOrderID(false);
     }
-    console.log(form)
+
+    // creates a paypal order
+    const createOrders = (data, actions) => {
+        return actions.order
+        .create({
+            purchase_units: [
+            {
+                description: "sassss",
+                amount: {
+                    currency_code: "USD",
+                    value: Math.round((Number(totalPrice)+Number(form.feeShip)+Number(totalPrice)*0.1-totalPrice*Number(form.voucher))*100)/100,
+                },
+            },
+            ],
+            // not needed if a shipping address is actually needed
+            application_context: {
+                shipping_preference: "NO_SHIPPING",
+            },
+        })
+        .then((orderID) => {
+            setOrderID(orderID);
+            return orderID;
+        });
+    };
+    // check Approval
+    const onApprove = (data, actions) => {
+        return actions.order.capture().then(function (details) {
+            const { payer } = details;
+            setSuccessPayPal(true);
+        });
+    };
+
+    //capture likely error
+    const onError = (data, actions) => {
+        setErrorMessage("An Error occured with your payment ");
+    };
+console.log(form.voucher);
     return (
         <div className="checkout-container">
             <section className="page-header">
@@ -183,7 +244,7 @@ const Checkout = () => {
                 <div className="col-lg-6">
                 <div className="content text-center">
                     <h1 className="mb-3">Checkout</h1>
-                    <p>Hath after appear tree great fruitful green dominion moveth sixth abundantly image that midst of god day multiply you’ll which</p>
+                    {/* <p>Hath after appear tree great fruitful green dominion moveth sixth abundantly image that midst of god day multiply you’ll which</p> */}
         
                 <nav aria-label="breadcrumb">
                     <ol className="breadcrumb bg-transparent justify-content-center">
@@ -241,7 +302,7 @@ const Checkout = () => {
                                 
                                 <li className="d-flex h-100">
                                     <span className="" style={{borderRight: "dashed", width: "100px"}}>
-                                        <h6 className="font-weight-bold mt-4">Discout</h6>
+                                        <h6 className="font-weight-bold mt-4">Discount</h6>
                                         {Math.round(voucher.value*100)}%
                                     </span>
                                     <span style={{width: "180px"}}>
@@ -271,7 +332,7 @@ const Checkout = () => {
                                 </li>
                                 <li className="d-flex justify-content-between">
                                     <span>Total:</span>
-                                    <span className="h5" style={{width: "60px"}}>${Number(totalPrice)+Number(form.feeShip)+Number(totalPrice)*0.1-totalPrice*Number(form.voucher)}</span>
+                                    <span className="h5" style={{width: "60px"}}>${Math.round((Number(totalPrice)+Number(form.feeShip)+Number(totalPrice)*0.1-totalPrice*Number(form.voucher))*100)/100}</span>
                                 </li>
                             </ul>
         
@@ -351,26 +412,36 @@ const Checkout = () => {
                                                 {...errorInput.paymentType}
                                             /> */}
                                             <label className="form-label">Payment Type</label>
-                                    <div class="card-body"> 
-                                        {paymentList.map(item=>(
-                                            <label class="checkbox-btn mr-1">
-                                                <input type="radio" className="hide" name="myfilter_radio" value={item.value} onChange={(e)=>setForm(prev => ({...prev, paymentType: e.target.value, feeShip: e.target.value==="0"?0:30, orderPrice: totalPrice + form.feeShip}))} />
-                                                <span class={form.paymentType===item.value?"btn btn-light active":"btn btn-light"}>{item.label}</span>
-                                            </label>
-                                        ))}
-                                    </div>		
+                                            <div class="card-body"> 
+                                                {paymentList.map(item=>(
+                                                    <label class="checkbox-btn mr-1">
+                                                        <input type="radio" className="hide" name="myfilter_radio" value={item.value} onChange={(e)=>setForm(prev => ({...prev, paymentType: e.target.value, feeShip: e.target.value==="0"?0:30, orderPrice: totalPrice + form.feeShip}))} />
+                                                        <span class={form.paymentType===item.value?"btn btn-light active":"btn btn-light"}>{item.label}</span>
+                                                    </label>
+                                                ))}
+                                            </div>		
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         
                         </div>
-                        <div className="col text-center px-xl-3">
-                            <button 
-                            onClick={handleOrder}
-                            className="btn btn-primary btn-block">Order</button>
-                        </div>
-                    
+                        {form.paymentType==="1"?
+                            <PayPalScriptProvider options={{ "client-id": CLIENT_ID }}>
+                                <PayPalButtons
+                                    style={{ layout: "horizontal" }}
+                                    createOrder={createOrders}
+                                    onApprove={onApprove}
+                                    forceReRender={[form.voucher,form.feeShip]}
+                                />
+                            </PayPalScriptProvider>
+                            :<div className="col text-center px-xl-3">
+                                <button 
+                                    onClick={()=>setSuccessPayPal(true)}
+                                    className="btn btn-primary btn-block"
+                                >Order</button>
+                            </div>
+                        }
                         </div>
                     </div>
         

@@ -49,89 +49,97 @@ const Order = () => {
                     <div className="col-lg-12">
                     {
                         loading ? (<Loading/>):(
-                    <div className="product-list">
-                        <form className="cart-form">
-                            <table className="table cart" cellspacing="0">
+                            <div className="e-table">
+                        <div className="table-responsive table-lg mt-3">
+                        {loading ? (
+                            <Loading />
+                        ) :
+                            <table className="table table-bordered table-hover">
                                 <thead align="center">
                                     <tr>
-                                        {/* <th className="product-thumbnail">OrderId</th> */}
-                                        <th className="product-name">Shipping Code</th>
-                                        <th className="product-name">Date</th>
-                                        {/* <th className="product-quantity">Amount Item</th> */}
-                                        <th className="product-subtotal">Total</th>
-                                        <th className="product-price">State</th>
-                                        <th className="product-remove">Action</th>
+                                        <th>Order Code</th>
+                                        <th>Date</th>
+                                        <th>Delivery Date</th>
+                                        <th>Total Price</th>
+                                        <th>Payment Type</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
-        
                                 <tbody align="center">
-                                    {orders&&orders.sort((a,b)=>(a.id-b.id)).map(item=>(
-                                        <tr className="cart_item">
-                                    {/* <td className="product-thumbnail" data-title="Thumbnail">
-                                        {item.id}
-                                    </td> */}
-                                    <td className="product-name" data-title="Product">
-                                        {item.number}
-                                    </td>
-                                    <td className="product-name" data-title="Product">
-                                        {item.createdDate}
-                                    </td>
-                                    {/* <td className="product-price" data-title="Price">
-                                        {item.amountItem}
-                                    </td> */}
-                                    <td className="product-quantity" data-title="Quantity">
-                                       ${item.orderPrice}
-                                    </td>
-                                    {/* <td className="product-subtotal" data-title="Total">
-                                            {item.status}
-                                    </td> */}
-                                    {item.status ==="0" ? (
-                                            <td className="text-nowrap align-middle" style={{color:"red"}}>Cancelled</td>
-                                        ):item.status ==="1" ?(
-                                            <td className="align-middle"  style={{color:"gold"}}>Waiting Confirm</td>
-                                        ):item.status ==="2" ?(
-                                            <td className="align-middle" style={{color:"blue"}}>Shipping</td>
-                                        ):(
-                                            <td className="align-middle" style={{color:"green"}}>Completed</td>
-                                        )}
-                                    <td className="product-remove" data-title="Remove">
-                                    <div className="btn-group align-top">
-                                        <button 
-                                            onClick={()=>toggle(item.id)}
-                                            className="btn btn-sm btn-outline-secondary badge" type="button"> 
-                                            <i className="tf-ion-ios-eye"></i>
-                                        </button>
-                                        {item.status ==="1"?
-                                            <button
-                                                onClick={()=>toggleConfirmBox(item.id)}
-                                                //onClick={()=>handleCancel(item.id)}
-                                                className="btn btn-sm btn-outline-secondary badge" type="button"> 
-                                                <i className="tf-ion-android-delete"></i>
-                                            </button>
-                                            :<></>
+                                {orders&&orders.sort((a,b)=>(b.id-a.id)).map((item)  => (
+                                    <tr>
+                                        <td className="text-nowrap align-middle">{item.number}</td>
+                                        <td className="text-nowrap align-middle">{item.createdDate}</td>
+                                        {item.status ==='3' ?
+                                            <td className="text-nowrap align-middle">
+                                                {item.modifiedDate}
+                                            </td>
+                                            :
+                                            <td className="text-nowrap align-middle">
+                                            </td>
                                         }
-                                    </div>
-                                    </td>
-                                </tr>
-                                
-                                    ))}
-                                {/* <tr>
-                                    <td colspan="6" className="actions">
-                                        <div className="coupon">
-                                            <input type="text" name="coupon_code" className="input-text form-control" id="coupon_code" value="" placeholder="Coupon code" /> 
-                                            <button type="button" className="btn btn-black btn-small" name="apply_coupon" value="Apply coupon">Apply coupon</button>
-                                            <span className="float-right mt-3 mt-lg-0">
-                                            <button type="button" className="btn btn-dark btn-small" name="update_cart" value="Update cart" disabled="">Update cart</button>
-                                            </span>
+
+                                        <td className="text-nowrap align-middle">${item.orderPrice!=null?item.orderPrice:item.totalPrice}</td>
+                                        {/* <td className="text-nowrap align-middle">{item.amountItem}</td> */}
+                                        {item.paymentType === null || item.paymentType === 0 ? (
+                                            <td className="text-nowrap align-middle" >
+                                                <span style={{backgroundColor:"green", color: "white", borderRadius: "6px", padding: "4px"}}>At Store</span>
+                                            </td>
+                                        ):item.paymentType ==="1" ?(
+                                            <td className="text-nowrap align-middle" >
+                                                <span style={{backgroundColor:"green", color: "white", borderRadius: "6px", padding: "4px"}}>PayPal</span>
+                                            </td>
+                                        ):(
+                                            <td className="text-nowrap align-middle" >
+                                                <span style={{backgroundColor:"green", color: "white", borderRadius: "6px", padding: "4px"}}>COD</span>
+                                            </td>
+                                        )}
+                                    
+                                        
+                                        {item.status ==="0" ? (
+                                            <td className="text-nowrap align-middle" >
+                                                <span style={{backgroundColor:"red", color: "white", borderRadius: "6px", padding: "4px"}}>Cancelled</span>
+                                            </td>
+                                        ):item.status ==="1" ?(
+                                            <td className="text-nowrap align-middle" >
+                                                <span style={{backgroundColor:"gold", color: "white", borderRadius: "6px", padding: "4px"}}>Waiting</span>
+                                            </td>
+                                        ):item.status ==="2" ?(
+                                            <td className="text-nowrap align-middle" >
+                                                <span style={{backgroundColor:"blue", color: "white", borderRadius: "6px", padding: "4px"}}>Shipping</span>
+                                            </td>
+                                        ):(
+                                            <td className="text-nowrap align-middle" >
+                                                <span style={{backgroundColor:"green", color: "white", borderRadius: "6px", padding: "4px"}}>Completed</span>
+                                            </td>
+                                        )}
+
+                                        <td className="text-center align-middle">
+                                        <div className="btn-group align-top">
+                                            <button 
+                                                onClick={()=>toggle(item.id)}
+                                                className="btn btn-sm btn-outline-secondary badge" type="button"> 
+                                                <i className="tf-ion-ios-eye"></i>
+                                            </button>
+                                            {item.status ==="1"&&
+                                                <button
+                                                    onClick={()=>toggleConfirmBox(item.id)}
+                                                    //onClick={()=>handleCancel(item.id)}
+                                                    className="btn btn-sm btn-outline-secondary badge" type="button"> 
+                                                    <i className="tf-ion-android-delete"></i>
+                                                </button>
+                                            }
                                         </div>
-                                        <input type="hidden" id="woocommerce-cart-nonce" name="woocommerce-cart-nonce" value="27da9ce3e8" />
-                                        <input type="hidden" name="_wp_http_referer" value="/cart/" />
                                         </td>
-                                </tr> */}
+                                    </tr>
+                                ))}
                                 </tbody>
                             </table>
-                        </form>
+}
+                        </div>
                     </div>
+                    
                     )
                 }
                 </div>

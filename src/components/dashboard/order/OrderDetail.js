@@ -96,36 +96,49 @@ const OrderDetail = ({isShowing, hide, id}) => {
                                             <h3 className="align-middle" style={{color:"green"}}>Completed</h3>
                                         )}
                                     </li>
-                                        <ul className="list-unstyled mb-4">
-                                            <li className="d-flex justify-content-between pb-2 mb-3">
-                                            <h5>Shipping Code</h5>
+                                    <ul className="list-unstyled mb-4">
+                                            <li className="d-flex justify-content-between pt-2">
+                                            <h5>Order Code</h5>
                                             <span>{order.number}</span>
                                             </li>
-                                            <li className="d-flex justify-content-between pb-2 mb-3">
+                                            <li className="d-flex justify-content-between pt-2">
                                             <h5>Orderer</h5>
                                             <span>{order.createdBy}</span>
                                             </li>
-                                            <li className="d-flex justify-content-between pb-2 mb-3">
+                                            <li className="d-flex justify-content-between pt-2">
                                             <h5>Receiver</h5>
                                             <span>{order.name}</span>
                                             </li>
-                                            <li className="d-flex justify-content-between pb-2 mb-3">
+                                            <li className="d-flex justify-content-between pt-2">
                                             <h5>Phone</h5>
                                             <span>{order.phoneNumber}</span>
                                             </li>
-                                            <li className="d-flex justify-content-between pb-2 mb-3">
+                                            <li className="d-flex justify-content-between pt-2">
                                             <h5>Adress</h5>
                                             <span>{order.address}</span>
                                             </li>
-                                            <li className="d-flex justify-content-between pb-2 mb-3">
+                                            {/* <li className="d-flex justify-content-between pb-2 mb-3">
                                             <h5>Total Item</h5>
                                             <span>{amountItem}</span>
-                                            </li>
-                                            <li className="d-flex justify-content-between pb-2">
-                                            <h5>Total Price</h5>
+                                            </li> */}
+                                            <li className="d-flex justify-content-between pt-2"> 
+                                            <h5>SubTotal</h5>
                                             <span>${order.totalPrice}</span>
                                             </li>
+                                            <li className="d-flex justify-content-between pt-2">
+                                            <h5>FeeShip</h5>
+                                            <span>${order.feeShip===null?0:order.feeShip}</span>
+                                            </li>
+                                            <li className="d-flex justify-content-between pt-2">
+                                            <h5>VAT</h5>
+                                            <span>{order.orderPrice!==null?10:0}%</span>
+                                            </li>
+                                            <li className="d-flex justify-content-between pt-2">
+                                            <h5>Total Price</h5>
+                                            <span>${order.orderPrice!==null?order.orderPrice:order.totalPrice}</span>
+                                            </li>
                                         </ul>
+                                    
                                     </div>
                                     <div className="product-list">
                                         <form className="cart-form">

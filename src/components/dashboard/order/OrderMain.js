@@ -74,11 +74,12 @@ const OrderMain = () => {
                             <table className="table table-bordered table-hover">
                                 <thead align="center">
                                     <tr>
-                                        {/* <th>Id</th> */}
+                                        <th>Order Code</th>
                                         <th>Order Date</th>
                                         {/* <th>Amount Item</th> */}
                                         <th>Delivery Date</th>
                                         <th>Total Price</th>
+                                        <th>Payment Type</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
@@ -86,7 +87,7 @@ const OrderMain = () => {
                                 <tbody align="center">
                                 {orders&&orders.sort((a,b)=>(b.id-a.id)).map((item, index)  => (
                                     <tr onClick={()=>{toggle(item.id)}}>
-                                        {/* <td className="align-middle">{item.id}</td> */}
+                                        <td className="text-nowrap align-middle">{item.number}</td>
                                         <td className="text-nowrap align-middle">{item.createdDate}</td>
                                         {item.status ==='3' ?
                                             <td className="text-nowrap align-middle">
@@ -97,7 +98,21 @@ const OrderMain = () => {
                                             </td>
                                         }
                                         {/* <td className="text-nowrap align-middle">{item.amountItem}</td> */}
-                                        <td className="text-nowrap align-middle">${item.totalPrice}</td>
+                                        <td className="text-nowrap align-middle">${item.orderPrice!=null?item.orderPrice:item.totalPrice}</td>
+
+                                        {item.paymentType === null || item.paymentType === 0 ? (
+                                            <td className="text-nowrap align-middle" >
+                                                <span style={{backgroundColor:"green", color: "white", borderRadius: "6px", padding: "4px"}}>At Store</span>
+                                            </td>
+                                        ):item.paymentType ==="1" ?(
+                                            <td className="text-nowrap align-middle" >
+                                                <span style={{backgroundColor:"green", color: "white", borderRadius: "6px", padding: "4px"}}>PayPal</span>
+                                            </td>
+                                        ):(
+                                            <td className="text-nowrap align-middle" >
+                                                <span style={{backgroundColor:"green", color: "white", borderRadius: "6px", padding: "4px"}}>COD</span>
+                                            </td>
+                                        )}
                                         {/* {item.status ==="0" ? (
                                             <td className="text-nowrap align-middle" style={{color:"red"}}>Cancelled</td>
                                         ):item.status ==="1" ?(
@@ -109,7 +124,7 @@ const OrderMain = () => {
                                         )} */}
                                         {item.status ==="0" ? (
                                             <td onClick="disable">
-                                                <form className="ordering">
+                                                <form className="ordering" style={{width: "155px"}}>
                                                     <select className="orderby form-control" style={{color:"red"}} onChange={(e)=>handleC(e,item.id)}>
                                                         <option className="text-nowrap align-middle" value="0">Cancelled</option>
                                                         <option value="1" style={{color:"gold"}}>Waiting Confirm</option>
@@ -121,7 +136,7 @@ const OrderMain = () => {
                                             </td>
                                         ):item.status ==="1" ?(
                                             <td onClick="disable">
-                                                <form className="ordering">
+                                                <form className="ordering" style={{width: "155px"}}>
                                                     <select className="orderby form-control" style={{color:"gold"}} onChange={(e)=>handleC(e,item.id)}>
                                                         <option className="text-nowrap align-middle" value="1">Waiting Confirm</option>
                                                         <option value="0" style={{color:"red"}}>Cancel</option>
@@ -133,7 +148,7 @@ const OrderMain = () => {
                                             </td>
                                         ):item.status ==="2" ?(
                                             <td onClick="disable">
-                                                <form className="ordering">
+                                                <form className="ordering" style={{width: "155px"}}>
                                                     <select className="orderby form-control" style={{color:"blue"}} onChange={(e)=>handleC(e,item.id)}>
                                                         <option className="text-nowrap align-middle" value="2">Shipping</option>
                                                         <option value="1" style={{color:"gold"}}>Waiting Confirm</option>
@@ -145,7 +160,7 @@ const OrderMain = () => {
                                             </td>
                                         ):(
                                             <td onClick="disable">
-                                                <form className="ordering">
+                                                <form className="ordering" style={{width: "155px"}}>
                                                     <select className="orderby form-control" style={{color:"green"}} onChange={(e)=>handleC(e,item.id)}>
                                                         <option className="text-nowrap align-middle" value="3">Completed</option>
                                                         <option value="1" style={{color:"gold"}}>Waiting Confirm</option>

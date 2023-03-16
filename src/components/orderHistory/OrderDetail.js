@@ -31,88 +31,121 @@ const OrderDetail = ({isShowing, hide, id}) => {
                 </div>
                 <div className="modal-body">
                     <div className="py-1">
-                    {/* {loading ? (
+                    {loading ? (
                         <Loading />
-                        ) : error ? (
-                            <Message variant="alert-danger">{error}</Message>
-                        ) : ( */}
-                        <section className="cart shopping page-wrapper">
-            <div className="container">
-                <div className="row justify-content-center">
-                <div className="col-lg-12">
-                    {loading?(<Loading/>):
-                        (
-                        <div className="product-list">
-                        <form className="cart-form">
-                            <table className="table shop_table shop_table_responsive cart" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th className="product-thumbnail"> </th>
-                                        <th className="product-name">Product</th>
-                                        <th className="product-price">Price</th>
-                                        <th className="product-quantity">Amount</th>
-                                        <th className="product-quantity">Size</th>
-                                        <th className="product-subtotal">Total</th>
-                                    </tr>
-                                </thead>
-        
-                                <tbody>
-                                    {lineItems&&lineItems.map(item=>(
-                                        <tr className="cart_item">
-                                    <td className="product-thumbnail" data-title="Image">
-                                        <Link to={{ pathname: `/product/${item.product.id}`}}><img src={item.product.images.sort((a,b)=>(a.id-b.id))[0].link} className="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" /></Link>
-                                    </td>
-                                    <td className="product-name" data-title="Product">
-                                        <span className="amount">{item.product.name}</span>
-                                    </td>
-                                    <td className="product-price" data-title="Price">
-                                        <span className="amount">
-                                            {/* <span className="currencySymbol"><pre wp-pre-tag-3=""></pre>
-                                        </span> */}
-                                        ${item.product.price}</span>
-                                    </td>
-                                    <td className="product-quantity" data-title="Amount">
-                                        {item.amount}
-                                    </td>
-                                    <td className="product-quantity" data-title="Size">
-                                        {item.size} UK
-                                    </td>
-                                    <td className="product-subtotal" data-title="Total">
-                                        <span className="amount">
-                                            {/* <span className="currencySymbol">
-                                                <pre wp-pre-tag-3=""></pre>
-                                            </span> */}
-                                            ${item.total}
-                                        </span>
-                                    </td>
-                                </tr>
-                                
-                                    ))}
-                                {/* <tr>
-                                    <td colspan="6" className="actions">
-                                        <div className="coupon">
-                                            <input type="text" name="coupon_code" className="input-text form-control" id="coupon_code" value="" placeholder="Coupon code" /> 
-                                            <button type="button" className="btn btn-black btn-small" name="apply_coupon" value="Apply coupon">Apply coupon</button>
-                                            <span className="float-right mt-3 mt-lg-0">
-                                            <button type="button" className="btn btn-dark btn-small" name="update_cart" value="Update cart" disabled="">Update cart</button>
-                                            </span>
-                                        </div>
-                                        <input type="hidden" id="woocommerce-cart-nonce" name="woocommerce-cart-nonce" value="27da9ce3e8" />
-                                        <input type="hidden" name="_wp_http_referer" value="/cart/" />
-                                        </td>
-                                </tr> */}
-                                </tbody>
-                            </table>
-                        </form>
-                    </div>
-                        )
-                    }
-                </div>
-                </div>
-                </div>
-                </section>
+                        ) : (
+                        <section className="cart shopping">
+                            <div className="container">
+                                <div className="row justify-content-center">
+                                <div className="col-lg-12">
+                                    <div className="cart-info card p-4 mt-4">
+                                    <li className="d-flex justify-content-between pt-2">
+                                        <h4 className="mb-4">Information Order</h4>
+                                        {/* {order.status ==="0" ? (
+                                            <h3 className="text-nowrap align-middle" style={{color:"red"}}>Cancelled</h3>
+                                        ):order.status ==="1" ?(
+                                            <h3 className="align-middle"  style={{color:"gold"}}>Waiting Confirm</h3>
+                                        ):order.status ==="2" ?(
+                                            <h3 className="align-middle" style={{color:"blue"}}>Shipping</h3>
+                                        ):(
+                                            <h3 className="align-middle" style={{color:"green"}}>Completed</h3>
+                                        )} */}
+                                    </li>
+                                        <ul className="list-unstyled mb-4">
+                                            <li className="d-flex justify-content-between pt-2">
+                                            <h5>Order Code</h5>
+                                            <span>{order.number}</span>
+                                            </li>
+                                            <li className="d-flex justify-content-between pt-2">
+                                            <h5>Orderer</h5>
+                                            <span>{order.createdBy}</span>
+                                            </li>
+                                            <li className="d-flex justify-content-between pt-2">
+                                            <h5>Receiver</h5>
+                                            <span>{order.name}</span>
+                                            </li>
+                                            <li className="d-flex justify-content-between pt-2">
+                                            <h5>Phone</h5>
+                                            <span>{order.phoneNumber}</span>
+                                            </li>
+                                            <li className="d-flex justify-content-between pt-2">
+                                            <h5>Adress</h5>
+                                            <span>{order.address}</span>
+                                            </li>
+                                            {/* <li className="d-flex justify-content-between pb-2 mb-3">
+                                            <h5>Total Item</h5>
+                                            <span>{amountItem}</span>
+                                            </li> */}
+                                            <li className="d-flex justify-content-between pt-2"> 
+                                            <h5>SubTotal</h5>
+                                            <span>${order.totalPrice}</span>
+                                            </li>
+                                            <li className="d-flex justify-content-between pt-2">
+                                            <h5>FeeShip</h5>
+                                            <span>${order.feeShip===null?0:order.feeShip}</span>
+                                            </li>
+                                            <li className="d-flex justify-content-between pt-2">
+                                            <h5>VAT</h5>
+                                            <span>{order.orderPrice!==null?10:0}%</span>
+                                            </li>
+                                            <li className="d-flex justify-content-between pt-2">
+                                            <h5>Total Price</h5>
+                                            <span>${order.orderPrice!==null?order.orderPrice:order.totalPrice}</span>
+                                            </li>
+                                        </ul>
+                                    
+                                    </div>
+                                    <div className="product-list">
+                                        <form className="cart-form">
+                                            <table className="table shop_table shop_table_responsive cart" cellspacing="0">
+                                                <thead align="center">
+                                                    <tr>
+                                                        <th className="product-thumbnail">Image</th>
+                                                        <th className="product-name">Product</th>
+                                                        <th className="product-price">Price</th>
+                                                        <th className="product-quantity">Amount</th>
+                                                        <th className="product-quantity">Size</th>
+                                                        <th className="product-subtotal">Total</th>
+                                                    </tr>
+                                                </thead>
                         
-                        {/* )} */}
+                                                <tbody align="center">
+                                            
+                                                    {lineItems&&lineItems.map(item=>(
+                                                        <tr className="cart_item">
+                                                    <td className="product-thumbnail" data-title="Image">
+                                                        <Link to={`/product/${item.product.id}`}><img src={item.product.images.sort((a,b)=>(a.id-b.id))[0].link} className="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" /></Link>
+                                                    </td>
+                                                    <td className="product-name" data-title="Product">
+                                                        <span className="amount">{item.product.name}</span>
+                                                    </td>
+                                                    <td className="product-price" data-title="Price">
+                                                        <span className="amount">${item.product.price}</span>
+                                                    </td>
+                                                    <td className="product-quantity" data-title="Quantity">
+                                                        {item.amount}
+                                                    </td>
+                                                    <td className="product-quantity" data-title="Size">
+                                                        {item.size} UK
+                                                    </td>
+                                                    <td className="product-subtotal" data-title="Total">
+                                                        <span className="amount">
+                                                            ${item.total}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </form>
+                                        
+                                    </div>
+                                </div>
+                                </div>
+                                </div>
+                        </section>
+                        )}
                     </div>
                 </div>
             </div>
