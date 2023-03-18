@@ -51,6 +51,13 @@ const Layout = () => {
         <>
         <nav id="sidebar" className={active?"active":""}>
             <div className="sidebar-header">
+                <h5><ul className="list-unstyled"><li className={f==="paypal"?"nav-item active":"nav-item"}><Link to="/manage/paypal" style={{padding: 0}}>PayPal Transaction</Link></li></ul></h5>
+                <hr></hr>
+            </div>
+            {/* <ul className="list-unstyled" style={{paddingLeft:20}}>
+                <li className={f==="d-revenue"?"nav-item active":"nav-item"} ><Link to="/manage/d-revenue" className="nav-link">Statistics By Day</Link></li>
+            </ul> */}
+            <div className="sidebar-header">
                 <h5>Sales</h5>
                 <hr></hr>
             </div>

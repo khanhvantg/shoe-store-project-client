@@ -50,7 +50,7 @@ const Header = () => {
     console.log("a",f)
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white w-100 navigation flex-row-reverse" id="navbar">
-            <div className="" style={{width:100, paddingRight:"0px"}}>
+            <div className="" style={{width: "125px", paddingRight:"0px"}}>
                 <ul className="top-menu list-inline mb-0 d-lg-block" id="top-menu">
                     {/* <li className="dropdown cart-nav dropdown-slide list-inline-item">
                         <a className="search_toggle" id="search-icon" data-toggle="dropdown" data-hover="dropdown">
@@ -177,7 +177,7 @@ const Header = () => {
                     {
                         isAdmin ? 
                             <li className={f==="manage"?"nav-item active":"nav-item"}>
-                                <Link className="nav-link" to={{ pathname: "/manage/d-revenue"}}>Manage</Link>
+                                <Link className="nav-link" to={{ pathname: "/manage/paypal"}}>Manage</Link>
                             </li>
                         :<></>    
                     }

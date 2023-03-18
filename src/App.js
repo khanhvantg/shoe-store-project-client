@@ -32,6 +32,7 @@ import Home1 from './components/home/Home1';
 import ManageVoucherScreen from './screen/ManageVoucherScreen';
 import Thanks from './components/check-out/Thanks';
 import PrivateRouteCheckOut from './PrivateRouteCheckOut';
+import ManagePayPalTransactionScreen from './screen/ManagePayPalTransactionScreen';
 const App = () => {
   return (
     <div className="App" style={{backgroundColor: "white"}}>
@@ -65,6 +66,7 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/manage/accounts" element={<ManageAccountsScreen/>}/>
+            <Route path="/manage/paypal" element={<ManagePayPalTransactionScreen/>}/>
             <Route path="/manage/users" element={<ManageUserScreen/>}/>
             <Route path="/manage/categories" element={<ManageCategoryScreen/>}/>
             <Route path="/manage/products" element={<ManageProductScreen/>}/>
