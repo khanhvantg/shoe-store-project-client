@@ -27,34 +27,52 @@ const OrderMain = () => {
         error: errorUpdate,
         success: successUpdate,
     } = orderUpdate;
+
+    var today = new Date();
+    const [orderInfo, setOrderInfo] = useState({
+        orderId: null,
+        status: null,
+        paymentStatus: null,
+        modifiedDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()
+    })
     useEffect(()=>{
         if (successUpdate) {
             dispatch({type: ORDER_UPDATE_RESET});
             dispatch(getAllOrders());
         }else{
             dispatch(getAllOrders());
-            if(orderId!=null){
-                dispatchUpdate(updateOrder({orderInfo}));
-                setStatus()
-                setOderId();
-            }
+            // if(orderId!=null){
+            //     dispatchUpdate(updateOrder({orderInfo}));
+            //     setStatus()
+            //     setOderId();
+            // }
         }
-    }, [orderId, dispatch]);
+    }, [successUpdate, dispatch]);
     // if(!error){
     //     orders.sort((a,b)=>(a.id-b.id));
     // }
     // const orderDetail = useSelector((state) => state.orderDetail);
     // const { order } = orderDetail;
-    var today = new Date();
-    const orderInfo = {
-        orderId,
-        status,
-        modifiedDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()
-    }
+    // var today = new Date();
+    // const orderInfo = {
+    //     orderId,
+    //     status,
+    //     modifiedDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()
+    // }
 
+
+    var today = new Date();
     const handleC = (e,idO) => {
-        setStatus(e.target.value);
-        setOderId(idO);
+        const orderInfo = {
+            orderId: idO,
+            status: e.target.value,
+            paymentStatus: e.target.value==='0'?'1':'0',
+            modifiedDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()
+        }
+        dispatch(updateOrder({orderInfo}));
+        //console.log(orderInfo)
+        // setStatus(e.target.value);
+        // setOderId(idO);
     }
   return (
     // <div className="row flex-lg-nowrap">

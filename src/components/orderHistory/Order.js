@@ -16,6 +16,7 @@ const Order = () => {
     const {isShowing:isShowConfirmBox, toggle:toggleConfirmBox, id: idOrder} = useModal();
     const dispatch = useDispatch();
     const [status, setStatus]=useState(0);
+    const [paymentStatus, setPaymentStatus]=useState(1);
     const orderListByUserId = useSelector((state) => state.orderListByUserId);
     const { loading, error, orders} = orderListByUserId;
 
@@ -36,7 +37,8 @@ const Order = () => {
     const handleCancel = () => {
         const orderInfo = {
             orderId: idOrder,
-            status
+            status,
+            paymentStatus,
         }
         dispatch(updateOrder({orderInfo}));
     }
@@ -62,6 +64,7 @@ const Order = () => {
                                         <th>Delivery Date</th>
                                         <th>Total Price</th>
                                         <th>Payment Type</th>
+                                        <th>Payment Status</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
@@ -82,7 +85,7 @@ const Order = () => {
 
                                         <td className="text-nowrap align-middle">${item.orderPrice!=null?item.orderPrice:item.totalPrice}</td>
                                         {/* <td className="text-nowrap align-middle">{item.amountItem}</td> */}
-                                        {item.paymentType === null || item.paymentType === 0 ? (
+                                        {item.paymentType === null || item.paymentType === "0" ? (
                                             <td className="text-nowrap align-middle" >
                                                 <span style={{backgroundColor:"green", color: "white", borderRadius: "6px", padding: "4px"}}>At Store</span>
                                             </td>
@@ -96,6 +99,31 @@ const Order = () => {
                                             </td>
                                         )}
                                     
+                                        {(item.paymentStatus==="0"||item.paymentStatus===null)&&item.paymentType==="1"&&item.status!=="0" ? (
+                                            <td className="text-nowrap align-middle" >
+                                                <span style={{backgroundColor:"green", color: "white", borderRadius: "6px", padding: "4px"}}>Paid</span>
+                                            </td>
+                                        ):(item.paymentStatus==="1"||item.paymentStatus===null)&&item.paymentType==="1"&&item.status==="0" ?(
+                                            <td className="text-nowrap align-middle" >
+                                                <span style={{backgroundColor:"gold", color: "white", borderRadius: "6px", padding: "4px"}}>Refunding</span>
+                                            </td>
+                                        ):item.paymentStatus==="2"&&item.paymentType==="1" ?(
+                                            <td className="text-nowrap align-middle" >
+                                                <span style={{backgroundColor:"blue", color: "white", borderRadius: "6px", padding: "4px"}}>Refunded</span>
+                                            </td>
+                                        ):item.status!=="0"&&item.status!=="3" ?(
+                                            <td className="text-nowrap align-middle" >
+                                                <span style={{backgroundColor:"gold", color: "white", borderRadius: "6px", padding: "4px"}}>Paying</span>
+                                            </td>
+                                        ):item.status ==="3" ? (
+                                            <td className="text-nowrap align-middle" >
+                                                <span style={{backgroundColor:"green", color: "white", borderRadius: "6px", padding: "4px"}}>Paied</span>
+                                            </td>
+                                        ):(
+                                            <td className="text-nowrap align-middle" >
+                                                <span style={{backgroundColor:"red", color: "white", borderRadius: "6px", padding: "4px"}}>Cancel</span>
+                                            </td>
+                                        )}
                                         
                                         {item.status ==="0" ? (
                                             <td className="text-nowrap align-middle" >

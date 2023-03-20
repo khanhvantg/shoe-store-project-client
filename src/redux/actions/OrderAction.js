@@ -112,7 +112,7 @@ try {
 
   dispatch({ type: ORDER_UPDATE_SUCCESS, payload: data });
   dispatch({ type: ORDER_DETAILS_SUCCESS, payload: data});
-  if(data.status==="0"){
+  if(data.status==="0"&&data.paymentStatus!=='2'){
     toast("Cancel Order Successfull", {position: toast.POSITION.TOP_CENTER});
   }else if(data.status==="2"){
     toast("Cofirm Order Successfull", {position: toast.POSITION.TOP_CENTER});

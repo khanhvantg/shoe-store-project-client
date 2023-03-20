@@ -6,10 +6,10 @@ import {
     PAYPAL_DETAIL_SUCCESS,
     PAYPAL_DETAIL_FAIL,
     PAYPAL_DETAIL_RESET,
-    PAYPAL_UPDATE_REQUEST,
-    PAYPAL_UPDATE_SUCCESS,
-    PAYPAL_UPDATE_FAIL,
-    PAYPAL_UPDATE_RESET
+    PAYPAL_REFUND_REQUEST,
+    PAYPAL_REFUND_SUCCESS,
+    PAYPAL_REFUND_FAIL,
+    PAYPAL_REFUND_RESET
   } from "../constants/Constants";
   
   
@@ -39,17 +39,32 @@ import {
       }
     };
   
-    export const paypalUpdateReducer = (state = { account: {} }, action) => {
+    // export const paypalUpdateReducer = (state = { money: [] }, action) => {
+    //   switch (action.type) {
+    //     case PAYPAL_UPDATE_REQUEST:
+    //       return { loading: true };
+    //     case PAYPAL_UPDATE_SUCCESS:
+    //       return { loading: false, success: true, money: action.payload };
+    //     case PAYPAL_UPDATE_FAIL:
+    //       return { loading: false, error: action.payload };
+    //     case PAYPAL_UPDATE_RESET:
+    //       return { money: [] };
+    //     default:
+    //       return state;
+    //   }
+    // };
+
+    export const paypalRefundReducer = (state = { money: [] }, action) => {
       switch (action.type) {
-        case PAYPAL_UPDATE_REQUEST:
-          return { loading: true };
-        case PAYPAL_UPDATE_SUCCESS:
-          return { loading: false, success: true, account: action.payload };
-        case PAYPAL_UPDATE_FAIL:
-          return { loading: false, error: action.payload };
-        case PAYPAL_UPDATE_RESET:
-          return { account: {} };
-        default:
-          return state;
-      }
+          case PAYPAL_REFUND_REQUEST:
+            return { loading: true };
+          case PAYPAL_REFUND_SUCCESS:
+            return { loading: false, success: true, money: action.payload };
+          case PAYPAL_REFUND_FAIL:
+            return { loading: false, error: action.payload };
+          case PAYPAL_REFUND_RESET:
+            return { money: [] };
+          default:
+            return state;
+        }
     };

@@ -46,6 +46,7 @@ const Checkout = () => {
         vat: "0.1",
         paymentStatus: "0",
         paymentType: "0",
+        transactionCode: null,
         orderPrice: null
     });
     const [amounts, setAmounts] = useState([]);
@@ -222,14 +223,18 @@ const Checkout = () => {
             return orderID;
         });
     };
+    const [d,setD]=useState()
     // check Approval
-    const onApprove = (data, actions) => {
+    const onApprove = (data, actions, variables) => {
         return actions.order.capture().then(function (details) {
-            const { payer } = details;
+            const { purchase_units
+            } = details;
+            setForm(prev=>({...prev, transactionCode: purchase_units[0]?.payments.captures[0]?.id}))
             setSuccessPayPal(true);
         });
     };
 
+console.log('k',form)
     //capture likely error
     const onError = (data, actions) => {
         setErrorMessage("An Error occured with your payment ");

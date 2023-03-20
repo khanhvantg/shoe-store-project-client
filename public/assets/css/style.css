@@ -357,9 +357,9 @@ a.text-primary:hover {
   color: #fb5c42 !important;
 }
 
-.content * {
+/* .content * {
   margin-bottom: 20px;
-}
+} */
 
 .content h1,
 .content h2,

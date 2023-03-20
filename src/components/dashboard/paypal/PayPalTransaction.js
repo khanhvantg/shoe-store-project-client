@@ -4,11 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import {decode as base64_decode, encode as base64_encode} from 'base-64';
 import axios from './axios';
 import { post } from "jquery";
-import { getBalance, getListTransaction } from "../../../redux/actions/PayPalAction";
+import { getBalance, getListTransaction, refundTransaction } from "../../../redux/actions/PayPalAction";
 import Loading from "../../loadingError/Loading";
 import Message from "../../loadingError/Message";
 import DatePicker from 'react-datepicker';
 import { format } from 'date-fns'
+import { getAllOrders, updateOrder } from "../../../redux/actions/OrderAction";
+import { PAYPAL_REFUND_RESET } from "../../../redux/constants/Constants";
 const PayPalTransaction = () => {
 
     // const username = 'AXap4VJ7Ie8T2UPEEQYQLoYR4Qt5t2dBw1Ql6yV5tIUjpQCG5fAThNZMg9dfWjOgGhJ5AklyEVDBKZKN';
@@ -23,7 +25,7 @@ const PayPalTransaction = () => {
     //     };
     //   }
     // const data = axios({
-    //     url: 'https://api-m.sandbox.paypal.com/v1/reporting/balances',
+    //     url: 'https://api-m.sandbox.paypal.com/v2/payments/captures/9BK91862BP818311H/refund',
     //     method: 'GET',
     //     headers: {
             // 'Accept': 'application/json',
@@ -48,27 +50,49 @@ const PayPalTransaction = () => {
     const [startDate, setStartDate] = useState(format(sDate, "yyyy-MM-dd'T'00:00:00-0700"))
     const [endDate, setEndDate] = useState(format(new Date(), "yyyy-MM-dd'T'23:59:00-0700"))
     const [eDate, setEDate] = useState(new Date())
+    const dispatch = useDispatch();
     const dispatch1 = useDispatch();
     const dispatch2 = useDispatch();
+    const dispatch3 = useDispatch();
     const paypalTransaction = useSelector((state) => state.paypalTransaction);
     const { loading, error, money} = paypalTransaction;
     
     const paypalBalance = useSelector((state) => state.paypalBalance);
     const { loading: loadingBalance, error: errorBlance, balance} = paypalBalance;
-    console.log('c',balance)
+
+    const orderList= useSelector((state) => state.orderList);
+    const { orders } = orderList;
+
+    const paypalRefund = useSelector((state) => state.paypalRefund);
+    const {
+        loading: loadingUpdate,
+        error: errorUpdate,
+        success: successRefund,
+    } = paypalRefund;
+    // console.log('c',balance)
     // GET with Axios
+    const [transaction_id, setTransaction_id]=useState(0)
     useEffect(() => {
+        if (successRefund){
+            dispatch({type: PAYPAL_REFUND_RESET});
+        }
+        // if(transaction_id!==0){
+        //     console.log(transaction_id)
+        //     dispatch(updateTransaction(transaction_id))
+        //     setTransaction_id(0);
+        // }
         dispatch1(getListTransaction(startDate,endDate));
         dispatch2(getBalance());
+        dispatch3(getAllOrders())
         
-   }, [dispatch1,dispatch2, startDate, endDate]);
+   }, [dispatch,dispatch1,dispatch2,dispatch3, startDate, endDate, successRefund]);
     const arr = [];
     const arr1 = [];
     const moneyIn = money&&money.reduce(function (result, item) {
         const a = item.transaction_info;
         let mn = Number(a.transaction_amount.value);
         let mnf = 0;
-        if(a.transaction_id!=='8H322824545486633'){
+        if(a.transaction_id!=='00C038196C7999707'){
             mnf = Number(a.fee_amount.value)
         }
         if(mn>0){
@@ -82,7 +106,7 @@ const PayPalTransaction = () => {
         const a = item.transaction_info;
         let mn = Number(a.transaction_amount.value);
         let mnf = 0;
-        if(a.transaction_id!=='8H322824545486633'){
+        if(a.transaction_id!=='00C038196C7999707'){
             // console.log(a)
             mnf = Number(a.fee_amount.value);
         }
@@ -103,6 +127,30 @@ const PayPalTransaction = () => {
         e.preventDefault();
         setIsOpenEnd(!isOpenEnd);
       };
+      for(let j in money){
+        money[j].transaction_info.status='0';
+        for(let i in orders){
+          if(money[j].transaction_info.transaction_id===orders[i].transactionCode&&orders[i].paymentStatus==="1"){
+            money[j].transaction_info.status='1';
+            money[j].transaction_info.order_id=orders[i].id;
+            break;
+          }
+        }
+      }
+      var today = new Date();
+      const handleRefund = (transaction_id, order_id) => {
+        dispatch(refundTransaction(transaction_id))
+        const orderInfo = {
+            orderId: order_id,
+            status: '0',
+            paymentStatus: '2',
+            modifiedDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()
+        }
+        if(successRefund){
+            dispatch1(updateOrder({orderInfo}))
+        }
+      }
+      console.log('a',money)
   return (
     <div className="e-panel cardcus" style={{width:"100%"}}>
     <div className="card-body">
@@ -132,7 +180,7 @@ const PayPalTransaction = () => {
                    </div>
                  
 
-                   <div class="row">
+                   <div class="row mb-40">
 
                        <div class="col-xl-6">
                            <div class="card">
@@ -143,7 +191,12 @@ const PayPalTransaction = () => {
                                    <div>
                                        <h5 class="font-16">PayPal Balance</h5>
                                    </div>
-                                   <h3 class="mt-4">${balance.value}</h3>
+                                   {loadingBalance ? (
+                                <Loading />
+                            ) : errorBlance ? (
+                                <Message variant="alert-danger">{errorBlance}</Message>
+                            ) : (
+                                   <h3 class="mt-4">${balance.value}</h3>)}
                                    {/* <div class="progress mt-4" style={{height: "4px"}}>
                                        <div class="progress-bar bg-primary" role="progressbar" style={{width: "75%"}} aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
                                    </div>
@@ -215,7 +268,7 @@ const PayPalTransaction = () => {
                         )}
                         </div> 
                         </div> 
-                   <div className="row">
+                   <div className="row" style={{marginTop: "10px"}}>
                        <div class="col-xl-6">
                            <div class="card">
                                <div class="card-heading p-4">
@@ -264,170 +317,7 @@ const PayPalTransaction = () => {
 
 
                        </div>
-                      
-                   {/* <div class="row">
-                       <div class="col-xl-8">
-                           <div class="card m-b-30">
-                               <div class="card-body">
-
-                                   <h4 class="mt-0 header-title mb-4">Area Chart</h4>
-
-                                   <div id="morris-area-example" class="morris-charts morris-chart-height"></div>
-
-                               </div>
-                           </div>
-                       </div>
-                     
-
-                       <div class="col-xl-4">
-                           <div class="card m-b-30">
-                               <div class="card-body">
-                                   <h4 class="mt-0 header-title mb-4">Donut Chart</h4>
-
-                                   <div id="morris-donut-example" class="morris-charts morris-chart-height"></div>
-
-                               </div>
-                           </div>
-                       </div>
-                       
-                   </div> */}
-                  
-
-                   {/* <div class="row">
-                       <div class="col-xl-4">
-                           <div class="card m-b-30">
-                               <div class="card-body">
-                                   <h4 class="mt-0 header-title mb-4">Friends Suggestions</h4>
-                                   <div class="friends-suggestions">
-                                       <a href="#" class="friends-suggestions-list">
-                                           <div class="border-bottom position-relative">
-                                               <div class="float-left mb-0 mr-3">
-                                                   <img src="assets/images/user-2.jpg" alt="" class="rounded-circle thumb-md" />
-                                               </div>
-                                               <div class="suggestion-icon float-right mt-2 pt-1">
-                                                   <i class="mdi mdi-plus"></i>
-                                               </div>
-
-                                               <div class="desc">
-                                                   <h5 class="font-14 mb-1 pt-2">Ralph Ramirez</h5>
-                                                   <p class="text-muted">3 Friend suggest</p>
-                                               </div>
-                                           </div>
-                                       </a>
-
-                                       <a href="#" class="friends-suggestions-list">
-                                           <div class="border-bottom position-relative">
-                                               <div class="float-left mb-0 mr-3">
-                                                   <img src="assets/images/user-3.jpg" alt="" class="rounded-circle thumb-md" />
-                                               </div>
-                                               <div class="suggestion-icon float-right mt-2 pt-1">
-                                                   <i class="mdi mdi-plus"></i>
-                                               </div>
-
-                                               <div class="desc">
-                                                   <h5 class="font-14 mb-1 pt-2">Patrick Beeler</h5>
-                                                   <p class="text-muted">17 Friend suggest</p>
-                                               </div>
-                                           </div>
-                                       </a>
-
-                                       <a href="#" class="friends-suggestions-list">
-                                           <div class="border-bottom position-relative">
-                                               <div class="float-left mb-0 mr-3">
-                                                   <img src="assets/images/user-4.jpg" alt="" class="rounded-circle thumb-md" />
-                                               </div>
-                                               <div class="suggestion-icon float-right mt-2 pt-1">
-                                                   <i class="mdi mdi-plus"></i>
-                                               </div>
-
-                                               <div class="desc">
-                                                   <h5 class="font-14 mb-1 pt-2">Victor Zamora</h5>
-                                                   <p class="text-muted">12 Friend suggest</p>
-                                               </div>
-                                           </div>
-                                       </a>
-
-                                       <a href="#" class="friends-suggestions-list">
-                                           <div class="border-bottom position-relative">
-                                               <div class="float-left mb-0 mr-3">
-                                                   <img src="assets/images/user-5.jpg" alt="" class="rounded-circle thumb-md" />
-                                               </div>
-                                               <div class="suggestion-icon float-right mt-2 pt-1">
-                                                   <i class="mdi mdi-plus"></i>
-                                               </div>
-
-                                               <div class="desc">
-                                                   <h5 class="font-14 mb-1 pt-2">Bryan Lacy</h5>
-                                                   <p class="text-muted">18 Friend suggest</p>
-                                               </div>
-                                           </div>
-                                       </a>
-
-                                       <a href="#" class="friends-suggestions-list">
-                                           <div class="position-relative">
-                                               <div class="float-left mb-0 mr-3">
-                                                   <img src="assets/images/user-6.jpg" alt="" class="rounded-circle thumb-md" />
-                                               </div>
-                                               <div class="suggestion-icon float-right mt-2 pt-1">
-                                                   <i class="mdi mdi-plus"></i>
-                                               </div>
-
-                                               <div class="desc">
-                                                   <h5 class="font-14 mb-1 pt-2">James Sorrells</h5>
-                                                   <p class="text-muted mb-1">6 Friend suggest</p>
-                                               </div>
-                                           </div>
-                                       </a>
-
-                                   </div>
-                               </div>
-                           </div>
-                       </div>
-
-                       <div class="col-xl-4">
-                           <div class="card m-b-30">
-                               <div class="card-body">
-                                   <h4 class="mt-0 header-title mb-4">Sales Analytics</h4>
-                                   <div id="morris-line-example" class="morris-chart" style={{height: "360px"}}></div>
-
-                               </div>
-                           </div>
-
-                       </div>
-
-                       <div class="col-xl-4">
-                           <div class="card m-b-30">
-                               <div class="card-body">
-
-                                   <h4 class="mt-0 header-title mb-4">Recent Activity</h4>
-                                   <ol class="activity-feed mb-0">
-                                       <li class="feed-item">
-                                           <div class="feed-item-list">
-                                               <p class="text-muted mb-1">Now</p>
-                                               <p class="font-15 mt-0 mb-0">Jassa magna Jassa, risus posted a new article: <b class="text-primary">Forget UX Rowland</b></p>
-                                           </div>
-                                       </li>
-                                       <li class="feed-item">
-                                           <p class="text-muted mb-1">Yesterday</p>
-                                           <p class="font-15 mt-0 mb-0">Jassa posted a new article: <b class="text-primary">Designer Alex</b></p>
-                                       </li>
-                                       <li class="feed-item">
-                                           <p class="text-muted mb-1">2:30PM</p>
-                                           <p class="font-15 mt-0 mb-0">Jassa, Jassa, Jassa Commented <b class="text-primary"> Developer Moreno</b></p>
-                                       </li>
-                                       <li class="feed-item pb-1">
-                                           <p class="text-muted mb-1">12:48 PM</p>
-                                           <p class="font-15 mt-0 mb-2">Jassa, Jassa Commented <b class="text-primary">UX Murphy</b></p>
-                                       </li>
-
-                                   </ol>
-
-                               </div>
-                           </div>
-                       </div>
-                   </div>
-
-                  */}
+                
                    
                </div>
               
@@ -436,7 +326,7 @@ const PayPalTransaction = () => {
 
            <div class="row">
                        <div class="col-xl-12">
-                           <div class="card m-b-30">
+                           <div class="card m-b-30" style={{margin: "10px 15px"}}>
                                <div class="card-body">
                                    <h4 class="mt-0 header-title mb-4 text-center">Active Transaction</h4>
                                   
@@ -451,22 +341,37 @@ const PayPalTransaction = () => {
                                     <thead align="center">
                                         <tr>
                                             {/* <th>Id</th> */}
+                                            <th>Transaction Code</th>
                                             <th>Transaction Amount</th>
                                             <th>Fee Amount</th>
                                             <th>Available Balance</th>
                                             <th>Ending Balance</th>
                                             <th>Type</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody  align="center">
-                                    { money && money.map((item,index) => (
+                                    { money && money.sort((a,b)=>(b.transaction_info.status-a.transaction_info.status)).map((item,index) => (
                                         <tr>
                                             {/* <td className="align-middle">{account.id}</td> */}
+                                            <td className="text-nowrap align-middle text-center">{item.transaction_info.transaction_id}</td>
                                             <td className="text-nowrap align-middle text-center">${item.transaction_info.transaction_amount.value}</td>
-                                            <td className="text-nowrap align-middle text-center">${item.transaction_info.transaction_id==='8H322824545486633'?0:item.transaction_info.fee_amount.value}</td>
+                                            <td className="text-nowrap align-middle text-center">${item.transaction_info.transaction_id==='00C038196C7999707'?0:item.transaction_info.fee_amount.value}</td>
                                             <td className="text-nowrap align-middle text-center">${item.transaction_info.available_balance.value}</td>
                                             <td className="text-nowrap align-middle text-center">${item.transaction_info.ending_balance.value}</td>
-                                            <td className="text-nowrap align-middle text-center">{item.transaction_info.transaction_id==='8H322824545486633'||item.transaction_info.protection_eligibility==='01'?'Payment':'Refund'}</td>
+                                            <td className="text-nowrap align-middle text-center">{item.transaction_info.transaction_id==='00C038196C7999707'||item.transaction_info.protection_eligibility==='01'?'Payment':'Refunded'}</td>
+                                            
+                                                <td className="text-center align-middle">
+                                                <div className="btn-group align-top">
+                                                    {item.transaction_info.status==='1'&&
+                                                    <button className="btn btn-sm btn-outline-secondary badge" type="button" onClick={()=>handleRefund(item.transaction_info.transaction_id,item.transaction_info.order_id)}> 
+                                                        Refund
+                                                    </button>
+                                                    ||<span>None</span>
+                                                    }
+                                                </div>
+                                            </td>
+                                            
                                         </tr>
                                     ))}
                                     </tbody>

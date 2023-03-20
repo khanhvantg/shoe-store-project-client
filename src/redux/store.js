@@ -77,7 +77,7 @@ import {
 import {
   paypalTransactionReducer,
   paypalBalanceReducer,
-  paypalUpdateReducer,
+  paypalRefundReducer,
 } from "./reducers/PayPalReducer";
 const cartItemsFromStorage = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems"))
@@ -154,7 +154,7 @@ const reducer = combineReducers({
   voucherUpdate: voucherUpdateReducer,
   //paypal
   paypalTransaction: paypalTransactionReducer,
-  paypalUpdate: paypalUpdateReducer,
+  paypalRefund: paypalRefundReducer,
   paypalBalance: paypalBalanceReducer,
 });
 const initialState = {
