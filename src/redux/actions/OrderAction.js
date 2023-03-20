@@ -116,7 +116,7 @@ try {
     toast("Cancel Order Successfull", {position: toast.POSITION.TOP_CENTER});
   }else if(data.status==="2"){
     toast("Cofirm Order Successfull", {position: toast.POSITION.TOP_CENTER});
-  }else {
+  }else if(data.paymentStatus!=='2') {
     toast("Delivery Order Complete", {position: toast.POSITION.TOP_CENTER});
   }
 } catch (error) {

@@ -130,11 +130,15 @@ const PayPalTransaction = () => {
       for(let j in money){
         money[j].transaction_info.status='0';
         for(let i in orders){
-          if(money[j].transaction_info.transaction_id===orders[i].transactionCode&&orders[i].paymentStatus==="1"){
-            money[j].transaction_info.status='1';
-            money[j].transaction_info.order_id=orders[i].id;
-            break;
-          }
+            if(money[j].transaction_info.transaction_id===orders[i].transactionCode&&orders[i].paymentStatus==='2'){
+                money[j].transaction_info.status='2';
+                break;
+            }
+            if(money[j].transaction_info.transaction_id===orders[i].transactionCode&&orders[i].paymentStatus==="1"){
+                money[j].transaction_info.status='1';
+                money[j].transaction_info.order_id=orders[i].id;
+                break;
+            }
         }
       }
       var today = new Date();
@@ -146,9 +150,7 @@ const PayPalTransaction = () => {
             paymentStatus: '2',
             modifiedDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()
         }
-        if(successRefund){
-            dispatch1(updateOrder({orderInfo}))
-        }
+        dispatch1(updateOrder({orderInfo}))
       }
       console.log('a',money)
   return (
@@ -352,7 +354,7 @@ const PayPalTransaction = () => {
                                     </thead>
                                     <tbody  align="center">
                                     { money && money.sort((a,b)=>(b.transaction_info.status-a.transaction_info.status)).map((item,index) => (
-                                        <tr>
+                                        <tr style={{backgroundColor: item.transaction_info.status==='2'&&"red", textDecorationLine: item.transaction_info.status==='2'&&"line-through"}}>
                                             {/* <td className="align-middle">{account.id}</td> */}
                                             <td className="text-nowrap align-middle text-center">{item.transaction_info.transaction_id}</td>
                                             <td className="text-nowrap align-middle text-center">${item.transaction_info.transaction_amount.value}</td>
