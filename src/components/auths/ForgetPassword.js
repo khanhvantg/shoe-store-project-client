@@ -10,23 +10,23 @@ import Input from '../checkValidate/Input';
 import {
     USER_REGISTER_RESET
 } from '../../redux/constants/Constants'
-const SignUp = () => {
+import { forgetPassword } from '../../redux/actions/AccountAction';
+const ForgetPassword = () => {
     const [form, setForm] = useState({
-        username: "",
-        password: "",
-        confirmPassword: ""
+        userName: "",
+        phone: "",
+        email: ""
       });
-    const [err, SetErr] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const userRegister = useSelector((state) => state.userRegister);
-    const { error, loading, userInfo } = userRegister;
+    const accountUpdate = useSelector((state) => state.accountUpdate);
+    const { error, loading, success } = accountUpdate;
     useEffect(() => {
-        if (userInfo) {
+        if (success) {
             navigate("/login");
         }
-    }, [userInfo, navigate, dispatch]);
+    }, [success, navigate]);
 
     const onInputValidate = (value, name) => {
         setErrorInput(prev => ({
@@ -36,19 +36,21 @@ const SignUp = () => {
         }
          
     const [errorInput, setErrorInput] = useState({
-        username: {
+        userName: {
             isReq: true,
             reqType: 'USERNAME',
             errorMsg: '',
             onValidateFunc: onInputValidate
         },
-        password: {
+        phone: {
             isReq: true,
+            reqType: 'PHONE',
             errorMsg: '',
             onValidateFunc: onInputValidate
         },
-        confirmPassword: {
+        email: {
             isReq: true,
+            reqType: 'EMAIL',
             errorMsg: '',
             onValidateFunc: onInputValidate
         }
@@ -78,12 +80,7 @@ const SignUp = () => {
     const handleSubmit = () => {
         const isValid = validateForm();
         if (isValid) {
-            if (form.password !== form.confirmPassword) {
-                dispatch({type: USER_REGISTER_RESET})
-            } else {
-                SetErr("");
-                dispatch(register({form}));
-            }
+            dispatch(forgetPassword({form}));
         }
     }
 
@@ -95,43 +92,43 @@ const SignUp = () => {
                     <div className="col-lg-6">
                     <div className="login-form border p-5 bg-white">
                         <div className="text-center">
-                        <h2 className="mb-2">Sign Up</h2>
-                        <p className="lead">Already have an account? <Link to="/login" style={{color: "blue"}}> Login now</Link></p>
+                        <h2 className="mb-2">Forget Password</h2>
+                        {/* <p className="lead">Already have an account? 
+                        <Link to="/login" style={{color: "blue"}}> Login now</Link>
+                        </p> */}
+                         
                         </div>
+                        <Link to="/login" style={{color: "blue"}}>Back?</Link>
                         <div className="form">
                             <Input
-                                name="username"
+                                name="userName"
                                 title="Username"
-                                value={form.username}
+                                value={form.userName}
                                 onChangeFunc={onInputChange}
-                                {...errorInput.username}
+                                {...errorInput.userName}
                                 />
                             <Input
-                                name="password"
-                                title="Password"
-                                type="password"
-                                value={form.password}
+                                name="phone"
+                                title="Phone"
+                                value={form.phone}
                                 onChangeFunc={onInputChange}
-                                {...errorInput.password}
+                                {...errorInput.phone}
                             />
                             <Input
-                                name="confirmPassword"
-                                title="Confirm Password"
-                                type="password"
-                                id={form.password}
-                                value={form.confirmPassword}
+                                name="email"
+                                title="Email"
+                                value={form.email}
                                 onChangeFunc={onInputChange}
-                                {...errorInput.confirmPassword}
+                                {...errorInput.email}
                             />
                             <div className="form-group">
-                                        <button onClick={handleSubmit} className="button-63 w-100">Signup</button>
+                                        <button onClick={handleSubmit} className="button-63 w-100">Update Password</button>
                                     </div>
                             {loading ? (
                                 <Loading />
-                                    ) : error || err ? (
-                                        <Message variant="alert-danger">{error || err}</Message>
-                                    ) : (
-                                        <></>
+                                    ) : error && (
+                                        <Message variant="alert-danger">{error}</Message>
+                                    
                                 )}
                         </div>
                     </div>
@@ -143,4 +140,4 @@ const SignUp = () => {
     )
 }
 
-export default SignUp
+export default ForgetPassword

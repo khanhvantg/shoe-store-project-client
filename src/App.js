@@ -33,14 +33,17 @@ import ManageVoucherScreen from './screen/ManageVoucherScreen';
 import Thanks from './components/check-out/Thanks';
 import PrivateRouteCheckOut from './PrivateRouteCheckOut';
 import ManagePayPalTransactionScreen from './screen/ManagePayPalTransactionScreen';
+import ForgetPassword from './components/auths/ForgetPassword';
 const App = () => {
   return (
     <div className="App" style={{backgroundColor: "white"}}>
         <ToastContainer/>
         <BrowserRouter>
           <Header />
+          <div className="main">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/test" element={<Home1 />} />
             <Route
               path="/profile"
               element={
@@ -65,6 +68,7 @@ const App = () => {
             <Route path="/order" element={<Order />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/forgetPassword" element={<ForgetPassword />} />
             <Route path="/manage/accounts" element={<ManageAccountsScreen/>}/>
             <Route path="/manage/paypal" element={<ManagePayPalTransactionScreen/>}/>
             <Route path="/manage/users" element={<ManageUserScreen/>}/>
@@ -76,6 +80,7 @@ const App = () => {
             <Route path="/manage/m-revenue" element={<ManageRevenueMonthScreen/>} />
             <Route path="/manage/d-revenue" element={<ManageRevenueDayScreen/>} />
           </Routes>
+          </div>
           <Footer/>
         </BrowserRouter>
     </div>

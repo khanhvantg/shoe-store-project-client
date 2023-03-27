@@ -100,4 +100,26 @@ export const getAccountById = (id) => async (dispatch) => {
       });
     }
   };
+
+  export const forgetPassword = ({form}) => async (dispatch) => {
+    try {
+      dispatch({ type: ACCOUNT_UPDATE_REQUEST });
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const { data } = await axios.put('/api/accounts/forgetPasword', form, config);
+      dispatch({ type: ACCOUNT_UPDATE_SUCCESS, payload: data });
+      toast(data.message, {position: toast.POSITION.TOP_CENTER});
+    } catch (error) {
+      dispatch({
+        type: ACCOUNT_UPDATE_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
   

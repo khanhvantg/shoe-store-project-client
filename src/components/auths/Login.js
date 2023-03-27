@@ -23,7 +23,7 @@ const Login = () => {
     useEffect(() => {
         if (userInfo) {
             if(userInfo.roles[0]==="ROLE_ADMIN" || userInfo.roles[0]==="ROLE_MODERATOR" || userInfo.roles[1]==="ROLE_ADMIN" || userInfo.roles[1]==="ROLE_MODERATOR"){
-                navigate("/manage/d-revenue");
+                navigate("/manage/paypal");
             } else {
                 if(userInfo.name===null){
                     navigate("/profile");
@@ -93,7 +93,7 @@ const Login = () => {
                     <div className="row justify-content-center">
                         <div className="col-lg-6">
                             <div className="login-form border p-5 bg-white">
-                                <div className="text-center heading">
+                                <div className="text-center">
                                     <h2 className="mb-2">Login</h2>
                                     <p className="lead">Don’t have an account? <Link to={{ pathname: "/signup" }} style={{color: "blue"}}>Create a free account</Link></p>
                                 </div>
@@ -101,6 +101,7 @@ const Login = () => {
                                     <Input
                                         name="username"
                                         title="Username"
+                                        id="login"
                                         value={form.username}
                                         onChangeFunc={onInputChange}
                                         {...errorInput.username}
@@ -110,11 +111,12 @@ const Login = () => {
                                         name="password"
                                         title="Password"
                                         type="password"
+                                        id="login"
                                         value={form.password}
                                         onChangeFunc={onInputChange}
                                         {...errorInput.password}
-                                        
                                     />
+                                    <Link to={{ pathname: "/forgetPassword" }} style={{color: "blue", marginTop: '-10px'}}>Forget Password ?</Link>
                                     {/* <span>
                                     
                                     <i className="fa fa-eye" aria-hidden="true" style={{position: "absolute",
@@ -123,7 +125,7 @@ const Login = () => {
                                             cursor: "pointer"}}></i>
                                 </span> */}
                                     <div className="text-center pt-1 mb-3 pb-1">
-                                            <button className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" onClick={handleSubmit}>Login</button>
+                                            <button className="button-63 w-100" onClick={handleSubmit}>Login</button>
                                         </div>
                                     {loading ? (
                                         <Loading />

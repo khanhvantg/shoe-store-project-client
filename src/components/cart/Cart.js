@@ -343,7 +343,9 @@ const Cart = () => {
                                         </span>
                                     </td>
                                     <td className="product-remove text-center" data-title="Remove">
-                                        <a onClick={()=>handleRemoveItem(item.id)} className="remove" aria-label="Remove this item" data-product_id="30" data-product_sku="">×</a>
+                                        <i className="tf-ion-android-delete" style={{cursor: "pointer", height: "20px"}} onClick={()=>handleRemoveItem(item.id)} ></i>
+{/* 
+                                        <a onClick={()=>handleRemoveItem(item.id)} className="remove" aria-label="Remove this item" data-product_id="30" data-product_sku="">×</a> */}
                                     </td>
                                 </tr>
                                 

@@ -1083,7 +1083,7 @@ a.text-primary:hover {
   color: #fff;
   position: absolute;
   top: 20px;
-  right: 0px;
+  left: 0px;
   padding: 5px 10px;
   text-align: center;
   font-size: 12px;

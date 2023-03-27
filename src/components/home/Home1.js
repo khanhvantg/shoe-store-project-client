@@ -341,7 +341,7 @@ const Home1 = () => {
                     <>
                     {index<4&&(
                 <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
-                <div class="product__item img-wrap">
+                <div class="product__item img-wrap product-wrap">
                     <div class="product__item__pic set-bg" style={{backgroundImage: `url(${product.images.sort((a, b) => (a.id-b.id))[0]?.link})`}}>
                         <span style={{backgroundColor: "gray"}} class="label">New</span>
                         {/* <ul class="product__hover">
@@ -382,6 +382,7 @@ const Home1 = () => {
             </div>
         </div>
     </section>
+    
     </div>
   )
 }

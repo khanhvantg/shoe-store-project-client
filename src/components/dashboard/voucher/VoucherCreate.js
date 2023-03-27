@@ -12,6 +12,7 @@ import Message from "../../loadingError/Message";
 import Input from '../../checkValidate/Input'
 import Radio from '../../checkValidate/Radio'
 import { creatVoucher, getAllVouchers } from "../../../redux/actions/VoucherAction";
+import LoadingCustom from "../../loadingError/LoadingCustom";
 
 const statusList = [
     { value: 1, label: "Active" },
@@ -148,6 +149,9 @@ const VoucherCreate = ({isShowing, hide}) => {
     if(!isShowing) return null;
     return (
         <>
+        {
+            loadingCreate&&<LoadingCustom content='Creating'/>
+        }
         <div className="modal-overlay"/>
         <div className="modal-wrapper" aria-modal aria-hidden tabIndex={-1} txtrole="dialog">
             <div className="modal-dialog modal-lg">

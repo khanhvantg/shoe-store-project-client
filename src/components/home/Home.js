@@ -7,6 +7,7 @@ import Loading from '../loadingError/Loading';
 import Message from "../loadingError/Message";
 import { createLineItem } from '../../redux/actions/WishlistAction'
 import { getProductBest } from "../../redux/actions/RevenueAction";
+import LoadingCustom from "../loadingError/LoadingCustom";
 const Home = () => {
     const [total, setTotal] = useState(0);
     const [amount, setAmount] = useState(1);
@@ -41,8 +42,21 @@ const Home = () => {
         dispatch(getProductBest({month}))
     }, []);
 
+    const [check,setCheck] = useState(0);
+    const handelBestSeller = () => {
+        setCheck(0);
+    }
+    const handelNewArray = () => {
+        setCheck(1);
+    }
+    console.log("b",productBests);
+    useEffect(() => {
+        dispatch(getAllProducts());
+        dispatch(getProductBest({month}))
+    }, []);
   return (
     <div className="home-container">
+        {loading&&<LoadingCustom content="Loading"/>}
         <div id="carouselExampleIndicators" className="carousel slide" data-ride="carousel">
             <ol className="carousel-indicators">
                 <li data-target="#carouselExampleIndicators" data-slide-to="0" className="active"></li>
@@ -51,13 +65,13 @@ const Home = () => {
             </ol>
             <div className="carousel-inner">
                 <div className="carousel-item active">
-                    <img src="assets/images/img/hero/hero-1.jpg" className="d-block w-100" alt="..."/>
+                    <img src="assets/images/slider-new-1.png" className="d-block w-100" alt="..."/>
                 </div>
                 {/* <div className="carousel-item">
                     <img src="assets/images/slideshow1-2.jpg" className="d-block w-100" alt="..."/>
                 </div> */}
                 <div className="carousel-item">
-                    <img src="assets/images/img/hero/hero-2.jpg" className="d-block w-100" alt="..."/>
+                    <img src="assets/images/slider-new-2.png" className="d-block w-100" alt="..."/>
                 </div>
             </div>
             <a className="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -85,7 +99,74 @@ const Home = () => {
                 </div>
             </div>
         </section>
-        <section className="section products-list">
+
+        <section class="product spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="filter__controls mt-4">
+                        <li class={check===0?" btn active":" btn"} onClick={handelBestSeller}>Best Sellers</li>
+                        <li class={check===1?" btn active":" btn"} onClick={handelNewArray}>New Arrivals</li>
+                        {/* <li data-filter=".hot-sales">Hot Sales</li> */}
+                    </ul>
+                </div>
+            </div>
+            <div class="row product__filter">
+                {check===0?proBest&&proBest.map((product, index)=>(
+                <>
+                {index<4&&(
+                <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
+                    <div class="product__item">
+                        {/* <div class="product__item__pic set-bg" style={{backgroundImage:`url(${product.images.sort((a, b) => (a.id-b.id))[0]?.link})`}}>
+                            <span class="label" style={{backgroundColor: "gray"}}>Best</span>
+                        </div> */}
+                        <span class="onsale">Best</span>
+                        <div class="img-wrap product-wrap"> 
+                        <Link to={{ pathname: `/product/${product.id}`}}>
+                            <img className="w-100 mb-2 border" src={product.images.sort((a, b) => (a.id-b.id))[0]?.link} />
+                        </Link>
+                    </div>
+                    
+                        <div class="product__item__text">
+                            <h6>{product.name}</h6>
+                            <Link to={`/product/${product.id}`} class="add-cart">View Detail</Link>
+                      
+                            <h5>${product.price}</h5>
+                        </div>
+                    </div>
+                </div>
+                )}
+                </>))
+                :
+                dataList&&dataList.sort((a, b) => (b.id-a.id)).map((product, index)=>(
+                    <>
+                    {index<4&&(
+                <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
+                    <div class="product__item">
+                    <div class="img-wrap product-wrap"> 
+                        <Link to={{ pathname: `/product/${product.id}`}}>
+                            <img className="w-100 mb-2 border" src={product.images.sort((a, b) => (a.id-b.id))[0]?.link} />
+                        </Link>
+                    </div> 
+                    <span class="onsale">New</span>
+                    <div class="product__item__text">
+                            <h6>{product.name}</h6>
+                            <Link to={`/product/${product.id}`} class="add-cart">View Detail</Link>
+                      
+                            <h5>${product.price}</h5>
+                        </div>
+                        </div>
+            </div>
+            )}
+            </>))
+            }
+
+            </div>
+        </div>
+    </section>
+    
+
+        {/* <section className="section products-list">
           <div className="container">
                 <div className="row">
                 <div className="col-lg-4 col-sm-12 col-md-12">
@@ -135,6 +216,7 @@ const Home = () => {
               </div>
             </div>
         </section>
+        */}
         <section className="features border-top">
             <div className="container">
                 <div className="row">

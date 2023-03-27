@@ -42,37 +42,33 @@ const ProductMain1 = () => {
         size: null
     })
     const [searchText, setSearchText] = useState("");
-    const handelSize = (e) => {
-        if(e.target.value!==filters.size){
-            setFilters(prev=>({...prev,size:e.target.value}));
-            setForm(prev=>({...prev,size:e.target.value}));
-        }else setFilters(prev=>({...prev,size:null}));
-    }
-
-    const [timer,setTimer]=useState(null);
-    const changePrice = (e) => {
-        // setFilters(prev=>({...prev, price: e.target.value!=='0'?e.target.value:null}))
-        if(e.target.value!==filters.price){
-            setFilters(prev=>({...prev,price:e.target.value!=='0'?e.target.value:null}));
-        }
-    }
     const productList = useSelector((state) => state.productList);
     const categoryDetail = useSelector((state) => state.categoryDetail);
     const { loading, error, products } = idCategory==="0" ? productList : categoryDetail;
     const dataList = products&&products.filter(item=>item.status==="1");
     const [data, setData] = useState([])
     console.log("data",products)
+    const [priceFilter,setPriceFilter]=useState(null)
     useEffect(() => {
         if(check1===0){
             dispatchCategory(getAllcategories());
             setCheck1(1);
         }
         if(idCategory==="0"){
-            clearTimeout(timer);
-            const newTimer = setTimeout(() => {
-                dispatchFilter(getProductFilter({filters}))
-            }, 1000);
-            setTimer(newTimer) 
+            // clearTimeout(timer);
+            // const newTimer = setTimeout(() => {
+               // dispatchFilter(getProductFilter({filters}))
+            // }, 1000);
+            // setTimer(newTimer) 
+            console.log('check',filters.price!==priceFilter)
+            if(filters.price!==priceFilter){
+                setPriceFilter(filters.price)
+                clearTimeout(timer);
+                const newTimer = setTimeout(() => {
+                    dispatchFilter(getProductFilter({filters}))
+                }, 1000);
+                setTimer(newTimer)
+            } else {dispatchFilter(getProductFilter({filters}));}
         } 
         else {
             dispatch(getCategoryById(idCategory));
@@ -81,6 +77,23 @@ const ProductMain1 = () => {
         setData([]);
     }, [idCategory, check1, filters.size, filters.price]);
 
+    const handelSize = (e) => {
+        if(e.target.value!==filters.size){
+            setFilters(prev=>({...prev,size:e.target.value}));
+            setForm(prev=>({...prev,size:e.target.value}));
+            if(e.target.value!==null)setIdCategory('0');
+        } else setFilters(prev=>({...prev,size:null}));
+    }
+
+    const [timer,setTimer]=useState(null);
+    const changePrice = (e) => {
+        // setFilters(prev=>({...prev, price: e.target.value!=='0'?e.target.value:null}))
+        if(e.target.value!==filters.price){
+            setFilters(prev=>({...prev,price:e.target.value!=='0'?e.target.value:null}));
+            if(e.target.value!==null)setIdCategory('0');
+        }
+    }
+    console.log(priceFilter)
     const itemInfo = {
         amount
     }
@@ -376,28 +389,30 @@ const ProductMain1 = () => {
                                     <>
                                     {product.status!=="0"&&(
                                     <div class="col-md-4">
-                                        <figure class="card card-product-grid product">
+                                        <figure class="product__item card card-product-grid product">
                                             <div class="img-wrap product-wrap"> 
-                                                {/* <span class="badge badge-danger"> NEW </span> */}
                                                 <Link to={{ pathname: `/product/${product.id}`}}>
-                                                    <img className="img-thumbnail w-100 mb-3 img-first" src={product.images.sort((a, b) => (a.id-b.id))[0]?.link} />
+                                                    <img className="border w-100 mb-2 img-first" src={product.images.sort((a, b) => (a.id-b.id))[0]?.link} />
                                                 </Link>
-                                                {/* <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a> */}
                                             </div> 
                                             {filters&&filters.size!==null&&
                                              <div className="product-hover-overlay">
                                                 <a className="circle" onClick={()=>handleAddToCart(product.id)}><i className="tf-ion-android-cart"></i></a>
                                             </div>}
-                                            <figcaption class="info-wrap">
+                                            {/* <figcaption class="info-wrap">
                                                 <div class="fix-height text-center">
                                                     <a href="#" class="title">{product.name}</a>
                                                     <div class="price-wrap mt-2">
                                                         <span class="price">${product.price}</span>
-                                                        {/* <del class="price-old">$ {product.price}</del> */}
                                                     </div>
                                                 </div>
                                                 <Link to={{ pathname: `/product/${product.id}`}} class="btn btn-block btn-primary">View Detail</Link>
-                                            </figcaption>
+                                            </figcaption> */}
+                                            <div class="product__item__text">
+                                                <h6>{product.name}</h6>
+                                                <Link to={`/product/${product.id}`} class="add-cart">View Detail</Link>
+                                                <h5>${product.price}</h5>
+                                            </div>
                                         </figure>
                                     </div>)}
                                     </>
@@ -408,6 +423,7 @@ const ProductMain1 = () => {
                                         <span >No Products Found To Display!</span>
                                     </div>}    
                             </div> )}
+       
         {/* <nav class="mt-4" aria-label="Page navigation sample">
           <ul class="pagination">
             <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>

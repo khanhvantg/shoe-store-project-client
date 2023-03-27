@@ -19,6 +19,8 @@ import { searchVoucher } from "../../redux/actions/VoucherAction";
 import Message from "../loadingError/Message";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { CLIENT_ID } from '../../config/Config'
+import LoadingCustom from "../loadingError/LoadingCustom";
+import './Voucher.css'
 const paymentList = [
     { value: "0", label: "At Store" },
     { value: "1", label: "PAYPAL" },
@@ -62,7 +64,7 @@ const Checkout = () => {
     const { success: succsesUpdate, error: errorUpdate, loading: loadingUpdate } = lineItemUpdate;
 
     const orderCreate = useSelector((state) => state.orderCreate);
-    const { success: succsesCreate } = orderCreate;
+    const { success: succsesCreate, loading: loadingCreate } = orderCreate;
 
     const voucherDetail = useSelector((state) => state.voucherDetail);
     const { success: successgetVoucher, error: errorVoucher, voucher } = voucherDetail;
@@ -241,6 +243,10 @@ console.log('k',form)
     };
 console.log(form.voucher);
     return (
+        <>
+        {
+            loadingCreate&&<LoadingCustom content='Creating'/>
+        }
         <div className="checkout-container">
             <section className="page-header">
             <div className="overly"></div> 	
@@ -303,20 +309,26 @@ console.log(form.voucher);
                                 </div>
                                 }
                                 </>||
-                                <div className="text-center" style={{backgroundColor: "#99FF66", borderRadius: "10px", width: "300px", height:"100px"}}>
+                                <div className="voucher text-center" 
+                                    // style={{WebkitMaskImage:"radial-gradient(circle at 10px, transparent 10px, red 10.5px)",
+                                    //         WebkitMaskPosition:"-10px", WebkitMaskSize: "100% 20px"
+                                    // }}
+                                //     style={{
+                                //         backgroundColor: "#99FF66", borderRadius: "10px", width: "300px", height:"100px"
+                                // }}
+                                >
                                 
                                 <li className="d-flex h-100">
-                                    <span className="" style={{borderRight: "dashed", width: "100px"}}>
+                                    <span className="" style={{ width: "100px"}}>
                                         <h6 className="font-weight-bold mt-4">Discount</h6>
                                         {Math.round(voucher.value*100)}%
                                     </span>
-                                    <span style={{width: "180px"}}>
-                                        <h6 className="font-weight-bold mt-4">Voucher</h6>
+                                    <span style={{width: "200px"}}>
+                                        <h6 className="font-weight-bold mt-4 text-center">Voucher</h6>
                                         {voucher.name}
                                     </span>
                                     <span style={{width: "20px"}}>
                                         <h6 className="font-weight-bold" style={{cursor: "pointer", color: "white", height: "20px"}} onClick={handleDeleteVoucher} >x</h6>
-                                        <div className="mt-10" style={{backgroundColor: "white", borderRadius: "40px", width: "40px", height:"40px"}}></div>
                                     </span>
                                 </li>
                                 </div> }
@@ -474,6 +486,7 @@ console.log(form.voucher);
                 </div>
             </div>
         </div>
+        </>
     )
 }
 export default Checkout;

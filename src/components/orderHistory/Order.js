@@ -11,6 +11,7 @@ import {
 import CofirmBox from "../cofirmBox/CofirmBox";
 import '../cofirmBox/CofirmBox.css'
 import Loading from "../loadingError/Loading";
+import LoadingCustom from "../loadingError/LoadingCustom";
 const Order = () => {
     const {isShowing, toggle, id} = useModal();
     const {isShowing:isShowConfirmBox, toggle:toggleConfirmBox, id: idOrder} = useModal();
@@ -43,6 +44,10 @@ const Order = () => {
         dispatch(updateOrder({orderInfo}));
     }
   return (
+    <>
+    {
+            loadingUpdate&&<LoadingCustom content='Canceling'/>
+        }
     <div className="checkout-container">
         <section className="cart shopping page-wrapper">
             <div className="container">
@@ -87,59 +92,59 @@ const Order = () => {
                                         {/* <td className="text-nowrap align-middle">{item.amountItem}</td> */}
                                         {item.paymentType === null || item.paymentType === "0" ? (
                                             <td className="text-nowrap align-middle" >
-                                                <span style={{backgroundColor:"green", color: "white", borderRadius: "6px", padding: "4px"}}>At Store</span>
+                                                <span className="status" style={{backgroundColor:"#00cf00",borderRadius:"5px", color: "white" , padding: "4px"}}>At Store</span>
                                             </td>
                                         ):item.paymentType ==="1" ?(
                                             <td className="text-nowrap align-middle" >
-                                                <span style={{backgroundColor:"green", color: "white", borderRadius: "6px", padding: "4px"}}>PayPal</span>
+                                                <span className="status" style={{backgroundColor:"#00cf00",borderRadius:"5px", color: "white" , padding: "4px"}}>PayPal</span>
                                             </td>
                                         ):(
                                             <td className="text-nowrap align-middle" >
-                                                <span style={{backgroundColor:"green", color: "white", borderRadius: "6px", padding: "4px"}}>COD</span>
+                                                <span className="status" style={{backgroundColor:"#00cf00",borderRadius:"5px", color: "white" , padding: "4px"}}>COD</span>
                                             </td>
                                         )}
                                     
                                         {(item.paymentStatus==="0"||item.paymentStatus===null)&&item.paymentType==="1"&&item.status!=="0" ? (
                                             <td className="text-nowrap align-middle" >
-                                                <span style={{backgroundColor:"green", color: "white", borderRadius: "6px", padding: "4px"}}>Paid</span>
+                                                <span className="status" style={{backgroundColor:"#00cf00",borderRadius:"5px", color: "white" , padding: "4px"}}>Paid</span>
                                             </td>
                                         ):(item.paymentStatus==="1"||item.paymentStatus===null)&&item.paymentType==="1"&&item.status==="0" ?(
                                             <td className="text-nowrap align-middle" >
-                                                <span style={{backgroundColor:"gold", color: "white", borderRadius: "6px", padding: "4px"}}>Refunding</span>
+                                                <span className="status" style={{backgroundColor:"gold",borderRadius:"5px", color: "white" , padding: "4px"}}>Refunding</span>
                                             </td>
                                         ):item.paymentStatus==="2"&&item.paymentType==="1" ?(
                                             <td className="text-nowrap align-middle" >
-                                                <span style={{backgroundColor:"blue", color: "white", borderRadius: "6px", padding: "4px"}}>Refunded</span>
+                                                <span className="status" style={{backgroundColor:"blue",borderRadius:"5px", color: "white" , padding: "4px"}}>Refunded</span>
                                             </td>
                                         ):item.status!=="0"&&item.status!=="3" ?(
                                             <td className="text-nowrap align-middle" >
-                                                <span style={{backgroundColor:"gold", color: "white", borderRadius: "6px", padding: "4px"}}>Paying</span>
+                                                <span className="status" style={{backgroundColor:"gold",borderRadius:"5px", color: "white" , padding: "4px"}}>Paying</span>
                                             </td>
                                         ):item.status ==="3" ? (
                                             <td className="text-nowrap align-middle" >
-                                                <span style={{backgroundColor:"green", color: "white", borderRadius: "6px", padding: "4px"}}>Paied</span>
+                                                <span className="status" style={{backgroundColor:"#00cf00",borderRadius:"5px", color: "white" , padding: "4px"}}>Paid</span>
                                             </td>
                                         ):(
                                             <td className="text-nowrap align-middle" >
-                                                <span style={{backgroundColor:"red", color: "white", borderRadius: "6px", padding: "4px"}}>Cancel</span>
+                                                <span className="status" style={{backgroundColor:"", color: "" , padding: "4px"}}>None</span>
                                             </td>
                                         )}
                                         
                                         {item.status ==="0" ? (
                                             <td className="text-nowrap align-middle" >
-                                                <span style={{backgroundColor:"red", color: "white", borderRadius: "6px", padding: "4px"}}>Cancelled</span>
+                                                <span className="status" style={{backgroundColor:"#d92600",borderRadius:"5px", color: "white" , padding: "4px"}}>Cancelled</span>
                                             </td>
                                         ):item.status ==="1" ?(
                                             <td className="text-nowrap align-middle" >
-                                                <span style={{backgroundColor:"gold", color: "white", borderRadius: "6px", padding: "4px"}}>Waiting</span>
+                                                <span className="status" style={{backgroundColor:"gold",borderRadius:"5px", color: "white" , padding: "4px"}}>Waiting</span>
                                             </td>
                                         ):item.status ==="2" ?(
                                             <td className="text-nowrap align-middle" >
-                                                <span style={{backgroundColor:"blue", color: "white", borderRadius: "6px", padding: "4px"}}>Shipping</span>
+                                                <span className="status" style={{backgroundColor:"blue",borderRadius:"5px", color: "white" , padding: "4px"}}>Shipping</span>
                                             </td>
                                         ):(
                                             <td className="text-nowrap align-middle" >
-                                                <span style={{backgroundColor:"green", color: "white", borderRadius: "6px", padding: "4px"}}>Completed</span>
+                                                <span className="status" style={{backgroundColor:"#00cf00",borderRadius:"5px", color: "white" , padding: "4px"}}>Completed</span>
                                             </td>
                                         )}
 
@@ -188,6 +193,7 @@ const Order = () => {
                // id={idOrder}
             />       
     </div>
+    </>
   )
 }
 

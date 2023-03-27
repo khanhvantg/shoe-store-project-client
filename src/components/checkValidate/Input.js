@@ -34,27 +34,43 @@ const getRegExp = (type) => {
 const validationHandler = (e, props) => {
   if (!props.onValidateFunc) return;
  
-  const { value, name } = e.target;
+  const { value, name, id } = e.target;
   let msg = null;
-
+  if (props.name==='confirmPassword'&&value!==id) {
+    msg = `Confirm Password Does Not Match Password`;
+  } else {
   if (!value && props.isReq) {
     msg = `Please Enter ${props.title}.`;
-  } else if (value && props.reqType && !getRegExp(props.reqType).test(value)) {
+  } else if (value && props.reqType && !getRegExp(props.reqType).test(value)&&id!="login") {
     msg = `Please Enter Valid ${props.title}.`;
-  } else if (value && props.type==='password' && value.trim().length<6) {
+  } else if (value && props.type==='password' && value.trim().length<6 && id!="login") {
     msg = `Please Enter 6 Or More Characters`;
-  }
+  }}
   props.onValidateFunc(msg, name);
 }
+
+// const validationPassword = (e, props) => {
+//   if (!props.onValidateFunc) return;
  
+//   const { value, name, valueOfPassword } = e.target;
+//   let msg = null;
+
+//   if (value === valueOfPassword ) {
+//     msg = `Password And Confirm Password Are Not Same`;
+//   }
+//   props.onValidateFunc(msg, name);
+// }
+
 const Input = props => {
  
   const inputProps = {
     name: props.name,
     type: props.type,
+    id: props.id,
     placeholder: props.placeholder || `Enter ${props.title}`,
     className: props.className,
-    value: props.value
+    value: props.value,
+
   }
   const [isShow, setIsShow ] = useState(false);
   const show = useCallback(() => {
@@ -67,11 +83,12 @@ const Input = props => {
       <div className="mb-4">
         <label className="form-label">{props.title}</label>
           <div style={{position: "relative"}}>
-            <input style={{background:"white"}}
+            <input style={{background:"white", borderRadius: "5px"}}
               {...inputProps}
               type={isShow ? 'text' : props.type }
-              onChange={e => props.onChangeFunc(e.target.value, e.target.name, e)}
-              onBlur={e => validationHandler(e, props)}
+              onChange={e => {props.onChangeFunc(e.target.value, e.target.name, e); validationHandler(e, props)} }
+              // onChange={e => props.onChangeFunc(e.target.value, e.target.name, e)}
+              // onBlur={e => validationHandler(e, props)}
             />
               <span className = "text-center"
                 onClick={show}
@@ -90,10 +107,11 @@ const Input = props => {
     :
     <div className="mb-4">
       <label className="form-label">{props.title}</label>
-      <input style={{background:"white"}}
+      <input style={{background:"white", borderRadius: "5px"}}
         {...inputProps}
-        onChange={e => props.onChangeFunc(e.target.value, e.target.name, e)}
-        onBlur={e => validationHandler(e, props)}
+        onChange={e => {props.onChangeFunc(e.target.value, e.target.name, e); validationHandler(e, props)} }
+        
+        // onBlur={e => validationHandler(e, props)}
       />
       {props.errorMsg && <span className="text-danger">{props.errorMsg === true ? `Please Enter ${props.title}.` : props.errorMsg}</span>}
     </div>
@@ -105,6 +123,7 @@ const Input = props => {
 Input.defaultProps = {
   type: 'text',
   name: '',
+  id:'',
   title: '',
   placeholder: '',
   className: 'form-control form-control-sm',
@@ -119,6 +138,7 @@ Input.defaultProps = {
 Input.propTypes = {
   type: PropTypes.string,
   name: PropTypes.string,
+  id: PropTypes.string,
   title: PropTypes.string,
   placeholder: PropTypes.string,
   className: PropTypes.string,

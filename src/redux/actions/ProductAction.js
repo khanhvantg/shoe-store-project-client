@@ -49,7 +49,7 @@ export const getAllProducts = () => async (dispatch) => {
 export const getProductFilter = ({filters}) => async (dispatch) => {
   try {
       dispatch({ type: PRODUCT_LIST_REQUEST });
-
+console.log(filters)
       const { data } = await axios.post('/api/products/filter', filters, {headers: authHeader()})
       dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
   } catch (error) {

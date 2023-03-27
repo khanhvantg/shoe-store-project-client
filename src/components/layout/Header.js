@@ -49,6 +49,7 @@ const Header = () => {
     }
     console.log("a",f)
     return (
+        <div className="header">
         <nav className="navbar navbar-expand-lg navbar-light bg-white w-100 navigation flex-row-reverse" id="navbar">
             <div className="" style={{width: "125px", paddingRight:"0px"}}>
                 <ul className="top-menu list-inline mb-0 d-lg-block" id="top-menu">
@@ -89,8 +90,8 @@ const Header = () => {
                                 <span className="total-price h6">$1799.00</span> */}
                             {lineItems&&lineItems.length>0&&
                                 <div className="text-center cart-buttons mt-3">
-                                    <Link to="/checkout" className="btn btn-primary btn-small fa-lg gradient-custom-2 mb-3">Check Out</Link>
-                                    <Link to="/cart" className="btn btn-primary btn-small fa-lg gradient-custom-2 mb-3">View Cart</Link>
+                                    <Link to="/checkout" className="btn btn-primary btn-small fa-lg gradient-custom-2 mb-3 mr-3">Check Out</Link>
+                                    <Link to="/cart" className="btn btn-primary btn-small fa-lg gradient-custom-2 mb-3 ml-3">View Cart</Link>
                                 </div>||<div className="text-center">
                                             <img className="w-100 h-100" src="/assets/images/empty-cart.jpg"/>
                                         </div>}
@@ -106,7 +107,7 @@ const Header = () => {
                                             color: "white",
                                             marginLeft:"-12px",
                                             borderRadius:"20px",
-                                            padding: "0px 5px"
+                                            padding: "0px 5px",
                                         }}>
                                         {amountItem}
                                     </span>
@@ -128,12 +129,13 @@ const Header = () => {
                         
                                 <div className="text-center cart-buttons mt-3">
                                     {   isAdmin?
-                                        <Link to="/manage/d-revenue" className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Manage</Link>
+                                        <Link to="/manage/paypal" className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Manage</Link>
                                         : userInfo ?
                                         <Link to="/profile" className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">View Profile</Link>
                                         : <></>
                                     }
-                                    { userInfo ? <Link to={{ pathname:"/login"}} onClick={logoutHandler} className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Logout</Link>:
+                                    { userInfo ? 
+                                        <Link to={{ pathname:"/login"}} onClick={logoutHandler} className="btn-block fa-lg gradient-custom-2 mb-3">Logout</Link>:
                                         <Link to={{ pathname:"/login"}} className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Login</Link>
                                     }
                                 </div>
@@ -185,7 +187,7 @@ const Header = () => {
                 </div>
             </div>
         </nav>
-    
+        </div>
     )
 }
 export default Header

@@ -11,35 +11,8 @@ import DatePicker from 'react-datepicker';
 import { format } from 'date-fns'
 import { getAllOrders, updateOrder } from "../../../redux/actions/OrderAction";
 import { PAYPAL_REFUND_RESET } from "../../../redux/constants/Constants";
+import LoadingCustom from "../../loadingError/LoadingCustom";
 const PayPalTransaction = () => {
-
-    // const username = 'AXap4VJ7Ie8T2UPEEQYQLoYR4Qt5t2dBw1Ql6yV5tIUjpQCG5fAThNZMg9dfWjOgGhJ5AklyEVDBKZKN';
-    // const password = 'EGtCQ99qjFLUAaKNrPLHE9e7vD1bwyVuXVeNXcZtBLLM3X3LU-N8GlkMDCt179F-jv9UG3aosF_Ep71L';
-    // const encodedBase64Token = base64_encode(`${username}:${password}`);
-    // const authorization = `Basic ${encodedBase64Token}`;
-    // const authHeader = () => {
-    //     return {  
-    //         'Content-Type': 'application/json',
-    //         //'Authorization': 'Bearer A21AAJ3-lFCgtoqsPB-XcMSswE3oQaBRLf2Qx26gEJ0znAjFTKQ9waTntIJwgIkSFF0Hrvyir6xlj6HEvnQRQs-KImcqNOw8w'
-    //         'Authorization': authorization,
-    //     };
-    //   }
-    // const data = axios({
-    //     url: 'https://api-m.sandbox.paypal.com/v2/payments/captures/9BK91862BP818311H/refund',
-    //     method: 'GET',
-    //     headers: {
-            // 'Accept': 'application/json',
-            // 'Content-Type': 'application/json',
-            // 'Authorization': authorization,
-    //     },
-    //     data: {}
-    // });
-    // const data = axios.get('/v1/reporting/balances', {headers: {'Accept': 'application/json',
-    //     'Content-Type': 'application/json',
-    //     'Authorization': authorization}})
-    //     console.log('b',data.catch().data)
-
-
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
     // const [balance, setBalance] = useState([]);
@@ -75,16 +48,14 @@ const PayPalTransaction = () => {
     useEffect(() => {
         if (successRefund){
             dispatch({type: PAYPAL_REFUND_RESET});
-        }
-        // if(transaction_id!==0){
-        //     console.log(transaction_id)
-        //     dispatch(updateTransaction(transaction_id))
-        //     setTransaction_id(0);
-        // }
-        dispatch1(getListTransaction(startDate,endDate));
-        dispatch2(getBalance());
-        dispatch3(getAllOrders())
-        
+            dispatch1(getListTransaction(startDate,endDate));
+            dispatch2(getBalance());
+            dispatch3(getAllOrders());
+        } else {
+            dispatch1(getListTransaction(startDate,endDate));
+            dispatch2(getBalance());
+            dispatch3(getAllOrders());
+        }   
    }, [dispatch,dispatch1,dispatch2,dispatch3, startDate, endDate, successRefund]);
     const arr = [];
     const arr1 = [];
@@ -131,7 +102,8 @@ const PayPalTransaction = () => {
         money[j].transaction_info.status='0';
         for(let i in orders){
             if(money[j].transaction_info.transaction_id===orders[i].transactionCode&&orders[i].paymentStatus==='2'){
-                money[j].transaction_info.status='2';
+                money[j].transaction_info.status='-1';
+                money[j].transaction_info.order_id=orders[i].id;
                 break;
             }
             if(money[j].transaction_info.transaction_id===orders[i].transactionCode&&orders[i].paymentStatus==="1"){
@@ -152,9 +124,14 @@ const PayPalTransaction = () => {
         }
         dispatch1(updateOrder({orderInfo}))
       }
-      console.log('a',money)
+      console.log('a',successRefund)
   return (
+    <>
+    {
+            loadingUpdate&&<LoadingCustom content='Refunding'/>
+        }
     <div className="e-panel cardcus" style={{width:"100%"}}>
+    
     <div className="card-body">
         {/* <div className="text-center card-title">
             <h3 className="mr-2">Accounts Manage</h3>
@@ -229,7 +206,7 @@ const PayPalTransaction = () => {
                    </div>
                    <div className="row">
                        
-                       <div className="col-xl-3 ">
+                       <div className="col-xl-3 mb-1">
                    <button className="btn btn-info" onClick={handleClickStart}>
                         Start Date: {format(sDate, "yyyy-MM-dd")}
                         <i>  </i>
@@ -271,7 +248,7 @@ const PayPalTransaction = () => {
                         </div> 
                         </div> 
                    <div className="row" style={{marginTop: "10px"}}>
-                       <div class="col-xl-6">
+                       <div class="col-xl-6 mb-1">
                            <div class="card">
                                <div class="card-heading p-4">
                                    <div class="mini-stat-icon float-right">
@@ -354,7 +331,7 @@ const PayPalTransaction = () => {
                                     </thead>
                                     <tbody  align="center">
                                     { money && money.sort((a,b)=>(b.transaction_info.status-a.transaction_info.status)).map((item,index) => (
-                                        <tr style={{backgroundColor: item.transaction_info.status==='2'&&"red", textDecorationLine: item.transaction_info.status==='2'&&"line-through"}}>
+                                        <tr style={{backgroundColor: item.transaction_info.status==='-1'&&"gray", textDecorationLine: item.transaction_info.status==='-1'&&"line-through"}}>
                                             {/* <td className="align-middle">{account.id}</td> */}
                                             <td className="text-nowrap align-middle text-center">{item.transaction_info.transaction_id}</td>
                                             <td className="text-nowrap align-middle text-center">${item.transaction_info.transaction_amount.value}</td>
@@ -393,7 +370,7 @@ const PayPalTransaction = () => {
        </div>
     </div>
 </div>
-
+</>
   )
 }
 

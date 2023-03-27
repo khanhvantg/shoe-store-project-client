@@ -89,3 +89,7 @@
         pointer-events: none;
         margin-top: 0.3rem;
     }
+
+    .main {
+        margin-top: 85px;
+    }

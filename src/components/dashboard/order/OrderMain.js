@@ -98,6 +98,7 @@ const OrderMain = () => {
                                         <th>Delivery Date</th>
                                         <th>Total Price</th>
                                         <th>Payment Type</th>
+                                        <th>Payment Status</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
@@ -115,20 +116,45 @@ const OrderMain = () => {
                                             <td className="text-nowrap align-middle">
                                             </td>
                                         }
-                                        {/* <td className="text-nowrap align-middle">{item.amountItem}</td> */}
                                         <td className="text-nowrap align-middle">${item.orderPrice!=null?item.orderPrice:item.totalPrice}</td>
-
-                                        {item.paymentType === null || item.paymentType === 0 ? (
+                                        {/* <td className="text-nowrap align-middle">{item.amountItem}</td> */}
+                                        {item.paymentType === null || item.paymentType === "0" ? (
                                             <td className="text-nowrap align-middle" >
-                                                <span style={{backgroundColor:"green", color: "white", borderRadius: "6px", padding: "4px"}}>At Store</span>
+                                                <span className="status" style={{backgroundColor:"#00cf00", borderRadius:"5px", color: "white" , padding: "4px"}}>At Store</span>
                                             </td>
                                         ):item.paymentType ==="1" ?(
                                             <td className="text-nowrap align-middle" >
-                                                <span style={{backgroundColor:"green", color: "white", borderRadius: "6px", padding: "4px"}}>PayPal</span>
+                                                <span className="status" style={{backgroundColor:"#00cf00",borderRadius:"5px", color: "white" , padding: "4px"}}>PayPal</span>
                                             </td>
                                         ):(
                                             <td className="text-nowrap align-middle" >
-                                                <span style={{backgroundColor:"green", color: "white", borderRadius: "6px", padding: "4px"}}>COD</span>
+                                                <span className="status" style={{backgroundColor:"#00cf00",borderRadius:"5px", color: "white" , padding: "4px"}}>COD</span>
+                                            </td>
+                                        )}
+                                    
+                                        {(item.paymentStatus==="0"||item.paymentStatus===null)&&item.paymentType==="1"&&item.status!=="0" ? (
+                                            <td className="text-nowrap align-middle" >
+                                                <span className="status" style={{backgroundColor:"#00cf00",borderRadius:"5px", color: "white" , padding: "4px"}}>Paid</span>
+                                            </td>
+                                        ):(item.paymentStatus==="1"||item.paymentStatus===null)&&item.paymentType==="1"&&item.status==="0" ?(
+                                            <td className="text-nowrap align-middle" >
+                                                <span className="status" style={{backgroundColor:"gold",borderRadius:"5px", color: "white" , padding: "4px"}}>Refunding</span>
+                                            </td>
+                                        ):item.paymentStatus==="2"&&item.paymentType==="1" ?(
+                                            <td className="text-nowrap align-middle" >
+                                                <span className="status" style={{backgroundColor:"blue",borderRadius:"5px", color: "white" , padding: "4px"}}>Refunded</span>
+                                            </td>
+                                        ):item.status!=="0"&&item.status!=="3" ?(
+                                            <td className="text-nowrap align-middle" >
+                                                <span className="status" style={{backgroundColor:"gold",borderRadius:"5px", color: "white" , padding: "4px"}}>Paying</span>
+                                            </td>
+                                        ):item.status ==="3" ? (
+                                            <td className="text-nowrap align-middle" >
+                                                <span className="status" style={{backgroundColor:"#00cf00",borderRadius:"5px", color: "white" , padding: "4px"}}>Paid</span>
+                                            </td>
+                                        ):(
+                                            <td className="text-nowrap align-middle" >
+                                                <span className="status" style={{backgroundColor:"", color: "" , padding: "4px"}}>None</span>
                                             </td>
                                         )}
                                         {/* {item.status ==="0" ? (

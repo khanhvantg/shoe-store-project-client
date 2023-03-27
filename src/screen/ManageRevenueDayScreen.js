@@ -189,7 +189,7 @@ const ManageRevenueDateScreen = () => {
     <div className="wrapper1">
         <Layout/>
 
-          <div className={isTable?"e-panel cardcus":"e-panel cardcus parent"} style={{width:"100%"}}>
+          <div className={isTable?"e-panel cardcus":"e-panel cardcus parent"} style={{width:"100%", height: "auto"}}>
                 <div className="card-body">
                 
                     <div className="e-table">
@@ -200,6 +200,7 @@ const ManageRevenueDateScreen = () => {
                         </button>
                         <br></br>
                         <br></br>
+                        
                         <button className="btn btn-info" onClick={handleClick}>
                           Date: {startDate.getDate()}/{startDate.getMonth()+1}/{startDate.getFullYear()}
                           <i>  </i>

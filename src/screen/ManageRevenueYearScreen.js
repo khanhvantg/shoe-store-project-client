@@ -131,7 +131,6 @@ const ManageRevenueYearScreen = () => {
                         <button className="btn btn-info mr-2" onClick={handleClick1}>
                             {!isTable?"Table":"Graphic"}
                           </button>
-                          
                           <button className="btn btn-info" type="button" onClick={handleClick}>
                             Year: {startDate.getFullYear()}
                             <i>  </i>

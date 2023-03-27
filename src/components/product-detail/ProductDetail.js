@@ -238,7 +238,7 @@ const ProductDetail = () => {
                                             {item.amount>0&&
                                             <label class="checkbox-btn mr-1">
                                                 <input type="radio" className="hide" name="myfilter_radio" value={item.size} onClick={(e)=>setForm(prev => ({...prev,size: e.target.value}))} />
-                                                <span class={form.size===item.size?"btn btn-light active":"btn btn-light"} >{item.size} UK</span>
+                                                <span style={{width:"72px"}} class={form.size===item.size?"btn btn-light active":"btn btn-light"} >{item.size} UK</span>
                                             </label>
                                             }
                                             </>
