@@ -66,7 +66,7 @@ export const getAccountById = (id) => async (dispatch) => {
       const { data } = await axios.put(`/api/accounts/${form.accountId}/mod`, form, {headers: authHeader()});
       dispatch({ type: ACCOUNT_UPDATE_SUCCESS, payload: data });
       dispatch({ type: ACCOUNT_DETAIL_SUCCESS, payload: data});
-      toast("Update Account Successfull", {position: toast.POSITION.TOP_CENTER});
+      toast("Update Account Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
     } catch (error) {
       dispatch({
         type: ACCOUNT_UPDATE_FAIL,
@@ -88,7 +88,7 @@ export const getAccountById = (id) => async (dispatch) => {
       const { data } = await axios.put(`/api/accounts/${userInfo.id}`, formChangePassword , {headers: authHeader()});
       dispatch({ type: ACCOUNT_UPDATE_SUCCESS, payload: data });
       dispatch({ type: ACCOUNT_DETAIL_SUCCESS, payload: data});
-      toast("Update Account Successfull", {position: toast.POSITION.TOP_CENTER});
+      toast("Update Account Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
 
     } catch (error) {
       dispatch({
@@ -111,7 +111,7 @@ export const getAccountById = (id) => async (dispatch) => {
       };
       const { data } = await axios.put('/api/accounts/forgetPasword', form, config);
       dispatch({ type: ACCOUNT_UPDATE_SUCCESS, payload: data });
-      toast(data.message, {position: toast.POSITION.TOP_CENTER});
+      toast(data.message, {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
     } catch (error) {
       dispatch({
         type: ACCOUNT_UPDATE_FAIL,

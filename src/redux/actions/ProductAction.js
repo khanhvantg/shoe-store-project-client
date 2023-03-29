@@ -67,7 +67,7 @@ try {
   dispatch({ type: PRODUCT_CREATE_REQUEST });
   const { data } = await axios.post(`/api/category/${form.category}/products`, form, {headers: authHeader()});
   dispatch({ type: PRODUCT_CREATE_SUCCESS, payload: data });
-  toast("Create Product Successfull", {position: toast.POSITION.TOP_CENTER});
+  toast("Create Product Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
 } catch (error) {
   dispatch({
     type: PRODUCT_CREATE_FAIL,
@@ -76,7 +76,7 @@ try {
         ? error.response.data.message
         : error.message,
   });
-  toast(`${error.response.data.message}`, {position: toast.POSITION.TOP_CENTER});
+  toast(`${error.response.data.message}`, {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
 }
 };
 
@@ -106,7 +106,7 @@ try {
 
   dispatch({ type: PRODUCT_UPDATE_SUCCESS, payload: data });
   dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data});
-  toast("Update Product Successfull", {position: toast.POSITION.TOP_CENTER});
+  toast("Update Product Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
 } catch (error) {
   dispatch({
     type: PRODUCT_UPDATE_FAIL,
@@ -115,6 +115,6 @@ try {
         ? error.response.data.message
         : error.message,
   });
-  toast(`${error.response.data.message}`, {position: toast.POSITION.TOP_CENTER});
+  toast(`${error.response.data.message}`, {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
 }
 };

@@ -205,7 +205,7 @@ const VoucherCreate = ({isShowing, hide}) => {
                                             </div>
                                 </div>
                                 <div className="col text-center px-xl-3">
-                                    <button className="btn btn-primary btn-block" type="submit" onClick={submitHandler}>Save</button>
+                                    <button className="button-33" type="submit" onClick={submitHandler}>Save</button>
                                 </div>
                             </div>
                         </div>

@@ -642,9 +642,9 @@ a.text-primary:hover {
   position: relative;
 }
 
-.top-menu li a {
+/* .top-menu li a {
   color: #000;
-}
+} */
 
 .top-menu li a i {
   width: 35px;

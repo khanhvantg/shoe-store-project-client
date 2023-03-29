@@ -167,7 +167,7 @@ const ProductMain1 = () => {
         const handleAddToCart = (id) => {
             if(userInfo&&userInfo) {
                 dispatchItem(createLineItem({form,productId:id}))
-            } else  toast("Please Login To Buy Shoes", {position: toast.POSITION.TOP_CENTER});
+            } else  toast("Please Login To Buy Shoes", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
         }
     return (
         <div>
@@ -392,7 +392,7 @@ const ProductMain1 = () => {
                                         <figure class="product__item card card-product-grid product">
                                             <div class="img-wrap product-wrap"> 
                                                 <Link to={{ pathname: `/product/${product.id}`}}>
-                                                    <img className="border w-100 mb-2 img-first" src={product.images.sort((a, b) => (a.id-b.id))[0]?.link} />
+                                                    <img className="box-shadow border w-100 mb-2 img-first" src={product.images.sort((a, b) => (a.id-b.id))[0]?.link} />
                                                 </Link>
                                             </div> 
                                             {filters&&filters.size!==null&&

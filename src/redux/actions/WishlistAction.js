@@ -39,7 +39,7 @@ try {
   const { data } = await axios.post(`/api/wishList/${userInfo.id}/lineItems/${productId}`, form, {headers: authHeader()});
   dispatch({ type: LINE_ITEM_CREATE_SUCCESS, payload: data });
   dispatch(getWishListById());
-  toast("Add To Cart Successfull", {position: toast.POSITION.TOP_CENTER});
+  toast("Add To Cart Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
 } catch (error) {
   dispatch({
     type: LINE_ITEM_CREATE_FAIL,
@@ -49,8 +49,8 @@ try {
         : error.message,
   });
   if(form.size===''){
-    toast('Please Select Size Of Shoe', {position: toast.POSITION.TOP_CENTER});
-  } else toast(`${error.response.data.message}`, {position: toast.POSITION.TOP_CENTER});
+    toast('Please Select Size Of Shoe', {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
+  } else toast(`${error.response.data.message}`, {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
 }
 };
 
@@ -81,7 +81,7 @@ try {
 
   dispatch({ type: LINE_ITEM_REMOVE_SUCCESS, payload: data });
   dispatch(getWishListById());
-  toast("Remove Item Successfull", {position: toast.POSITION.TOP_CENTER});
+  toast("Remove Item Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
 } catch (error) {
   dispatch({
     type: LINE_ITEM_UPDATE_FAIL,
@@ -101,7 +101,7 @@ export const clearWishList = () => async (dispatch, getState) => {
   
     dispatch({ type: LINE_ITEM_DELETE_SUCCESS, payload: data });
     dispatch(getWishListById());
-    toast("Clear WishList Successfull", {position: toast.POSITION.TOP_CENTER});
+    toast("Clear WishList Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
   } catch (error) {
     dispatch({
       type: LINE_ITEM_UPDATE_FAIL,
@@ -122,7 +122,7 @@ try {
 
   dispatch({ type: LINE_ITEM_UPDATE_SUCCESS, payload: data });
   dispatch({ type: LINE_ITEM_DETAILS_SUCCESS, payload: data});
-  toast(`Update Amount ${itemInfo.name} Successfull`, {position: toast.POSITION.TOP_CENTER});
+  toast(`Update Amount ${itemInfo.name} Successfull`, {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
 } catch (error) {
   dispatch({
     type: LINE_ITEM_UPDATE_FAIL,
@@ -131,6 +131,6 @@ try {
         ? error.response.data.message
         : error.message,
   });
-  toast(`${error.response.data.message}`, {position: toast.POSITION.TOP_CENTER});
+  toast(`${error.response.data.message}`, {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
 }
 };

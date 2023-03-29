@@ -74,7 +74,7 @@ export const getBalance = () => async (dispatch) => {
       dispatch({ type: PAYPAL_REFUND_REQUEST });
       const { data } = await axios.post(`/v2/payments/captures/${transaction_id}/refund`, {}, {headers: authHeader()});
       dispatch({ type: PAYPAL_REFUND_SUCCESS, payload: data });
-      toast("Refunded Successfull", {position: toast.POSITION.TOP_CENTER});
+      toast("Refunded Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
     } catch (error) {
       dispatch({
         type: PAYPAL_REFUND_FAIL,
@@ -94,7 +94,7 @@ export const getBalance = () => async (dispatch) => {
 //       const { data } = await axios.put(`/api/accounts/${userInfo.id}`, formChangePassword , {headers: authHeader()});
 //       dispatch({ type: PAYPAL_UPDATE_SUCCESS, payload: data });
 //       dispatch({ type: PAYPAL_DETAIL_SUCCESS, payload: data});
-//       toast("Update Account Successfull", {position: toast.POSITION.TOP_CENTER});
+//       toast("Update Account Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
 
 //     } catch (error) {
 //       dispatch({

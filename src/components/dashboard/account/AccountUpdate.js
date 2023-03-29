@@ -221,8 +221,8 @@ const AccountUpdate = ({isShowing, hide, id}) => {
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <div className="col d-flex justify-content-end">
-                                            <button className="btn btn-primary" type="submit" onClick={()=>{submitHandler()}}>Save Changes</button>
+                                        <div className="col text-center">
+                                            <button className="button-33" type="submit" onClick={()=>{submitHandler()}}>Save Changes</button>
                                         </div>
                                     </div>
                                 </div>)}

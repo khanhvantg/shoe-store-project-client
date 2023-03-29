@@ -52,7 +52,7 @@ export const createCommentByProductId = ({formComment}) => async (dispatch, getS
     dispatch({ type: COMMENT_CREATE_SUCCESS, payload: data });
     // const {list} = dispatch(getAllComments({id}));
     // dispatch({ type: COMMENT_LIST_SUCCESS, payload: list});
-    toast("Create Comment Successfull", {position: toast.POSITION.TOP_CENTER});
+    toast("Create Comment Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
   } catch (error) {
     dispatch({
       type: COMMENT_CREATE_FAIL,
@@ -61,7 +61,7 @@ export const createCommentByProductId = ({formComment}) => async (dispatch, getS
           ? error.response.data.message
           : error.message,
     });
-    //toast(`${error.response.data.message}`, {position: toast.POSITION.TOP_CENTER});
+    //toast(`${error.response.data.message}`, {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
   }
 };
 
@@ -93,7 +93,7 @@ export const updateComment = ({formComment}) => async (dispatch, getState) => {
 
     // const {list} = dispatch(getAllComments({id}));
     //dispatch({ type: COMMENT_UPDATE_SUCCESS, payload: list });
-    toast("Update Comment Successfull", {position: toast.POSITION.TOP_CENTER});
+    toast("Update Comment Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
   } catch (error) {
     dispatch({
       type: COMMENT_UPDATE_FAIL,
@@ -113,7 +113,7 @@ export const deleteComment = (id) => async (dispatch, getState) => {
 
     // const {list} = dispatch(getAllComments({id}));
     //dispatch({ type: COMMENT_UPDATE_SUCCESS, payload: list });
-    toast("Delete Comment Successfull", {position: toast.POSITION.TOP_CENTER});
+    toast("Delete Comment Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
   } catch (error) {
     dispatch({
       type: COMMENT_UPDATE_FAIL,

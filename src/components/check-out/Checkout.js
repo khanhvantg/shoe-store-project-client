@@ -443,22 +443,26 @@ console.log(form.voucher);
                             </div>
                         
                         </div>
-                        {form.paymentType==="1"?
-                            <PayPalScriptProvider options={{ "client-id": CLIENT_ID }}>
+                    
+                            <div className="form">
+                            <div className="col text-center px-xl-3">
+
+                            {form.paymentType==="1"?
+                                <PayPalScriptProvider options={{ "client-id": CLIENT_ID }}>
                                 <PayPalButtons
                                     style={{ layout: "horizontal" }}
                                     createOrder={createOrders}
                                     onApprove={onApprove}
                                     forceReRender={[form.voucher,form.feeShip]}
                                 />
-                            </PayPalScriptProvider>
-                            :<div className="col text-center px-xl-3">
+                            </PayPalScriptProvider>:
                                 <button 
                                     onClick={()=>setSuccessPayPal(true)}
-                                    className="btn btn-primary btn-block"
+                                    className="button-33" style={{width: "300px"}}
                                 >Order</button>
+                            }  
                             </div>
-                        }
+                            </div>
                         </div>
                     </div>
         

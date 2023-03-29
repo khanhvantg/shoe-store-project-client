@@ -81,6 +81,10 @@ const Header = () => {
                                         <span>${item.product.price} = </span>
                                         <span>${item.total}</span>
                                     </div>
+                                    <div className="cart-price">
+                                        <span>Size: {item.size}UK</span>
+                                        
+                                    </div>
                                 </div>
                                 <a className="remove circle" onClick={()=>handleRemoveItem(item.id)}><i className="tf-ion-close"></i></a>
                             </div>
@@ -90,8 +94,8 @@ const Header = () => {
                                 <span className="total-price h6">$1799.00</span> */}
                             {lineItems&&lineItems.length>0&&
                                 <div className="text-center cart-buttons mt-3">
-                                    <Link to="/checkout" className="btn btn-primary btn-small fa-lg gradient-custom-2 mb-3 mr-3">Check Out</Link>
-                                    <Link to="/cart" className="btn btn-primary btn-small fa-lg gradient-custom-2 mb-3 ml-3">View Cart</Link>
+                                    <Link to="/checkout" className="button-24 mr-1">Check Out</Link>
+                                    <Link to="/cart" className="button-24 ml-1">View Cart</Link>
                                 </div>||<div className="text-center">
                                             <img className="w-100 h-100" src="/assets/images/empty-cart.jpg"/>
                                         </div>}
@@ -129,14 +133,15 @@ const Header = () => {
                         
                                 <div className="text-center cart-buttons mt-3">
                                     {   isAdmin?
-                                        <Link to="/manage/paypal" className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Manage</Link>
+                                        <Link to="/manage/paypal" className="button-24 mr-3">Manage</Link>
                                         : userInfo ?
-                                        <Link to="/profile" className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">View Profile</Link>
+                                        <Link to="/profile" className="button-24 mr-3">Profile</Link>
                                         : <></>
                                     }
                                     { userInfo ? 
-                                        <Link to={{ pathname:"/login"}} onClick={logoutHandler} className="btn-block fa-lg gradient-custom-2 mb-3">Logout</Link>:
-                                        <Link to={{ pathname:"/login"}} className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Login</Link>
+                                        <Link to={{ pathname:"/login"}} onClick={logoutHandler} className="button-24 ml-3">Logout</Link>
+                                        :
+                                        <Link to={{ pathname:"/login"}} className="button-24">Login</Link>
                                     }
                                 </div>
                             </div>

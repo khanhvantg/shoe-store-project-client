@@ -17,7 +17,7 @@ export const login = ({form}) => async (dispatch) => {
     const { data } = await axios.post("/api/auth/signin", form);
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
     localStorage.setItem("userInfo", JSON.stringify(data));
-    toast("Login Successfull", {position: toast.POSITION.TOP_CENTER});
+    toast("Login Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,
@@ -32,7 +32,7 @@ export const login = ({form}) => async (dispatch) => {
 export const logout = () => async (dispatch,navigate) => {
   dispatch({ type: USER_LOGOUT });
   const { data } = await axios.post("/api/auth/signout");
-  toast(data.message, {position: toast.POSITION.TOP_CENTER});
+  toast(data.message, {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
   localStorage.removeItem("userInfo");
 };
 
@@ -46,7 +46,7 @@ export const register = ({form}) => async (dispatch) => {
     };
     const { data } = await axios.post("/api/auth/signup", form)
     dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
-    toast("Signup Successfull", {position: toast.POSITION.TOP_CENTER});
+    toast("Signup Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
   } catch (error) {
     dispatch({
       type: USER_REGISTER_FAIL,

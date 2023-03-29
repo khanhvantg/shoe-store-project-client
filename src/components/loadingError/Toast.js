@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 const Toast = (message) => {
 
   const show = () => {
-    toast(message, {position: toast.POSITION.TOP_CENTER});
+    toast(message, {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
   }
   return (
     <>

@@ -49,7 +49,7 @@ export const createSizeByProductId = ({id,form}) => async (dispatch) => {
     dispatch({ type: SIZE_CREATE_SUCCESS, payload: data });
     const {list} = dispatch(getAllSizes({id}));
     dispatch({ type: SIZE_LIST_SUCCESS, payload: list});
-    toast("Create Size Successfull", {position: toast.POSITION.TOP_CENTER});
+    toast("Create Size Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
   } catch (error) {
     dispatch({
       type: SIZE_CREATE_FAIL,
@@ -58,7 +58,7 @@ export const createSizeByProductId = ({id,form}) => async (dispatch) => {
           ? error.response.data.message
           : error.message,
     });
-    toast(`${error.response.data.message}`, {position: toast.POSITION.TOP_CENTER});
+    toast(`${error.response.data.message}`, {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
   }
 };
 
@@ -90,7 +90,7 @@ export const updateSize = ({form}) => async (dispatch, getState) => {
 
     // const {list} = dispatch(getAllSizes({id}));
     //dispatch({ type: SIZE_UPDATE_SUCCESS, payload: list });
-    toast("Update Size Successfull", {position: toast.POSITION.TOP_CENTER});
+    toast("Update Size Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
   } catch (error) {
     dispatch({
       type: SIZE_UPDATE_FAIL,
@@ -110,7 +110,7 @@ export const deleteSize = ({idSize}) => async (dispatch, getState) => {
 
     // const {list} = dispatch(getAllSizes({id}));
     //dispatch({ type: SIZE_UPDATE_SUCCESS, payload: list });
-    toast("Delete Size Successfull", {position: toast.POSITION.TOP_CENTER});
+    toast("Delete Size Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
   } catch (error) {
     dispatch({
       type: SIZE_UPDATE_FAIL,

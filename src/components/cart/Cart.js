@@ -13,6 +13,7 @@ import './Cart.scss'
 import {toast} from 'react-toastify';
 import Checkbox from '../checkValidate/Checkbox';
 import Loading from "../loadingError/Loading";
+import LoadingCustom from "../loadingError/LoadingCustom";
 const Cart = () => {
     const [pos, setPos]=useState();
     const [timer,setTimer]=useState(null);
@@ -86,7 +87,7 @@ const Cart = () => {
             name:'',
         }
         if(e.target.value < 0 ){
-            toast(e.target.value + " Is InValid", {position: toast.POSITION.TOP_CENTER});
+            toast(e.target.value + " Is InValid", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
             const newArray = amounts.map((item, i) => {
                 if (index === i) {
                     return { ...item, [e.target.name]: valueCurrent };
@@ -145,7 +146,7 @@ const Cart = () => {
             name:'',
         }
         if(e.target.value < 1 ){
-            toast("Amount Is InValid", {position: toast.POSITION.TOP_CENTER});
+            toast("Amount Is InValid", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
         } else {
         const newArray = amounts.map((item, i) => {
             let v = Number(e.target.value)-1;

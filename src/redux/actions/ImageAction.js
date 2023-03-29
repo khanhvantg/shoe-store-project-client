@@ -49,7 +49,7 @@ export const createImageByProductId = ({id,image}) => async (dispatch) => {
     dispatch({ type: IMAGE_CREATE_SUCCESS, payload: data });
     const {list} = dispatch(getAllImages({id}));
     dispatch({ type: IMAGE_LIST_SUCCESS, payload: list});
-    toast("Create Image Successfull", {position: toast.POSITION.TOP_CENTER});
+    toast("Create Image Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
   } catch (error) {
     dispatch({
       type: IMAGE_CREATE_FAIL,
@@ -89,7 +89,7 @@ export const updateImage = ({id,imageId,image}) => async (dispatch, getState) =>
 
     const {list} = dispatch(getAllImages({id}));
     dispatch({ type: IMAGE_UPDATE_SUCCESS, payload: list });
-    toast("Update Image Successfull", {position: toast.POSITION.TOP_CENTER});
+    toast("Update Image Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
   } catch (error) {
     dispatch({
       type: IMAGE_UPDATE_FAIL,

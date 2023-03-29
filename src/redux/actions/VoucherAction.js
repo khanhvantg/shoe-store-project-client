@@ -70,7 +70,7 @@ export const creatVoucher = ({form}) => async (dispatch) => {
     }
     const { data } = await axios.post("/api/voucher", formRq, {headers: authHeader()});
     dispatch({ type: VOUCHER_CREATE_SUCCESS, payload: data });
-    toast("Create Voucher Successfull", {position: toast.POSITION.TOP_CENTER});
+    toast("Create Voucher Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
   } catch (error) {
     dispatch({
       type: VOUCHER_CREATE_FAIL,
@@ -117,7 +117,7 @@ export const updateVoucher = ({form}) => async (dispatch, getState) => {
     const { data } = await axios.put(`/api/voucher/${form.voucherId}`, formRq, {headers: authHeader()});
     dispatch({ type: VOUCHER_UPDATE_SUCCESS, payload: data });
     dispatch({ type: VOUCHER_DETAILS_SUCCESS, payload: data});
-    toast("Update Voucher Successfull", {position: toast.POSITION.TOP_CENTER});
+    toast("Update Voucher Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
   } catch (error) {
     dispatch({
       type: VOUCHER_UPDATE_FAIL,
@@ -138,7 +138,7 @@ export const deleteVoucher = ({idVoucher}) => async (dispatch, getState) => {
   
       // const {list} = dispatch(getAllSizes({id}));
       //dispatch({ type: SIZE_UPDATE_SUCCESS, payload: list });
-      toast("Delete Voucher Successfull", {position: toast.POSITION.TOP_CENTER});
+      toast("Delete Voucher Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
     } catch (error) {
       dispatch({
         type: VOUCHER_UPDATE_FAIL,

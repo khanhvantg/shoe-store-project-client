@@ -60,7 +60,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
       const { data } = await axios.put(`/api/users/${form.userId}/mod`, form, {headers : authHeader()});
       dispatch({ type: USER_UPDATE_PROFILE_SUCCESS, payload: data });
       dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
-      toast("Update Profile Successfull", {position: toast.POSITION.TOP_CENTER});
+      toast("Update Profile Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
     } catch (error) {
       dispatch({
         type: USER_UPDATE_PROFILE_FAIL,
@@ -83,7 +83,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
       //dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
     //   localStorage.setItem("userInfo", JSON.stringify(data));
     dispatch(getUserDetails(userInfo.id));
-    toast("Update Profile Successfull", {position: toast.POSITION.TOP_CENTER});
+    toast("Update Profile Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
     } catch (error) {
       dispatch({
         type: USER_UPDATE_PROFILE_FAIL,

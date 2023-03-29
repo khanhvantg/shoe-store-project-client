@@ -194,7 +194,7 @@ const ProfileScreen = () => {
 
     
   return (
-      <div className="container rounded bg-white mt-5">
+      <div className="container rounded bg-white mt-100">
         <div className="row">
             <div className="col-md-4 border-right">
                 <div className="d-flex flex-column align-items-center text-center p-3 py-5">
@@ -204,14 +204,14 @@ const ProfileScreen = () => {
                     <span>{form.address}</span></div>
                     <button className="btn btn-primary btn-block" type="submit" onClick={()=>setHide(!hide)}>Change Password</button>
                         { hide ? (
-                        <div className="form">
-                        <div className="row">
-                            <div className="col">
-                                    <div className="col">
+                        
+                        <div className="form mb-5">
+                            <div className="login-form">
                                         <Input
                                             name="currentPassword"
                                             title="Current Password"
                                             type="password"
+                                            id="login"
                                             value={formChangePassword.currentPassword}
                                             onChangeFunc={onInputChange}
                                             {...errorInput.currentPassword}
@@ -224,22 +224,20 @@ const ProfileScreen = () => {
                                             onChangeFunc={onInputChange}
                                             {...errorInput.newPassword}
                                         />
-                                        </div>
-                                    </div>
-                                </div> 
+                                </div>
                     
                         
                         {loadingUpdateAccount ? (
                             <Loading />
                                 ) : (errorUpdateAccount) ? (
-                                    <div className="col text-center px-xl-3">
+                                    <div className="button-33">
                                         <Message variant="alert-danger">{errorUpdateAccount}</Message>
                                         <button className="btn btn-success btn-block" onClick={handleSubmit}>Save Changes</button>
                                     
                                     </div>
                                 ) : (
                         <div className="col text-center px-xl-3">
-                            <button className="btn btn-success btn-block" onClick={handleSubmit}>Save Changes</button>
+                            <button className="button-33" onClick={handleSubmit}>Save Changes</button>
                         </div>)}
 
                     </div>):(<></>)}
@@ -315,7 +313,7 @@ const ProfileScreen = () => {
                                 </div> 
                         </div>
                         <div className="col text-center px-xl-3" style={{padding: "0 0 10 0"}}>
-                            <button className="btn btn-primary btn-block" type="submit" onClick={submitHandler}>Save Changes</button>
+                            <button className="button-33" type="submit" onClick={submitHandler}>Save Changes</button>
                         </div>
                     </div>
                     )}

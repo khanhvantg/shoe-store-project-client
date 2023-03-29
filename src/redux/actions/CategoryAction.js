@@ -49,7 +49,7 @@ export const creatCategory = ({form}) => async (dispatch) => {
     dispatch({ type: CATEGORY_CREATE_REQUEST });
     const { data } = await axios.post("/api/category", form, {headers: authHeader()});
     dispatch({ type: CATEGORY_CREATE_SUCCESS, payload: data });
-    toast("Create Category Successfull", {position: toast.POSITION.TOP_CENTER});
+    toast("Create Category Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
   } catch (error) {
     dispatch({
       type: CATEGORY_CREATE_FAIL,
@@ -90,7 +90,7 @@ export const updateCategory = ({form}) => async (dispatch, getState) => {
     const { data } = await axios.put(`/api/category/${form.categoryId}`, form, {headers: authHeader()});
     dispatch({ type: CATEGORY_UPDATE_SUCCESS, payload: data });
     dispatch({ type: CATEGORY_DETAILS_SUCCESS, payload: data});
-    toast("Update Category Successfull", {position: toast.POSITION.TOP_CENTER});
+    toast("Update Category Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
   } catch (error) {
     dispatch({
       type: CATEGORY_UPDATE_FAIL,

@@ -6,6 +6,7 @@
 .filter__controls {
 	text-align: center;
 	margin-bottom: 45px;
+	padding-right: 40px;
 }
 
 .filter__controls li {
@@ -14,7 +15,7 @@
 	font-weight: 700;
 	list-style: none;
 	display: inline-block;
-	margin-right: 88px;
+	/* margin-right: 88px; */
 	cursor: pointer;
 }
 

@@ -123,7 +123,7 @@ const Home = () => {
                         <span class="onsale">Best</span>
                         <div class="img-wrap product-wrap"> 
                         <Link to={{ pathname: `/product/${product.id}`}}>
-                            <img className="w-100 mb-2 border" src={product.images.sort((a, b) => (a.id-b.id))[0]?.link} />
+                            <img className="box-shadow w-100 mb-2 border" src={product.images.sort((a, b) => (a.id-b.id))[0]?.link} />
                         </Link>
                     </div>
                     
@@ -145,7 +145,7 @@ const Home = () => {
                     <div class="product__item">
                     <div class="img-wrap product-wrap"> 
                         <Link to={{ pathname: `/product/${product.id}`}}>
-                            <img className="w-100 mb-2 border" src={product.images.sort((a, b) => (a.id-b.id))[0]?.link} />
+                            <img className="box-shadow w-100 mb-2 border" src={product.images.sort((a, b) => (a.id-b.id))[0]?.link} />
                         </Link>
                     </div> 
                     <span class="onsale">New</span>

@@ -114,13 +114,13 @@ const ProductDetail = () => {
             if (form.amount>0&&Number.isInteger(Number(form.amount))){
                 dispatchItem(createLineItem({form,productId:id}))
             } else {
-                toast("Amount Is InValid", {position: toast.POSITION.TOP_CENTER});
+                toast("Amount Is InValid", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
                 setForm(prev => ({
                     ...prev,
                     amount: 1
                 }));
             }
-        } else  toast("Please Login To Buy Shoes", {position: toast.POSITION.TOP_CENTER});
+        } else  toast("Please Login To Buy Shoes", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
     }
     const CommentChange = (e) => {
         setFormComment(prev => ({
@@ -131,7 +131,7 @@ const ProductDetail = () => {
     const handleComment = () => {
         if(userInfo)
             dispatch(createCommentByProductId({formComment}));
-        else toast("Please Login To Comment", {position: toast.POSITION.TOP_CENTER});
+        else toast("Please Login To Comment", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
     }
 
     const handleEdit = (item) => {

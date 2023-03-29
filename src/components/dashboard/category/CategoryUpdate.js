@@ -196,7 +196,7 @@ const CategoryUpdate = ({isShowing, hide, id}) => {
                                     </div> 
                                 </div>
                                 <div className="col text-center px-xl-3">
-                                    <button className="btn btn-primary btn-block" type="submit" onClick={()=>{submitHandler();}}>Save Changes</button>
+                                    <button className="button-33" type="submit" onClick={()=>{submitHandler();}}>Save Changes</button>
                                 </div>
                             </div>)}
                         </div>
