@@ -2,11 +2,12 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { login } from "../../redux/actions/AuthAction";
+import { login, stopLogin } from "../../redux/actions/AuthAction";
 import Loading from '../loadingError/Loading';
 import Message from "../loadingError/Message";
 import Input from '../checkValidate/Input';
 import { getUserDetails } from '../../redux/actions/UserAction';
+import { RESET_LOGIN } from '../../redux/constants/Constants';
 const Login = () => {
     const [form, setForm] = useState({
         username: "",
@@ -21,6 +22,7 @@ const Login = () => {
     const userDetail = useSelector((state) => state.userDetail);
     const { user } = userDetail;
     useEffect(() => {
+        // window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
         if (userInfo) {
             if(userInfo.roles[0]==="ROLE_ADMIN" || userInfo.roles[0]==="ROLE_MODERATOR" || userInfo.roles[1]==="ROLE_ADMIN" || userInfo.roles[1]==="ROLE_MODERATOR"){
                 navigate("/manage/paypal");

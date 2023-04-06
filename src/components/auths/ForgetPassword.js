@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-import { register, l } from "../../redux/actions/AuthAction";
+import { register, stopLogin } from "../../redux/actions/AuthAction";
 import Loading from '../loadingError/Loading';
 import Message from "../loadingError/Message";
 import Input from '../checkValidate/Input';
@@ -23,10 +23,12 @@ const ForgetPassword = () => {
     const accountUpdate = useSelector((state) => state.accountUpdate);
     const { error, loading, success } = accountUpdate;
     useEffect(() => {
+        // window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+        dispatch(stopLogin());
         if (success) {
             navigate("/login");
         }
-    }, [success, navigate]);
+    }, [success, navigate, dispatch]);
 
     const onInputValidate = (value, name) => {
         setErrorInput(prev => ({

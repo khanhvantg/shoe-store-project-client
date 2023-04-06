@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-import { register, l } from "../../redux/actions/AuthAction";
+import { register, stopLogin } from "../../redux/actions/AuthAction";
 import Loading from '../loadingError/Loading';
 import Message from "../loadingError/Message";
 import Input from '../checkValidate/Input';
@@ -23,9 +23,11 @@ const SignUp = () => {
     const userRegister = useSelector((state) => state.userRegister);
     const { error, loading, userInfo } = userRegister;
     useEffect(() => {
+        // window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
         if (userInfo) {
             navigate("/login");
         }
+        dispatch(stopLogin());
     }, [userInfo, navigate, dispatch]);
 
     const onInputValidate = (value, name) => {

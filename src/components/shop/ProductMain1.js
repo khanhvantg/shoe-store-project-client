@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllProducts, getProductFilter} from '../../redux/actions/ProductAction';
+import { getAllProducts, getProductFilter, getProductPageable} from '../../redux/actions/ProductAction';
 import { getAllcategories, getCategoryById, stopGetCategory } from '../../redux/actions/CategoryAction'
 import { Link } from "react-router-dom";
 import Loading from '../loadingError/Loading';
@@ -11,6 +11,10 @@ const ProductMain1 = () => {
     const [form,setForm]=useState({
         amount: 1,
         size: '',
+    })
+    const [formPage,setFormPage]=useState({
+        page: 0,
+        size: 4,
     })
     const [total, setTotal] = useState(0);
     const [amount, setAmount] = useState(1);
@@ -47,10 +51,10 @@ const ProductMain1 = () => {
     const { loading, error, products } = idCategory==="0" ? productList : categoryDetail;
     const dataList = products&&products.filter(item=>item.status==="1");
     const [data, setData] = useState([])
-    console.log("data",products)
-    const [priceFilter,setPriceFilter]=useState(null)
+    const [priceFilter,setPriceFilter]=useState(0)
     useEffect(() => {
         if(check1===0){
+            // window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
             dispatchCategory(getAllcategories());
             setCheck1(1);
         }
@@ -60,40 +64,81 @@ const ProductMain1 = () => {
                // dispatchFilter(getProductFilter({filters}))
             // }, 1000);
             // setTimer(newTimer) 
-            console.log('check',filters.price!==priceFilter)
-            if(filters.price!==priceFilter){
-                setPriceFilter(filters.price)
-                clearTimeout(timer);
-                const newTimer = setTimeout(() => {
-                    dispatchFilter(getProductFilter({filters}))
-                }, 1000);
-                setTimer(newTimer)
-            } else {dispatchFilter(getProductFilter({filters}));}
+            if (filters.price===null&&filters.size===null){
+                dispatchFilter(getProductPageable({formPage}))
+            //} 
+            // else if(filters.price!==priceFilter){
+            //     setPriceFilter(filters.price)
+            //     clearTimeout(timer);
+            //     const newTimer = setTimeout(() => {
+            //         dispatchFilter(getProductFilter({filters}))
+            //     }, 1000);
+            //     setTimer(newTimer)
+            } else {
+                // dispatchFilter(getProductFilter({filters}));
+                dispatchFilter(getProductFilter({filters}))
+                // clearTimeout(timer);
+                // const newTimer = setTimeout(() => {
+                    
+                // }, 2500);
+                // setTimer(newTimer)
+            }
         } 
         else {
             dispatch(getCategoryById(idCategory));
         }
         setSearchText("")
         setData([]);
-    }, [idCategory, check1, filters.size, filters.price]);
-
+    }, [idCategory, check1, filters.size, filters.price, formPage.page]);
     const handelSize = (e) => {
         if(e.target.value!==filters.size){
             setFilters(prev=>({...prev,size:e.target.value}));
             setForm(prev=>({...prev,size:e.target.value}));
+            // setFormPage(prev=>({...prev, page: null}))
             if(e.target.value!==null)setIdCategory('0');
-        } else setFilters(prev=>({...prev,size:null}));
+            setFormPage(prev=> ({...prev, page: null}))
+        } else {
+            setFilters(prev=>({...prev,size:null}));
+            if(filters.price===null||filters.price==='0') setFormPage(prev=> ({...prev, page: 0}));
+        }
     }
 
     const [timer,setTimer]=useState(null);
-    const changePrice = (e) => {
-        // setFilters(prev=>({...prev, price: e.target.value!=='0'?e.target.value:null}))
-        if(e.target.value!==filters.price){
-            setFilters(prev=>({...prev,price:e.target.value!=='0'?e.target.value:null}));
-            if(e.target.value!==null)setIdCategory('0');
+    const changePrice = (value) => {
+        if(value==='0'){
+            clearTimeout(timer);
+            const newTimer = setTimeout(() => {
+                setFilters(prev=>({...prev, price:null}));
+            }, 1000);
+            setTimer(newTimer);
+            if(filters.size===null) setFormPage(prev=> ({...prev, page: 0}));
+        } else {
+            clearTimeout(timer);
+            const newTimer = setTimeout(() => {
+                setFilters(prev=>({...prev, price:value}));
+            }, 1000);
+            setTimer(newTimer);
         }
+        // setFilters(prev=>({...prev, price: e.target.value!=='0'?e.target.value:null}))
+        // // console.log('c',e.target.value!=='0')
+        //     clearTimeout(timer);
+        //     const newTimer = setTimeout(() => {
+        //         if(e.target.value!=='0'){
+        //             setFilters(prev=>({...prev, price: e.target.value}));
+        //             setFormPage(prev=>({...prev, page: null}))
+        //     // if(filters.size===null) setFormPage(prev=>({...prev,page:0}));
+        //     // if(e.target.value!==null)setIdCategory('0');
+        //     // if(e.target.value==='0'&&filters.size===null) setFormPage(prev=> ({...prev, page: 0}))
+        //     // else setFormPage(prev=> ({...prev, page: null}))
+        //         } else {
+        //             setFilters(prev=>({...prev, price:null}));
+        //             if(filters.size===null) setFormPage(prev=> ({...prev, page: 0}));
+        //         }
+        //     }, 1000);
+        //     setTimer(newTimer);
+        
     }
-    console.log(priceFilter)
+    
     const itemInfo = {
         amount
     }
@@ -284,8 +329,8 @@ const ProductMain1 = () => {
                                     </header>
                                     <div class="filter-content collapse show" id="collapse_3">
                                         <div class="card-body">
-                                            <input type="range" value={filters.price===null?0:filters.price} class="custom-range" min="0" max="1000" onChange={changePrice}/>
-                                            <span>${filters.price===null?0:filters.price}</span>
+                                            <input type='range' value={priceFilter} class="custom-range" min={0} max={1000} onChange={e=>{changePrice(e.target.value);setPriceFilter(e.target.value)}}/>
+                                            <span>${priceFilter}</span>
                                             {/* <div class="form-row">
                                             <div class="form-group col-md-6">
                                             <label>$0</label>
@@ -318,7 +363,7 @@ const ProductMain1 = () => {
                                             
                                         ))}
                                             {filters.size!==null&&(<label class="checkbox-btn mr-2">
-                                                <input type="radio" className="hide" name="myfilter_radio" onClick={()=>setFilters(prev => ({...prev,size: null}))}/>
+                                                <input type="radio" className="hide" name="myfilter_radio" onClick={ ()=>{setFilters(prev => ({...prev,size: null})); setFormPage(prev => ({...prev,page: 0}))}}/>
                                                 <span class="btn btn-danger" style={{width:"67px"}}>X</span>
                                             </label>)}
                                     </div>
@@ -424,15 +469,17 @@ const ProductMain1 = () => {
                                     </div>}    
                             </div> )}
        
-        {/* <nav class="mt-4" aria-label="Page navigation sample">
-          <ul class="pagination">
-            <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-          </ul>
-        </nav> */}
+                    {(filters.price===null&&filters.size===null)&&
+                    <nav class="mt-4" aria-label="Page navigation sample">
+                    <ul class="pagination">
+                        {/* <li class="page-item disabled"><a class="page-link"></a></li> */}
+                        <li class={formPage.page===0?"page-item active":"page-item"} onClick={()=>setFormPage(prev=>({...prev, page: 0}))}><a class="page-link">1</a></li>
+                        <li class={formPage.page===1?"page-item active":"page-item"} onClick={()=>setFormPage(prev=>({...prev, page: 1}))}><a class="page-link">2</a></li>
+                        <li class={formPage.page===2?"page-item active":"page-item"} onClick={()=>setFormPage(prev=>({...prev, page: 2}))}><a class="page-link">3</a></li>
+                        <li class={formPage.page===3?"page-item active":"page-item"} onClick={()=>setFormPage(prev=>({...prev, page: 3}))}><a class="page-link">4</a></li>
+                        {/* <li class="page-item"><a class="page-link">Next</a></li> */}
+                    </ul>
+                    </nav>}
                         </main>
                     </div>
                 </div> 

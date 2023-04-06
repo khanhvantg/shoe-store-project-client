@@ -74,7 +74,7 @@ export const getBalance = () => async (dispatch) => {
       dispatch({ type: PAYPAL_REFUND_REQUEST });
       const { data } = await axios.post(`/v2/payments/captures/${transaction_id}/refund`, {}, {headers: authHeader()});
       dispatch({ type: PAYPAL_REFUND_SUCCESS, payload: data });
-      toast("Refunded Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
+      toast("Refunded Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 15000});
     } catch (error) {
       dispatch({
         type: PAYPAL_REFUND_FAIL,

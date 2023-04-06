@@ -88,7 +88,7 @@ const Input = props => {
               type={isShow ? 'text' : props.type }
               onChange={e => {props.onChangeFunc(e.target.value, e.target.name, e); validationHandler(e, props)} }
               // onChange={e => props.onChangeFunc(e.target.value, e.target.name, e)}
-              // onBlur={e => validationHandler(e, props)}
+              onBlur={e => validationHandler(e, props)}
             />
               <span className = "text-center"
                 onClick={show}
@@ -111,7 +111,7 @@ const Input = props => {
         {...inputProps}
         onChange={e => {props.onChangeFunc(e.target.value, e.target.name, e); validationHandler(e, props)} }
         
-        // onBlur={e => validationHandler(e, props)}
+        onBlur={e => validationHandler(e, props)}
       />
       {props.errorMsg && <span className="text-danger">{props.errorMsg === true ? `Please Enter ${props.title}.` : props.errorMsg}</span>}
     </div>

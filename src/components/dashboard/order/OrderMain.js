@@ -120,7 +120,7 @@ const OrderMain = () => {
                                         {/* <td className="text-nowrap align-middle">{item.amountItem}</td> */}
                                         {item.paymentType === null || item.paymentType === "0" ? (
                                             <td className="text-nowrap align-middle" >
-                                                <span className="status" style={{backgroundColor:"#00cf00", borderRadius:"5px", color: "white" , padding: "4px"}}>At Store</span>
+                                                <span className="status" style={{backgroundColor:"#00cf00", borderRadius:"5px", color: "white" , padding: "4px"}}>COD</span>
                                             </td>
                                         ):item.paymentType ==="1" ?(
                                             <td className="text-nowrap align-middle" >

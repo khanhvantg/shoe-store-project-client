@@ -273,7 +273,7 @@ const ProductDetail = () => {
                     </div>
                     <div className="col-md-1"/>
                 </div>)}
-                <div className="row d-flex justify-content-center mt-100 mb-100">
+                <div className="row d-flex justify-content-center mt-100 mb-100" style={{border :"double"}}>
                     <div className="col-lg-12">
                         <div className="card">
 

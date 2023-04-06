@@ -6,7 +6,7 @@ const ManageVoucherScreen = () => {
   return (
     <div className="wrapper1">
             <Layout/>
-            <div className="e-panel cardcus"  style={{width:"100%", border: ""}}>
+            <div className="e-panel cardcus"  style={{width:"100%"}}>
                 <VoucherMain/>
             </div>
         </div>

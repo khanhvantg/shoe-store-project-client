@@ -1,5 +1,6 @@
 import axios from "./axios";
 import {
+  RESET_LOGIN,
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
@@ -27,6 +28,11 @@ export const login = ({form}) => async (dispatch) => {
           : error.message,
     });
   }
+};
+
+export const stopLogin = () => async (dispatch) => {
+  //dispatch({ type: VOUCHER_DETAILS_REQUEST });
+  dispatch({ type: RESET_LOGIN});
 };
 
 export const logout = () => async (dispatch,navigate) => {

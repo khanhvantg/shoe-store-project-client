@@ -49,7 +49,7 @@ const Header = () => {
     }
     console.log("a",f)
     return (
-        <div className="header">
+        <div className="header box-shadow">
         <nav className="navbar navbar-expand-lg navbar-light bg-white w-100 navigation flex-row-reverse" id="navbar">
             <div className="" style={{width: "125px", paddingRight:"0px"}}>
                 <ul className="top-menu list-inline mb-0 d-lg-block" id="top-menu">

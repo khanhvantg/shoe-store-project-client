@@ -22,9 +22,9 @@ import { CLIENT_ID } from '../../config/Config'
 import LoadingCustom from "../loadingError/LoadingCustom";
 import './Voucher.css'
 const paymentList = [
-    { value: "0", label: "At Store" },
-    { value: "1", label: "PAYPAL" },
-    { value: "2", label: "COD" }
+    // { value: "0", label: "At Store" },
+    { value: "2", label: "COD" },
+    { value: "1", label: "PAYPAL" }
   ];
 
 const Checkout = () => {
@@ -43,11 +43,11 @@ const Checkout = () => {
         createdDate: '',
         createdBy: '',
         totalPrice: null,
-        feeShip: "0",
+        feeShip: "2",
         voucher: "0",
         vat: "0.1",
         paymentStatus: "0",
-        paymentType: "0",
+        paymentType: "2",
         transactionCode: null,
         orderPrice: null
     });
@@ -341,7 +341,7 @@ console.log(form.voucher);
                                 {form.paymentType!=="0"&&
                                 <li className="d-flex justify-content-between">
                                     <span >Shipping:</span>
-                                    <span className="h5" style={{width: "60px"}}>$30</span>
+                                    <span className="h5" style={{width: "60px"}}>${form.feeShip}</span>
                                 </li>}
                                 <li className="d-flex justify-content-between">
                                     <span >VAT:</span>
@@ -349,8 +349,12 @@ console.log(form.voucher);
                                 </li>
                                 <li className="d-flex justify-content-between">
                                     <span>Total:</span>
-                                    <span className="h5" style={{width: "60px"}}>${Math.round((Number(totalPrice)+Number(form.feeShip)+Number(totalPrice)*0.1-totalPrice*Number(form.voucher))*100)/100}</span>
+                                    <span className="h5" style={{width: "60px", textDecorationLine: form.voucher!=="0"&&"line-through"}}>${Math.round((Number(totalPrice)+Number(form.feeShip)+Number(totalPrice)*0.1)*100)/100}</span>
                                 </li>
+                                {form.voucher!=="0"&&<li className="d-flex justify-content-between">
+                                    <span></span>
+                                    <span className="h5" style={{width: "60px"}}>${Math.round((Number(totalPrice)+Number(form.feeShip)+Number(totalPrice)*0.1-totalPrice*Number(form.voucher))*100)/100}</span>
+                                </li>}
                             </ul>
         
                             {/* <form action="#">
@@ -432,7 +436,7 @@ console.log(form.voucher);
                                             <div class="card-body"> 
                                                 {paymentList.map(item=>(
                                                     <label class="checkbox-btn mr-1">
-                                                        <input type="radio" className="hide" name="myfilter_radio" value={item.value} onChange={(e)=>setForm(prev => ({...prev, paymentType: e.target.value, feeShip: e.target.value==="0"?0:30, orderPrice: totalPrice + form.feeShip}))} />
+                                                        <input type="radio" className="hide" name="myfilter_radio" value={item.value} onChange={(e)=>setForm(prev => ({...prev, paymentType: e.target.value, feeShip: e.target.value==="0"?0:2, orderPrice: totalPrice + form.feeShip}))} />
                                                         <span class={form.paymentType===item.value?"btn btn-light active":"btn btn-light"}>{item.label}</span>
                                                     </label>
                                                 ))}

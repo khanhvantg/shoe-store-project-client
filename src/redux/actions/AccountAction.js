@@ -111,7 +111,7 @@ export const getAccountById = (id) => async (dispatch) => {
       };
       const { data } = await axios.put('/api/accounts/forgetPasword', form, config);
       dispatch({ type: ACCOUNT_UPDATE_SUCCESS, payload: data });
-      toast(data.message, {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
+      toast(data.message, {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 15000});
     } catch (error) {
       dispatch({
         type: ACCOUNT_UPDATE_FAIL,

@@ -46,6 +46,22 @@ export const getAllProducts = () => async (dispatch) => {
   }
 };
 
+export const getProductPageable = ({formPage}) => async (dispatch) => {
+  try {
+      dispatch({ type: PRODUCT_LIST_REQUEST });
+      // console.log(`/api/products/pageable?page=${fromPage.page}&size=${fromPage.size}`)
+      const { data } = await axios.get(`/api/products/pageable?page=${formPage.page}&size=${formPage.size}`, {headers: authHeader()})
+      dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data.content });
+  } catch (error) {
+      dispatch({
+          type: PRODUCT_LIST_FAIL,
+          payload: error.response && error.response.data.message
+              ? error.response.data.message
+              : error.message,
+      });
+  }
+};
+
 export const getProductFilter = ({filters}) => async (dispatch) => {
   try {
       dispatch({ type: PRODUCT_LIST_REQUEST });

@@ -6,9 +6,9 @@ const ManageOrderScreen = () => {
 
   return (
     <div className="wrapper1">
-            <Layout/>
-                <OrderMain/>
-            </div>
+        <Layout/>
+        <OrderMain/>
+    </div>
   )
 }
 

@@ -55,10 +55,11 @@ const Cart = () => {
         name: ''
     }); 
     useEffect(() =>{
-        if (succsesCreate) {
-            dispatch({type: ORDER_CREATE_RESET});
-            dispatch(getWishListById());
-        } else if(succsesUpdate){
+        // if (succsesCreate) {
+        //     dispatch({type: ORDER_CREATE_RESET});
+        //     dispatch(getWishListById());
+        // } else 
+        if(succsesUpdate){
             dispatch({type: LINE_ITEM_UPDATE_RESET});
             dispatch(getWishListById());
         } else {
