@@ -30,7 +30,7 @@ const Login = () => {
                 if(userInfo.name===null){
                     navigate("/profile");
                 }
-                else navigate(-2);
+                else navigate(-1);
             }
             // if(userInfo.name===null){
             //     navigate("/profile");
