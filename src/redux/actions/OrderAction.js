@@ -104,6 +104,24 @@ dispatch({
 }
 };
 
+export const getOrderByOrderCode = (orderCode) => async (dispatch) => {
+  try {
+  dispatch({ type: ORDER_DETAILS_REQUEST });
+  
+  const { data } = await axios.get(`/api/order-detail/${orderCode}`, {headers: authHeader()});
+  
+  dispatch({ type: ORDER_DETAILS_SUCCESS, payload: data });
+  } catch (error) {
+  dispatch({
+      type: ORDER_DETAILS_FAIL,
+      payload:
+      error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+  });
+  }
+  };
+
 export const updateOrder = ({orderInfo}) => async (dispatch, getState) => {
 try {
   dispatch({ type: ORDER_UPDATE_REQUEST });

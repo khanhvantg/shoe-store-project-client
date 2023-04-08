@@ -34,6 +34,7 @@ import Thanks from './components/check-out/Thanks';
 import PrivateRouteCheckOut from './PrivateRouteCheckOut';
 import ManagePayPalTransactionScreen from './screen/ManagePayPalTransactionScreen';
 import ForgetPassword from './components/auths/ForgetPassword';
+import Invoice from './components/invoice/Invoice';
 const App = () => {
   return (
     <div className="App" style={{backgroundColor: "white"}}>
@@ -43,7 +44,13 @@ const App = () => {
           <div className="main">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/test" element={<Home1 />} />
+            <Route path="/order-detail/:id" 
+              element={ 
+                <PrivateRoute >
+                  <Invoice />
+                </PrivateRoute>
+              } 
+            />
             <Route
               path="/profile"
               element={
