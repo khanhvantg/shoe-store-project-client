@@ -169,7 +169,7 @@ const OrderMain = () => {
                                         {item.status ==="0" ? (
                                             <td onClick="disable">
                                                 <form className="ordering" style={{width: "155px"}}>
-                                                    <select className="orderby form-control" style={{color:"red"}} onChange={(e)=>handleC(e,item.id)}>
+                                                    <select className="orderby form-control" style={{color:"red"}} onChange={(e)=>handleC(e,item.id)} disabled>
                                                         <option className="text-nowrap align-middle" value="0">Cancelled</option>
                                                         <option value="1" style={{color:"gold"}}>Waiting Confirm</option>
                                                         <option value="2" style={{color:"blue"}}>Shipping</option>
@@ -205,7 +205,7 @@ const OrderMain = () => {
                                         ):(
                                             <td onClick="disable">
                                                 <form className="ordering" style={{width: "155px"}}>
-                                                    <select className="orderby form-control" style={{color:"green"}} onChange={(e)=>handleC(e,item.id)}>
+                                                    <select className="orderby form-control" style={{color:"green"}} onChange={(e)=>handleC(e,item.id)} disabled>
                                                         <option className="text-nowrap align-middle" value="3">Completed</option>
                                                         <option value="1" style={{color:"gold"}}>Waiting Confirm</option>
                                                         <option value="2" style={{color:"blue"}}>Shipping</option>

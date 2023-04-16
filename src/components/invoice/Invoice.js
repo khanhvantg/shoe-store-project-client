@@ -23,12 +23,12 @@ const Invoice = () => {
         document.body.innerHTML = originalContents; 
       }
   return (
-<>
+<div style={{padding: "30px 0px"}}>
 {loading ? (
                         <Loading />
                         ) : (
                 <>
-                <div id="printInvoice" style={{padding: "30px 0px"}}>
+                <div id="printInvoice">
                         <section className="cart shopping">
                             <div className="invoice-box">
                                 <div className="row justify-content-center">
@@ -56,7 +56,7 @@ const Invoice = () => {
                                             <span>{order.phoneNumber}</span>
                                             </li>
                                             <li className="d-flex justify-content-between pt-2">
-                                            <h5>Adress</h5>
+                                            <h5>Address</h5>
                                             <span>{order.address}</span>
                                             </li>
                                             <br/>
@@ -95,6 +95,10 @@ const Invoice = () => {
                                             <li className="d-flex justify-content-between pt-2">
                                             <h5>FeeShip</h5>
                                             <span>${order.feeShip===null?0:order.feeShip}</span>
+                                            </li>
+                                            <li className="d-flex justify-content-between pt-2">
+                                            <h5>Discount</h5>
+                                            <span>{order.voucher===null?0:Math.round(order.voucher*100)}%</span>
                                             </li>
                                             <li className="d-flex justify-content-between pt-2">
                                             <h5>VAT</h5>
@@ -168,7 +172,7 @@ const Invoice = () => {
                 >Print</button>
                 </div>
                    </>
-            )}</> 
+            )}</div> 
 
 
   )
