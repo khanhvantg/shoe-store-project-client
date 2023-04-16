@@ -183,7 +183,7 @@ const Checkout = () => {
         await axios.get("https://online-gateway.ghn.vn/shiip/public-api/master-data/province", {headers: authHeader()}).then((res) => {
           let result = res.data.data;
           result.map((item) => {
-            return arr.push({value: item.ProvinceID, label: item.ProvinceName});
+            return arr.push({value: item.ProvinceID, label: item.NameExtension[1]});
           });
           setCity(arr)
         });
