@@ -62,7 +62,8 @@ const App = () => {
             {/* <Route path="/shop" element={<Shop />} /> */}
             <Route path="/shop" element={<ProductMain1 />} />
             <Route path="/product/:id" element={<ProductDetail />} />
-            <Route path="/checkout" element={<PrivateRouteCheckOut><Checkout /></PrivateRouteCheckOut>} />
+            <Route path="/checkout" element={<Checkout />} />
+            {/* <Route path="/checkout" element={<PrivateRouteCheckOut><Checkout /></PrivateRouteCheckOut>} /> */}
             <Route path="/thank" element={<Thanks />} />
             <Route
               path="/cart"

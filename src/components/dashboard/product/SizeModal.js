@@ -106,6 +106,13 @@ const SizeModal = ({isShowing, hide, id}) => {
         },
     });
          
+    const onSelectChange = useCallback((label, value, name) => {
+        setForm(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    }, []);
+
     const onInputChange = useCallback((value, name) => {
         setForm(prev => ({
             ...prev,
@@ -177,7 +184,7 @@ const SizeModal = ({isShowing, hide, id}) => {
                                                 title="Size"
                                                 value={form.size}
                                                 options={sizeL}
-                                                onChangeFunc={onInputChange}
+                                                onChangeFunc={onSelectChange}
                                                 {...errorInput.size}
                                             />
                                         </div>

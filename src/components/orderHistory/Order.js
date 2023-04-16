@@ -64,7 +64,7 @@ const Order = () => {
                             <table className="table table-bordered table-hover">
                                 <thead align="center">
                                     <tr>
-                                        <th>Order Code</th>
+                                        <th>OrderID</th>
                                         <th>Date</th>
                                         <th>Delivery Date</th>
                                         <th>Total Price</th>
@@ -77,7 +77,7 @@ const Order = () => {
                                 <tbody align="center">
                                 {orders&&orders.sort((a,b)=>(b.id-a.id)).map((item)  => (
                                     <tr>
-                                        <td className="text-nowrap align-middle">{item.number}</td>
+                                        <td className="text-nowrap align-middle">{item.id}</td>
                                         <td className="text-nowrap align-middle">{item.createdDate}</td>
                                         {item.status ==='3' ?
                                             <td className="text-nowrap align-middle">

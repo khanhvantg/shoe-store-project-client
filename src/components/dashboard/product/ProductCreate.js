@@ -132,6 +132,13 @@ const ProductCreate = ({isShowing, hide, categories}) => {
         }
     }, [dispatch, succsesCreate, isShowing]);
          
+    const onSelectChange = useCallback((lable, value, name) => {
+        setForm(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    }, []);
+
     const onInputChange = useCallback((value, name) => {
         setForm(prev => ({
             ...prev,
@@ -189,7 +196,7 @@ const ProductCreate = ({isShowing, hide, categories}) => {
                                                                     title="Category"
                                                                     value={form.category}
                                                                     options={categoryList}
-                                                                    onChangeFunc={onInputChange}
+                                                                    onChangeFunc={onSelectChange}
                                                                     {...errorInput.category}
                                                                 />
                                                     <div className="row">

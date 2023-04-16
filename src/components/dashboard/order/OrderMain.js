@@ -92,7 +92,7 @@ const OrderMain = () => {
                             <table className="table table-bordered table-hover">
                                 <thead align="center">
                                     <tr>
-                                        <th>Order Code</th>
+                                        <th>OrderID</th>
                                         <th>Order Date</th>
                                         {/* <th>Amount Item</th> */}
                                         <th>Delivery Date</th>
@@ -106,7 +106,7 @@ const OrderMain = () => {
                                 <tbody align="center">
                                 {orders&&orders.sort((a,b)=>(b.id-a.id)).map((item, index)  => (
                                     <tr onClick={()=>{toggle(item.id)}}>
-                                        <td className="text-nowrap align-middle">{item.number}</td>
+                                        <td className="text-nowrap align-middle">{item.id}</td>
                                         <td className="text-nowrap align-middle">{item.createdDate}</td>
                                         {item.status ==='3' ?
                                             <td className="text-nowrap align-middle">

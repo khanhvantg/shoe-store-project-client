@@ -67,10 +67,10 @@ const Input = props => {
     name: props.name,
     type: props.type,
     id: props.id,
-    placeholder: props.placeholder || `Enter ${props.title}`,
+    placeholder: props.placeholder || props.disabled==="disabled"?`${props.title}`:`Enter ${props.title}`,
     className: props.className,
     value: props.value,
-
+    disabled: props.disabled,
   }
   const [isShow, setIsShow ] = useState(false);
   const show = useCallback(() => {
@@ -107,7 +107,7 @@ const Input = props => {
     :
     <div className="mb-4">
       <label className="form-label">{props.title}</label>
-      <input style={{background:"white", borderRadius: "5px"}}
+      <input style={{background:inputProps.disabled==="disabled"?"#e9ecef":"white", borderRadius: "5px"}}
         {...inputProps}
         onChange={e => {props.onChangeFunc(e.target.value, e.target.name, e); validationHandler(e, props)} }
         
@@ -132,6 +132,7 @@ Input.defaultProps = {
   onChangeFunc: () => { },
   isReq: null,
   reqType: '',
+  disabled: '',
   onValidateFunc: () => { }
 }
  
@@ -148,6 +149,7 @@ Input.propTypes = {
   isReq: PropTypes.bool,
   reqType: PropTypes.string,
   errorMsg: PropTypes.any,
+  disabled: PropTypes.any,
   onValidateFunc: PropTypes.func
 }
  

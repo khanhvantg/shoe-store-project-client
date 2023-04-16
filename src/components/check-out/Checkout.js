@@ -8,7 +8,7 @@ import {
 } from '../../redux/constants/Constants'
 import { createOrder } from '../../redux/actions/OrderAction'
 import Input from '../checkValidate/Input'
-import Radio from '../checkValidate/Radio'
+import Select from '../checkValidate/Select'
 import { Link, useNavigate } from "react-router-dom";
 import { getUserDetails } from '../../redux/actions/UserAction'
 
@@ -21,6 +21,7 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { CLIENT_ID } from '../../config/Config'
 import LoadingCustom from "../loadingError/LoadingCustom";
 import './Voucher.css'
+import axios from "axios";
 const paymentList = [
     // { value: "0", label: "At Store" },
     { value: "2", label: "COD" },
@@ -28,12 +29,6 @@ const paymentList = [
   ];
 
 const Checkout = () => {
-    
-    const [pos, setPos]=useState();
-    const [timer,setTimer]=useState(null);
-    const [infoVoucher, setInfoVoucher]=useState({
-        name: ''
-    })
     const [form, setForm] = useState({
         email: '',
         address: '',
@@ -43,14 +38,38 @@ const Checkout = () => {
         createdDate: '',
         createdBy: '',
         totalPrice: null,
-        feeShip: "2",
+        feeShip: "0",
         voucher: "0",
         vat: "0.1",
         paymentStatus: "0",
         paymentType: "2",
         transactionCode: null,
-        orderPrice: null
+        orderPrice: null,
+        numberDetail: "",
+        city: null,
+        district: null,
+        ward: null,
+        service: null
     });
+
+    const [formAddress, setFormAddress] = useState({
+        city: null,
+        district: null,
+        ward: null
+    })
+
+    const [formCheck, setFormCheck] = useState({
+        city: null,
+        district: null,
+        ward: null
+    })
+
+    const [pos, setPos]=useState();
+    const [timer,setTimer]=useState(null);
+    const [infoVoucher, setInfoVoucher]=useState({
+        name: ''
+    })
+
     const [amounts, setAmounts] = useState([]);
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
@@ -59,6 +78,33 @@ const Checkout = () => {
 
     const lineItemList = useSelector((state) => state.lineItemList);
     const { loading, error, lineItems, user} = lineItemList;
+
+    var today = new Date();
+    var amountItem=0;
+    const totalPrice = lineItems.reduce(function (result, item) {
+        amountItem++;
+        return result + Number(item.total);
+      },0);
+
+    // const [form, setForm] = useState({
+    //     email: user.email,
+    //     address: user.address,
+    //     phoneNumber: user.phone,
+    //     name: user.name,
+    //     status: 1,      //status = 0 : cancle, 1 : wait confirm, 2: shipping, 3: completed 
+    //     createdDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear(),
+    //     createdBy: userInfo.username,
+    //     totalPrice: totalPrice,
+    //     feeShip: "2",
+    //     voucher: "0",
+    //     vat: "0.1",
+    //     paymentStatus: "0",
+    //     paymentType: "2",
+    //     transactionCode: null,
+    //     orderPrice: null,
+    //     city: "",
+    //     district: ""
+    // });
 
     const lineItemUpdate = useSelector((state) => state.lineItemUpdate);
     const { success: succsesUpdate, error: errorUpdate, loading: loadingUpdate } = lineItemUpdate;
@@ -69,50 +115,138 @@ const Checkout = () => {
     const voucherDetail = useSelector((state) => state.voucherDetail);
     const { success: successgetVoucher, error: errorVoucher, voucher } = voucherDetail;
 
-    var today = new Date();
-    var amountItem=0;
-    const totalPrice = lineItems.reduce(function (result, item) {
-        amountItem++;
-        return result + Number(item.total);
-      },0);
-
     //Paypal
     const [show, setShow] = useState(false);
     const [successPayPal, setSuccessPayPal] = useState(false);
     const [ErrorMessage, setErrorMessage] = useState("");
     const [orderID, setOrderID] = useState(false);
+    const [check, setCheck] = useState(true);
 
+    const [city, setCity] = useState([]);
+    const [district, setDistrict] = useState([]);
+    const [ward, setWard] = useState([]);
+    const [reLoad, setReLoad] = useState(true)
     useEffect(() =>{
+        setForm(prev=>({...prev, address: (form.numberDetail!==""?(form.numberDetail+", "):"")+(form.ward!==null?(form.ward+", "):"") + (form.district!==null?(form.district+", "):"") + (form.city!==null?form.city:"")}))
         if (succsesCreate) {
             dispatch({type: ORDER_CREATE_RESET});
             dispatch(getWishListById());
             navigate("/thank")
-        } else {
-            setForm(prev => ({
-                ...prev,
-                email: user.email,
-                address: user.address,
-                phoneNumber: user.phone,
-                name: user.name,
-                status: 1,      //status = 0 : cancle, 1 : wait confirm, 2: shipping, 3: completed 
-                createdDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear(),
-                createdBy: userInfo.username,
-                totalPrice: totalPrice
-            }))
-        }
-        if(successPayPal){
+        } else if(successPayPal){
             handleOrder();
             setSuccessPayPal(false);
-        }
-        if(successgetVoucher){
+        } else if(successgetVoucher){
             dispatch({type: VOUCHER_DETAILS_STOP});
             setForm(prev => ({
                 ...prev,
                 voucher: voucher.value,
             }))
             setOrderID(false);
+            setCheck(false);
+        } else {
+            getCity();
+            if (form.city!==null) {
+                getDistrict();
+                if (form.district!==null) {
+                    getService();
+                    getWard();
+                    if (form.ward!==null) {
+                        getFee();
+                    }
+            } else { setWard([]); reSetAddress("ward"); setForm(prev=>({...prev, feeShip: "0"})); }
+            } else { setDistrict([]); setWard([]); reSetAddress("district"); reSetAddress("ward"); }
+            if (reLoad&&check) {
+                setForm(prev => ({
+                    ...prev,
+                    email: user.email,
+                    phoneNumber: user.phone,
+                    name: user.name,
+                    status: 1,      //status = 0 : cancle, 1 : wait confirm, 2: shipping, 3: completed 
+                    createdDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear(),
+                    createdBy: userInfo.username,
+                    totalPrice: totalPrice
+                }))
+            }
         }
-    },[succsesCreate, user, successgetVoucher, successPayPal])
+        // setCheck(true)
+    },[succsesCreate, user, successgetVoucher, successPayPal, form.city, form.district, form.ward, form.numberDetail])
+
+    //API GHN
+    const authHeader = () => {
+        return {  
+            'Content-Type': 'application/json',
+            'token': 'd7924ae8-da8b-11ed-921c-de4829400020',
+        };
+    }
+    const getCity = async () => {
+        const arr = [];
+        await axios.get("https://online-gateway.ghn.vn/shiip/public-api/master-data/province", {headers: authHeader()}).then((res) => {
+          let result = res.data.data;
+          result.map((item) => {
+            return arr.push({value: item.ProvinceID, label: item.ProvinceName});
+          });
+          setCity(arr)
+        });
+    };
+    const getDistrict = async () => {
+        const arr = [];
+        await axios.get(`https://online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=${formAddress.city}`, {headers: authHeader()}).then((res) => {
+          let result = res.data.data;
+          result.map((item) => {
+            return arr.push({value: item.DistrictID, label: item.DistrictName});
+          });
+          setDistrict(arr)
+        });
+    };
+    const getWard = async () => {
+        const arr = [];
+        await axios.get(`https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=${formAddress.district}`, {headers: authHeader()}).then((res) => {
+          let result = res.data.data;
+          result.map((item) => {
+            return arr.push({value: item.WardCode, label: item.WardName});
+          });
+          setWard(arr)
+        });
+    };
+    const getFee = async () => {
+        const inforDelivery = {
+            service_id:form.service,
+            insurance_value:totalPrice,
+            coupon: null,
+            from_district_id:3695,
+            to_district_id: formAddress.district,
+            to_ward_code: (formAddress.ward).toString(),
+            height:15,
+            length:25,
+            weight:700,
+            width:20
+        }
+        await axios.post("https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee", inforDelivery, {headers: authHeader()}).then((res) => {
+          let result = res.data.data;
+          setForm(prev=>({...prev, feeShip: Math.round((result.total/23900)*100)/100}))
+        });
+    };
+    const getService = async () => {
+        const inforDelivery = {
+            shop_id:4028563,
+            from_district:3695,
+            to_district: formAddress.district,
+        }
+        await axios.post("https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services", inforDelivery, {headers: authHeader()}).then((res) => {
+          let result = res.data.data;
+          setForm(prev=>({...prev, service: result[0].service_id}))
+        });
+    };
+    const reSetAddress = (name)=>{
+        setForm(prev => ({
+            ...prev,
+            [name]: null
+        }));
+        setFormAddress(prev => ({
+            ...prev,
+            [name]: null
+        }));
+    };
 
     const [valueCurrent, setValueCurrent]=useState();
 
@@ -125,6 +259,26 @@ const Checkout = () => {
          
     const [errorInput, setErrorInput] = useState({
         name: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        numberDetail: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        city: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        district: {
+            isReq: true,
+            errorMsg: '',
+            onValidateFunc: onInputValidate
+        },
+        ward: {
             isReq: true,
             errorMsg: '',
             onValidateFunc: onInputValidate
@@ -153,7 +307,52 @@ const Checkout = () => {
         }
     });
          
+    const onSelectChange = useCallback((label, value, name) => {
+        if(name==="city"){
+            if(value!==formAddress.city){
+                setReLoad(false);
+                setForm(prev => ({
+                    ...prev,
+                    district: null
+                }));
+            }
+        }else if(name==="district"){
+            if(value!==formAddress.district){
+                setReLoad(false);
+                setForm(prev => ({
+                    ...prev,
+                    ward: null
+                }));
+            }
+        }else {
+            if(value!==formAddress.ward){
+                setReLoad(false);
+            }
+        }
+        setForm(prev => ({
+            ...prev,
+            [name]: label
+        }));
+        setFormAddress(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    }, [formAddress]);
+console.log('dss',formAddress.city)
     const onInputChange = useCallback((value, name) => {
+        setForm(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    }, []);
+
+    // const onInputChange1 = useCallback((id,name) => {
+    //     setFormAddress(prev => ({
+    //         ...prev,
+    //         [name]: label
+    //     }));
+    // }, []);
+    const onAdressChange = useCallback((value, name) => {
         setForm(prev => ({
             ...prev,
             [name]: value
@@ -166,7 +365,7 @@ const Checkout = () => {
             const errObj = errorInput[x];
             if (errObj.errorMsg) {
                 isInvalid = true;
-            } else if (errObj.isReq && !form[x]) {
+            } else if (errObj.isReq && (Array.isArray(form[x]) ? !form[x].length : !form[x]) /*!form[x]*/) {
                 isInvalid = true;
                 onInputValidate(true, x);
             }
@@ -225,7 +424,7 @@ const Checkout = () => {
             return orderID;
         });
     };
-    const [d,setD]=useState()
+    // const [d,setD]=useState()
     // check Approval
     const onApprove = (data, actions, variables) => {
         return actions.order.capture().then(function (details) {
@@ -235,13 +434,10 @@ const Checkout = () => {
             setSuccessPayPal(true);
         });
     };
-
-console.log('k',form)
     //capture likely error
     const onError = (data, actions) => {
         setErrorMessage("An Error occured with your payment ");
     };
-console.log(form.voucher);
     return (
         <>
         {
@@ -303,20 +499,13 @@ console.log(form.voucher);
                                 {errorVoucher &&
                                         <Message variant="alert-danger">Not Found Voucher</Message>
                                     }
-                                {infoVoucher.name!=''&&
+                                {infoVoucher.name!==''&&
                                 <div className="text-right">
-                                    <button type="button" className="btn btn-success btn-small r-0"onClick={handleVoucher}>Apply Voucher</button> 
+                                    <button type="button" className="button-33"onClick={handleVoucher}>Apply Voucher</button> 
                                 </div>
                                 }
                                 </>||
-                                <div className="voucher text-center" 
-                                    // style={{WebkitMaskImage:"radial-gradient(circle at 10px, transparent 10px, red 10.5px)",
-                                    //         WebkitMaskPosition:"-10px", WebkitMaskSize: "100% 20px"
-                                    // }}
-                                //     style={{
-                                //         backgroundColor: "#99FF66", borderRadius: "10px", width: "300px", height:"100px"
-                                // }}
-                                >
+                                <div className="voucher text-center">
                                 
                                 <li className="d-flex h-100">
                                     <span className="" style={{ width: "100px"}}>
@@ -355,34 +544,7 @@ console.log(form.voucher);
                                     <span></span>
                                     <span className="h5" style={{width: "60px"}}>${Math.round((Number(totalPrice)+Number(form.feeShip)+Number(totalPrice)*0.1-totalPrice*Number(form.voucher))*100)/100}</span>
                                 </li>}
-                            </ul>
-        
-                            {/* <form action="#">
-                                <div className="form-check mb-3">
-                                    <input className="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked />
-                                    <label className="form-check-label" for="exampleRadios1">
-                                    Direct bank transfer 
-                                    </label>
-        
-                                    <div className="alert alert-secondary mt-3" role="alert">
-                                    Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.
-                                    </div>
-                                </div>
-        
-                                <div className="form-check mb-3">
-                                    <input className="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" />
-                                    <label className="form-check-label" for="exampleRadios2">
-                                    Check payments 
-                                    </label>
-                                </div>
-        
-                                <div className="form-check mb-3">
-                                    <input type="checkbox" className="form-check-input" id="exampleCheck3" />
-                                    <label className="form-check-label" for="exampleCheck3">I have read and agree to the website terms and conditions *</label>
-                                    </div>
-                            </form>
-         */}
-                            
+                            </ul>    
                         </div>
                     </div>
                 
@@ -403,12 +565,55 @@ console.log(form.voucher);
                                                 onChangeFunc={onInputChange}
                                                 {...errorInput.name}
                                                 />
+                                            <div className="row">
+                                         <div className="col">
+                                            <Select
+                                                name="city"
+                                                title="City"
+                                                // label={form.city}
+                                                value={formAddress.city}
+                                                options={city}
+                                                onChangeFunc={onSelectChange}
+                                                {...errorInput.city}
+                                            />
+                                        </div>
+                                       <div className="col">
+                                            <Select
+                                                name="district"
+                                                title="District"
+                                                value={formAddress.district}
+                                                options={district}
+                                                onChangeFunc={onSelectChange}
+                                                {...errorInput.district}
+                                            />
+                                        </div>
+                                        <div className="col">
+                                            <Select
+                                                name="ward"
+                                                title="Ward"
+                                                value={formAddress.ward}
+                                                options={ward}
+                                                onChangeFunc={onSelectChange}
+                                                {...errorInput.ward}
+                                            />
+                                        </div>
+                                    </div>
+                                            
+                                            <Input
+                                                name="numberDetail"
+                                                title="Detail Arderss"
+                                                value={form.numberDetail}
+                                                onChangeFunc={onInputChange}
+                                                {...errorInput.numberDetail}
+                                            />
                                             <Input
                                                 name="address"
                                                 title="Address"
                                                 value={form.address}
-                                                onChangeFunc={onInputChange}
-                                                {...errorInput.address}
+                                                // onChangeFunc={onInputChange}
+                                                // {...errorInput.address}
+                                                disabled="disabled"
+                                                style={{backgroundColor:"gray"}}
                                             />
                                             <Input
                                                 name="email"
@@ -424,19 +629,11 @@ console.log(form.voucher);
                                                 onChangeFunc={onInputChange}
                                                 {...errorInput.phoneNumber}
                                             />
-                                            {/* <Radio
-                                                name="paymentType"
-                                                title="Payment Type"
-                                                value={form.paymentType}
-                                                options={paymentList}
-                                                onChangeFunc={onInputChange}
-                                                {...errorInput.paymentType}
-                                            /> */}
                                             <label className="form-label">Payment Type</label>
                                             <div class="card-body"> 
                                                 {paymentList.map(item=>(
                                                     <label class="checkbox-btn mr-1">
-                                                        <input type="radio" className="hide" name="myfilter_radio" value={item.value} onChange={(e)=>setForm(prev => ({...prev, paymentType: e.target.value, feeShip: e.target.value==="0"?0:2, orderPrice: totalPrice + form.feeShip}))} />
+                                                            <input type="radio" className="hide" name="myfilter_radio" value={item.value} onChange={(e)=>setForm(prev => ({...prev, paymentType: e.target.value}))} />
                                                         <span class={form.paymentType===item.value?"btn btn-light active":"btn btn-light"}>{item.label}</span>
                                                     </label>
                                                 ))}
@@ -479,20 +676,7 @@ console.log(form.voucher);
         
         
        
-            <div className="modal fade" id="coupon-modal" tabindex="-1" role="dialog">
-                <div className="modal-dialog" role="document">
-                <div className="modal-content py-5">
-                    <div className="modal-body">
-                        <form>
-                            <div className="form-group">
-                            <input className="form-control" type="text" placeholder="Enter Coupon Code" />
-                            </div>
-                            <button type="button" className="btn btn-main btn-small" data-dismiss="modal">Apply Coupon</button>
-                        </form>
-                    </div>
-                </div>
-                </div>
-            </div>
+            
         </div>
         </>
     )

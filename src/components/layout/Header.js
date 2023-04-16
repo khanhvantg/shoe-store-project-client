@@ -94,8 +94,8 @@ const Header = () => {
                                 <span className="total-price h6">$1799.00</span> */}
                             {lineItems&&lineItems.length>0&&
                                 <div className="text-center cart-buttons mt-3">
-                                    <Link to="/checkout" className="button-24 mr-1">Check Out</Link>
-                                    <Link to="/cart" className="button-24 ml-1">View Cart</Link>
+                                    <Link to="/checkout" className="button-33 mr-1">Check Out</Link>
+                                    <Link to="/cart" className="button-33 ml-1">View Cart</Link>
                                 </div>||<div className="text-center">
                                             <img className="w-100 h-100" src="/assets/images/empty-cart.jpg"/>
                                         </div>}
@@ -133,15 +133,15 @@ const Header = () => {
                         
                                 <div className="text-center cart-buttons mt-3">
                                     {   isAdmin?
-                                        <Link to="/manage/paypal" className="button-24 mr-3">Manage</Link>
+                                        <Link to="/manage/paypal" className="button-33 mr-3">Manage</Link>
                                         : userInfo ?
-                                        <Link to="/profile" className="button-24 mr-3">Profile</Link>
+                                        <Link to="/profile" className="button-33 mr-3">Profile</Link>
                                         : <></>
                                     }
                                     { userInfo ? 
-                                        <Link to={{ pathname:"/login"}} onClick={logoutHandler} className="button-24 ml-3">Logout</Link>
+                                        <Link to={{ pathname:"/login"}} onClick={logoutHandler} className="button-33 ml-3">Logout</Link>
                                         :
-                                        <Link to={{ pathname:"/login"}} className="button-24">Login</Link>
+                                        <Link to={{ pathname:"/login"}} className="button-33">Login</Link>
                                     }
                                 </div>
                             </div>
