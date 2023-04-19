@@ -45,6 +45,7 @@ const Checkout = () => {
         paymentType: "2",
         transactionCode: null,
         orderPrice: null,
+        estimatedDate: null,
         numberDetail: "",
         city: null,
         district: null,
@@ -152,9 +153,10 @@ const Checkout = () => {
                     getWard();
                     if (form.ward!==null) {
                         getFee();
-                    }
-            } else { setWard([]); reSetAddress("ward"); setForm(prev=>({...prev, feeShip: "0"})); }
-            } else { setDistrict([]); setWard([]); reSetAddress("district"); reSetAddress("ward"); }
+                        getEstimatedDate();
+                    } else { setForm(prev=>({...prev, feeShip: "0", estimatedDate: null})); }
+            } else { setWard([]); reSetAddress("ward"); setForm(prev=>({...prev, feeShip: "0", estimatedDate: null})); }
+            } else { setDistrict([]); setWard([]); reSetAddress("district"); reSetAddress("ward"); setForm(prev=>({...prev, feeShip: "0", estimatedDate: null}));}
             if (reLoad&&check) {
                 setForm(prev => ({
                     ...prev,
@@ -223,7 +225,7 @@ const Checkout = () => {
         }
         await axios.post("https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee", inforDelivery, {headers: authHeader()}).then((res) => {
           let result = res.data.data;
-          setForm(prev=>({...prev, feeShip: Math.round((result.total/23900)*100)/100}))
+          setForm(prev=>({...prev, feeShip: Math.round((result.total/23400)*100)/100}))
         });
     };
     const getService = async () => {
@@ -235,6 +237,30 @@ const Checkout = () => {
         await axios.post("https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services", inforDelivery, {headers: authHeader()}).then((res) => {
           let result = res.data.data;
           setForm(prev=>({...prev, service: result[0].service_id}))
+        });
+    };
+    const getEstimatedDate = async () => {
+        const inforDelivery = {
+            service_id: form.service,
+            from_district_id: 3695,
+            from_ward_code: "90742",
+            to_district_id: formAddress.district,
+            to_ward_code: (formAddress.ward).toString(),
+        }
+        await axios.post("https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/leadtime", inforDelivery, {headers: authHeader()}).then((res) => {
+          let result = res.data.data.leadtime.toString();
+          const time = today.getDate() + Math.round(Number(result.slice(3,5)) + Number(result.slice(5)/86400) - today.getDate())
+          setForm(prev=>({...prev, estimatedDate: time  + "/" + (today.getMonth() + 1) +"/" + today.getFullYear()}))
+        });
+    };
+    const getOTP = async () => {
+        const phone = {
+            phone: form.phoneNumber,
+        }
+        await axios.post("https://online-gateway.ghn.vn/shiip/public-api/v2/shop/affiliateOTP", phone, {headers: authHeader()}).then((res) => {
+          let result = res.data.data;
+          console.log(result);
+        //   setForm(prev=>({...prev, estimatedDate: result.leadtime}))
         });
     };
     const reSetAddress = (name)=>{
@@ -338,7 +364,7 @@ const Checkout = () => {
             [name]: value
         }));
     }, [formAddress]);
-console.log('dss',formAddress.city)
+
     const onInputChange = useCallback((value, name) => {
         setForm(prev => ({
             ...prev,
@@ -525,24 +551,28 @@ console.log('dss',formAddress.city)
                             <ul className="summary-prices list-unstyled mb-4">
                                 <li className="d-flex justify-content-between">
                                     <span >Subtotal:</span>
-                                    <span className="h5" style={{width: "60px"}}>${totalPrice}</span>
+                                    <span className="h5" style={{width: "100px"}}>${totalPrice}</span>
                                 </li>
                                 {form.paymentType!=="0"&&
                                 <li className="d-flex justify-content-between">
                                     <span >Shipping:</span>
-                                    <span className="h5" style={{width: "60px"}}>${form.feeShip}</span>
+                                    <span className="h5" style={{width: "100px"}}>${form.feeShip}</span>
                                 </li>}
                                 <li className="d-flex justify-content-between">
+                                    <span >Estimated Delivery</span>
+                                    <span className="h5" style={{width: "100px"}}>{form.estimatedDate===null?"...":form.estimatedDate}</span>
+                                </li>
+                                <li className="d-flex justify-content-between">
                                     <span >VAT:</span>
-                                    <span className="h5" style={{width: "60px"}}>10%</span>
+                                    <span className="h5" style={{width: "100px"}}>10%</span>
                                 </li>
                                 <li className="d-flex justify-content-between">
                                     <span>Total:</span>
-                                    <span className="h5" style={{width: "60px", textDecorationLine: form.voucher!=="0"&&"line-through"}}>${Math.round((Number(totalPrice)+Number(form.feeShip)+Number(totalPrice)*0.1)*100)/100}</span>
+                                    <span className="h5" style={{width: "100px", textDecorationLine: form.voucher!=="0"&&"line-through"}}>${Math.round((Number(totalPrice)+Number(form.feeShip)+Number(totalPrice)*0.1)*100)/100}</span>
                                 </li>
                                 {form.voucher!=="0"&&<li className="d-flex justify-content-between">
                                     <span></span>
-                                    <span className="h5" style={{width: "60px"}}>${Math.round((Number(totalPrice)+Number(form.feeShip)+Number(totalPrice)*0.1-totalPrice*Number(form.voucher))*100)/100}</span>
+                                    <span className="h5" style={{width: "100px"}}>${Math.round((Number(totalPrice)+Number(form.feeShip)+Number(totalPrice)*0.1-totalPrice*Number(form.voucher))*100)/100}</span>
                                 </li>}
                             </ul>    
                         </div>
@@ -629,6 +659,7 @@ console.log('dss',formAddress.city)
                                                 onChangeFunc={onInputChange}
                                                 {...errorInput.phoneNumber}
                                             />
+                                            {/* <button className="button-33" onClick={getOTP}>Get OTP</button> */}
                                             <label className="form-label">Payment Type</label>
                                             <div class="card-body"> 
                                                 {paymentList.map(item=>(

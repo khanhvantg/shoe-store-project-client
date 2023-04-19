@@ -225,7 +225,7 @@ const Home = () => {
                             <i className="tf-ion-android-bicycle"></i>
                             <div className="content">
                                 <h5>Free Shipping</h5>
-                                <p>On all order over $39.00</p>
+                                <p>On all order over $1000</p>
                             </div>
                         </div>
                     </div>
