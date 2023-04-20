@@ -35,6 +35,8 @@ import PrivateRouteCheckOut from './PrivateRouteCheckOut';
 import ManagePayPalTransactionScreen from './screen/ManagePayPalTransactionScreen';
 import ForgetPassword from './components/auths/ForgetPassword';
 import Invoice from './components/invoice/Invoice';
+
+import MessengerCustomerChat from 'react-messenger-customer-chat';
 const App = () => {
   return (
     <div className="App" style={{backgroundColor: "white"}}>
@@ -90,6 +92,10 @@ const App = () => {
           </Routes>
           </div>
           <Footer/>
+          <MessengerCustomerChat
+            pageId="108239868917747"
+            appId="3497014053916132"
+          />
         </BrowserRouter>
     </div>
   );

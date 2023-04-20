@@ -253,6 +253,15 @@ const Checkout = () => {
           setForm(prev=>({...prev, estimatedDate: time  + "/" + (today.getMonth() + 1) +"/" + today.getFullYear()}))
         });
     };
+    
+    const getUSDTransfer = async () => {
+
+        await axios.get("https://portal.vietcombank.com.vn/Usercontrols/TVPortal.TyGia/pXML.aspx?b=10", {headers : "Content-Type: application/json",}).then((res) => {
+          let result = res.data.data;
+          console.log(result);
+        //   setForm(prev=>({...prev, estimatedDate: result.leadtime}))
+        });
+    };
     const getOTP = async () => {
         const phone = {
             phone: form.phoneNumber,
@@ -704,10 +713,6 @@ const Checkout = () => {
                 </div>
             </div>
         </div>
-        
-        
-       
-            
         </div>
         </>
     )
