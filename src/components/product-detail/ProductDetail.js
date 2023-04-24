@@ -348,7 +348,7 @@ const ProductDetail = () => {
                                 <img className="box-shadow w-100 mb-2 border" src={product.link} />
                             </Link>
                         </div> 
-                        <span class="onsale">New</span>
+                        {/* <span class="onsale">New</span> */}
                         <div class="product__item__text">
                                 <h6>{product.name}</h6>
                                 <Link to={`/product/${product.id}`} class="add-cart">View Detail</Link>
