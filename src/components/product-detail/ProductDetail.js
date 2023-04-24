@@ -30,8 +30,9 @@ const ProductDetail = () => {
     const dispatchCmt = useDispatch();
     const dispatchItem = useDispatch();
     const productDetail = useSelector((state) => state.productDetail);
-    const { loading, error, product} = productDetail;
+    const { loading, error, product, irecommendProducts } = productDetail;
 
+    console.log("a",irecommendProducts)
     const commentList = useSelector((state) => state.commentList);
     const { loading: loadingCmt, error: errorComment, comments} = commentList;
 
@@ -327,9 +328,37 @@ const ProductDetail = () => {
                             </div>
                               
                             ))}
+    
                         </div>
+                        
                     </div>
                 </div>
+
+                <div class="col-lg-12">
+                    <ul class="filter__controls mt-4">
+                        <li class="btn active">Maybe you are interested</li>
+                    </ul>
+                </div>
+                <div class="row product__filter">
+                {irecommendProducts&&irecommendProducts.sort((a, b) => (a.id-b.id)).map((product, index)=>(   
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals" style={{flex: "0 0 20%", maxWidth: "20%"}}>
+                        <div class="product__item">
+                        <div class="img-wrap product-wrap"> 
+                            <Link to={{ pathname: `/product/${product.id}`}}>
+                                <img className="box-shadow w-100 mb-2 border" src={product.link} />
+                            </Link>
+                        </div> 
+                        <span class="onsale">New</span>
+                        <div class="product__item__text">
+                                <h6>{product.name}</h6>
+                                <Link to={`/product/${product.id}`} class="add-cart">View Detail</Link>
+                            
+                                <h5>${product.price}</h5>
+                            </div>
+                            </div>
+                </div>
+                ))}
+            </div>
             </div>
         </section>
      </div>
