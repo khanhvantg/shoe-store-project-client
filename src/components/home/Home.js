@@ -8,6 +8,8 @@ import Message from "../loadingError/Message";
 import { createLineItem } from '../../redux/actions/WishlistAction'
 import { getProductBest } from "../../redux/actions/RevenueAction";
 import LoadingCustom from "../loadingError/LoadingCustom";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 const Home = () => {
     const [total, setTotal] = useState(0);
     const [amount, setAmount] = useState(1);
@@ -54,9 +56,26 @@ const Home = () => {
         dispatch(getAllProducts());
         dispatch(getProductBest({month}))
     }, []);
+    const ListItem = () => {
+        return (
+            <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
+                    <div class="product__item">
+                        <div class="img-wrap product-wrap"> 
+                        <Skeleton className="w-100 mb-2 border img-load1"></Skeleton>
+                    </div>
+                    
+                        <div class="product__item__text">
+                            <h5><Skeleton></Skeleton></h5>
+                            <h5><Skeleton></Skeleton></h5>
+                        </div>
+                    </div>
+                </div>
+                    
+        );
+      }
   return (
     <div className="home-container">
-        {loading&&<LoadingCustom content="Loading"/>}
+        {/* {loading&&<LoadingCustom content="Loading"/>} */}
         <div id="carouselExampleIndicators" className="carousel slide" data-ride="carousel">
             <ol className="carousel-indicators">
                 <li data-target="#carouselExampleIndicators" data-slide-to="0" className="active"></li>
@@ -110,8 +129,14 @@ const Home = () => {
                         {/* <li data-filter=".hot-sales">Hot Sales</li> */}
                     </ul>
                 </div>
+                {/* <ListItem/><ListItem/><ListItem/><ListItem/> */}
             </div>
-            <div class="row product__filter">
+            
+            {loading?
+            <div className="row product__filter" >
+                <ListItem/><ListItem/><ListItem/><ListItem/>
+                </div>:
+            <div class="row product__filter">   
                 {check===0?proBest&&proBest.map((product, index)=>(
                 <>
                 {index<4&&(
@@ -160,8 +185,8 @@ const Home = () => {
             )}
             </>))
             }
-
             </div>
+}
         </div>
     </section>
     

@@ -7,6 +7,9 @@ import Loading from '../loadingError/Loading';
 import Message from "../loadingError/Message";
 import { createLineItem } from '../../redux/actions/WishlistAction'
 import {toast} from 'react-toastify';
+
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 const ProductMain1 = () => {
     const [form,setForm]=useState({
         amount: 1,
@@ -214,6 +217,33 @@ const ProductMain1 = () => {
                 dispatchItem(createLineItem({form,productId:id}))
             } else  toast("Please Login To Buy Shoes", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
         }
+        const ListItem = () => {
+            return (
+                        <div class="col-md-4">
+                            <figure class="product__item card card-product-grid product">
+                                <div class="img-wrap product-wrap"> 
+                                    {/* <Skeleton> */}
+                                    {/* <img className="box-shadow border w-100 mb-2 img-first"> */}
+                                        <Skeleton className="w-100 mb-2 img-first img-load"></Skeleton>
+      
+                                    {/* </img> */}
+                                    {/* <Skeleton style={{backgroundImage: `url("/assets/images/image-icon.png")`}}> */}
+                                        
+                                    {/* </Skeleton> */}
+                                    {/* </Skeleton> */}
+                                    {/* <Link to={{ pathname: `/product/${product.id}`}}>
+                                        <img className="box-shadow border w-100 mb-2 img-first" src={product.images.sort((a, b) => (a.id-b.id))[0]?.link} />
+                                    </Link> */}
+                                </div>
+                                <div class="product__item__text">
+                                    <h5><Skeleton></Skeleton></h5>
+                                    {/* <Link to={`/product/${product.id}`} class="add-cart">View Detail</Link> */}
+                                    <h5><Skeleton></Skeleton></h5>
+                                </div>
+                            </figure>
+                        </div>
+            );
+          }
     return (
         <div>
             <section className="page-header" style={{marginBottom: "15px"}}>
@@ -426,7 +456,13 @@ const ProductMain1 = () => {
                     </div> */}
                                 </div>
                             </header>
-                            {loading ? ( <Loading />) : error ? (<Message variant="alert-danger">{error}</Message>) : (
+                            {loading ? (
+                            <div class="row">
+                            <ListItem></ListItem>
+                            <ListItem></ListItem>
+                            <ListItem></ListItem>
+                            </div>
+                            ) : error ? (<Message variant="alert-danger">{error}</Message>) : (
                             <div class="row">
                                 {(check&&dataList.length!==0)? 
                                     <>

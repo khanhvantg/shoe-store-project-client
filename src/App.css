@@ -98,3 +98,37 @@
             margin-top: 77px;
         }
     }
+
+    .img-load, .img-load1 {
+        height: 326.46px;
+    }
+    
+    @media (max-width: 1199.98px) {
+        .img-load, .img-load1 {
+            height: 268.76px;
+        }
+    }
+    
+    @media (max-width: 991.98px) {
+        .img-load {
+            height: 191.85px;
+        }
+        .img-load1 {
+            height: 422.63px;
+        }
+    }
+    
+    @media (max-width: 767.98px) {
+        .img-load {
+            height: 653.39px;
+        }
+        .img-load1 {
+            height: 307.24px;
+        }
+    }
+    
+    @media (max-width: 575.98px) {
+        .img-load, .img-load1 {
+            height: 580.56px;
+        }
+    }

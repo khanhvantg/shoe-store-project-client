@@ -22,6 +22,7 @@ import { CLIENT_ID } from '../../config/Config'
 import LoadingCustom from "../loadingError/LoadingCustom";
 import './Voucher.css'
 import axios from "axios";
+import { format } from 'date-fns'
 const paymentList = [
     // { value: "0", label: "At Store" },
     { value: "2", label: "COD" },
@@ -248,9 +249,12 @@ const Checkout = () => {
             to_ward_code: (formAddress.ward).toString(),
         }
         await axios.post("https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/leadtime", inforDelivery, {headers: authHeader()}).then((res) => {
-          let result = res.data.data.leadtime.toString();
-          const time = today.getDate() + Math.round(Number(result.slice(3,5)) + Number(result.slice(5)/86400) - today.getDate())
-          setForm(prev=>({...prev, estimatedDate: time  + "/" + (today.getMonth() + 1) +"/" + today.getFullYear()}))
+          let result = res.data.data.leadtime.toString()+"000";
+          var date1 = new Date(Number(result))
+          const d = format(date1, "dd/MM/yyyy")
+          setForm(prev=>({...prev, estimatedDate: d.toString()}))
+        //   const time = today.getDate() + Math.round(Number(result.slice(3,5)) + Number(result.slice(5)/86400) - today.getDate())
+        //   setForm(prev=>({...prev, estimatedDate: time  + "/" + (today.getMonth() + 1) +"/" + today.getFullYear()}))
         });
     };
     

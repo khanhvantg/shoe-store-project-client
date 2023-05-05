@@ -23,7 +23,7 @@ const Thanks = () => {
   return (
     
   
-      <div className=""style={{backgroundColor: "#FFFF99"}}>
+      <div className=""style={{backgroundColor: "#99ffff"}}>
             
                 {/* <div className="row align-items-center"> */}
                 <div className="text-center">
@@ -35,15 +35,15 @@ const Thanks = () => {
                     
                 {/* </div> */}
                 </div>
-                <div className="text-center" style={{backgroundColor: "#A9A9A9", borderRadius: "100px", width: "450px", marginLeft:"auto",marginRight:"auto"}}>
+                <div className="text-center" style={{backgroundColor: "#00e6e6", borderRadius: "20px", width: "450px", marginLeft:"auto", marginRight:"auto"}}>
                       <p className="text-md mt-3 text-white">Anything amiss?</p>
                       <p className="text-md mt-3 text-white">Email us to khoaluantotnghiep2223@gmail.com</p>
                       <p className="text-md mt-3 text-white">or call us at (+84) 94-529-1058</p>
                     </div>
                 <div className="text-center cart-buttons mt-3"  style={{padding: "10px 0px 50px 0px"}}>
-                    <Link to="/order" className="btn btn-primary btn-small fa-lg gradient-custom-2 mb-3 mr-5" style={{borderRadius: "100px"}}>Order History</Link>
+                    <Link to="/order" className="button-33 mb-3 mr-5">Order History</Link>
 
-                    <Link to="/shop" className="btn btn-primary btn-small fa-lg gradient-custom-2 mb-3 ml-5" style={{borderRadius: "100px"}}>Shop Continue</Link>
+                    <Link to="/shop" className="button-33 mb-3 ml-5">Shop Continue</Link>
                 </div>           
             {/* </div> */}
         </div>

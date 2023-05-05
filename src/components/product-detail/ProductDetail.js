@@ -16,6 +16,8 @@ import Message from "../loadingError/Message";
 import {toast} from 'react-toastify';
 import Select from '../checkValidate/Select'
 import './Comment.css'
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 const ProductDetail = () => {
     const [isAdmin, setIsAdmin] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
@@ -160,14 +162,14 @@ const ProductDetail = () => {
                 <div className="row justify-content-center">
                     <div className="col-lg-6">
                     <div className="content text-center">
-                        <h1 className="mb-3">{product.name}</h1>
+                        <h1 className="mb-3">{loading?<Skeleton style={{color:"black"}}/>:<>{product.name}</>}</h1>
                         <p></p>
             
                     <nav aria-label="breadcrumb">
                         <ol className="breadcrumb bg-transparent justify-content-center">
-                        <li className="breadcrumb-item"><Link to="/">Home</Link></li>
-                        <li className="breadcrumb-item"><Link to="/Shop">Shoes</Link></li>
-                        <li className="breadcrumb-item active" aria-current="page">{product.name}</li>
+                        <p className="breadcrumb-item"><Link to="/">Home</Link></p>
+                        <p className="breadcrumb-item"><Link to="/Shop">Shoes</Link></p>
+                        <p className="breadcrumb-item active" aria-current="page">{product.name}</p>
                         </ol>
                     </nav>
                     </div>
