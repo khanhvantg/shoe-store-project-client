@@ -154,3 +154,7 @@
             height: 92.98px;
         }
     }
+
+    .toast-position {
+        margin-bottom: 4rem !important;
+      }

@@ -41,7 +41,9 @@ import PrivateRouteForAdmin from './PrivateRouteForAdmin';
 const App = () => {
   return (
     <div className="App" style={{backgroundColor: "white"}}>
-        <ToastContainer/>
+        <ToastContainer 
+          className="toast-position"
+        />
         <BrowserRouter>
           <Header />
           <div className="main">
@@ -132,6 +134,7 @@ const App = () => {
           <MessengerCustomerChat
             pageId="108239868917747"
             appId="3497014053916132"
+            themeColor={'#00DDEB'}
           />
         </BrowserRouter>
     </div>
