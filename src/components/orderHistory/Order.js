@@ -12,6 +12,8 @@ import CofirmBox from "../cofirmBox/CofirmBox";
 import '../cofirmBox/CofirmBox.css'
 import Loading from "../loadingError/Loading";
 import LoadingCustom from "../loadingError/LoadingCustom";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 const Order = () => {
     const {isShowing, toggle, id} = useModal();
     const {isShowing:isShowConfirmBox, toggle:toggleConfirmBox, id: idOrder} = useModal();
@@ -43,24 +45,33 @@ const Order = () => {
         }
         dispatch(updateOrder({orderInfo}));
     }
+    const ListItem = () => {
+        return (
+            <tr>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+            </tr>
+        ); 
+    }
   return (
     <>
     {
-            loadingUpdate&&<LoadingCustom content='Canceling'/>
-        }
+        loadingUpdate&&<LoadingCustom content='Canceling'/>
+    }
     <div className="checkout-container">
         <section className="cart shopping page-wrapper">
             <div className="container">
                 <div className="row justify-content-center">
                     <h3>Order History</h3>
                     <div className="col-lg-12">
-                    {
-                        loading ? (<Loading/>):(
-                            <div className="e-table">
+                        <div className="e-table">
                         <div className="table-responsive table-lg mt-3">
-                        {loading ? (
-                            <Loading />
-                        ) :
                             <table className="table table-bordered table-hover">
                                 <thead align="center">
                                     <tr>
@@ -74,9 +85,19 @@ const Order = () => {
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
+                                {loading ? (
+                                    <tbody align="center">
+                                        <ListItem/>
+                                        <ListItem/>
+                                        <ListItem/>
+                                        <ListItem/>
+                                        <ListItem/>
+                                        <ListItem/>
+                                    </tbody>    
+                                ) :
                                 <tbody align="center">
                                 {orders&&orders.sort((a,b)=>(b.id-a.id)).map((item)  => (
-                                    <tr>
+                                    <tr onClick={()=>toggle(item.id)}>
                                         <td className="text-nowrap align-middle">{item.id}</td>
                                         <td className="text-nowrap align-middle">{item.createdDate}</td>
                                         {item.status ==='3' ?
@@ -151,13 +172,13 @@ const Order = () => {
                                         <td className="text-center align-middle">
                                         <div className="btn-group align-top">
                                             <button 
-                                                onClick={()=>toggle(item.id)}
+                                                onClick={(e)=>{e.stopPropagation(); toggle(item.id)}}
                                                 className="btn btn-sm btn-outline-secondary badge" type="button"> 
                                                 <i className="tf-ion-ios-eye"></i>
                                             </button>
                                             {item.status ==="1"&&
                                                 <button
-                                                    onClick={()=>toggleConfirmBox(item.id)}
+                                                    onClick={(e)=>{e.stopPropagation();toggleConfirmBox(item.id)}}
                                                     //onClick={()=>handleCancel(item.id)}
                                                     className="btn btn-sm btn-outline-secondary badge" type="button"> 
                                                     <i className="tf-ion-android-delete"></i>
@@ -168,13 +189,11 @@ const Order = () => {
                                     </tr>
                                 ))}
                                 </tbody>
+                            }
                             </table>
-}
+
                         </div>
                     </div>
-                    
-                    )
-                }
                 </div>
             </div>
                 <OrderDetail 

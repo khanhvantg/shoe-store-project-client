@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllSizes, createSizeByProductId, updateSize, deleteSize, getSizeById } from '../../../redux/actions/SizeAction'
 import {
     SIZE_CREATE_RESET,
+    SIZE_UPDATE_RESET,
+    SIZE_DETAILS_STOP,
 } from '../../../redux/constants/Constants'
 import Loading from '../../loadingError/Loading';
 import Message from "../../loadingError/Message";
@@ -68,11 +70,16 @@ const SizeModal = ({isShowing, hide, id}) => {
         },
     ];
     useEffect(() => {
-        if(succsesCreate||succsesUpdate){
+        if(succsesCreate){
             dispatch({type: SIZE_CREATE_RESET});
             dispatch(getAllSizes({id}));
             setForm({})
-        }else if (size&&size.id!==form.idSize){
+        } else if (succsesUpdate){
+            dispatch({type: SIZE_UPDATE_RESET});
+            dispatch(getAllSizes({id}));
+            setForm({})
+            setIsOpen(false)
+        } else if (isOpen&&size&&size.id!==form.idSize){
             setForm({
                 idSize:size.id,
                 size:size.size,
@@ -153,7 +160,10 @@ const SizeModal = ({isShowing, hide, id}) => {
         setForm({})
     }
     const handleOnSubmit = () => {
-        dispatch(updateSize({form}))
+        const isValid = validateForm();
+        if (isValid) {
+            dispatch(updateSize({form}))
+        }
     }
     if(!isShowing)return null;
     return (
@@ -237,7 +247,7 @@ const SizeModal = ({isShowing, hide, id}) => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {sizes&&sizes.map((item, index)  => (
+                                {sizes&&sizes.sort((a,b)=>Number(a.size)-Number(b.size)).map((item, index)  => (
                                     <tr>
                                         <td className="align-middle">{item.size}</td>
                                         <td className="text-nowrap align-middle">{item.amount}</td>

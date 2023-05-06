@@ -39,12 +39,12 @@ const Home = () => {
             }
         }
     }
+    const [check,setCheck] = useState(0);
     useEffect(() => {
         dispatch(getAllProducts());
         dispatch(getProductBest({month}))
-    }, []);
+    }, [check]);
 
-    const [check,setCheck] = useState(0);
     const handelBestSeller = () => {
         setCheck(0);
     }

@@ -29,8 +29,9 @@ const Login = () => {
             } else {
                 if(userInfo.name===null){
                     navigate("/profile");
-                }
-                else navigate(-1);
+                } else if(navigate(-1)!==navigate("/manage/paypal")){
+                    navigate(-1);
+                } else navigate("/");
             }
             // if(userInfo.name===null){
             //     navigate("/profile");

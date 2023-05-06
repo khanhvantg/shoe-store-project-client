@@ -31,7 +31,6 @@ export const login = ({form}) => async (dispatch) => {
 };
 
 export const stopLogin = () => async (dispatch) => {
-  //dispatch({ type: VOUCHER_DETAILS_REQUEST });
   dispatch({ type: RESET_LOGIN});
 };
 

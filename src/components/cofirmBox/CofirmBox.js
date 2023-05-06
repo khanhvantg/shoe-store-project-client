@@ -19,7 +19,7 @@ const CofirmBox = ({noHandle,yesHanle,isShowing}) => {
         <div className="modal-dialog modal-lg" style={{width:400}}>
             <div className="modal-content">
                 <div className="modal-header">				
-                    <h4 className="modal-title text-center">Are you sure?</h4>	
+                    <h4 className="modal-title text-center">Confirm Box</h4>	
                     <button type="button" className="close" data-dismiss="modal" aria-hidden="true" onClick={noHandle}>&times;</button>
                 </div>
                 <div className="modal-body text-center">

@@ -10,6 +10,7 @@ import {
     SIZE_DETAILS_FAIL,
     SIZE_DETAILS_REQUEST,
     SIZE_DETAILS_SUCCESS,
+    SIZE_DETAILS_STOP,
     SIZE_LIST_FAIL,
     SIZE_LIST_REQUEST,
     SIZE_LIST_SUCCESS,
@@ -39,13 +40,15 @@ import {
         return { ...state, loading: true };
       case SIZE_DETAILS_SUCCESS:
         return { loading: false, size: action.payload };
+      case SIZE_DETAILS_STOP:
+        return {  ...state, success: false };
       case SIZE_DETAILS_FAIL:
         return { loading: false, error: action.payload };
       default:
         return state;
     }
   };
-  
+
   export const sizeCreateReducer = (state = { size: {} }, action) => {
     switch (action.type) {
         case SIZE_CREATE_REQUEST:

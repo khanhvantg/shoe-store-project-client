@@ -14,6 +14,8 @@ import {toast} from 'react-toastify';
 import Checkbox from '../checkValidate/Checkbox';
 import Loading from "../loadingError/Loading";
 import LoadingCustom from "../loadingError/LoadingCustom";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 const Cart = () => {
     const [pos, setPos]=useState();
     const [timer,setTimer]=useState(null);
@@ -243,12 +245,18 @@ const Cart = () => {
         });
         return !isInvalid;
     }
-        
-    const handleOrder = () => {
-        const isValid = validateForm();
-        if (isValid) {
-            dispatch(createOrder({form}));
-        }
+    const ListItem = () => {
+        return (
+            <tr>
+                <td className="product-thumbnail text-center" data-title="Image"><Skeleton/></td>
+                <td className="product-name text-center" data-title="Product"><Skeleton/></td>
+                <td className="product-price text-center" data-title="Price"><Skeleton/></td>
+                <td className="product-name text-center" data-title="Amount"><Skeleton/></td>
+                <td className="product-name text-center" data-title="Size"><Skeleton/></td>
+                <td className="product-subtotal text-center" data-title="Total"><Skeleton/></td>
+                <td className="product-remove text-center" data-title="Remove"><Skeleton/></td>
+            </tr>
+        ); 
     }
   return (
         <div className="checkout-container">
@@ -271,7 +279,7 @@ const Cart = () => {
             </div>
             </div>
         </section>
-            {lineItems&&lineItems.length>0?
+            
             <section className="cart shopping page-wrapper">
             <div className="container">
                 <div className="row justify-content-center">
@@ -291,7 +299,13 @@ const Cart = () => {
                                         <th className="product-remove text-center"> </th>
                                     </tr>
                                 </thead>
-        
+                                {loading?
+                                    <tbody>
+                                        <ListItem/>
+                                        <ListItem/>
+                                        <ListItem/>
+                                    </tbody>:
+                                    <>
                                 <tbody>
                                     {amounts&&amounts.map((item,index)=>(
                                     <tr className="cart_item">
@@ -367,12 +381,16 @@ const Cart = () => {
                                 </tr> */}
                                 </tbody>
                                 <tfoot align="right">
-                                <tr>
-                                    <th colspan="7">
-                                    <Link to="/checkout" className="btn btn-primary btn-small">Check Out</Link>
-                                    </th>
-                                </tr>
+                                    <tr>
+                                    {lineItems&&lineItems.length>0&&
+                                        <th colspan="7">
+                                        <Link to="/checkout" className="button-33">Check Out</Link>
+                                        </th>
+                                        }
+                                    </tr>
                                 </tfoot>
+                                
+                                </>}
                             </table>
                         </div>
                     </div>
@@ -476,9 +494,10 @@ const Cart = () => {
                 }
                 </div>
             </section>
-            :<div className="text-center">
-                 <img className="mt-100 mb-100" src="/assets/images/empty-cart.jpg"/>
-            </div>
+            {lineItems&&lineItems.length<=0&&
+                <div className="text-center">
+                    <img className="mb-100" src="/assets/images/empty-cart.jpg"/>
+                </div>
             }
         </div>
     )

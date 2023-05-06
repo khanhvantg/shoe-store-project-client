@@ -34,7 +34,6 @@ const ProductDetail = () => {
     const productDetail = useSelector((state) => state.productDetail);
     const { loading, error, product, irecommendProducts } = productDetail;
 
-    console.log("a",irecommendProducts)
     const commentList = useSelector((state) => state.commentList);
     const { loading: loadingCmt, error: errorComment, comments} = commentList;
 
@@ -153,7 +152,36 @@ const ProductDetail = () => {
     const handleDelete = (id) => {
         dispatch(deleteComment(id));
     }
-    console.log(product.productInfors)
+    const ListItem = () => {
+        return (
+            <div class="cus-col-lg-2 col-md-4 col-sm-4 mix new-arrivals">
+                    <div class="product__item">
+                        <div class="img-wrap product-wrap"> 
+                        <Skeleton className="w-100 mb-2 img-load2"></Skeleton>
+                    </div>
+                    
+                        <div class="product__item__text">
+                            <h5><Skeleton></Skeleton></h5>
+                            <h5><Skeleton></Skeleton></h5>
+                        </div>
+                    </div>
+                </div>
+                    
+        );
+      }
+      const ListCmt = () => {
+        return (
+            <div className="d-flex flex-row comment-row m-t-0">
+                <Skeleton circle={50} height={50} width={50} className="p-2"/>
+                <div className="comment-text w-100">
+                    <h6 style={{fontWeight:"700"}}><Skeleton/></h6> <span className="m-b-15 d-block"><Skeleton/></span>
+                    <div className="comment-footer"> 
+                        <span className="text-muted float-right"><Skeleton/></span>
+                    </div>
+                </div>
+             </div>       
+        );
+      }
     return (
         <div className="single-product-container">
             <section className="page-header">
@@ -166,11 +194,12 @@ const ProductDetail = () => {
                         <p></p>
             
                     <nav aria-label="breadcrumb">
+                        {loading?<Skeleton style={{color:"black"}}/>:
                         <ol className="breadcrumb bg-transparent justify-content-center">
-                        <p className="breadcrumb-item"><Link to="/">Home</Link></p>
-                        <p className="breadcrumb-item"><Link to="/Shop">Shoes</Link></p>
-                        <p className="breadcrumb-item active" aria-current="page">{product.name}</p>
-                        </ol>
+                            <p className="breadcrumb-item"><Link to="/">Home</Link></p>
+                            <p className="breadcrumb-item"><Link to="/Shop">Shoes</Link></p>
+                            <p className="breadcrumb-item active" aria-current="page">{product.name}</p>
+                        </ol>}
                     </nav>
                     </div>
                     </div>
@@ -274,7 +303,6 @@ const ProductDetail = () => {
                             
                         </div>
                     </div>
-                    <div className="col-md-1"/>
                 </div>)}
                 <div className="row d-flex justify-content-center mt-100 mb-100" style={{border :"double"}}>
                     <div className="col-lg-12">
@@ -297,20 +325,24 @@ const ProductDetail = () => {
                                 :<></>}
                                 {comments&&comments.length>0&&<h4 className="card-title">Latest Comments</h4>}
                             </div>
+                            {loadingCmt?<ListCmt/>:
+                            <>
                             {comments&&comments.sort((a,b)=>(b.id-a.id)).map((item,index)=>(
                                 <div className="comment-widgets border-bottom">
                                     <div className="d-flex flex-row comment-row m-t-0">
-                                        <div className="p-2"><img src="https://i.imgur.com/Ur43esv.jpg" alt="user" width="50" className="rounded-circle"/></div>
+                                        <div className="p-2">
+                                            <img src="https://i.imgur.com/Ur43esv.jpg" alt="user" width="50" className="rounded-circle"/>
+                                        </div>
                                         {isEdit&&item.id==formComment.commentId?
                                         
                                         <div className="comment-text w-100">
                                             {loadingComment?<Loading/>:<>
-                                            <h6 className="font-medium">{item.user.account.username}</h6> 
+                                            <h6 style={{fontWeight:"700"}}>{item.user.account.username}</h6> 
                                             <input style={{background:"white"}} onChange={CommentChange} name='content' value={formComment.content} type="text" className="form-control mr-3" placeholder="Add comment"/>
                                             <div className="comment-footer"> 
                                             {formComment.content===''?
                                             <button type="button" className="btn btn-cyan btn-sm" onClick={handleSaveEdit} disabled>Save</button>:
-                                            <button type="button" className="btn btn-cyan btn-sm" onClick={handleSaveEdit}>Save</button>}
+                                            <button type="button" className="btn btn-cyan btn-sm mr-1" onClick={handleSaveEdit}>Save</button>}
                                             <button type="button" className="btn btn-danger btn-sm" onClick={()=>setIsEdit(false)}>Cancel</button>
                                             
                                             </div>
@@ -318,10 +350,10 @@ const ProductDetail = () => {
                                         </div>
                                         :
                                         <div className="comment-text w-100">
-                                            <h6 className="font-medium">{item.user.account.username}</h6> <span className="m-b-15 d-block">{item.content}.</span>
+                                            <h6 style={{fontWeight:"700"}}>{item.user.account.username}</h6> <span className="m-b-15 d-block">{item.content}.</span>
                                             <div className="comment-footer"> 
                                                 <span className="text-muted float-right">{item.createdDate}</span> 
-                                                {userInfo&&item.user.id===userInfo.id ? <button type="button" className="btn btn-cyan btn-sm" onClick={()=>handleEdit(item)}>Edit</button>:<></>}
+                                                {userInfo&&item.user.id===userInfo.id ? <button type="button" className="btn btn-cyan btn-sm mr-1" onClick={()=>handleEdit(item)}>Edit</button>:<></>}
                                                 {userInfo&&item.user.id===userInfo.id || isAdmin ? <button type="button" className="btn btn-danger btn-sm" onClick={()=>handleDelete(item.id)}>Delete</button>:<></>}
                                             </div>
                                         </div>
@@ -330,17 +362,19 @@ const ProductDetail = () => {
                             </div>
                               
                             ))}
-    
+                            </>}
                         </div>
                         
-                    </div>
-                </div>
-
+                    </div>    
+            </div>
                 <div class="col-lg-12">
                     <ul class="filter__controls mt-4">
                         <li class="btn active">Maybe you are interested</li>
                     </ul>
                 </div>
+                {loading? <div class="row product__filter">
+                    <ListItem/><ListItem/><ListItem/><ListItem/><ListItem/>
+                    </div>:
                 <div class="row product__filter">
                 {irecommendProducts&&irecommendProducts.sort((a, b) => (a.id-b.id)).map((product, index)=>(   
                     <div class="col-lg-2 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals" style={{flex: "0 0 20%", maxWidth: "20%"}}>
@@ -360,9 +394,10 @@ const ProductDetail = () => {
                             </div>
                 </div>
                 ))}
-            </div>
-            </div>
+            </div>}
+                </div>
         </section>
+        
      </div>
 
     )}

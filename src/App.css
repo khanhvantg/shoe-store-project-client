@@ -99,13 +99,26 @@
         }
     }
 
+
+    .cus-col-lg-2 {
+        -ms-flex: 0 0 20%;
+        flex: 0 0 20%;
+        max-width: 20%;
+    }
+
     .img-load, .img-load1 {
         height: 326.46px;
     }
-    
+    .img-load2 {
+        height: 253.39px;
+    }
+
     @media (max-width: 1199.98px) {
         .img-load, .img-load1 {
             height: 268.76px;
+        }
+        .img-load2 {
+            height: 207px;
         }
     }
     
@@ -116,6 +129,9 @@
         .img-load1 {
             height: 422.63px;
         }
+        .img-load2 {
+            height: 145px;
+        }
     }
     
     @media (max-width: 767.98px) {
@@ -125,10 +141,16 @@
         .img-load1 {
             height: 307.24px;
         }
+        .img-load2 {
+            height: 99.54px;
+        }
     }
     
     @media (max-width: 575.98px) {
         .img-load, .img-load1 {
             height: 580.56px;
+        }
+        .img-load2 {
+            height: 92.98px;
         }
     }

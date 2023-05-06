@@ -11,6 +11,7 @@ import {
     SIZE_DETAILS_FAIL,
     SIZE_DETAILS_REQUEST,
     SIZE_DETAILS_SUCCESS,
+    SIZE_DETAILS_STOP,
     SIZE_LIST_FAIL,
     SIZE_LIST_REQUEST,
     SIZE_LIST_SUCCESS,
@@ -79,6 +80,10 @@ export const getSizeById = ({itemId}) => async (dispatch) => {
           : error.message,
   });
   }
+};
+
+export const stopGetDeTailSize = () => async (dispatch) => {
+  dispatch({ type: SIZE_DETAILS_STOP});
 };
 
 export const updateSize = ({form}) => async (dispatch, getState) => {
