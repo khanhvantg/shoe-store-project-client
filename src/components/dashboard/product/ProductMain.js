@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts} from '../../../redux/actions/ProductAction'
 import { getAllcategories, getCategoryById, stopGetCategory } from '../../../redux/actions/CategoryAction'
-import { CATEGORY_DETAILS_STOP, CATEGORY_DETAILS_SUCCESS } from '../../../redux/constants/Constants'
+import { CATEGORY_DETAILS_STOP, CATEGORY_DETAILS_SUCCESS,PRODUCT_DETAILS_STOP } from '../../../redux/constants/Constants'
 import Status from '../../status/Status';
 import ProductUpdate from "./ProductUpdate";
 import ProductCreate from "./ProductCreate";
@@ -12,6 +12,8 @@ import Loading from '../../loadingError/Loading';
 import Message from "../../loadingError/Message";
 import useModal from '../useModal';
 import useModalCreate from '../useModalCreate';
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 const ProductMain = () => {
     const {isShowing, toggle, id} = useModal();
     const {isShowing: isShowingSize, toggle: toggleSize, id: idSize} = useModal();
@@ -38,8 +40,7 @@ const ProductMain = () => {
         }
         if(idCategory==='0'){
             dispatchProduct(getAllProducts());
-        } 
-        else {
+        } else {
             dispatch(getCategoryById(idCategory));
         }
         
@@ -47,6 +48,17 @@ const ProductMain = () => {
 
     const handleC = (e) => {
         setIdCategory(e.target.value);
+    }
+    const ListItem = () => {
+        return (
+            <tr>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+            </tr>
+        ); 
     }
   return (
     // <div className="row flex-lg-nowrap">
@@ -57,7 +69,7 @@ const ProductMain = () => {
                         <h3 className="mr-2">Products Manage</h3>
                         <header class="mb-3">
                                 <div class="form-inline">
-                                    <button className="btn btn-success mr-auto" type="button" onClick={toggleCreate}>New Product</button>
+                                    <button className="button-2 mr-auto" type="button" onClick={toggleCreate}>New Product</button>
                                     <select class="form-control mt-2" value={idCategory}
                                         onChange={handleC} >
                                         <option value="0">All</option>
@@ -90,11 +102,6 @@ const ProductMain = () => {
                 
                     <div className="e-table">
                         <div className="table-responsive table-lg mt-3">
-                        {loading ? (
-                            <Loading />
-                        ) : error ? (
-                            <Message variant="alert-danger">{error}</Message>
-                        ) : (
                             <table className="table table-bordered table-hover">
                                 <thead align="center">
                                     <tr>
@@ -106,9 +113,26 @@ const ProductMain = () => {
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
+                                {loading ? (
+                                        <tbody align="center">
+                                            <ListItem/>
+                                            <ListItem/>
+                                            <ListItem/>
+                                            <ListItem/>
+                                            <ListItem/>
+                                        </tbody>
+                                    ) : error ? (
+                                        <tfoot align="center">
+                                            <tr>
+                                            <th colspan="5">
+                                            <Message variant="alert-danger">{error}</Message>
+                                            </th>
+                                            </tr>
+                                        </tfoot>
+                                    ) : (
                                 <tbody align="center">
                                 {products&&products.map((product, index)  => (
-                                    <tr>
+                                    <tr onClick={()=>{toggle(product.id)}}>
                                         {/* <td className="align-middle">{product.id}</td> */}
                                         <td className="text-nowrap align-middle">{product.name}</td>
                                         <td className="align-middle" style={{width:400,wordBreak:"break-word"}}>
@@ -128,19 +152,18 @@ const ProductMain = () => {
                                                 <button className="btn btn-sm btn-outline-secondary badge" type="button" onClick={()=>{toggle(product.id)}}> 
                                                     <i className="tf-ion-edit"></i>
                                                 </button>
-                                                <button className="btn btn-sm btn-outline-secondary badge" type="button" onClick={()=>{toggleSize(product.id)}}> 
+                                                <button className="btn btn-sm btn-outline-secondary badge" type="button" onClick={(e)=>{e.stopPropagation();toggleSize(product.id)}}> 
                                                     <i className="tf-ion-levels"></i>
                                                 </button>
-                                                <button className="btn btn-sm btn-outline-secondary badge" type="button" onClick={()=>{toggleImage(product.id)}}> 
+                                                <button className="btn btn-sm btn-outline-secondary badge" type="button" onClick={(e)=>{e.stopPropagation();toggleImage(product.id)}}> 
                                                     <i className="tf-ion-image"></i>
                                                 </button>
                                             </div>
                                         </td>
                                     </tr>
                                 ))}
-                                </tbody>
+                                </tbody>)}
                             </table>
-                            )}
                         </div>
                     </div>
                 </div>
@@ -154,7 +177,8 @@ const ProductMain = () => {
             isShowing={isShowing}
             hide={toggle}
             id={id}
-            idCategory={idCategory}/>
+            idCategory={idCategory}
+        />
         <ImageProduct
             isShowing={isShowingImage}
             hide={toggleImage}

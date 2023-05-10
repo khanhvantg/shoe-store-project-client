@@ -80,6 +80,7 @@ const AccountUpdate = ({isShowing, hide, id}) => {
         if (successUpdate) {
             dispatch({type: ACCOUNT_UPDATE_RESET});
             dispatch(getAllAccounts());
+            hide();
         } else {
             if (isShowing&&account.id!==id) {
                 dispatch(getAccountById(id));
@@ -149,7 +150,6 @@ const AccountUpdate = ({isShowing, hide, id}) => {
         const isValid = validateForm();
         if (isValid) {
             dispatch(updateAccountByAdmin({form}));
-            hide();
         }
     };
 
@@ -220,11 +220,17 @@ const AccountUpdate = ({isShowing, hide, id}) => {
                                             />
                                         </div>
                                     </div>
-                                    <div className="row">
-                                        <div className="col text-center">
-                                            <button className="button-33" type="submit" onClick={()=>{submitHandler()}}>Save Changes</button>
-                                        </div>
+                                    <div className="text-center pt-1 mb-3 pb-1">
+                                        <button className="button-1" style={{width: "150.9px"}} onClick={loadingUpdate?"disabled":()=>{submitHandler()}}>
+                                            {loadingUpdate?<Loading a={"16px"}/>:
+                                            "Save Changes"}
+                                        </button>
                                     </div>
+                                    {/* <div className="row">
+                                        <div className="col text-center">
+                                            <button className="button-1" type="submit" onClick={()=>{submitHandler()}}>Save Changes</button>
+                                        </div>
+                                    </div> */}
                                 </div>)}
                             </div>
                         </div>

@@ -44,7 +44,7 @@ const ProductDetail = () => {
     const { success : successCreate} = commentCreate;
     
     const commentUpdate = useSelector((state) => state.commentUpdate);
-    const { success : successUpdate} = commentUpdate;
+    const { loading: loadingUpdate, success : successUpdate} = commentUpdate;
     //const [amount,setAmount] = useState(1);
     //const [total,setTotal] = useState(0);
     const [submit,setSubmit] = useState(false);
@@ -63,7 +63,7 @@ const ProductDetail = () => {
     //         sizeList.push(cate);
     //     }
     // }
-
+    const [checkEdit, setCheckEdit]=useState("");
     useEffect(() => {
         if(successCreate || successUpdate){
             dispatch({type: COMMENT_UPDATE_RESET});
@@ -138,6 +138,7 @@ const ProductDetail = () => {
 
     const handleEdit = (item) => {
         setIsEdit(true)
+        setCheckEdit(item.content)
         //dispatch(getCommentById(id));
         setFormComment(prev => ({
             ...prev,
@@ -166,7 +167,7 @@ const ProductDetail = () => {
                         </div>
                     </div>
                 </div>
-                    
+         
         );
       }
       const ListCmt = () => {
@@ -279,7 +280,7 @@ const ProductDetail = () => {
                                 </div>
                                 <h5 style={{marginTop: "-1rem"}}>Quantity</h5>
                         <div className="amount d-flex align-items-center card-body">
-                        <input type="number" id="#" className="input-text qty text form-control w-25 mr-1" step="1" min="1" max="20" 
+                        <input type="number" id="#" className="input-text qty text form-control w-25 mr-2" step="1" min="1" max="20" 
                             name="amount"
                             onChange={(e)=>setForm(prev => ({
                                 ...prev,
@@ -288,7 +289,7 @@ const ProductDetail = () => {
                             value={form.amount} 
                             
                             title="Qty" size="4" />
-                            <button className="btn btn-primary fa-lg" onClick={()=>handleAddToCart()}>Add to cart</button>
+                            <button className="button-2" onClick={()=>handleAddToCart()}>Add to cart</button>
                             </div>
                             {/* <div className="form">
                             <Select
@@ -325,7 +326,7 @@ const ProductDetail = () => {
                                 :<></>}
                                 {comments&&comments.length>0&&<h4 className="card-title">Latest Comments</h4>}
                             </div>
-                            {loadingCmt?<ListCmt/>:
+                            {(loadingCmt||loading||loadingUpdate)?<ListCmt/>:
                             <>
                             {comments&&comments.sort((a,b)=>(b.id-a.id)).map((item,index)=>(
                                 <div className="comment-widgets border-bottom">
@@ -339,9 +340,9 @@ const ProductDetail = () => {
                                             {loadingComment?<Loading/>:<>
                                             <h6 style={{fontWeight:"700"}}>{item.user.account.username}</h6> 
                                             <input style={{background:"white"}} onChange={CommentChange} name='content' value={formComment.content} type="text" className="form-control mr-3" placeholder="Add comment"/>
-                                            <div className="comment-footer"> 
-                                            {formComment.content===''?
-                                            <button type="button" className="btn btn-cyan btn-sm" onClick={handleSaveEdit} disabled>Save</button>:
+                                            <div className="comment-footer mt-1"> 
+                                            {(formComment.content===''||formComment.content===checkEdit)?
+                                            <button type="button" className="btn btn-cyan btn-sm mr-1" onClick={handleSaveEdit} disabled>Save</button>:
                                             <button type="button" className="btn btn-cyan btn-sm mr-1" onClick={handleSaveEdit}>Save</button>}
                                             <button type="button" className="btn btn-danger btn-sm" onClick={()=>setIsEdit(false)}>Cancel</button>
                                             
@@ -350,7 +351,7 @@ const ProductDetail = () => {
                                         </div>
                                         :
                                         <div className="comment-text w-100">
-                                            <h6 style={{fontWeight:"700"}}>{item.user.account.username}</h6> <span className="m-b-15 d-block">{item.content}.</span>
+                                            <h6 style={{fontWeight:"700"}}>{item.user.account.username}</h6> <span className="m-b-15 d-block">{item.content}</span>
                                             <div className="comment-footer"> 
                                                 <span className="text-muted float-right">{item.createdDate}</span> 
                                                 {userInfo&&item.user.id===userInfo.id ? <button type="button" className="btn btn-cyan btn-sm mr-1" onClick={()=>handleEdit(item)}>Edit</button>:<></>}

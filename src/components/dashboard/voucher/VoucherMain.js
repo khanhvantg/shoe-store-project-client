@@ -10,6 +10,8 @@ import useModal from '../useModal';
 import useModalCreate from '../useModalCreate';
 import CofirmBox from "../../cofirmBox/CofirmBox";
 import { VOUCHER_UPDATE_RESET } from "../../../redux/constants/Constants";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 const VoucherMain = () => {
     const dispatch = useDispatch();
     const {isShowingCreate, toggleCreate} = useModalCreate();
@@ -22,31 +24,37 @@ const VoucherMain = () => {
     //categories.sort((a,b)=>(a.id-b.id));
     
     useEffect(() => {
-        if(succsesUpdate){
-            dispatch({type: VOUCHER_UPDATE_RESET});
-            dispatch(getAllVouchers());
-        } else {
-            dispatch(getAllVouchers());
-        }
-    }, [dispatch, succsesUpdate]);
+        // if(succsesUpdate){
+        //     dispatch({type: VOUCHER_UPDATE_RESET});
+        //     dispatch(getAllVouchers());
+        // } else {
+            
+        // }
+        dispatch(getAllVouchers());
+    }, [dispatch]);
 
     const deleteHandler = () => {
         dispatch(deleteVoucher({idVoucher}));
     }
-    console.log(vouchers)
+    const ListItem = () => {
+        return (
+            <tr>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+            </tr>
+        ); 
+    }
     return (
                 <div className="card-body">
                     <div className="text-center card-title">
                         <h3 className="mr-2">Voucher Manage</h3>
                     </div>
-                    <button className="btn btn-success" style={{marginBottom: "5px"}} type="button" onClick={toggleCreate}>New Voucher</button>
+                    <button className="button-2" style={{marginBottom: "5px"}} type="button" onClick={toggleCreate}>New Voucher</button>
                     <div className="e-table">
                         <div className="table-responsive table-lg mt-3">
-                        {loading ? (
-                            <Loading />
-                        ) : error ? (
-                            <Message variant="alert-danger">{error}</Message>
-                        ) : (
                             <table className="table table-bordered table-hover">
                                 <thead align="center">
                                     <tr>
@@ -58,9 +66,26 @@ const VoucherMain = () => {
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
+                                {loading ? (
+                                        <tbody align="center">
+                                            <ListItem/>
+                                            <ListItem/>
+                                            <ListItem/>
+                                            <ListItem/>
+                                            <ListItem/>
+                                        </tbody>
+                                    ) : error ? (
+                                        <tfoot align="center">
+                                            <tr>
+                                            <th colspan="5">
+                                            <Message variant="alert-danger">{error}</Message>
+                                            </th>
+                                            </tr>
+                                        </tfoot>
+                                    ) : (
                                 <tbody align="center">
                                 { vouchers && vouchers.sort((a,b)=>(b.id-a.id)).map((item, index) => (
-                                    <tr>
+                                    <tr onClick={()=>{toggle(item.id)}}>
                                         {/* <td className="align-middle">{category.id}</td> */}
                                         <td className="text-nowrap align-middle">{item.name}</td>
                                         <td className="text-nowrap align-middle">{Math.round(item.value*100)}%</td>
@@ -79,7 +104,7 @@ const VoucherMain = () => {
                                                     <i className="tf-ion-edit"></i>
                                                 </button>
                                                 <button 
-                                                    onClick={()=>toggleConfirmBox(item.id)}
+                                                    onClick={(e)=>{e.stopPropagation(); toggleConfirmBox(item.id)}}
                                                     className="btn btn-sm btn-outline-secondary badge" type="button"> 
                                                 <i className="tf-ion-android-delete"></i>
                                             </button>
@@ -88,8 +113,8 @@ const VoucherMain = () => {
                                         </td>
                                     </tr>
                                 ))}
-                                </tbody>
-                            </table>)}
+                                </tbody>)}
+                            </table>
                         </div>
                     </div>
                     <VoucherCreate

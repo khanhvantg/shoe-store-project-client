@@ -33,7 +33,7 @@ const Invoice = () => {
                             <div className="invoice-box">
                                 <div className="row justify-content-center">
                                 <div className="col-lg-12">
-                                    <div className="cart-info card p-4 mt-4">
+                                    <div className="cart-info card" style={{padding: "0px 1.5rem 1.5rem 1.5rem"}}>
                                     <li className="d-flex justify-content-between pt-2">
                                         <h4 class="mb-4">
                                             Invoice <br/>
@@ -168,7 +168,7 @@ const Invoice = () => {
                     <div className="col text-center px-xl-3">
                     <button 
                     onClick={Print}
-                    className="button-33 text-center" style={{width: "300px"}}
+                    className="button-1 text-center" style={{width: "300px"}}
                 >Print</button>
                 </div>
                    </>

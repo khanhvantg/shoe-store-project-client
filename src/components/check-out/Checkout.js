@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getWishListById,removeLineItem,updateLineItem } from '../../redux/actions/WishlistAction'
+import { getWishListById } from '../../redux/actions/WishlistAction'
 import {
-    LINE_ITEM_UPDATE_RESET,
     ORDER_CREATE_RESET,
     VOUCHER_DETAILS_STOP
 } from '../../redux/constants/Constants'
@@ -35,7 +34,7 @@ const Checkout = () => {
         address: '',
         phoneNumber: '',
         name: '',
-        status: null,      //status = 0 : cancle, 1 : wait confirm, 2: shipping, 3: completed 
+        status: 1,      //status = 0 : cancle, 1 : wait confirm, 2: shipping, 3: completed 
         createdDate: '',
         createdBy: '',
         totalPrice: null,
@@ -172,7 +171,7 @@ const Checkout = () => {
             }
         }
         // setCheck(true)
-    },[succsesCreate, user, successgetVoucher, successPayPal, form.city, form.district, form.ward, form.numberDetail])
+    },[succsesCreate, user, successgetVoucher, successPayPal, form.city, form.district, form.ward, form.numberDetail, form.paymentType])
 
     //API GHN
     const authHeader = () => {
@@ -262,7 +261,6 @@ const Checkout = () => {
 
         await axios.get("https://portal.vietcombank.com.vn/Usercontrols/TVPortal.TyGia/pXML.aspx?b=10", {headers : "Content-Type: application/json",}).then((res) => {
           let result = res.data.data;
-          console.log(result);
         //   setForm(prev=>({...prev, estimatedDate: result.leadtime}))
         });
     };
@@ -272,7 +270,6 @@ const Checkout = () => {
         }
         await axios.post("https://online-gateway.ghn.vn/shiip/public-api/v2/shop/affiliateOTP", phone, {headers: authHeader()}).then((res) => {
           let result = res.data.data;
-          console.log(result);
         //   setForm(prev=>({...prev, estimatedDate: result.leadtime}))
         });
     };
@@ -322,11 +319,11 @@ const Checkout = () => {
             errorMsg: '',
             onValidateFunc: onInputValidate
         },
-        address: {
-            isReq: true,
-            errorMsg: '',
-            onValidateFunc: onInputValidate
-        },
+        // address: {
+        //     isReq: true,
+        //     errorMsg: '',
+        //     onValidateFunc: onInputValidate
+        // },
         paymentType: {
             isReq: true,
             errorMsg: '',
@@ -441,12 +438,21 @@ const Checkout = () => {
     }
 
     // creates a paypal order
+    const onClick = (data, actions) => {
+        const isValid = validateForm();
+        if (isValid) {
+            return actions.resolve();
+        } else {
+            return actions.reject();
+        }
+    }
+    
     const createOrders = (data, actions) => {
         return actions.order
         .create({
             purchase_units: [
             {
-                description: "sassss",
+                description: "Thanks for your purchase",
                 amount: {
                     currency_code: "USD",
                     value: Math.round((Number(totalPrice)+Number(form.feeShip)+Number(totalPrice)*0.1-totalPrice*Number(form.voucher))*100)/100,
@@ -540,7 +546,7 @@ const Checkout = () => {
                                     }
                                 {infoVoucher.name!==''&&
                                 <div className="text-right">
-                                    <button type="button" className="button-33"onClick={handleVoucher}>Apply Voucher</button> 
+                                    <button type="button" className="button-1"onClick={handleVoucher}>Apply Voucher</button> 
                                 </div>
                                 }
                                 </>||
@@ -672,7 +678,7 @@ const Checkout = () => {
                                                 onChangeFunc={onInputChange}
                                                 {...errorInput.phoneNumber}
                                             />
-                                            {/* <button className="button-33" onClick={getOTP}>Get OTP</button> */}
+                                            {/* <button className="button-1" onClick={getOTP}>Get OTP</button> */}
                                             <label className="form-label">Payment Type</label>
                                             <div class="card-body"> 
                                                 {paymentList.map(item=>(
@@ -696,14 +702,15 @@ const Checkout = () => {
                                 <PayPalScriptProvider options={{ "client-id": CLIENT_ID }}>
                                 <PayPalButtons
                                     style={{ layout: "horizontal" }}
+                                    onClick={onClick}
                                     createOrder={createOrders}
                                     onApprove={onApprove}
-                                    forceReRender={[form.voucher,form.feeShip]}
+                                    forceReRender={[form.voucher,form.feeShip, form.city, form.district, form.ward, form.numberDetail]}
                                 />
                             </PayPalScriptProvider>:
                                 <button 
                                     onClick={()=>setSuccessPayPal(true)}
-                                    className="button-33" style={{width: "300px"}}
+                                    className="button-1" style={{width: "300px"}}
                                 >Order</button>
                             }  
                             </div>

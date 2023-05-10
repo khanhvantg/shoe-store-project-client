@@ -1,12 +1,12 @@
 import React from "react";
 
-const Loading = () => {
+const Loading = ({a}) => {
   return (
     <div className="d-flex justify-content-center">
       <div
-        className="spinner-border text-success"
+        className="spinner-border"
         role="status"
-        style={{ width: "50px", height: "50px" }}
+        style={{ width: a===undefined?"50px":a, height: a===undefined?"50px":a, color: "#00DDEB"}}
       >
         <span className="sr-only">Loading...</span>
       </div>

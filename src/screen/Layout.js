@@ -46,7 +46,6 @@ const Layout = () => {
             window.removeEventListener('resize', handleResize);
         };
     },[userInfo, windowSize.width])
-    console.log(active)
     return (
         <>
         <nav id="sidebar" className={active?"active":""}>
@@ -71,10 +70,8 @@ const Layout = () => {
                 <hr></hr>
             </div>
             <ul className="list-unstyled" style={{paddingLeft:20}}>
-                {isAdmin?
+                {isAdmin&&
                     <li className={f==="accounts"?"nav-item active":"nav-item"} ><Link to="/manage/accounts" className="nav-link">Accounts</Link></li>
-                    :
-                    <></>
                 }
                 <li className={f==="users"?"nav-item active":"nav-item"} ><Link to="/manage/users" className="nav-link">Users</Link></li>
                 <li className={f==="categories"?"nav-item active":"nav-item"} ><Link to="/manage/categories" className="nav-link" >Categories</Link></li>

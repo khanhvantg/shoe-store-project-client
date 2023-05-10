@@ -47,10 +47,9 @@ const Header = () => {
     const handleRemoveItem = (id) => {
         dispatch(removeLineItem(id));
     }
-    console.log("a",f)
     return (
         <div className="header box-shadow">
-        <nav className="navbar navbar-expand-lg navbar-light bg-white w-100 navigation flex-row-reverse" id="navbar">
+        <nav className="navbar navbar-expand-lg navbar-light bg-white w-100 navigation flex-row-reverse" id="navbar" style={{height: "79px"}}>
             <div className="" style={{width: "125px", paddingRight:"0px"}}>
                 <ul className="top-menu list-inline mb-0 d-lg-block" id="top-menu">
                     {/* <li className="dropdown cart-nav dropdown-slide list-inline-item">
@@ -86,7 +85,11 @@ const Header = () => {
                                         
                                     </div>
                                 </div>
-                                <a className="remove circle" onClick={()=>handleRemoveItem(item.id)}><i className="tf-ion-close"></i></a>
+                                {/* <div className="text-center"> */}
+                                <i className="tf-ion-android-delete" style={{cursor: "pointer", marginTop: "19px"}} onClick={()=>handleRemoveItem(item.id)} ></i>
+                                {/* </div> */}
+{/*     
+                                <a className="remove circle" onClick={()=>handleRemoveItem(item.id)}><i className="tf-ion-close"></i></a> */}
                             </div>
                             ))}
                             <div className="cart-summary">
@@ -94,8 +97,8 @@ const Header = () => {
                                 <span className="total-price h6">$1799.00</span> */}
                             {lineItems&&lineItems.length>0&&
                                 <div className="text-center cart-buttons mt-3">
-                                    <Link to="/checkout" className="button-33 mr-1">Check Out</Link>
-                                    <Link to="/cart" className="button-33 ml-1">View Cart</Link>
+                                    <Link to="/checkout" className="button-1 mr-1">Check Out</Link>
+                                    <Link to="/cart" className="button-1 ml-1">View Cart</Link>
                                 </div>||<div className="text-center">
                                             <img className="w-100 h-100" src="/assets/images/empty-cart.jpg"/>
                                         </div>}
@@ -133,15 +136,15 @@ const Header = () => {
                         
                                 <div className="text-center cart-buttons mt-3">
                                     {   isAdmin?
-                                        <Link to="/manage/paypal" className="button-33 mr-3">Manage</Link>
+                                        <Link to="/manage/paypal" className="button-1 mr-3">Manage</Link>
                                         : userInfo ?
-                                        <Link to="/profile" className="button-33 mr-3">Profile</Link>
+                                        <Link to="/profile" className="button-1 mr-3">Profile</Link>
                                         : <></>
                                     }
                                     { userInfo ? 
-                                        <Link to={{ pathname:"/login"}} onClick={logoutHandler} className="button-33 ml-3">Logout</Link>
+                                        <Link to={{ pathname:"/login"}} onClick={logoutHandler} className="button-1 ml-3">Logout</Link>
                                         :
-                                        <Link to={{ pathname:"/login"}} className="button-33">Login</Link>
+                                        <Link to={{ pathname:"/login"}} className="button-1">Login</Link>
                                     }
                                 </div>
                             </div>

@@ -128,15 +128,12 @@ const Login = () => {
                                             cursor: "pointer"}}></i>
                                 </span> */}
                                     <div className="text-center pt-1 mb-3 pb-1">
-                                            <button className="button-63 w-100" onClick={handleSubmit}>Login</button>
+                                            <button className="button-63 w-100" onClick={loading?"disabled":handleSubmit}>
+                                                {loading?<Loading a={"24px"}/>:
+                                                "Login"}
+                                            </button>
                                         </div>
-                                    {loading ? (
-                                        <Loading />
-                                        ) : error ? (
-                                            <Message variant="alert-danger">Username Or Password is not correct</Message>
-                                        ) : (
-                                            <></>
-                                    )}
+                                    {error && (<Message variant="alert-danger">Username or Password is not correct</Message>)}
                                 </div>
                             </div>
                         </div>

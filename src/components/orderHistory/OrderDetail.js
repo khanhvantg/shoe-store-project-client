@@ -10,7 +10,6 @@ const OrderDetail = ({isShowing, hide, id}) => {
     const orderDetail = useSelector((state) => state.orderDetail);
     const { loading, order, lineItems} = orderDetail;
 
-    console.log(lineItems)
     useEffect(() => {
         if(isShowing&&order.id!==id){
             dispatch(getOrderById(id));

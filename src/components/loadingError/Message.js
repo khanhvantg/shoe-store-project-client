@@ -2,8 +2,8 @@ import React from "react";
 
 const Message = ({ variant, children }) => {
   return (
-    <div className="d-flex justify-content-center col-12">
-      <div className={`alert ${variant}`}>{children}</div>
+    <div className="d-flex justify-content-center col-12" style={{position: "initial"}}>
+      <div className={`alert ${variant}`} style={{position: "initial"}}>{children}</div>
     </div>
   );
 };

@@ -35,7 +35,7 @@ const CofirmBox = ({noHandle,yesHanle,isShowing}) => {
                     </div>
                 </div>
                 <div className="modal-footer">
-                    <button type="button" className="btn btn-info" data-dismiss="modal" onClick={noHandle}>No</button>
+                    <button type="button" className="button-2" data-dismiss="modal" onClick={noHandle}>No</button>
                     <button type="button" className="btn btn-danger" onClick={()=>{yesHanle();noHandle();}}>Yes</button>
                 </div>
             </div>

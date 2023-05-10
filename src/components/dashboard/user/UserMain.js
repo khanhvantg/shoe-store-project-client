@@ -6,7 +6,8 @@ import UserUpdate from "./UserUpdate";
 import Loading from '../../loadingError/Loading';
 import Message from "../../loadingError/Message";
 import useModal from '../useModal';
-
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 const UserMain = () => {
     const dispatch = useDispatch();
     const [openModal, setOpenModal] = useState(false);
@@ -20,6 +21,22 @@ const UserMain = () => {
         dispatch(getAllUsers());
     }, [dispatch]);
 
+    const ListItem = () => {
+        return (
+            <tr>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+            </tr>
+        ); 
+    }
+
     return (
         // <div className="row flex-lg-nowrap">
         //     <div className="col mb-3">
@@ -30,11 +47,6 @@ const UserMain = () => {
                         </div>
                         <div className="e-table">
                             <div className="table-responsive table-lg mt-3">
-                            {loading ? (
-                                <Loading />
-                            ) : error ? (
-                                <Message variant="alert-danger">{error}</Message>
-                            ) : (
                                 <table className="table table-bordered table-hover">
                                     <thead align="center">
                                         <tr>
@@ -50,6 +62,23 @@ const UserMain = () => {
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
+                                    {loading ? (
+                                        <tbody align="center">
+                                            <ListItem/>
+                                            <ListItem/>
+                                            <ListItem/>
+                                            <ListItem/>
+                                            <ListItem/>
+                                        </tbody>
+                                    ) : error ? (
+                                        <tfoot align="center">
+                                            <tr>
+                                            <th colspan="9">
+                                            <Message variant="alert-danger">{error}</Message>
+                                            </th>
+                                            </tr>
+                                        </tfoot>
+                                    ) : (
                                     <tbody align="center">
                                     { users && users.sort((a,b)=>(b.id-a.id)).map((user, index) => (
                                         <tr onClick={()=>{toggle(user.id)}}>
@@ -83,8 +112,8 @@ const UserMain = () => {
                                             </td>
                                         </tr>
                                     ))}
-                                    </tbody>
-                                </table>)}
+                                    </tbody>)}
+                                </table>
                             </div>
                         </div>
                     </div>

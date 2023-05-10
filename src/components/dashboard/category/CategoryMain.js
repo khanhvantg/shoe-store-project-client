@@ -7,6 +7,8 @@ import Loading from '../../loadingError/Loading';
 import Message from "../../loadingError/Message";
 import useModal from '../useModal';
 import useModalCreate from '../useModalCreate';
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 const CategoryMain = () => {
     const dispatch = useDispatch();
     const {isShowingCreate, toggleCreate} = useModalCreate();
@@ -18,19 +20,29 @@ const CategoryMain = () => {
         dispatch(getAllcategories());
     }, [dispatch]);
 
+    const ListItem = () => {
+        return (
+            <tr>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+            </tr>
+        ); 
+    }
+
     return (
                 <div className="card-body">
                     <div className="text-center card-title">
                         <h3 className="mr-2">Categories Manage</h3>
                     </div>
-                    <button className="btn btn-success" style={{marginBottom: "5px"}} type="button" onClick={toggleCreate}>New Category</button>
+                    <button className="button-2" style={{marginBottom: "5px"}} type="button" onClick={toggleCreate}>New Category</button>
                     <div className="e-table">
                         <div className="table-responsive table-lg mt-3">
-                        {loading ? (
-                            <Loading />
-                        ) : error ? (
-                            <Message variant="alert-danger">{error}</Message>
-                        ) : (
                             <table className="table table-bordered table-hover">
                                 <thead align="center">
                                     <tr>
@@ -45,6 +57,23 @@ const CategoryMain = () => {
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
+                                {loading ? (
+                                        <tbody align="center">
+                                            <ListItem/>
+                                            <ListItem/>
+                                            <ListItem/>
+                                            <ListItem/>
+                                            <ListItem/>
+                                        </tbody>
+                                    ) : error ? (
+                                        <tfoot align="center">
+                                            <tr>
+                                            <th colspan="8">
+                                            <Message variant="alert-danger">{error}</Message>
+                                            </th>
+                                            </tr>
+                                        </tfoot>
+                                    ) : (
                                 <tbody align="center">
                                 { categories && categories.sort((a,b)=>(b.id-a.id)).map((category, index) => (
                                     <tr onClick={()=>{toggle(category.id)}}>
@@ -72,8 +101,8 @@ const CategoryMain = () => {
                                         </td>
                                     </tr>
                                 ))}
-                                </tbody>
-                            </table>)}
+                                </tbody>)}
+                            </table>
                         </div>
                     </div>
                     <CategoryCreate

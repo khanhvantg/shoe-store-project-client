@@ -43,7 +43,6 @@ const Home1 = () => {
     const handelNewArray = () => {
         setCheck(1);
     }
-    console.log("b",productBests);
     useEffect(() => {
         dispatch(getAllProducts());
         dispatch(getProductBest({month}))

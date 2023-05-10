@@ -12,6 +12,7 @@ import {
   PRODUCT_DETAILS_FAIL,
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
+  PRODUCT_DETAILS_STOP,
   PRODUCT_LIST_FAIL,
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
@@ -65,7 +66,6 @@ export const getProductPageable = ({formPage}) => async (dispatch) => {
 export const getProductFilter = ({filters}) => async (dispatch) => {
   try {
       dispatch({ type: PRODUCT_LIST_REQUEST });
-console.log(filters)
       const { data } = await axios.post('/api/products/filter', filters, {headers: authHeader()})
       dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
   } catch (error) {
@@ -113,15 +113,19 @@ dispatch({
 });
 }
 };
+export const stopGetProduct = () => async (dispatch) => {
+  //dispatch({ type: VOUCHER_DETAILS_REQUEST });
+  dispatch({ type: PRODUCT_DETAILS_STOP});
+};
 
 export const updateProduct = ({form}) => async (dispatch, getState) => {
 try {
   dispatch({ type: PRODUCT_UPDATE_REQUEST });
 
   const { data } = await axios.put(`/api/product/${form.productId}`, form, {headers: authHeader()});
-
-  dispatch({ type: PRODUCT_UPDATE_SUCCESS, payload: data });
-  dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data});
+  dispatch({ type: PRODUCT_UPDATE_SUCCESS, payload: data});
+  dispatch({type: PRODUCT_DETAILS_STOP});
+  // dispatch({ type: PRODUCT_DETAILS_SUCCESS });
   toast("Update Product Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
 } catch (error) {
   dispatch({

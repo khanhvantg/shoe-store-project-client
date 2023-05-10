@@ -9,6 +9,9 @@ import { getRevenueByMonth, getARevenueByMonth} from '../redux/actions/RevenueAc
 import { getAllProducts } from '../redux/actions/ProductAction'
 import { Fragment } from "react";
 import Loading from "../components/loadingError/Loading";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+
 const ManageRevenueYearScreen = () => {
   const [isMonthPicker, setMonthPicker] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
@@ -81,7 +84,6 @@ const ManageRevenueYearScreen = () => {
     var total = 0;
     for(let i in arevenueList){
         dataMotnh[0].data[Number(arevenueList[i].month)-1]=Number(arevenueList[i].totalPrice);
-        console.log(Number(arevenueList[i].totalPrice))
         total=total+Number(arevenueList[i].totalPrice);
     }
     for (let i in dataMotnh[0].data){
@@ -119,26 +121,36 @@ const ManageRevenueYearScreen = () => {
       e.preventDefault();
       setIsTable(!isTable);
     };
-    console.log(startDate.getMonth()+1)
+    
+    const ListItem = () => {
+      return (
+          <tr>
+              <td className="text-nowrap align-middle"><Skeleton/></td>
+              <td className="text-nowrap align-middle"><Skeleton/></td>
+          </tr>
+      ); 
+  }
   return (
     <div className="wrapper1">
         <Layout/>
-        <div className={isTable?"e-panel cardcus":"e-panel cardcus parent"} style={{width:"100%"}}>
+        <div className="e-panel cardcus" style={{width:"100%"}}>
                 <div className="card-body">
                     <div className="e-table">
                         <div className="table-responsive table-lg mt-3">
                         <div className="mb-3 form-inline">
-                        <button className="btn btn-info mr-2" onClick={handleClick1}>
-                            {!isTable?"Table":"Graphic"}
+                        <button className="button-2 mr-2" onClick={handleClick1}>
+                            {!isTable?"Back":"Graphic"}
                           </button>
-                          <button className="btn btn-info" type="button" onClick={handleClick}>
+                          {isTable&&
+                          <button className="button-2" type="button" onClick={handleClick}>
                             Year: {startDate.getFullYear()}
                             <i>  </i>
                             <i className="tf-ion-android-calendar"></i>
-                          </button>
+                          </button>}
                         </div>
                           
-                        {isOpen && (
+                        {isOpen && isTable &&(
+                          <div style={{margin: "-15px 70px", position: "absolute"}}>
                         <DatePicker
                             selected={startDate}
                             onChange={(date) => {
@@ -153,13 +165,13 @@ const ManageRevenueYearScreen = () => {
                             showYearPicker
                             showFullYearPicker
                             inline
-                          />)}
+                          />
+                          </div>
+                          )}
                             {isTable?
                       <>
                           <div ref={refContainer} hidden>
                           </div>
-                          {((revenueList.length>0 && !revenueList[revenueList.length-1].nameProduct) || (loading))? (
-                                <Loading />):
                           <table className="table table-bordered table-hover">
                             <thead align="center">
                             <tr>
@@ -167,6 +179,10 @@ const ManageRevenueYearScreen = () => {
                                 <th>Revenue</th>
                             </tr>
                             </thead>
+                            {((revenueList.length>0 && !revenueList[revenueList.length-1].nameProduct) || (loading))? (
+                                <tbody align="center">
+                                  <ListItem/><ListItem/><ListItem/><ListItem/><ListItem/>
+                                </tbody>):
                             <tbody align="center">
                             {arevenueList&&arevenueList.sort((a,b)=>(a.month-b.month)).map((item)=> (
                             <tr>
@@ -175,19 +191,28 @@ const ManageRevenueYearScreen = () => {
                             </tr>
                             
                             ))}          
-                            </tbody>
+                            </tbody>}
+                            {((revenueList.length>0 && !revenueList[revenueList.length-1].nameProduct) || (loading))? (
+                                <tfoot align="center">
+                                <tr>
+                                  <th colspan="1"><Skeleton/></th>
+                                  <th colspan="1"><Skeleton/></th>
+                                </tr>
+                              </tfoot>):
                             <tfoot align="center">
                             <tr>
                               <th colspan="1">Total</th>
                               <th colspan="1">${total}</th>
                             </tr>
-                            </tfoot>
-                          </table>}
+                            </tfoot>}
+                          </table>
                           </>
                         :
+                        <div className="e-panel cardcus parent" style={{width:"100%"}}>
                         <table className="child" ref={refContainer} style={{border:"2px soild"}}>
                         </table>
-}
+                        </div>
+}             
                         </div>
                     </div>
                 </div>

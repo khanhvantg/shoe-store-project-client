@@ -7,12 +7,17 @@ import { post } from "jquery";
 import { getBalance, getListTransaction, refundTransaction } from "../../../redux/actions/PayPalAction";
 import Loading from "../../loadingError/Loading";
 import Message from "../../loadingError/Message";
+import useModal from '../useModal';
 import DatePicker from 'react-datepicker';
 import { format } from 'date-fns'
 import { getAllOrders, updateOrder } from "../../../redux/actions/OrderAction";
 import { PAYPAL_REFUND_RESET } from "../../../redux/constants/Constants";
 import LoadingCustom from "../../loadingError/LoadingCustom";
+import CofirmBox from "../../cofirmBox/CofirmBox";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 const PayPalTransaction = () => {
+    const {isShowing:isShowConfirmBox, toggle:toggleConfirmBox, id: idTransaction, toggleImage: getIdOrder, idd: idOrder} = useModal();
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
     // const [balance, setBalance] = useState([]);
@@ -78,7 +83,6 @@ const PayPalTransaction = () => {
         let mn = Number(a.transaction_amount.value);
         let mnf = 0;
         if(a.transaction_id!=='00C038196C7999707'){
-            // console.log(a)
             mnf = Number(a.fee_amount.value);
         }
         if(mn<0){
@@ -114,17 +118,39 @@ const PayPalTransaction = () => {
         }
       }
       var today = new Date();
-      const handleRefund = (transaction_id, order_id) => {
-        dispatch(refundTransaction(transaction_id))
+      const handleRefund = () => {
+        dispatch(refundTransaction(idTransaction))
         const orderInfo = {
-            orderId: order_id,
+            orderId: idOrder,
             status: '0',
             paymentStatus: '2',
             modifiedDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()
         }
         dispatch1(updateOrder({orderInfo}))
       }
-      console.log('a',successRefund)
+    //   const handleRefund = (transaction_id, order_id) => {
+    //     dispatch(refundTransaction(transaction_id))
+    //     const orderInfo = {
+    //         orderId: order_id,
+    //         status: '0',
+    //         paymentStatus: '2',
+    //         modifiedDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()
+    //     }
+    //     dispatch1(updateOrder({orderInfo}))
+    //   }
+    const ListItem = () => {
+        return (
+            <tr>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+            </tr>
+        ); 
+    }
   return (
     <>
     {
@@ -204,16 +230,20 @@ const PayPalTransaction = () => {
                        </div> */}
 
                    </div>
-                   <div className="row">
-                       
-                       <div className="col-xl-3 mb-1">
-                   <button className="btn btn-info" onClick={handleClickStart}>
+                   
+               </div>
+           </div>
+           <div className="row" style={{margin: "0px 15px"}}>
+                       <div className="mb-1 mr-2">
+                   <button className="button-2" onClick={handleClickStart}>
                         Start Date: {format(sDate, "yyyy-MM-dd")}
                         <i>  </i>
                         <i className="tf-ion-android-calendar"></i>
                     </button>
                     {isOpenStart && (
+                        <div style={{position: "absolute"}}>
                                 <DatePicker
+                                
                                 selected={sDate}
                                 onChange={(date) => {
                                   setSDate(date);
@@ -224,15 +254,17 @@ const PayPalTransaction = () => {
                                 dateFormat="yyyy-MM-dd"
                                 inline
                               />
+                              </div>
                         )}
                         </div>
-                        <div className="col-xl-3 ">
-                    <button className="btn btn-info" onClick={handleClickEnd}>
+                        <div className="">
+                    <button className="button-2" onClick={handleClickEnd}>
                         End Date: {format(eDate, "yyyy-MM-dd")}
                         <i>  </i>
                         <i className="tf-ion-android-calendar"></i>
                     </button>
                     {isOpenEnd && (
+                        <div style={{position: "absolute"}}>
                                 <DatePicker
                                 selected={eDate}
                                 onChange={(date) => {
@@ -244,12 +276,29 @@ const PayPalTransaction = () => {
                               dateFormat="yyyy-MM-dd"
                                 inline
                               />
+                            </div>
                         )}
                         </div> 
-                        </div> 
-                   <div className="row" style={{marginTop: "10px"}}>
-                       <div class="col-xl-6 mb-1">
-                           <div class="card">
+                        </div>
+                        {/* {isOpenStart && (
+            <div style={{position: "absolute", margin: "0px 15px"}}>
+                    <DatePicker
+                        selected={sDate}
+                        onChange={(date) => {
+                            setSDate(date);
+                            setStartDate(format(date,"yyyy-MM-dd'T'00:00:00-0700"));
+                            setIsOpenStart(!isOpenStart);
+                            }
+                        }
+                        dateFormat="yyyy-MM-dd"
+                        inline
+                    />
+            </div>
+            )} */}
+            <div>
+            <div className="row" style={{margin: "10px 0px", position: "none"}}>
+                       <div class="col-xl-6 mb-1" style={{position: "initial"}}>
+                           <div class="" style={{backgroundColor: "white"}}>
                                <div class="card-heading p-4">
                                    <div class="mini-stat-icon float-right">
                                        <i class="mdi mdi-briefcase-check bg-success text-white"></i>
@@ -260,9 +309,9 @@ const PayPalTransaction = () => {
                                    {loading ? (
                                 <Loading />
                             ) : error ? (
-                                <Message variant="alert-danger">{error}</Message>
+                                <Message variant="alert-danger" style ={{position: "initial"}}>{error}</Message>
                             ) : (
-                                   <h3 class="mt-4">${moneyIn}</h3>)}
+                                   <h3 class="mt-4">${Math.round(moneyIn*100)/100}</h3>)}
                                    {/* <div class="progress mt-4" style={{height: "4px"}}>
                                        <div class="progress-bar bg-success" role="progressbar" style={{width: "88%"}} aria-valuenow="88" aria-valuemin="0" aria-valuemax="100"></div>
                                    </div>
@@ -271,8 +320,8 @@ const PayPalTransaction = () => {
                            </div>
                        </div>
 
-                       <div class="col-xl-6">
-                           <div class="card">
+                       <div class="col-xl-6" style={{position: "initial"}}>
+                           <div class="bg-white">
                                <div class="card-heading p-4">
                                    <div class="mini-stat-icon float-right">
                                        <i class="mdi mdi-tag-text-outline bg-warning text-white"></i>
@@ -285,7 +334,7 @@ const PayPalTransaction = () => {
                             ) : error ? (
                                 <Message variant="alert-danger">{error}</Message>
                             ) : (
-                                   <h3 class="mt-4">${moneyOut}</h3>)}
+                                   <h3 class="mt-4">${Math.round(moneyOut*100)/100}</h3>)}
                                    {/* <div class="progress mt-4" style={{height: "4px"}}>
                                        <div class="progress-bar bg-warning" role="progressbar" style={{width: "68%"}} aria-valuenow="68" aria-valuemin="0" aria-valuemax="100"></div>
                                    </div>
@@ -297,25 +346,14 @@ const PayPalTransaction = () => {
 
                        </div>
                 
-                   
-               </div>
-              
-
-           </div>
-
            <div class="row">
-                       <div class="col-xl-12">
-                           <div class="card m-b-30" style={{margin: "10px 15px"}}>
+                       <div class="col-xl-12" style={{position: "initial"}}>
+                           <div class="bg-white m-b-30" style={{margin: "10px 15px"}}>
                                <div class="card-body">
                                    <h4 class="mt-0 header-title mb-4 text-center">Active Transaction</h4>
                                   
                                    <div className="e-table">
                             <div className="table-responsive table-lg mt-3">
-                            {loading ? (
-                                <Loading />
-                            ) : error ? (
-                                <Message variant="alert-danger">{error}</Message>
-                            ) : (
                                 <table className="table table-bordered table-hover">
                                     <thead align="center">
                                         <tr>
@@ -329,6 +367,15 @@ const PayPalTransaction = () => {
                                             <th>Action</th>
                                         </tr>
                                     </thead>
+                                    {loading ? (
+                                        <tbody  align="center">
+                                            <ListItem/>
+                                            <ListItem/>
+                                            <ListItem/>
+                                            <ListItem/>
+                                            <ListItem/>
+                                        </tbody>
+                                    ) : (
                                     <tbody  align="center">
                                     { money && money.sort((a,b)=>(b.transaction_info.status-a.transaction_info.status)).map((item,index) => (
                                         <tr style={{backgroundColor: item.transaction_info.status==='-1'&&"gray", textDecorationLine: item.transaction_info.status==='-1'&&"line-through"}}>
@@ -343,7 +390,10 @@ const PayPalTransaction = () => {
                                                 <td className="text-center align-middle">
                                                 <div className="btn-group align-top">
                                                     {item.transaction_info.status==='1'&&
-                                                    <button className="btn btn-sm btn-outline-secondary badge" type="button" onClick={()=>handleRefund(item.transaction_info.transaction_id,item.transaction_info.order_id)}> 
+                                                    <button className="btn btn-sm btn-outline-secondary badge" type="button" 
+                                                        // onClick={()=>handleRefund(item.transaction_info.transaction_id,item.transaction_info.order_id)}
+                                                        onClick={()=>{toggleConfirmBox(item.transaction_info.transaction_id); getIdOrder(item.transaction_info.order_id)}}
+                                                    > 
                                                         Refund
                                                     </button>
                                                     ||<span>None</span>
@@ -353,8 +403,9 @@ const PayPalTransaction = () => {
                                             
                                         </tr>
                                     ))}
-                                    </tbody>
-                                </table>)}
+                                    </tbody>)}
+                                </table>
+                                {error && <Message variant="alert-danger">{error}</Message>}
                             </div>
                       
                     
@@ -365,10 +416,15 @@ const PayPalTransaction = () => {
                        </div>
 
                    </div>
-                 
+            </div>     
 
        </div>
     </div>
+    <CofirmBox 
+            isShowing={isShowConfirmBox}
+            noHandle={toggleConfirmBox}
+            yesHanle={handleRefund}
+        />
 </div>
 </>
   )

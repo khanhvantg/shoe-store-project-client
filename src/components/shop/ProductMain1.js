@@ -86,8 +86,7 @@ const ProductMain1 = () => {
                 // }, 2500);
                 // setTimer(newTimer)
             }
-        } 
-        else {
+        } else {
             dispatch(getCategoryById(idCategory));
         }
         setSearchText("")

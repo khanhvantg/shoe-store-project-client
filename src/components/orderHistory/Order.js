@@ -14,6 +14,8 @@ import Loading from "../loadingError/Loading";
 import LoadingCustom from "../loadingError/LoadingCustom";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { Link } from "react-router-dom";
+import Message from "../loadingError/Message";
 const Order = () => {
     const {isShowing, toggle, id} = useModal();
     const {isShowing:isShowConfirmBox, toggle:toggleConfirmBox, id: idOrder} = useModal();
@@ -94,7 +96,15 @@ const Order = () => {
                                         <ListItem/>
                                         <ListItem/>
                                     </tbody>    
-                                ) :
+                                ) : error ? (
+                                    <tfoot align="center">
+                                            <tr>
+                                            <th colspan="8">
+                                            <Message variant="alert-danger">{error}</Message>
+                                            </th>
+                                            </tr>
+                                        </tfoot>
+                                ):
                                 <tbody align="center">
                                 {orders&&orders.sort((a,b)=>(b.id-a.id)).map((item)  => (
                                     <tr onClick={()=>toggle(item.id)}>
@@ -194,6 +204,15 @@ const Order = () => {
 
                         </div>
                     </div>
+                    {(loading!==true&&orders&&orders.length<=0)&&
+                        <div className="text-center">
+                            <h1>There are no orders yet</h1>
+                            
+                            <Link to="/shop" className="button-1">
+                                Shop Now
+                            </Link>
+                        </div>
+                    }
                 </div>
             </div>
                 <OrderDetail 

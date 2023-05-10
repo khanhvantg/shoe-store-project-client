@@ -100,7 +100,7 @@ a:focus,
 a:hover {
   text-decoration: none;
   outline: 0;
-  color: #fb5c42;
+  color: #00e6e6;
 }
 
 .btn.active:focus,
@@ -334,7 +334,7 @@ input[type="tel"]:focus {
 }
 
 .pagination .page-item .page-link:hover {
-  background: #fb5c42;
+  background: #33ccff;
   color: #fff;
 }
 
@@ -343,9 +343,9 @@ input[type="tel"]:focus {
 }
 
 .pagination .page-item.active .page-link {
-  background: #fb5c42;
+  background: #33ccff;
   color: #fff;
-  border-color: #fb5c42;
+  border-color: #33ccff;
 }
 
 .text-primary {
@@ -1054,7 +1054,7 @@ a.text-primary:hover {
 }
 
 .product-hover-overlay a:hover {
-  background: #fb5c42;
+  background: #00e6e6;
   color: #fff;
 }
 
@@ -1078,7 +1078,7 @@ a.text-primary:hover {
 }
 
 .onsale {
-  background: #fb5c42;
+  background: #33ccff;
   display: inline-block;
   color: #fff;
   position: absolute;

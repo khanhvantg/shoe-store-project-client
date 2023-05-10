@@ -36,11 +36,6 @@ const ChangeHandler1 = (e, props) => {
 }
 
 const Select = props => {
-  // const selectInputRef = useRef();
-  // console.log('ffff',selectInputRef)
-  // const onClear = () => {
-  //   if(props.value===null) selectInputRef.current.select.clearValue();
-  // };
   const inputProps = {
     name: props.name,
     placeholder: props.placeholder || `Select ${props.title}`,

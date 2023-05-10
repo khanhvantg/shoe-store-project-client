@@ -12,6 +12,8 @@ import Message from "../../loadingError/Message";
 import useModal from '../useModal';
 import { getAllOrders, updateOrder } from '../../../redux/actions/OrderAction'
 import OrderDetail from "./OrderDetail";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 const OrderMain = () => {
     const {isShowing, toggle, id} = useModal();
     const dispatch = useDispatch();
@@ -48,7 +50,7 @@ const OrderMain = () => {
             // }
         }
     }, [successUpdate, dispatch]);
-    // if(!error){
+    // if(!error)
     //     orders.sort((a,b)=>(a.id-b.id));
     // }
     // const orderDetail = useSelector((state) => state.orderDetail);
@@ -74,6 +76,20 @@ const OrderMain = () => {
         // setStatus(e.target.value);
         // setOderId(idO);
     }
+    const ListItem = () => {
+        return (
+            <tr>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+            </tr>
+        ); 
+    }
   return (
     // <div className="row flex-lg-nowrap">
     //     <div className="col mb-3">
@@ -84,11 +100,6 @@ const OrderMain = () => {
                     </div>
                     <div className="e-table">
                         <div className="table-responsive table-lg mt-3">
-                        {loading ? (
-                            <Loading />
-                        ) : error ? (
-                            <Message variant="alert-danger">{error}</Message>
-                        ) : (
                             <table className="table table-bordered table-hover">
                                 <thead align="center">
                                     <tr>
@@ -103,6 +114,23 @@ const OrderMain = () => {
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
+                                {loading ? (
+                                        <tbody align="center">
+                                            <ListItem/>
+                                            <ListItem/>
+                                            <ListItem/>
+                                            <ListItem/>
+                                            <ListItem/>
+                                        </tbody>
+                                    ) : error ? (
+                                        <tfoot align="center">
+                                            <tr>
+                                            <th colspan="8">
+                                            <Message variant="alert-danger">{error}</Message>
+                                            </th>
+                                            </tr>
+                                        </tfoot>
+                                    ) : (
                                 <tbody align="center">
                                 {orders&&orders.sort((a,b)=>(b.id-a.id)).map((item, index)  => (
                                     <tr onClick={()=>{toggle(item.id)}}>
@@ -228,9 +256,8 @@ const OrderMain = () => {
                                         </td>
                                     </tr>
                                 ))}
-                                </tbody>
+                                </tbody>)}
                             </table>
-                            )}
                         </div>
                     </div>
                 </div>

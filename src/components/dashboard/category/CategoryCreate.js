@@ -174,9 +174,15 @@ const CategoryCreate = ({isShowing, hide}) => {
                                                     />
                                             </div>
                                 </div>
-                                <div className="col text-center px-xl-3">
-                                    <button className="button-33" type="submit" onClick={submitHandler}>Save</button>
+                                <div className="text-center pt-1 mb-3 pb-1">
+                                    <button className="button-1" style={{width: "150.9px"}} onClick={loadingCreate?"disabled":submitHandler}>
+                                        {loadingCreate?<Loading a={"16px"}/>:
+                                        "Save"}
+                                    </button>
                                 </div>
+                                {/* <div className="col text-center px-xl-3">
+                                    <button className="button-1" type="submit" onClick={submitHandler}>Save</button>
+                                </div> */}
                             </div>
                         </div>
                     </div>

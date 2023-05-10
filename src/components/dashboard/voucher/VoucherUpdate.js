@@ -79,6 +79,7 @@ const VoucherUpdate = ({isShowing, hide, id}) => {
         if (successUpdate) {
             dispatch({type: VOUCHER_UPDATE_RESET});
             dispatch(getAllVouchers());
+            hide();
         } else {
             if (isShowing&&voucher.id!==id) {
                 dispatch(getVoucherById(id));
@@ -146,7 +147,7 @@ const VoucherUpdate = ({isShowing, hide, id}) => {
         const isValid = validateForm();
         if (isValid) {
             dispatch(updateVoucher({form}));
-            hide();
+            // hide();
         }
     };
     if(!isShowing) return null;
@@ -209,9 +210,15 @@ const VoucherUpdate = ({isShowing, hide, id}) => {
                                         />
                                     </div> 
                                 </div>
-                                <div className="col text-center px-xl-3">
-                                    <button className="button-33" type="submit" onClick={()=>{submitHandler();}}>Save Changes</button>
+                                <div className="text-center pt-1 mb-3 pb-1">
+                                    <button className="button-1" style={{width: "150.9px"}} onClick={loadingUpdate?"disabled":()=>{submitHandler()}}>
+                                        {loadingUpdate?<Loading a={"16px"}/>:
+                                        "Save Changes"}
+                                    </button>
                                 </div>
+                                {/* <div className="col text-center px-xl-3">
+                                    <button className="button-1" type="submit" onClick={()=>{submitHandler();}}>Save Changes</button>
+                                </div> */}
                             </div>)}
                         </div>
                     </div>

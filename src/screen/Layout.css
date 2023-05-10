@@ -89,15 +89,16 @@ a:focus {
 }
 
 #sidebar ul li a:hover {
-    color: #7386D5;
+    color: #17a2b8;
     background: rgb(252, 252, 252);
 }
 
 #sidebar ul li.active>a,
 a[aria-expanded="true"] {
-    color: #1a8100;
+    color: #17a2b8;
     font-size: larger;
     font-style: Georgia;
+    border-bottom: 3px solid #00DDEB;
 }
 
 a[data-toggle="collapse"] {
@@ -137,7 +138,7 @@ a.download {
 
 a.article,
 a.article:hover {
-    background: #6d7fcc !important;
+    background: #00DDEB !important;
     color: #fff !important;
 }
 

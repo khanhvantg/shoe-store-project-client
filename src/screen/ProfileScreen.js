@@ -32,6 +32,16 @@ const ProfileScreen = () => {
         email: '',
         username: '',
     })
+    const [formCheck, setFormCheck] = useState({
+        name: '',
+        age: '',
+        gender: '',
+        address: '',
+        phone: '',
+        email: '',
+        username: '',
+    })
+    const [change, setChange] = useState(false)
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const id = userInfo.id;
 
@@ -194,18 +204,26 @@ const ProfileScreen = () => {
 
     
   return (
-      <div className="container rounded bg-white mt-100">
-        <div className="row">
-            <div className="col-md-4 border-right">
-                <div className="d-flex flex-column align-items-center text-center p-3 py-5">
-                    <img className="rounded-circle mt-5" src="https://i.imgur.com/0eg0aG0.jpg" width="90"/>
+      <div className="container rounded">
+        <div className="row py-4">
+            <div className="col-md-4">
+                <div className="d-flex flex-column align-items-center text-center p-3">
+                    <img className="rounded-circle mt-4" src="https://i.imgur.com/0eg0aG0.jpg" width="90"/>
                     <span className="font-weight-bold">{form.username}</span>
                     <span className="text-black-50">{form.email}</span>
                     <span>{form.address}</span></div>
-                    <button className="btn btn-primary btn-block" type="submit" onClick={()=>setHide(!hide)}>Change Password</button>
-                        { hide ? (
+                    <article class="filter-group">
+                        <header class="card-header" style={{border: "none"}}>
+                            <a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="false" class="d-flex collapsed">
+                                <i class="icon-control fa fa-chevron-down mr-3">
+                                </i>
+                                <h5 class="title1">Change Password </h5>
+                            </a>
+                        </header>
+                    {/* <button className="btn btn-primary btn-block" type="submit" onClick={()=>setHide(!hide)}>Change Password</button> */}
+                        {/* { hide ? ( */}
                         
-                        <div className="form mb-5">
+                        <div class="filter-content collapse form mb-5 py-2" id="collapse_3">
                             <div className="login-form">
                                         <Input
                                             name="currentPassword"
@@ -227,21 +245,29 @@ const ProfileScreen = () => {
                                 </div>
                     
                         
-                        {loadingUpdateAccount ? (
+                        {/* {loadingUpdateAccount ? (
                             <Loading />
                                 ) : (errorUpdateAccount) ? (
-                                    <div className="button-33">
+                                    <div className="button-1">
                                         <Message variant="alert-danger">{errorUpdateAccount}</Message>
                                         <button className="btn btn-success btn-block" onClick={handleSubmit}>Save Changes</button>
                                     
                                     </div>
                                 ) : (
                         <div className="col text-center px-xl-3">
-                            <button className="button-33" onClick={handleSubmit}>Save Changes</button>
-                        </div>)}
+                            <button className="button-1" onClick={handleSubmit}>Save Changes</button>
+                        </div>)} */}
+                        <div className="text-center pt-1 mb-3 pb-1">
+                                <button className="button-1" style={{width: "150.9px"}} onClick={loadingUpdateAccount?"disabled":handleSubmit}>
+                                    {loadingUpdateAccount?<Loading a={"16px"}/>:
+                                    "Save Changes"}
+                                </button>
+                            </div>
+                        {errorUpdateAccount && (<Message variant="alert-danger">{errorUpdateAccount}</Message>)}
 
-                    </div>):(<></>)}
-                    
+                    </div>
+                    {/* ):(<></>)} */}
+                   </article> 
             </div>
             <div className="col-md-8">
                     <div className="text-center">
@@ -251,9 +277,9 @@ const ProfileScreen = () => {
                         <h4>Edit Profile</h4>
                         
                         </div>
-                    { (loading || loadingUpdate) ? (
+                    { (loading) ? (
                         <Loading />
-                            ) : (error || errorUpdate) ? (
+                            ) : (error) ? (
                                 <Message variant="alert-danger">{error}</Message>
                             ) : (
                         <div className="form m-3">
@@ -312,9 +338,16 @@ const ProfileScreen = () => {
                                     </div>
                                 </div> 
                         </div>
-                        <div className="col text-center px-xl-3" style={{padding: "0 0 10 0"}}>
-                            <button className="button-33" type="submit" onClick={submitHandler}>Save Changes</button>
-                        </div>
+                        <div className="text-center pt-1 mb-3 pb-1">
+                                    <button className="button-1" style={{width: "150.9px"}} onClick={loadingUpdate?"disabled":submitHandler}>
+                                        {loadingUpdate?<Loading a={"16px"}/>:
+                                        "Save Changes"}
+                                    </button>
+                                </div>
+                                {errorUpdate && (<Message variant="alert-danger">{errorUpdate}</Message>)}
+                        {/* <div className="col text-center px-xl-3" style={{padding: "0 0 10 0"}}>
+                            <button className="button-1" type="submit" onClick={submitHandler}>Save Changes</button>
+                        </div> */}
                     </div>
                     )}
                 </div>

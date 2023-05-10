@@ -10,7 +10,6 @@ const Thanks = () => {
   const encodedBase64Token = base64_encode(`${username}:${password}`);
   const authorization = `Basic ${encodedBase64Token}`;
   //var session_url = 'https://api-m.sandbox.paypal.com/v1/reporting/balances';
- // console.log('af',encodedBase64Token)
   const response = axios({
     url: 'https://api-m.sandbox.paypal.com/v1/reporting/balances',
     method: 'GET',
@@ -41,9 +40,9 @@ const Thanks = () => {
                       <p className="text-md mt-3 text-white">or call us at (+84) 94-529-1058</p>
                     </div>
                 <div className="text-center cart-buttons mt-3"  style={{padding: "10px 0px 50px 0px"}}>
-                    <Link to="/order" className="button-33 mb-3 mr-5">Order History</Link>
+                    <Link to="/order" className="button-1 mb-3 mr-5">Order History</Link>
 
-                    <Link to="/shop" className="button-33 mb-3 ml-5">Shop Continue</Link>
+                    <Link to="/shop" className="button-1 mb-3 ml-5">Shop Continue</Link>
                 </div>           
             {/* </div> */}
         </div>

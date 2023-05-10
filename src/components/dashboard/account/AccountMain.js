@@ -6,7 +6,8 @@ import AccountUpdate from "./AccountUpdate";
 import Loading from '../../loadingError/Loading';
 import Message from "../../loadingError/Message";
 import useModal from '../useModal';
-
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 const AccountMain = () => {
     const dispatch = useDispatch();
     const [openModal, setOpenModal] = useState(false);
@@ -21,6 +22,17 @@ const AccountMain = () => {
         dispatch(getAllAccounts());
     }, [dispatch]);
 
+    const ListItem = () => {
+        return (
+            <tr>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
+            </tr>
+        ); 
+    }
+
     return (
         // <div className="row flex-lg-nowrap">
         //     <div className="col mb-3">
@@ -31,11 +43,6 @@ const AccountMain = () => {
                         </div>
                         <div className="e-table">
                             <div className="table-responsive table-lg mt-3">
-                            {loading ? (
-                                <Loading />
-                            ) : error ? (
-                                <Message variant="alert-danger">{error}</Message>
-                            ) : (
                                 <table className="table table-bordered table-hover">
                                     <thead align="center">
                                         <tr>
@@ -46,6 +53,23 @@ const AccountMain = () => {
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
+                                    {loading ? (
+                                        <tbody align="center">
+                                            <ListItem/>
+                                            <ListItem/>
+                                            <ListItem/>
+                                            <ListItem/>
+                                            <ListItem/>
+                                        </tbody>
+                                    ) :error ? (
+                                        <tfoot align="center">
+                                            <tr>
+                                            <th colspan="4">
+                                            <Message variant="alert-danger">{error}</Message>
+                                            </th>
+                                            </tr>
+                                        </tfoot>
+                                    ) : (
                                     <tbody align="center">
                                     { accounts && accounts.sort((a,b)=>(b.id-a.id)).map((account, index) => (
                                         <tr onClick={()=>{toggle(account.id)}}>
@@ -75,8 +99,8 @@ const AccountMain = () => {
                                             </td>
                                         </tr>
                                     ))}
-                                    </tbody>
-                                </table>)}
+                                    </tbody>)}
+                                </table>
                             </div>
                         </div>
                     </div>

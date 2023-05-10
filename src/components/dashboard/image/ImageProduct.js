@@ -4,6 +4,9 @@ import { getAllImages, createImageByProductId, updateImage } from '../../../redu
 import Loading from '../../loadingError/Loading';
 import Message from "../../loadingError/Message";
 import ImageUploader from './image-uploader';
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+
 const ImageProduct = ({isShowing, hide, id}) => {
     const dispatch = useDispatch();
     const imageList = useSelector((state) => state.imageList);
@@ -33,6 +36,20 @@ const ImageProduct = ({isShowing, hide, id}) => {
             dispatch(getAllImages({id}));
         }
     }, [dispatch,id,product]);
+    const ListItem = () => {
+        return (
+            <div className="col-lg-3 mx-auto d-block" >
+                <div className="img-thumbnail mx-auto d-block" style={{borderRadius: "0px", border: "none"}}>
+                    <Skeleton className="w-100 border img-load3"/>
+                </div>
+                <div className="mt-1 w-25 mx-auto"> 
+                    <Skeleton/>
+                </div>
+                <br></br>
+            </div>
+                    
+        );
+      }
 
     if(!isShowing)return null;
     return (
@@ -44,7 +61,7 @@ const ImageProduct = ({isShowing, hide, id}) => {
                     <div className="modal-header">
                         <div className="col px-xl-3">
                             <h5 className="modal-title">Images Of Product</h5>
-                            <button className="btn btn-primary cloudinary-button" type="submit" id="upload_widget" onClick={()=>handleOpenWiget()}>Add Image</button>
+                            <button className="button-2 cloudinary-button" type="submit" id="upload_widget" onClick={()=>handleOpenWiget()}>Add Image</button>
                         </div>
                         <button type="button" className="close" data-dismiss="modal" onClick={hide}>
                             <span aria-hidden="true">×</span>
@@ -55,15 +72,19 @@ const ImageProduct = ({isShowing, hide, id}) => {
                         <div className="py-1 ">
                             <div className="container">
                             {loading ? (
-                                <Loading />
+                                <div className="row">
+                                    <ListItem />
+                                    <ListItem />
+                                    <ListItem />
+                                </div>
                                 ) : error ? (
                                     <Message variant="alert-danger">{error}</Message>
                                 ) : (
                                 <div className="row">
                                     {images&&images.map((item,index)=>(
                                         <div className="col-lg-3 mx-auto d-block" >
-                                            <img src={item.link} alt="" className="img-thumbnail mx-auto d-block"/>
-                                            <button className="btn btn-sm btn-outline-secondary mx-auto d-block " type="button" onClick={()=>{handleEditImg(item.id)}}> 
+                                            <img src={item.link} alt="" className="img-thumbnail mx-auto d-block" style={{borderRadius: "0px"}}/>
+                                            <button className="btn btn-sm btn-outline-secondary mx-auto d-block mt-1" type="button" onClick={()=>{handleEditImg(item.id)}}> 
                                                 <i className="tf-ion-edit"></i>
                                             </button>
                                             <br></br>

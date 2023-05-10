@@ -123,7 +123,14 @@ const ForgetPassword = () => {
                                 onChangeFunc={onInputChange}
                                 {...errorInput.email}
                             />
-                            <div className="form-group">
+                            <div className="text-center pt-1 mb-3 pb-1">
+                                            <button className="button-63 w-100" onClick={loading?"disabled":handleSubmit}>
+                                                {loading?<Loading a={"24px"}/>:
+                                                "Login"}
+                                            </button>
+                                        </div>
+                                    {error && (<Message variant="alert-danger">Username or Password is not correct</Message>)}
+                            {/* <div className="form-group">
                                         <button onClick={handleSubmit} className="button-63 w-100">Update Password</button>
                                     </div>
                             {loading ? (
@@ -131,7 +138,7 @@ const ForgetPassword = () => {
                                     ) : error && (
                                         <Message variant="alert-danger">{error}</Message>
                                     
-                                )}
+                                )} */}
                         </div>
                     </div>
                     </div>

@@ -91,7 +91,8 @@
     }
 
     .main {
-        margin-top: 85px;
+        margin-top: 79px;
+        min-height: 700px;
     }
     @media (max-width: 992px) {
         .main {
@@ -112,6 +113,9 @@
     .img-load2 {
         height: 253.39px;
     }
+    .img-load3 {
+        height: 204.46px;
+    }
 
     @media (max-width: 1199.98px) {
         .img-load, .img-load1 {
@@ -131,6 +135,9 @@
         }
         .img-load2 {
             height: 145px;
+        }
+        .img-load3 {
+            height: 409.6px;
         }
     }
     
@@ -157,4 +164,5 @@
 
     .toast-position {
         margin-bottom: 4rem !important;
+        z-index: 9999;
       }

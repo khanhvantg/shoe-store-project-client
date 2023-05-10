@@ -101,7 +101,7 @@
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;  
   }
 
-  .button-33 {
+  .button-1 {
     background: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
     border: 0;
     border-radius: 6px;
@@ -126,97 +126,50 @@
     vertical-align: middle;
   }
   
-  .button-33:hover,
-  .button-33:active {
+  .button-1:hover,
+  .button-1:active {
     background-color: initial;
     background-position: 0 0;
     color: #00DDEB
   }
   
-  .button-33:active {
+  .button-1:active {
     opacity: .5;
   }
 
-  .button-24 {
-    background-color: #c2fbd7;
-    border-radius: 10px;
-    box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset,rgba(44, 187, 99, .15) 0 1px 2px,rgba(44, 187, 99, .15) 0 2px 4px,rgba(44, 187, 99, .15) 0 4px 8px,rgba(44, 187, 99, .15) 0 8px 16px,rgba(44, 187, 99, .15) 0 16px 32px;
-    color: green;
+  .button-2 {
+    background: #33ccff;
+    border: 1px solid #33ccff;
+    border-radius: 6px;
+    box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
+    box-sizing: border-box;
+    color: #FFFFFF;
     cursor: pointer;
     display: inline-block;
-    font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
-    padding: 7px 20px;
-    text-align: center;
-    text-decoration: none;
-    transition: all 250ms;
-    border: 0;
+    font-family: nunito,roboto,proxima-nova,"proxima nova",sans-serif;
     font-size: 16px;
+    font-weight: 800;
+    line-height: 14px;
+    min-height: 38px;
+    /* min-height: 40px; */
+    outline: 0;
+    padding: 12px 14px;
+    text-align: center;
+    text-rendering: geometricprecision;
+    text-transform: none;
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
+    vertical-align: middle;
   }
   
-  .button-24:hover {
-    box-shadow: rgba(44,187,99,.35) 0 -25px 18px -14px inset,rgba(44,187,99,.25) 0 1px 2px,rgba(44,187,99,.25) 0 2px 4px,rgba(44,187,99,.25) 0 4px 8px,rgba(44,187,99,.25) 0 8px 16px,rgba(44,187,99,.25) 0 16px 32px;
-    transform: scale(1.05) rotate(-1deg);
+  .button-2:hover,
+  .button-2:active {
+    background-color: initial;
+    background-position: 0 0;
+    color: #00DDEB
   }
-
-  .button-1 {
-    display: inline-block;
-    padding: 12px 24px;
-    border: 1px solid #4f4f4f;
-    border-radius: 4px;
-    transition: all 0.2s ease-in;
-    position: relative;
-    overflow: hidden;
-    font-size: 19px;
-    color: black;
-    z-index: 1;
-   }
-   
-   .button-1:before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%) scaleY(1) scaleX(1.25);
-    top: 100%;
-    width: 140%;
-    height: 180%;
-    background-color: rgba(0, 0, 0, 0.05);
-    border-radius: 50%;
-    display: block;
-    transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
-    z-index: -1;
-   }
-   
-   .button-1:after {
-    content: "";
-    position: absolute;
-    left: 55%;
-    transform: translateX(-50%) scaleY(1) scaleX(1.45);
-    top: 180%;
-    width: 160%;
-    height: 190%;
-    background-color: #39bda7;
-    border-radius: 50%;
-    display: block;
-    transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
-    z-index: -1;
-   }
-   
-   .button-1:hover {
-    color: #ffffff;
-    border: 1px solid #39bda7;
-   }
-   
-   .button-1:hover:before {
-    top: -35%;
-    background-color: #39bda7;
-    transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
-   }
-   
-   .button-1:hover:after {
-    top: -45%;
-    background-color: #39bda7;
-    transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
-   }
+  
+  .button-2:active {
+    opacity: .5;
+  }

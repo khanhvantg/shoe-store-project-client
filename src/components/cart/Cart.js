@@ -16,6 +16,7 @@ import Loading from "../loadingError/Loading";
 import LoadingCustom from "../loadingError/LoadingCustom";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import Message from "../loadingError/Message";
 const Cart = () => {
     const [pos, setPos]=useState();
     const [timer,setTimer]=useState(null);
@@ -296,7 +297,7 @@ const Cart = () => {
                                         <th className="product-name text-center">Amount</th>
                                         <th className="product-name text-center">Size</th>
                                         <th className="product-subtotal text-center">Total</th>
-                                        <th className="product-remove text-center"> </th>
+                                        <th className="product-remove text-center">Remove</th>
                                     </tr>
                                 </thead>
                                 {loading?
@@ -305,6 +306,15 @@ const Cart = () => {
                                         <ListItem/>
                                         <ListItem/>
                                     </tbody>:
+                                    error?(
+                                        <tfoot align="center">
+                                            <tr>
+                                            <th colspan="7">
+                                            <Message variant="alert-danger">{error}</Message>
+                                            </th>
+                                            </tr>
+                                        </tfoot>
+                                    ):
                                     <>
                                 <tbody>
                                     {amounts&&amounts.map((item,index)=>(
@@ -384,7 +394,7 @@ const Cart = () => {
                                     <tr>
                                     {lineItems&&lineItems.length>0&&
                                         <th colspan="7">
-                                        <Link to="/checkout" className="button-33">Check Out</Link>
+                                        <Link to="/checkout" className="button-1">Check Out</Link>
                                         </th>
                                         }
                                     </tr>
@@ -494,9 +504,16 @@ const Cart = () => {
                 }
                 </div>
             </section>
-            {lineItems&&lineItems.length<=0&&
+            {(loading!==true&&lineItems&&lineItems.length<=0)&&
+                // <div className="text-center">
+                //     <img className="mb-100" src="/assets/images/empty-cart.jpg"/>
+                // </div>
                 <div className="text-center">
-                    <img className="mb-100" src="/assets/images/empty-cart.jpg"/>
+                    <h1>There are no lineitems yet</h1>
+                    
+                    <Link to="/shop" className="button-1">
+                        Shop Now
+                    </Link>
                 </div>
             }
         </div>

@@ -70,26 +70,57 @@ const SizeModal = ({isShowing, hide, id}) => {
         },
     ];
     useEffect(() => {
+        setForm({})
         if(succsesCreate){
             dispatch({type: SIZE_CREATE_RESET});
             dispatch(getAllSizes({id}));
-            setForm({})
         } else if (succsesUpdate){
             dispatch({type: SIZE_UPDATE_RESET});
             dispatch(getAllSizes({id}));
-            setForm({})
             setIsOpen(false)
-        } else if (isOpen&&size&&size.id!==form.idSize){
+        } else {
+            if (isShowing&&!isOpen) {
+                dispatch(getAllSizes({id}));
+            }else if (isOpen&&size&&size.id!==form.idSize){
+                setForm({
+                    idSize:size.id,
+                    size:size.size,
+                    amount:size.amount,
+                })
+            }
+        }
+        if(!isShowing){
+            setIsOpen(false)
             setForm({
-                idSize:size.id,
-                size:size.size,
-                amount:size.amount,
+                idSize:'',
+                size:'',
+                amount:'',
+            })
+            setErrorInput({
+                size: {
+                    isReq: true,
+                    errorMsg: '',
+                    onValidateFunc: onInputValidate
+                },
+                amount: {
+                    isReq: true,
+                    reqType: 'NUMBER',
+                    errorMsg: '',
+                    onValidateFunc: onInputValidate
+                }
             })
         }
+        // if (isOpen&&size&&size.id!==form.idSize){
+        //     setForm({
+        //         idSize:size.id,
+        //         size:size.size,
+        //         amount:size.amount,
+        //     })
+        // }
         
-        if(isShowing){
-            dispatch(getAllSizes({id}));
-        }
+        // if(isShowing){
+        //     dispatch(getAllSizes({id}));
+        // }
     }, [dispatch,id,succsesCreate,succsesUpdate,size]);
 
     const onInputValidate = (value, name) => {

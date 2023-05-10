@@ -41,7 +41,6 @@ const UserUpdate = ({isShowing, hide, id}) => {
         modifiedDate: '',
     })
 
-    console.log(form);
     const dispatch = useDispatch();
 
     const userLogin = useSelector((state) => state.userLogin);
@@ -99,6 +98,7 @@ const UserUpdate = ({isShowing, hide, id}) => {
         if (successUpdate) {
             dispatch({type: USER_UPDATE_PROFILE_RESET});
             dispatch(getAllUsers());
+            hide();
         } else {
             if (isShowing&&user.id!==id) {
                 dispatch(getUserDetails(id));
@@ -177,7 +177,7 @@ const UserUpdate = ({isShowing, hide, id}) => {
         const isValid = validateForm();
         if (isValid) {
             dispatch(updateUserProfileByAdmin({form}));
-            hide();
+            // hide();
         }
     };
 
@@ -296,9 +296,15 @@ const UserUpdate = ({isShowing, hide, id}) => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col text-center px-xl-3">
-                                            <button className="button-33" type="submit" onClick={()=>{submitHandler();}}>Save Changes</button>
-                                        </div>
+                                    <div className="text-center pt-1 mb-3 pb-1">
+                                        <button className="button-1" style={{width: "150.9px"}} onClick={loadingUpdate?"disabled":()=>{submitHandler()}}>
+                                            {loadingUpdate?<Loading a={"16px"}/>:
+                                            "Save Changes"}
+                                        </button>
+                                    </div>
+                                    {/* <div className="col text-center px-xl-3">
+                                            <button className="button-1" type="submit" onClick={()=>{submitHandler();}}>Save Changes</button>
+                                        </div> */}
                                     {/* <div className="">
                                         <div className="col d-flex justify-content-end">
                                             <button className="btn btn-primary" type="submit" onClick={submitHandler}>Save Changes</button>

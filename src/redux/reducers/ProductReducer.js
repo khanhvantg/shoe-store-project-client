@@ -10,6 +10,7 @@ import {
     PRODUCT_DETAILS_FAIL,
     PRODUCT_DETAILS_REQUEST,
     PRODUCT_DETAILS_SUCCESS,
+    PRODUCT_DETAILS_STOP,
     PRODUCT_LIST_FAIL,
     PRODUCT_LIST_REQUEST,
     PRODUCT_LIST_SUCCESS,
@@ -34,6 +35,8 @@ import {
         return { ...state, loading: true };
       case PRODUCT_DETAILS_SUCCESS:
         return { loading: false, irecommendProducts: action.payload.irecommendProducts, product: action.payload.product };
+      case PRODUCT_DETAILS_STOP:
+        return {  ...state, product: {}, irecommendProducts: [] };
       case PRODUCT_DETAILS_FAIL:
         return { loading: false, error: action.payload };
       default:

@@ -5,6 +5,7 @@ import { updateProduct, getProductById, getAllProducts} from '../../../redux/act
 import { getAllcategories, getCategoryById, stopGetCategory } from '../../../redux/actions/CategoryAction'
 import {
     PRODUCT_UPDATE_RESET,
+    PRODUCT_DETAILS_STOP,
 } from '../../../redux/constants/Constants'
 
 import Loading from '../../loadingError/Loading';
@@ -42,7 +43,7 @@ const ProductUpdate = ({isShowing, hide, id, idCategory}) => {
     const { userInfo } = userLogin;
 
     const productDetail = useSelector((state) => state.productDetail);
-    const { loading, error, product} = productDetail;
+    const { loading, error, product } = productDetail;
 
     const productUpdate = useSelector((state) => state.productUpdate);
     const {
@@ -132,7 +133,7 @@ const ProductUpdate = ({isShowing, hide, id, idCategory}) => {
                 }
             })
         }
-    }, [product, dispatch, dispatchCategory, id, successUpdate, idCategory]);
+    }, [product, dispatch, id, successUpdate]);
          
     const onInputChange = useCallback((value, name) => {
         setForm(prev => ({
@@ -159,6 +160,7 @@ const ProductUpdate = ({isShowing, hide, id, idCategory}) => {
         const isValid = validateForm();
         if (isValid) {
             dispatch(updateProduct({form}));
+            // hide();
         }
     };
 
@@ -229,9 +231,15 @@ const ProductUpdate = ({isShowing, hide, id, idCategory}) => {
                                                 />             
                                             </div>
                                     </div>
-                                <div className="col text-center px-xl-3">
-                                    <button className="button-33" type="submit" onClick={()=>{submitHandler();}}>Save Changes</button>
-                                </div>
+                                    <div className="text-center pt-1 mb-3 pb-1">
+                                        <button className="button-1" style={{width: "150.9px"}} onClick={loadingUpdate?"disabled":()=>{submitHandler()}}>
+                                            {loadingUpdate?<Loading a={"16px"}/>:
+                                            "Save Changes"}
+                                        </button>
+                                    </div>
+                                {/* <div className="col text-center px-xl-3">
+                                    <button className="button-1" type="submit" onClick={()=>{submitHandler();}}>Save Changes</button>
+                                </div> */}
                             </div>)}
                         </div>
                     </div>

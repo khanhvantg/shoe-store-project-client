@@ -75,6 +75,7 @@ const CategoryUpdate = ({isShowing, hide, id}) => {
         if (successUpdate) {
             dispatch({type: CATEGORY_UPDATE_RESET});
             dispatch(getAllcategories());
+            hide();
         } else {
             if (isShowing&&category.id!==id) {
                 dispatch(getCategoryById(id));
@@ -138,7 +139,6 @@ const CategoryUpdate = ({isShowing, hide, id}) => {
         const isValid = validateForm();
         if (isValid) {
             dispatch(updateCategory({form}));
-            hide();
         }
     };
 
@@ -195,9 +195,15 @@ const CategoryUpdate = ({isShowing, hide, id}) => {
                                         />
                                     </div> 
                                 </div>
-                                <div className="col text-center px-xl-3">
-                                    <button className="button-33" type="submit" onClick={()=>{submitHandler();}}>Save Changes</button>
+                                <div className="text-center pt-1 mb-3 pb-1">
+                                    <button className="button-1" style={{width: "150.9px"}} onClick={loadingUpdate?"disabled":()=>{submitHandler()}}>
+                                        {loadingUpdate?<Loading a={"16px"}/>:
+                                        "Save Changes"}
+                                    </button>
                                 </div>
+                                {/* <div className="col text-center px-xl-3">
+                                    <button className="button-1" type="submit" onClick={()=>{submitHandler();}}>Save Changes</button>
+                                </div> */}
                             </div>)}
                         </div>
                     </div>
