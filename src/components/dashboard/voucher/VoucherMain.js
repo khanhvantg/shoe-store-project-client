@@ -104,7 +104,7 @@ const VoucherMain = () => {
                                                     <i className="tf-ion-edit"></i>
                                                 </button>
                                                 <button 
-                                                    onClick={(e)=>{e.stopPropagation(); toggleConfirmBox(item.id)}}
+                                                    onClick={(e)=>{toggleConfirmBox(item.id);e.stopPropagation();}}
                                                     className="btn btn-sm btn-outline-secondary badge" type="button"> 
                                                 <i className="tf-ion-android-delete"></i>
                                             </button>

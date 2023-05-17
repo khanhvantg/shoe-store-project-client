@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { updateOrder } from '../../redux/actions/OrderAction';
 import { useDispatch, useSelector } from "react-redux";
 const CofirmBox = ({noHandle,yesHanle,isShowing}) => {
@@ -11,6 +11,23 @@ const CofirmBox = ({noHandle,yesHanle,isShowing}) => {
     //     //setIsShowConfirmBox(true)
     //     dispatch(updateOrder({orderInfo}));
     // }
+    const [isHoveringNo, setIsHoveringNo] = useState(true);
+    const [isHoveringYes, setIsHoveringYes] = useState(true);
+    const handleMouseEnterNo = () => {
+        setIsHoveringNo(false);
+    };
+
+    const handleMouseLeaveNo = () => {
+        setIsHoveringNo(true);
+    };
+
+    const handleMouseEnterYes = () => {
+        setIsHoveringYes(false);
+    };
+
+    const handleMouseLeaveYes = () => {
+        setIsHoveringYes(true);
+    };
     if(!isShowing) return null;
   return (
     <>
@@ -24,19 +41,27 @@ const CofirmBox = ({noHandle,yesHanle,isShowing}) => {
                 </div>
                 <div className="modal-body text-center">
                     <div className="py-1">
-                    <p>Do you really want to do it?</p>
-                    {/* {loading ? (
-                        <Loading />
-                        ) : error ? (
-                            <Message variant="alert-danger">{error}</Message>
-                        ) : ( */}
-                     
-                        {/* )} */}
+                        <p>Do you really want to do it?</p>
                     </div>
                 </div>
-                <div className="modal-footer">
-                    <button type="button" className="button-2" data-dismiss="modal" onClick={noHandle}>No</button>
-                    <button type="button" className="btn btn-danger" onClick={()=>{yesHanle();noHandle();}}>Yes</button>
+                <div className="modal-footer" style={{justifyContent: "center"}}>
+                    <button type="button" className="button-2" style={{
+                                                                        border: "1px solid #ff4d4d",
+                                                                        background: isHoveringNo ? '#ff4d4d' : 'white',
+                                                                        color: isHoveringNo ? 'white' : '#ff4d4d',
+                                                                    }} 
+                                                                onMouseEnter={handleMouseEnterNo}
+                                                                onMouseLeave={handleMouseLeaveNo} 
+                                                                data-dismiss="modal" 
+                                                                onClick={()=>{setIsHoveringNo(true);noHandle()}}>No</button>
+                    <button type="button" className="button-2" style={{
+                                                                        border: "1px solid #00ff55",
+                                                                        background: isHoveringYes ? '#00ff55' : 'white',
+                                                                        color: isHoveringYes ? 'white' : '#00ff55',
+                                                                    }} 
+                                                                onMouseEnter={handleMouseEnterYes}
+                                                                onMouseLeave={handleMouseLeaveYes} 
+                                                                onClick={()=>{setIsHoveringYes(true); yesHanle(); noHandle();}}>Yes</button>
                 </div>
             </div>
         </div>

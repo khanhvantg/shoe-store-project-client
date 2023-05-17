@@ -111,7 +111,7 @@ const Home = () => {
                     <p className="text-md mt-3 text-white">Hurry up! Limited time offer. Grab ot now!</p>
                   
                         <div id="simple-timer" className="syotimer mb-5"></div>
-                    <Link to="/shop" className="btn btn-main"><i className="ti-bag mr-2"></i>Shop Now </Link>
+                    <Link to="/shop?page=1" className="btn btn-main"><i className="ti-bag mr-2"></i>Shop Now </Link>
                     </div>
                 </div>
                 </div>

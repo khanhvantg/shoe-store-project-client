@@ -5,8 +5,8 @@ const ManageUserScreen = () => {
 
   return (
     <div className="wrapper1">
-        <Layout/>
-        <UserMain/>
+      <Layout />
+      <UserMain />
     </div>
   )
 }

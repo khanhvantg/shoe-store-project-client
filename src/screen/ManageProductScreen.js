@@ -4,10 +4,10 @@ import ProductMain from '../components/dashboard/product/ProductMain'
 const ManageProductScreen = () => {
     return (
         <div className="wrapper1">
-            <Layout/>
-            <ProductMain/>
+            <Layout />
+            <ProductMain />
         </div>
-    
+
     )
 }
 

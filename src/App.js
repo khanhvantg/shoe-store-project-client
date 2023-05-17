@@ -40,21 +40,21 @@ import MessengerCustomerChat from 'react-messenger-customer-chat';
 import PrivateRouteForAdmin from './PrivateRouteForAdmin';
 const App = () => {
   return (
-    <div className="App" style={{backgroundColor: "white"}}>
-        <ToastContainer 
-          className="toast-position"
-        />
-        <BrowserRouter>
-          <Header />
-          <div className="main">
-          <Routes>
+    <div className="App" style={{ backgroundColor: "white" }}>
+      <ToastContainer
+        className="toast-position"
+      />
+      <BrowserRouter>
+        <Header />
+        <div className="main">
+          <Routes forceRefresh={true}>
             <Route path="/" element={<Home />} />
-            <Route path="/order-detail/:id" 
-              element={ 
+            <Route path="/order-detail/:id"
+              element={
                 <PrivateRoute >
                   <Invoice />
                 </PrivateRoute>
-              } 
+              }
             />
             <Route
               path="/profile"
@@ -82,7 +82,7 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/forgetPassword" element={<ForgetPassword />} />
-            <Route path="/manage/accounts" element={<ManageAccountsScreen/>}/>
+            <Route path="/manage/accounts" element={<ManageAccountsScreen />} />
             <Route
               path="/manage/paypal"
               element={
@@ -91,33 +91,36 @@ const App = () => {
                 </PrivateRouteForAdmin>
               }
             />
-            <Route 
-              path="/manage/users" 
+            <Route
+              path="/manage/users"
               element={
-                <PrivateRouteForAdmin><ManageUserScreen/></PrivateRouteForAdmin>  
+                <PrivateRouteForAdmin><ManageUserScreen /></PrivateRouteForAdmin>
               }
             />
-            <Route 
-              path="/manage/categories" 
-              element={<PrivateRouteForAdmin><ManageCategoryScreen/></PrivateRouteForAdmin>}/>
-            <Route 
-              path="/manage/products" 
-              element={<PrivateRouteForAdmin><ManageProductScreen/></PrivateRouteForAdmin>}/>
-            <Route 
-              path="/manage/vouchers" 
-              element={<PrivateRouteForAdmin><ManageVoucherScreen/></PrivateRouteForAdmin>}/>
-            <Route 
-              path="/manage/orders" 
-              element={<PrivateRouteForAdmin><ManageOrderScreen/></PrivateRouteForAdmin>}/>
-            <Route 
-              path="/manage/y-revenue" 
-              element={<PrivateRouteForAdmin><ManageRevenueYearScreen/></PrivateRouteForAdmin>} />
-            <Route 
-              path="/manage/m-revenue" 
-              element={<PrivateRouteForAdmin><ManageRevenueMonthScreen/></PrivateRouteForAdmin>} />
-            <Route 
-              path="/manage/d-revenue" 
-              element={<PrivateRouteForAdmin><ManageRevenueDayScreen/></PrivateRouteForAdmin>} />
+            <Route
+              path="/manage/categories"
+              element={<PrivateRouteForAdmin><ManageCategoryScreen /></PrivateRouteForAdmin>} />
+            <Route
+              path="/manage/products"
+              element={<PrivateRouteForAdmin><ManageProductScreen /></PrivateRouteForAdmin>} />
+            <Route
+              path="/manage/vouchers"
+              element={<PrivateRouteForAdmin><ManageVoucherScreen /></PrivateRouteForAdmin>} />
+            <Route
+              path="/manage/orders"
+              element={<PrivateRouteForAdmin><ManageOrderScreen /></PrivateRouteForAdmin>} />
+            <Route
+              path="/manage/orders/page/:page"
+              element={<PrivateRouteForAdmin><ManageOrderScreen /></PrivateRouteForAdmin>} />
+            <Route
+              path="/manage/y-revenue"
+              element={<PrivateRouteForAdmin><ManageRevenueYearScreen /></PrivateRouteForAdmin>} />
+            <Route
+              path="/manage/m-revenue"
+              element={<PrivateRouteForAdmin><ManageRevenueMonthScreen /></PrivateRouteForAdmin>} />
+            <Route
+              path="/manage/d-revenue"
+              element={<PrivateRouteForAdmin><ManageRevenueDayScreen /></PrivateRouteForAdmin>} />
 
             {/* <Route path="/manage/paypal" element={<ManagePayPalTransactionScreen/>}/>
             <Route path="/manage/users" element={<ManageUserScreen/>}/>
@@ -129,14 +132,14 @@ const App = () => {
             <Route path="/manage/m-revenue" element={<ManageRevenueMonthScreen/>} />
             <Route path="/manage/d-revenue" element={<ManageRevenueDayScreen/>} /> */}
           </Routes>
-          </div>
-          <Footer/>
-          <MessengerCustomerChat
-            pageId="108239868917747"
-            appId="3497014053916132"
-            themeColor={'#00DDEB'}
-          />
-        </BrowserRouter>
+        </div>
+        <Footer />
+        <MessengerCustomerChat
+          pageId="108239868917747"
+          appId="3497014053916132"
+          themeColor={'#00DDEB'}
+        />
+      </BrowserRouter>
     </div>
   );
 }

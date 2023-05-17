@@ -175,7 +175,7 @@ const Header = () => {
                         <Link className="nav-link" to={{ pathname: "/"}}>Home</Link>
                     </li>
                     <li className={f==="shop"||f==="product"?"nav-item active":"nav-item"}>
-                        <Link className="nav-link" to={{ pathname: "/shop"}}>Shoes</Link>
+                        <Link className="nav-link" to="/shop?page=1">Shoes</Link>
                     </li>
                     {
                         !isAdmin&&userInfo ? 

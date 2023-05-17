@@ -7,7 +7,7 @@ import ImageUploader from './image-uploader';
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-const ImageProduct = ({isShowing, hide, id}) => {
+const ImageProduct = ({isShowing, hide, id, name}) => {
     const dispatch = useDispatch();
     const imageList = useSelector((state) => state.imageList);
     const { loading, error, images} = imageList;
@@ -60,8 +60,8 @@ const ImageProduct = ({isShowing, hide, id}) => {
                 <div className="modal-content">
                     <div className="modal-header">
                         <div className="col px-xl-3">
-                            <h5 className="modal-title">Images Of Product</h5>
-                            <button className="button-2 cloudinary-button" type="submit" id="upload_widget" onClick={()=>handleOpenWiget()}>Add Image</button>
+                            <h5 className="modal-title">Images Of {name}</h5>
+                            <button className="button-2" type="submit" id="upload_widget" onClick={()=>handleOpenWiget()}>Add Image</button>
                         </div>
                         <button type="button" className="close" data-dismiss="modal" onClick={hide}>
                             <span aria-hidden="true">×</span>

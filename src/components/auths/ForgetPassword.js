@@ -94,11 +94,7 @@ const ForgetPassword = () => {
                     <div className="col-lg-6">
                     <div className="login-form border p-5 bg-white">
                         <div className="text-center">
-                        <h2 className="mb-2">Forget Password</h2>
-                        {/* <p className="lead">Already have an account? 
-                        <Link to="/login" style={{color: "blue"}}> Login now</Link>
-                        </p> */}
-                         
+                            <h2 className="mb-2">Forget Password</h2>
                         </div>
                         <Link to="/login" style={{color: "blue"}}>Back?</Link>
                         <div className="form">
@@ -130,15 +126,6 @@ const ForgetPassword = () => {
                                             </button>
                                         </div>
                                     {error && (<Message variant="alert-danger">Username or Password is not correct</Message>)}
-                            {/* <div className="form-group">
-                                        <button onClick={handleSubmit} className="button-63 w-100">Update Password</button>
-                                    </div>
-                            {loading ? (
-                                <Loading />
-                                    ) : error && (
-                                        <Message variant="alert-danger">{error}</Message>
-                                    
-                                )} */}
                         </div>
                     </div>
                     </div>

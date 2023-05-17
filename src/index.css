@@ -138,8 +138,8 @@
   }
 
   .button-2 {
-    background: #33ccff;
-    border: 1px solid #33ccff;
+    background: #337ab7;
+    border: 1px solid #337ab7;
     border-radius: 6px;
     box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
     box-sizing: border-box;
@@ -165,9 +165,10 @@
   
   .button-2:hover,
   .button-2:active {
-    background-color: initial;
+    background-color: white;
     background-position: 0 0;
-    color: #00DDEB
+    color: #337ab7;
+    /* color: #00DDEB */
   }
   
   .button-2:active {

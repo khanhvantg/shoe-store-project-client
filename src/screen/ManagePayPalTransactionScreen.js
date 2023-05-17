@@ -4,8 +4,8 @@ import PayPalTransaction from "../components/dashboard/paypal/PayPalTransaction"
 const ManagePayPalTransactionScreen = () => {
     return (
         <div className="wrapper1">
-            <Layout/>
-            <PayPalTransaction/>
+            <Layout />
+            <PayPalTransaction />
         </div>
     )
 }

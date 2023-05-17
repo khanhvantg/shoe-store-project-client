@@ -13,7 +13,7 @@ import Radio from '../../checkValidate/Radio'
 import Select from '../../checkValidate/Select'
 import CofirmBox from "../../cofirmBox/CofirmBox";
 import useModal from "../useModal";
-const SizeModal = ({isShowing, hide, id}) => {
+const SizeModal = ({isShowing, hide, id, name}) => {
     const [form, setForm] = useState({
         idSize: '',
         size: '',
@@ -205,7 +205,7 @@ const SizeModal = ({isShowing, hide, id}) => {
                 <div className="modal-content">
                     <div className="modal-header">
                         <div className="col px-xl-3">
-                            <h5 className="modal-title">Sizes Of Product</h5>
+                            <h5 className="modal-title">Sizes Of {name}</h5>
                             {/* <button className="btn btn-primary cloudinary-button" type="submit" id="upload_widget" onClick={()=>handleOpenWiget()}>Add Image</button> */}
                         </div>
                         <button type="button" className="close" data-dismiss="modal" onClick={hide}>

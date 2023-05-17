@@ -58,10 +58,6 @@ const Cart = () => {
         name: ''
     }); 
     useEffect(() =>{
-        // if (succsesCreate) {
-        //     dispatch({type: ORDER_CREATE_RESET});
-        //     dispatch(getWishListById());
-        // } else 
         if(succsesUpdate){
             dispatch({type: LINE_ITEM_UPDATE_RESET});
             dispatch(getWishListById());
@@ -193,59 +189,7 @@ const Cart = () => {
     const handleRemoveItem = (id) => {
         dispatch(removeLineItem(id));
     }
-
-    const onInputValidate = (value, name) => {
-        setErrorInput(prev => ({
-            ...prev,
-            [name]: { ...prev[name], errorMsg: value }
-        }));
-        }
          
-    const [errorInput, setErrorInput] = useState({
-        name: {
-            isReq: true,
-            errorMsg: '',
-            onValidateFunc: onInputValidate
-        },
-        address: {
-            isReq: true,
-            errorMsg: '',
-            onValidateFunc: onInputValidate
-        },
-        email: {
-            isReq: true,
-            reqType: 'EMAIL',
-            errorMsg: '',
-            onValidateFunc: onInputValidate
-        },
-        phoneNumber: {
-            isReq: true,
-            reqType: 'PHONE',
-            errorMsg: '',
-            onValidateFunc: onInputValidate
-        }
-    });
-         
-    const onInputChange = useCallback((value, name) => {
-        setForm(prev => ({
-            ...prev,
-            [name]: value
-        }));
-    }, []);
-        
-    const validateForm = () => {
-        let isInvalid = false;
-        Object.keys(errorInput).forEach(x => {
-            const errObj = errorInput[x];
-            if (errObj.errorMsg) {
-                isInvalid = true;
-            } else if (errObj.isReq && !form[x]) {
-                isInvalid = true;
-                onInputValidate(true, x);
-            }
-        });
-        return !isInvalid;
-    }
     const ListItem = () => {
         return (
             <tr>
@@ -406,112 +350,13 @@ const Cart = () => {
                     </div>
                 </div>
                 </div>
-                {
-                //     loadingUpdate ? <Loading /> :
-                // <div className="row justify-content-end">
-                // <div className="col-lg-4">
-                //     <div className="cart-info card p-4 mt-4">
-                //         <h4 className="mb-4">Cart totals</h4>
-                //         <ul className="list-unstyled mb-4">
-                //             <li className="d-flex justify-content-between pb-2 mb-3">
-                //             <h5>Subtotal</h5>
-                //             <span>$ {totalPrice}
-                //             </span>
-                            
-                //             </li>
-                //             <li className="d-flex justify-content-between pb-2 mb-3">
-                //             <h5>Shipping</h5>
-                //             <span>Free</span>
-                //             </li>
-                //             <li className="d-flex justify-content-between pb-2">
-                //             <h5>Total</h5>
-                //             <span>$ {totalPrice}</span>
-                //             </li>
-                //         </ul>
-                //     </div>
-                //     </div>
-                //     <div className="col-lg-8">
-                //     {lineItems&&lineItems.length!==0?
-                //     <div className="cart-info card p-4 mt-4">
-                //         <h4 className="text-center mb-4">Delivery Information</h4>
-                //         <div className="form">
-                //             <div className="row">
-                //                 <div className="col">
-                //                     <div className="col">
-                //                         <div className="form-group">
-                //                             <Input
-                //                                 name="name"
-                //                                 title="Name"
-                //                                 value={form.name}
-                //                                 onChangeFunc={onInputChange}
-                //                                 {...errorInput.name}
-                //                                 />
-                //                             <Input
-                //                                 name="address"
-                //                                 title="Address"
-                //                                 value={form.address}
-                //                                 onChangeFunc={onInputChange}
-                //                                 {...errorInput.address}
-                //                             />
-                //                             <Input
-                //                                 name="email"
-                //                                 title="Email"
-                //                                 value={form.email}
-                //                                 onChangeFunc={onInputChange}
-                //                                 {...errorInput.email}
-                //                             />
-                //                             <Input
-                //                                 name="phoneNumber"
-                //                                 title="Phone Number"
-                //                                 value={form.phoneNumber}
-                //                                 onChangeFunc={onInputChange}
-                //                                 {...errorInput.phoneNumber}
-                //                             />
-                //                             {/* <label>Name</label>
-                //                                 <input 
-                //                                     value={name}
-                //                                     onChange={(e) => setName(e.target.value)}
-                //                                     className="form-control" type="text" name="name" placeholder/>
-                            
-                //                 <label>Phone</label>
-                //                 <input 
-                //                     value={phoneNumber}
-                //                     onChange={(e) => setPhoneNumber(e.target.value)}
-                //                     className="form-control" type="text" name="phoneNumber" placeholder/>            
-                            
-                //                 <label>Address</label>
-                //                     <input 
-                //                         value={address}
-                //                         onChange={(e) => setAddress(e.target.value)}
-                //                         className="form-control" type="text" name="addrees" placeholder/> */}
-                //                         </div>
-                //                     </div>
-                //                 </div>
-                //             </div>
-                        
-                //         </div>
-                //         <div className="col text-center px-xl-3">
-                //             <button 
-                //             onClick={handleOrder}
-                //             className="btn btn-primary btn-block">Order</button>
-                //         </div>
-                //     </div>
-                //      :
-                //     <></>                
-                //     } 
-                //     </div>
-                // </div>
-                }
                 </div>
             </section>
             {(loading!==true&&lineItems&&lineItems.length<=0)&&
-                // <div className="text-center">
-                //     <img className="mb-100" src="/assets/images/empty-cart.jpg"/>
-                // </div>
                 <div className="text-center">
                     <h1>There are no lineitems yet</h1>
                     
-                    <Link to="/shop" className="button-1">
+                    <Link to="/shop?page=1" className="button-1">
                         Shop Now
                     </Link>
                 </div>

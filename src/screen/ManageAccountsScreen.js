@@ -4,8 +4,8 @@ import AccountMain from '../components/dashboard/account/AccountMain'
 const ManageAccountsScreen = () => {
     return (
         <div className="wrapper1">
-            <Layout/>
-            <AccountMain/>
+            <Layout />
+            <AccountMain />
         </div>
     )
 }

@@ -132,16 +132,6 @@ const SignUp = () => {
                                             </button>
                                         </div>
                                     {error && (<Message variant="alert-danger">Username or Password is not correct</Message>)}
-                            {/* <div className="form-group">
-                                        <button onClick={handleSubmit} className="button-63 w-100">Signup</button>
-                                    </div>
-                            {loading ? (
-                                <Loading />
-                                    ) : error || err ? (
-                                        <Message variant="alert-danger">{error || err}</Message>
-                                    ) : (
-                                        <></>
-                                )} */}
                         </div>
                     </div>
                     </div>

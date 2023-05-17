@@ -120,13 +120,6 @@ const Login = () => {
                                         {...errorInput.password}
                                     />
                                     <Link to={{ pathname: "/forgetPassword" }} style={{color: "blue", marginTop: '-10px'}}>Forget Password ?</Link>
-                                    {/* <span>
-                                    
-                                    <i className="fa fa-eye" aria-hidden="true" style={{position: "absolute",
-                                            right: 5,
-                                            top: 10,
-                                            cursor: "pointer"}}></i>
-                                </span> */}
                                     <div className="text-center pt-1 mb-3 pb-1">
                                             <button className="button-63 w-100" onClick={loading?"disabled":handleSubmit}>
                                                 {loading?<Loading a={"24px"}/>:

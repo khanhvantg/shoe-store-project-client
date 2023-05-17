@@ -17,7 +17,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 const ProductMain = () => {
     const {isShowing, toggle, id} = useModal();
     const {isShowing: isShowingSize, toggle: toggleSize, id: idSize} = useModal();
-    const {isShowingImage, toggleImage, idd} = useModal();
+    const {isShowingImage, toggleImage, idd, toggle: toggleName, id: nameProduct} = useModal();
     const {isShowingCreate, toggleCreate} = useModalCreate();
     const  [idCategory, setIdCategory] = useState('0');
     const  [check, setCheck] = useState(0);
@@ -132,7 +132,7 @@ const ProductMain = () => {
                                     ) : (
                                 <tbody align="center">
                                 {products&&products.map((product, index)  => (
-                                    <tr onClick={()=>{toggle(product.id)}}>
+                                    <tr onClick={()=>{toggle(product.id);toggleName(product.name)}}>
                                         {/* <td className="align-middle">{product.id}</td> */}
                                         <td className="text-nowrap align-middle">{product.name}</td>
                                         <td className="align-middle" style={{width:400,wordBreak:"break-word"}}>
@@ -149,13 +149,13 @@ const ProductMain = () => {
                                             )}
                                         <td className="text-center align-middle">
                                             <div className="btn-group align-top">
-                                                <button className="btn btn-sm btn-outline-secondary badge" type="button" onClick={()=>{toggle(product.id)}}> 
+                                                <button className="btn btn-sm btn-outline-secondary badge" type="button" onClick={()=>{toggle(product.id);toggleName(product.name)}}> 
                                                     <i className="tf-ion-edit"></i>
                                                 </button>
-                                                <button className="btn btn-sm btn-outline-secondary badge" type="button" onClick={(e)=>{e.stopPropagation();toggleSize(product.id)}}> 
+                                                <button className="btn btn-sm btn-outline-secondary badge" type="button" onClick={(e)=>{e.stopPropagation();toggleSize(product.id);toggleName(product.name)}}> 
                                                     <i className="tf-ion-levels"></i>
                                                 </button>
-                                                <button className="btn btn-sm btn-outline-secondary badge" type="button" onClick={(e)=>{e.stopPropagation();toggleImage(product.id)}}> 
+                                                <button className="btn btn-sm btn-outline-secondary badge" type="button" onClick={(e)=>{e.stopPropagation();toggleImage(product.id);toggleName(product.name)}}> 
                                                     <i className="tf-ion-image"></i>
                                                 </button>
                                             </div>
@@ -178,16 +178,19 @@ const ProductMain = () => {
             hide={toggle}
             id={id}
             idCategory={idCategory}
+            name={nameProduct}
         />
         <ImageProduct
             isShowing={isShowingImage}
             hide={toggleImage}
             id={idd}
+            name={nameProduct}
         />
         <SizeModal
             isShowing={isShowingSize}
             hide={toggleSize}
             id={idSize}
+            name={nameProduct}
         />
     </div>
     

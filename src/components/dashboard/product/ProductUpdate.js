@@ -17,7 +17,7 @@ const statusList = [
     { value: 1, label: "Active" },
     { value: 0, label: "Inactive" }
   ];
-const ProductUpdate = ({isShowing, hide, id, idCategory}) => {
+const ProductUpdate = ({isShowing, hide, id, idCategory, name}) => {
     const [form, setForm] = useState({
         productId: id,
         name: '',
@@ -172,7 +172,7 @@ const ProductUpdate = ({isShowing, hide, id, idCategory}) => {
             <div className="modal-dialog modal-lg">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">Update Product</h5>
+                        <h5 className="modal-title">Update {name}</h5>
                         <button type="button" className="close" data-dismiss="modal" onClick={hide}>
                             <span aria-hidden="true">×</span>
                         </button>

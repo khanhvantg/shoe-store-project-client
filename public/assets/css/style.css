@@ -321,7 +321,9 @@ input[type="tel"]:focus {
   -webkit-box-pack: center;
           justify-content: center;
 }
-
+.page-item {
+  cursor: pointer;
+}
 .pagination .page-item .page-link {
   display: inline-block;
   width: 40px;

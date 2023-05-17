@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import { getAllProducts} from '../../../redux/actions/ProductAction'
 // import { getAllcategories, getCategoryById, stopGetCategory } from '../../../redux/actions/CategoryAction'
@@ -14,13 +14,24 @@ import { getAllOrders, updateOrder } from '../../../redux/actions/OrderAction'
 import OrderDetail from "./OrderDetail";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import Paginations from "../../pagination/Paginations";
+import { Link, useNavigate, useParams, useSearchParams  } from "react-router-dom";
 const OrderMain = () => {
+    const navigate = useNavigate();
+
+    const refreshPage = () => {
+    navigate(0);
+    }
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [currentPage, setCurrentPage] = useState(searchParams.get('page'));
+    //const [curretntSearch, setCurrentSearch] = useState(searchParams.get('search'));
+    let LIMIT = 8;
     const {isShowing, toggle, id} = useModal();
     const dispatch = useDispatch();
     const dispatchUpdate = useDispatch();
     const orderList= useSelector((state) => state.orderList);
     const { loading, error, orders} = orderList;
-
+    let NUM_OF_RECORDS = orders&&orders.length;
     const [status, setStatus]=useState();
     const [orderId, setOderId]=useState();
     const orderUpdate = useSelector((state) => state.orderUpdate);
@@ -37,6 +48,12 @@ const OrderMain = () => {
         paymentStatus: null,
         modifiedDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()
     })
+    const [data, setData] = useState(orders&&orders)
+    const [searchText, setSearchText] = useState(searchParams.get('search'));
+    // if(searchParams.get('search')!==""){
+    //     setSearchText(searchParams.get('search'));
+    // }
+    // filterData(searchParams.get('search'))
     useEffect(()=>{
         if (successUpdate) {
             dispatch({type: ORDER_UPDATE_RESET});
@@ -49,7 +66,14 @@ const OrderMain = () => {
             //     setOderId();
             // }
         }
+        // if(searchParams.get('search')!==""){
+        //     setSearchText(searchParams.get('search'));
+        // }
+        // if(orders.length>0){
+        //     filterData(searchText)
+        // }
     }, [successUpdate, dispatch]);
+    console.log("D",searchText)
     // if(!error)
     //     orders.sort((a,b)=>(a.id-b.id));
     // }
@@ -76,6 +100,8 @@ const OrderMain = () => {
         // setStatus(e.target.value);
         // setOderId(idO);
     }
+    console.log("A",searchParams.get('text'))
+    console.log("B",searchParams.get('page'))
     const ListItem = () => {
         return (
             <tr>
@@ -90,6 +116,95 @@ const OrderMain = () => {
             </tr>
         ); 
     }
+
+    // const onPageChanged = useCallback((event,page) => {
+    //     setSearchParams({page: page},{ replace: true })
+    // },[setSearchParams]);
+    // const [search, setSearch] = useState({
+    //     page: undefined,
+    //     search: undefined
+    // })
+    const onPageChanged = useCallback(
+        (event, page) => {
+            event.preventDefault();
+            let search;
+            if (page) {
+                // setSearch(prev=>({
+                //     ...prev,
+                //     page: page
+                // }))
+              search = {
+                search: searchText,
+                page: page
+              }
+            } else {
+                search = undefined;
+
+            }
+            setCurrentPage(page);
+            setSearchParams(search, { replace: true });
+        },
+        [setSearchParams]
+      );
+    // const excludeColumns = ["address", "email", "estimatedDate", "feeShip", "lineItemOrders", 
+    //                         "modifiedBy", "modifiedDate", "name", "number", "orderPrice", "paymentStatus", 
+    //                         "paymentType", "phoneNumber", "status", "totalPrice",
+    //                         "transactionCode", "vat", "voucher"];
+    const excludeColumns = ["id"];
+    const filterDataq = (value) => {
+        const lowercasedValue = value.toLowerCase().trim();
+        const filteredData = []
+        if (lowercasedValue === "") {
+            return filteredData
+
+        } else {
+            //console.log(products)
+            filteredData = orders.filter(item => {
+            return Object.keys(item).some(key =>
+                excludeColumns.includes(key) ? item[key].toString().toLowerCase().includes(lowercasedValue) : false
+            );
+          });
+
+        //   if(filteredData.length===0){
+        //     setCheck(false);
+        //   }else(setCheck(true));
+
+            return filteredData
+        }
+      }
+      const filterData =  orders.filter(item => {
+        return Object.keys(item).some(key =>
+            excludeColumns.includes(key) ? item[key].toString().toLowerCase().includes(searchText.toLowerCase().trim()) : false
+        );
+      });
+
+      const currentData = (filterData.length>0?filterData:orders).sort((a,b)=>(b.id-a.id)).slice(
+        (Number(currentPage) - 1) * LIMIT,
+        (Number(currentPage) - 1) * LIMIT + LIMIT
+    );
+    // const currentDataFilter = data.length>0&&data.slice(
+    //     (Number(currentPage) - 1) * LIMIT,
+    //     (Number(currentPage) - 1)  * LIMIT + LIMIT
+    // );
+      const onSearchTextChanged = useCallback((event) => {
+        event.preventDefault();
+            let search;
+            if (event.target.value!=="") {
+              search = {
+                search: event.target.value,
+                page: 1
+              }
+            }else {
+                search = {
+                    search: "",
+                    page: 1
+                  }
+            }
+            setSearchText(event.target.value)
+            setCurrentPage(1);
+            setSearchParams(search, { replace: true });
+      },
+      [setSearchParams])
   return (
     // <div className="row flex-lg-nowrap">
     //     <div className="col mb-3">
@@ -98,6 +213,20 @@ const OrderMain = () => {
                     <div className="text-center card-title">
                         <h3 className="mr-2">Orders Manage</h3>
                     </div>
+                    <header class="card-header">
+                        <form class="pb-3">
+                            <div class="input-group">
+                                <input style={{background:"white"}}
+                                type="text" class="form-control" placeholder="Search..." 
+                                value={searchText}
+                                onChange={(e) => {onSearchTextChanged(e)}}
+                                />
+                                <div class="input-group-append">
+                                    <button class="btn btn-light" type="button"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </header>
                     <div className="e-table">
                         <div className="table-responsive table-lg mt-3">
                             <table className="table table-bordered table-hover">
@@ -130,9 +259,16 @@ const OrderMain = () => {
                                             </th>
                                             </tr>
                                         </tfoot>
-                                    ) : (
+                                    ) : (filterData.length===0&&searchText!=="")?(
+                                    <tfoot align="center">
+                                        <tr>
+                                        <th colspan="8">
+                                        <Message variant="alert-danger">Not found order with id = {searchText}</Message>
+                                        </th>
+                                        </tr>
+                                    </tfoot>):(
                                 <tbody align="center">
-                                {orders&&orders.sort((a,b)=>(b.id-a.id)).map((item, index)  => (
+                                {currentData&&currentData.map((item, index)  => (
                                     <tr onClick={()=>{toggle(item.id)}}>
                                         <td className="text-nowrap align-middle">{item.id}</td>
                                         <td className="text-nowrap align-middle">{item.createdDate}</td>
@@ -223,7 +359,7 @@ const OrderMain = () => {
                                                 <form className="ordering" style={{width: "155px"}}>
                                                     <select className="orderby form-control" style={{color:"blue"}} onChange={(e)=>handleC(e,item.id)}>
                                                         <option className="text-nowrap align-middle" value="2">Shipping</option>
-                                                        <option value="1" style={{color:"gold"}}>Waiting Confirm</option>
+                                                        {/* <option value="1" style={{color:"gold"}}>Waiting Confirm</option> */}
                                                         <option value="3" style={{color:"green"}}>Completed</option>
                                                         <option value="0" style={{color:"red"}}>Cancel</option>
                                                     </select>
@@ -260,9 +396,17 @@ const OrderMain = () => {
                             </table>
                         </div>
                     </div>
+                    
                 </div>
             {/* </div>
         </div> */}
+        <Paginations
+            totalRecords={filterData.length>0?filterData.length:NUM_OF_RECORDS}
+            pageLimit={LIMIT}
+            pageNeighbours={2}
+            onPageChanged={onPageChanged}
+            currentPage={currentPage}
+        />
         <OrderDetail
             isShowing={isShowing}
             hide={toggle}
