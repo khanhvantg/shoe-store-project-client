@@ -78,7 +78,7 @@ const PayPalTransaction = () => {
         }
         else {return result};
       }, 0);
-      const moneyOut = money&&money.reduce(function (result, item) {
+    const moneyOut = money&&money.reduce(function (result, item) {
         const a = item.transaction_info;
         let mn = Number(a.transaction_amount.value);
         let mnf = 0;
@@ -101,24 +101,36 @@ const PayPalTransaction = () => {
     const handleClickEnd = (e) => {
         e.preventDefault();
         setIsOpenEnd(!isOpenEnd);
-      };
-      for(let j in money){
+    };
+    for(let j in money){
         money[j].transaction_info.status='0';
+        money[j].transaction_info.order_id='0';
         for(let i in orders){
-            if(money[j].transaction_info.transaction_id===orders[i].transactionCode&&orders[i].paymentStatus==='2'){
-                money[j].transaction_info.status='-1';
+            if(money[j].transaction_info.transaction_id===orders[i].transactionCode){
+                console.log("trueee")
                 money[j].transaction_info.order_id=orders[i].id;
-                break;
+                if(orders[i].paymentStatus==='2'){
+                    money[j].transaction_info.status='-1';
+                    break;
+                } else if (orders[i].paymentStatus==="1") {
+                    money[j].transaction_info.status='1';
+                    break;
+                }
             }
-            if(money[j].transaction_info.transaction_id===orders[i].transactionCode&&orders[i].paymentStatus==="1"){
-                money[j].transaction_info.status='1';
-                money[j].transaction_info.order_id=orders[i].id;
-                break;
-            }
+            // if(money[j].transaction_info.transaction_id===orders[i].transactionCode&&orders[i].paymentStatus==='2'){
+            //     money[j].transaction_info.status='-1';
+            //     money[j].transaction_info.order_id=orders[i].id;
+            //     break;
+            // }
+            // if(money[j].transaction_info.transaction_id===orders[i].transactionCode&&orders[i].paymentStatus==="1"){
+            //     money[j].transaction_info.status='1';
+            //     money[j].transaction_info.order_id=orders[i].id;
+            //     break;
+            // }
         }
-      }
-      var today = new Date();
-      const handleRefund = () => {
+    }
+    var today = new Date();
+    const handleRefund = () => {
         dispatch(refundTransaction(idTransaction))
         const orderInfo = {
             orderId: idOrder,
@@ -127,7 +139,7 @@ const PayPalTransaction = () => {
             modifiedDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()
         }
         dispatch1(updateOrder({orderInfo}))
-      }
+    }
     //   const handleRefund = (transaction_id, order_id) => {
     //     dispatch(refundTransaction(transaction_id))
     //     const orderInfo = {
@@ -151,6 +163,7 @@ const PayPalTransaction = () => {
             </tr>
         ); 
     }
+    console.log(money)
   return (
     <>
     {
@@ -359,6 +372,7 @@ const PayPalTransaction = () => {
                                         <tr>
                                             {/* <th>Id</th> */}
                                             <th>Transaction Code</th>
+                                            <th>Order Id</th>
                                             <th>Transaction Amount</th>
                                             <th>Fee Amount</th>
                                             <th>Available Balance</th>
@@ -381,6 +395,7 @@ const PayPalTransaction = () => {
                                         <tr style={{backgroundColor: item.transaction_info.status==='-1'&&"gray", textDecorationLine: item.transaction_info.status==='-1'&&"line-through"}}>
                                             {/* <td className="align-middle">{account.id}</td> */}
                                             <td className="text-nowrap align-middle text-center">{item.transaction_info.transaction_id}</td>
+                                            <td className="text-nowrap align-middle text-center">{item.transaction_info.order_id}</td>
                                             <td className="text-nowrap align-middle text-center">${item.transaction_info.transaction_amount.value}</td>
                                             <td className="text-nowrap align-middle text-center">${item.transaction_info.transaction_id==='00C038196C7999707'?0:item.transaction_info.fee_amount.value}</td>
                                             <td className="text-nowrap align-middle text-center">${item.transaction_info.available_balance.value}</td>

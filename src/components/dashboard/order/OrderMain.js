@@ -129,10 +129,6 @@ const OrderMain = () => {
             event.preventDefault();
             let search;
             if (page) {
-                // setSearch(prev=>({
-                //     ...prev,
-                //     page: page
-                // }))
               search = {
                 search: searchText,
                 page: page
@@ -146,10 +142,6 @@ const OrderMain = () => {
         },
         [setSearchParams]
       );
-    // const excludeColumns = ["address", "email", "estimatedDate", "feeShip", "lineItemOrders", 
-    //                         "modifiedBy", "modifiedDate", "name", "number", "orderPrice", "paymentStatus", 
-    //                         "paymentType", "phoneNumber", "status", "totalPrice",
-    //                         "transactionCode", "vat", "voucher"];
     const excludeColumns = ["id"];
     const filterDataq = (value) => {
         const lowercasedValue = value.toLowerCase().trim();
@@ -172,13 +164,13 @@ const OrderMain = () => {
             return filteredData
         }
       }
-      const filterData =  orders.filter(item => {
-        return Object.keys(item).some(key =>
-            excludeColumns.includes(key) ? item[key].toString().toLowerCase().includes(searchText.toLowerCase().trim()) : false
-        );
-      });
+    const filterData =  orders.filter(item => {
+    return Object.keys(item).some(key =>
+        excludeColumns.includes(key) ? item[key].toString().toLowerCase().includes(searchText.toLowerCase().trim()) : false
+    );
+    });
 
-      const currentData = (filterData.length>0?filterData:orders).sort((a,b)=>(b.id-a.id)).slice(
+    const currentData = (filterData.length>0?filterData:orders).sort((a,b)=>(b.id-a.id)).slice(
         (Number(currentPage) - 1) * LIMIT,
         (Number(currentPage) - 1) * LIMIT + LIMIT
     );
@@ -213,7 +205,7 @@ const OrderMain = () => {
                     <div className="text-center card-title">
                         <h3 className="mr-2">Orders Manage</h3>
                     </div>
-                    <header class="card-header">
+                    <header class="">
                         <form class="pb-3">
                             <div class="input-group">
                                 <input style={{background:"white"}}

@@ -44,7 +44,8 @@ const ProductUpdate = ({isShowing, hide, id, idCategory, name}) => {
 
     const productDetail = useSelector((state) => state.productDetail);
     const { loading, error, product } = productDetail;
-
+    // const arr1 = product&&product.productInfors;
+    // const arr2 = product&&product.images;
     const productUpdate = useSelector((state) => state.productUpdate);
     const {
         loading: loadingUpdate,
@@ -134,13 +135,31 @@ const ProductUpdate = ({isShowing, hide, id, idCategory, name}) => {
             })
         }
     }, [product, dispatch, id, successUpdate]);
-         
     const onInputChange = useCallback((value, name) => {
-        setForm(prev => ({
-            ...prev,
-            [name]: value
-        }));
-    }, []);
+        console.log(name, value)
+        // setForm(prev => ({
+        //     ...prev,
+        //     [name]: value
+        // }));
+        if (name==="status"&&value==="1"){
+            if (product.productInfors.length===0||product.images.length===0){
+                setErrorInput(prev => ({
+                    ...prev,
+                    status: { errorMsg: `Please insert size or image of ${product.name} to active` }
+                }));
+            } else {
+                setForm(prev => ({
+                    ...prev,
+                    [name]: value
+                }));
+            }
+        } else {
+            setForm(prev => ({
+                ...prev,
+                [name]: value
+            }));
+        }
+    }, [product]);
         
     const validateForm = () => {
         let isInvalid = false;

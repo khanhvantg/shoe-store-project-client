@@ -15,10 +15,12 @@ import Input from '../../checkValidate/Input'
 import Radio from '../../checkValidate/Radio'
 import Select from '../../checkValidate/Select'
 import ReactSelect from "react-select";
+import useModal from "../useModal";
+import SizeModal from "./SizeModal";
 
 const ProductCreate = ({isShowing, hide, categories}) => {
     const statusList = [
-        { value: 1, label: "Active" },
+        // { value: 1, label: "Active" },
         { value: 0, label: "Inactive" }
       ];
     const categoryList=[];
@@ -36,7 +38,7 @@ const ProductCreate = ({isShowing, hide, categories}) => {
         createdDate: '',
         modifiedBy: '',
         modifiedDate: '',
-        status: 1
+        status: "0"
       });
       
     const dispatch = useDispatch();
@@ -49,6 +51,7 @@ const ProductCreate = ({isShowing, hide, categories}) => {
         loading: loadingCreate,
         error: errorCreate,
         success: succsesCreate,
+        product
     } = productCreate;
 
     const onInputValidate = (value, name) => {
@@ -97,7 +100,8 @@ const ProductCreate = ({isShowing, hide, categories}) => {
             setForm(prev => ({
                 ...prev,
                 createdBy: userInfo.username,
-                createdDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()
+                createdDate: today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear(),
+                status: '0'
             }))
         }
         if(!isShowing){
@@ -289,6 +293,12 @@ const ProductCreate = ({isShowing, hide, categories}) => {
                 </div>
             </div>
         </div>
+        {/* <SizeModal
+            isShowing={isShowingS}
+            // hide={toggleSize}
+            id={16}
+            name={"nameProduct"}
+        /> */}
     </>
     )
 }

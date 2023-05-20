@@ -161,7 +161,7 @@ const Header = () => {
             <div className="container">
                 <Link className="navbar-brand" to={{ pathname: "/"}}>
                     {/* <img src="assets/images/Untitled.png" style={{width:"30px", height:"30px"}}/> */}
-                    <h4 className="font-weight-bold">E-Shop</h4>
+                    <h4 className="font-weight-bold">Shoe Store</h4>
                 </Link>
                 
                 <button style={{margin: "0 15px 0 1rem"}} className="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar"

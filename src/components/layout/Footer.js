@@ -6,8 +6,8 @@ function Footer() {
                     <div className="row">
                         <div className="col-md-6 col-lg-4 col-sm-6 mb-5 mb-lg-0 text-center text-sm-left mr-auto">
                             <div className="footer-widget">
-                                    <h4 className="mb-4">E-Shop</h4>
-                                    <p className="lead">Welcome To E-Shop. We Are Very Happy To Serve You.</p>
+                                    <h4 className="mb-4">Shoe Store</h4>
+                                    <p className="lead">Welcome To Shoe Store. We Are Very Happy To Serve You.</p>
                                     <div className="">
                                         <p className="mb-0"><strong>Location: </strong>1St, Vo Van Ngan, Thu Duc City</p>
                                         <p><strong>Support Email: </strong> TLCN@gmail.com</p>

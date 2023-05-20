@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllUsers } from '../../../redux/actions/UserAction'
 import Status from '../../status/Status'
@@ -8,6 +8,8 @@ import Message from "../../loadingError/Message";
 import useModal from '../useModal';
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import Paginations from "../../pagination/Paginations";
+import { Link, useNavigate, useParams, useSearchParams  } from "react-router-dom";
 const UserMain = () => {
     const dispatch = useDispatch();
     const [openModal, setOpenModal] = useState(false);
@@ -21,6 +23,32 @@ const UserMain = () => {
         dispatch(getAllUsers());
     }, [dispatch]);
 
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [currentPage, setCurrentPage] = useState(searchParams.get('page'));
+    let LIMIT = 8;
+    let NUM_OF_RECORDS = users&&users.length;
+    const onPageChanged = useCallback(
+        (event, page) => {
+            event.preventDefault();
+            let search;
+            if (page) {
+              search = {
+                // search: searchText,
+                page: page
+              }
+            } else {
+                search = undefined;
+
+            }
+            setCurrentPage(page);
+            setSearchParams(search, { replace: true });
+        },
+        [setSearchParams]
+      );
+      const currentData = users&&users.sort((a,b)=>(b.id-a.id)).slice(
+        (Number(currentPage) - 1) * LIMIT,
+        (Number(currentPage) - 1) * LIMIT + LIMIT
+    );
     const ListItem = () => {
         return (
             <tr>
@@ -80,7 +108,7 @@ const UserMain = () => {
                                         </tfoot>
                                     ) : (
                                     <tbody align="center">
-                                    { users && users.sort((a,b)=>(b.id-a.id)).map((user, index) => (
+                                    { currentData.map((user, index) => (
                                         <tr onClick={()=>{toggle(user.id)}}>
                                             {/* <td className="align-middle">{user.id}</td> */}
                                             <td className="text-nowrap align-middle">{user.name}</td>
@@ -119,6 +147,13 @@ const UserMain = () => {
                     </div>
                 {/* </div>
             </div> */}
+            <Paginations
+                totalRecords={NUM_OF_RECORDS}
+                pageLimit={LIMIT}
+                pageNeighbours={2}
+                onPageChanged={onPageChanged}
+                currentPage={currentPage}
+            />
             <UserUpdate 
                 isShowing={isShowing}
                 hide={toggle}

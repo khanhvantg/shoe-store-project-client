@@ -53,12 +53,6 @@ const Checkout = () => {
         service: null
     });
 
-    const [formAddress, setFormAddress] = useState({
-        city: null,
-        district: null,
-        ward: null
-    })
-
     const [formCheck, setFormCheck] = useState({
         city: null,
         district: null,
@@ -106,6 +100,11 @@ const Checkout = () => {
     const [city, setCity] = useState([]);
     const [district, setDistrict] = useState([]);
     const [ward, setWard] = useState([]);
+    const [formAddress, setFormAddress] = useState({
+        city: null,
+        district: null,
+        ward: null
+    })
     const [reLoad, setReLoad] = useState(true)
     useEffect(() => {
         setForm(prev => ({ ...prev, address: (form.numberDetail !== "" ? (form.numberDetail + ", ") : "") + (form.ward !== null ? (form.ward + ", ") : "") + (form.district !== null ? (form.district + ", ") : "") + (form.city !== null ? form.city : "") }))
@@ -179,6 +178,10 @@ const Checkout = () => {
             });
             setDistrict(arr)
         });
+        // setFormAddress(prev=>({
+        //     ...prev,
+        //     district: "Huyện Cần Giờ"
+        // }))
     };
     const getWard = async () => {
         const arr = [];
@@ -203,10 +206,12 @@ const Checkout = () => {
             weight: 700,
             width: 20
         }
-        await axios.post("https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee", inforDelivery, { headers: authHeader() }).then((res) => {
-            let result = res.data.data;
-            setForm(prev => ({ ...prev, feeShip: Math.round((result.total / 23400) * 100) / 100 }))
-        });
+        if(totalPrice<1000){
+            await axios.post("https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee", inforDelivery, { headers: authHeader() }).then((res) => {
+                let result = res.data.data;
+                setForm(prev => ({ ...prev, feeShip: Math.round((result.total / 23400) * 100) / 100 }))
+            });
+        }
     };
     const getService = async () => {
         const inforDelivery = {

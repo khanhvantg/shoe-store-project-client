@@ -353,7 +353,7 @@ const Cart = () => {
                 </div>
             </section>
             {(loading!==true&&lineItems&&lineItems.length<=0)&&
-                <div className="text-center">
+                <div className="text-center" style={{marginTop: "-79px"}}>
                     <h1>There are no lineitems yet</h1>
                     
                     <Link to="/shop?page=1" className="button-1">

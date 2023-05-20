@@ -204,7 +204,10 @@ const ProfileScreen = () => {
 
 
     return (
-        <div className="container rounded">
+        <div className="container rounded" style={{backgroundColor: "#f8f9fa", minHeight: "700px"}}>
+            <div className="content text-center">
+                <h1 className="mb-3 pt-4">Your Profile</h1>
+            </div>
             <div className="row py-4">
                 <div className="col-md-4">
                     <div className="d-flex flex-column align-items-center text-center p-3">

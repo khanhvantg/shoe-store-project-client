@@ -84,7 +84,7 @@ const SizeModal = ({isShowing, hide, id, name}) => {
             }else if (isOpen&&size&&size.id!==form.idSize){
                 setForm({
                     idSize:size.id,
-                    size:size.size,
+                    size: size.size,
                     amount:size.amount,
                 })
             }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts} from '../../../redux/actions/ProductAction'
 import { getAllcategories, getCategoryById, stopGetCategory } from '../../../redux/actions/CategoryAction'
@@ -14,6 +14,8 @@ import useModal from '../useModal';
 import useModalCreate from '../useModalCreate';
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import Paginations from "../../pagination/Paginations";
+import { Link, useNavigate, useParams, useSearchParams  } from "react-router-dom";
 const ProductMain = () => {
     const {isShowing, toggle, id} = useModal();
     const {isShowing: isShowingSize, toggle: toggleSize, id: idSize} = useModal();
@@ -27,7 +29,7 @@ const ProductMain = () => {
     const productList = useSelector((state) => state.productList);
     const categoryDetail = useSelector((state) => state.categoryDetail);
     const { loading, error, products } = idCategory==="0" ? productList : categoryDetail;
-    products.sort((a,b)=>(b.id-a.id));
+    // products.sort((a,b)=>(b.id-a.id));
 
     const categoryList = useSelector((state) => state.categoryList);
     const { categories } = categoryList;
@@ -48,7 +50,63 @@ const ProductMain = () => {
 
     const handleC = (e) => {
         setIdCategory(e.target.value);
+        setCurrentPage(1);
+        setSearchParams({
+            search: "",
+            page: 1
+        }, { replace: true });
     }
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [currentPage, setCurrentPage] = useState(searchParams.get('page'));
+    const [searchText, setSearchText] = useState(searchParams.get('search'));
+    let LIMIT = 8;
+    let NUM_OF_RECORDS = products&&products.length;
+    const onPageChanged = useCallback(
+        (event, page) => {
+            event.preventDefault();
+            let search;
+            if (page) {
+              search = {
+                search: searchText,
+                page: page
+              }
+            } else {
+                search = undefined;
+
+            }
+            setCurrentPage(page);
+            setSearchParams(search, { replace: true });
+        },
+        [setSearchParams]
+      );
+    const onSearchTextChanged = useCallback((event) => {
+        event.preventDefault();
+        let search;
+        if (event.target.value!=="") {
+            search = {
+                search: event.target.value,
+                page: 1
+            }
+        }else {
+            search = {
+                search: "",
+                page: 1
+            }
+        }
+        setSearchText(event.target.value)
+        setCurrentPage(1);
+        setSearchParams(search, { replace: true });
+    },[setSearchParams])
+    const excludeColumns = ["name"];
+    const filterData =  products&&products.filter(item => {
+        return Object.keys(item).some(key =>
+            excludeColumns.includes(key) ? item[key].toString().toLowerCase().includes(searchText.toLowerCase().trim()) : false
+        );
+    });
+    const currentData = (filterData.length>0?filterData:products&&products).sort((a,b)=>(b.id-a.id)).slice(
+        (Number(currentPage) - 1) * LIMIT,
+        (Number(currentPage) - 1) * LIMIT + LIMIT
+    );
     const ListItem = () => {
         return (
             <tr>
@@ -83,6 +141,20 @@ const ProductMain = () => {
                                     <input type="hidden" name="paged" value="1" />
                                 </div>
                             </header>
+                            <header class="">
+                            <form class="pb-3">
+                                <div class="input-group">
+                                    <input style={{background:"white"}}
+                                    type="text" class="form-control" placeholder="Search..." 
+                                    value={searchText}
+                                    onChange={(e) => {onSearchTextChanged(e)}}
+                                    />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-light" type="button"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </header>
                         {/* <div className="text-center" style={{width:"125px"}}>
                             <button className="btn btn-success btn-block" type="button" onClick={toggleCreate}>New Product</button>
                             <form className="ordering" style={{width:"125px"}}>
@@ -129,9 +201,16 @@ const ProductMain = () => {
                                             </th>
                                             </tr>
                                         </tfoot>
-                                    ) : (
+                                    ) : (filterData.length===0&&searchText!=="")?(
+                                        <tfoot align="center">
+                                            <tr>
+                                            <th colspan="8">
+                                            <Message variant="alert-danger">Not found product with name is {searchText} {idCategory==="0"?"":`in ${category.name}`}</Message>
+                                            </th>
+                                            </tr>
+                                        </tfoot>) : (
                                 <tbody align="center">
-                                {products&&products.map((product, index)  => (
+                                {currentData.map((product, index)  => (
                                     <tr onClick={()=>{toggle(product.id);toggleName(product.name)}}>
                                         {/* <td className="align-middle">{product.id}</td> */}
                                         <td className="text-nowrap align-middle">{product.name}</td>
@@ -169,6 +248,13 @@ const ProductMain = () => {
                 </div>
             {/* </div>
         </div> */}
+        <Paginations
+                totalRecords={filterData.length>0?filterData.length:NUM_OF_RECORDS}
+                pageLimit={LIMIT}
+                pageNeighbours={2}
+                onPageChanged={onPageChanged}
+                currentPage={currentPage}
+            />
         <ProductCreate 
             isShowing={isShowingCreate}
             hide={toggleCreate}

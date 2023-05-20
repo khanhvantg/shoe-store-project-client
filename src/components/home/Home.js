@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import Loading from '../loadingError/Loading';
 import Message from "../loadingError/Message";
 import { createLineItem } from '../../redux/actions/WishlistAction'
-import { getProductBest } from "../../redux/actions/RevenueAction";
+import { getProductBest, getRevenueByMonth } from "../../redux/actions/RevenueAction";
 import LoadingCustom from "../loadingError/LoadingCustom";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -20,20 +20,20 @@ const Home = () => {
     const productList = useSelector((state) => state.productList);
     const { loading, error, products} = productList;
     const dataList = products&&products.filter(item=>item.status==="1");
-    const bestSeller = useSelector((state) => state.bestSeller);
-    const { productBests } = bestSeller;
+    const revenueOfMonth = useSelector((state) => state.revenueOfMonth);
+    const { revenueList } = revenueOfMonth;
     //const { success, category, loading, error, products } = categoryDetail;
     var today = new Date();
     const month = {
-        month: today.getMonth()+1,
+        month: today.getMonth(),
         year: today.getFullYear()
     }
-    
+    console.log(revenueList)
     const proBest = [];
-    productBests&&productBests.sort((a,b)=>(Number(b.amountProduct)-Number(a.amountProduct)))
-    for (let i in productBests) {
+    revenueList&&revenueList.sort((a,b)=>(Number(b.amountProduct)-Number(a.amountProduct)))
+    for (let i in revenueList) {
         for (let j in products) {
-            if(Number(productBests[i].productId)===products[j].id&&products[j].status==="1"){
+            if(Number(revenueList[i].productId)===products[j].id&&products[j].status==="1"){
                 proBest.push(products[j]);
                 break;
             }
@@ -42,7 +42,7 @@ const Home = () => {
     const [check,setCheck] = useState(0);
     useEffect(() => {
         dispatch(getAllProducts());
-        dispatch(getProductBest({month}))
+        dispatch(getRevenueByMonth({month}))
     }, [check]);
 
     const handelBestSeller = () => {
@@ -51,10 +51,10 @@ const Home = () => {
     const handelNewArray = () => {
         setCheck(1);
     }
-    useEffect(() => {
-        dispatch(getAllProducts());
-        dispatch(getProductBest({month}))
-    }, []);
+    // useEffect(() => {
+    //     dispatch(getAllProducts());
+    //     dispatch(getRevenueByMonth({month}))
+    // }, []);
     const ListItem = () => {
         return (
             <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">

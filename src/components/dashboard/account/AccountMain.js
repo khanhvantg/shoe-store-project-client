@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllAccounts } from '../../../redux/actions/AccountAction'
 import Status from '../../status/Status'
@@ -8,6 +8,8 @@ import Message from "../../loadingError/Message";
 import useModal from '../useModal';
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import Paginations from "../../pagination/Paginations";
+import { Link, useNavigate, useParams, useSearchParams  } from "react-router-dom";
 const AccountMain = () => {
     const dispatch = useDispatch();
     const [openModal, setOpenModal] = useState(false);
@@ -22,6 +24,57 @@ const AccountMain = () => {
         dispatch(getAllAccounts());
     }, [dispatch]);
 
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [currentPage, setCurrentPage] = useState(searchParams.get('page'));
+    const [searchText, setSearchText] = useState(searchParams.get('search'));
+    let LIMIT = 8;
+    let NUM_OF_RECORDS = accounts&&accounts.length;
+    const onPageChanged = useCallback(
+        (event, page) => {
+            event.preventDefault();
+            let search;
+            if (page) {
+              search = {
+                search: searchText,
+                page: page
+              }
+            } else {
+                search = undefined;
+
+            }
+            setCurrentPage(page);
+            setSearchParams(search, { replace: true });
+        },
+        [setSearchParams]
+      );
+    const onSearchTextChanged = useCallback((event) => {
+        event.preventDefault();
+        let search;
+        if (event.target.value!=="") {
+            search = {
+            search: event.target.value,
+            page: 1
+            }
+        }else {
+            search = {
+                search: "",
+                page: 1
+                }
+        }
+        setSearchText(event.target.value)
+        setCurrentPage(1);
+        setSearchParams(search, { replace: true });
+    },[setSearchParams])
+    const excludeColumns = ["username"];
+    const filterData =  accounts&&accounts.filter(item => {
+        return Object.keys(item).some(key =>
+            excludeColumns.includes(key) ? item[key].toString().toLowerCase().includes(searchText.toLowerCase().trim()) : false
+        );
+    });
+    const currentData = (filterData.length>0?filterData:accounts&&accounts).sort((a,b)=>(b.id-a.id)).slice(
+        (Number(currentPage) - 1) * LIMIT,
+        (Number(currentPage) - 1) * LIMIT + LIMIT
+    );
     const ListItem = () => {
         return (
             <tr>
@@ -41,6 +94,20 @@ const AccountMain = () => {
                         <div className="text-center card-title">
                             <h3 className="mr-2">Accounts Manage</h3>
                         </div>
+                        <header class="">
+                            <form class="pb-3">
+                                <div class="input-group">
+                                    <input style={{background:"white"}}
+                                    type="text" class="form-control" placeholder="Search..." 
+                                    value={searchText}
+                                    onChange={(e) => {onSearchTextChanged(e)}}
+                                    />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-light" type="button"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </header>
                         <div className="e-table">
                             <div className="table-responsive table-lg mt-3">
                                 <table className="table table-bordered table-hover">
@@ -69,9 +136,16 @@ const AccountMain = () => {
                                             </th>
                                             </tr>
                                         </tfoot>
-                                    ) : (
+                                    ) : (filterData.length===0&&searchText!=="")?(
+                                        <tfoot align="center">
+                                            <tr>
+                                            <th colspan="8">
+                                            <Message variant="alert-danger">Not found account with username is {searchText}</Message>
+                                            </th>
+                                            </tr>
+                                        </tfoot>):(
                                     <tbody align="center">
-                                    { accounts && accounts.sort((a,b)=>(b.id-a.id)).map((account, index) => (
+                                    { currentData && currentData.map((account, index) => (
                                         <tr onClick={()=>{toggle(account.id)}}>
                                             {/* <td className="align-middle">{account.id}</td> */}
                                             <td className="text-nowrap align-middle">{account.username}</td>
@@ -106,6 +180,13 @@ const AccountMain = () => {
                     </div>
                 {/* </div>
             </div> */}
+            <Paginations
+                totalRecords={filterData.length>0?filterData.length:NUM_OF_RECORDS}
+                pageLimit={LIMIT}
+                pageNeighbours={2}
+                onPageChanged={onPageChanged}
+                currentPage={currentPage}
+            />
             <AccountUpdate 
                 isShowing={isShowing}
                 hide={toggle}

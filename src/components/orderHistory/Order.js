@@ -70,7 +70,7 @@ const Order = () => {
         <section className="cart shopping page-wrapper">
             <div className="container">
                 <div className="row justify-content-center">
-                    <h3>Order History</h3>
+                    <h1>Order History</h1>
                     <div className="col-lg-12">
                         <div className="e-table">
                         <div className="table-responsive table-lg mt-3">

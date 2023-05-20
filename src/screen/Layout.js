@@ -14,7 +14,7 @@ const Layout = () => {
     const [isAdmin, setIsAdmin] = useState(false);
     const nameUrl = window.location.href.toString();
     let arrayStrig = nameUrl.split("/");
-    const f = arrayStrig[arrayStrig.length - 1];
+    const f = arrayStrig[arrayStrig.length - 1].split("?")[0];
 
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
@@ -71,11 +71,11 @@ const Layout = () => {
                 </div>
                 <ul className="list-unstyled" style={{ paddingLeft: 20 }}>
                     {isAdmin &&
-                        <li className={f === "accounts" ? "nav-item active" : "nav-item"} ><Link to="/manage/accounts" className="nav-link">Accounts</Link></li>
+                        <li className={f === "accounts" ? "nav-item active" : "nav-item"} ><Link to={{ pathname: "/manage/accounts", search: "?search=&page=1" }} className="nav-link">Accounts</Link></li>
                     }
-                    <li className={f === "users" ? "nav-item active" : "nav-item"} ><Link to="/manage/users" className="nav-link">Users</Link></li>
+                    <li className={f === "users" ? "nav-item active" : "nav-item"} ><Link to="/manage/users?page=1" className="nav-link">Users</Link></li>
                     <li className={f === "categories" ? "nav-item active" : "nav-item"} ><Link to="/manage/categories" className="nav-link" >Categories</Link></li>
-                    <li className={f === "products" ? "nav-item active" : "nav-item"} ><Link to="/manage/products" className="nav-link">Products</Link></li>
+                    <li className={f === "products" ? "nav-item active" : "nav-item"} ><Link to={{ pathname: "/manage/products", search: "?search=&page=1" }} className="nav-link">Products</Link></li>
                     <li className={f === "vouchers" ? "nav-item active" : "nav-item"} ><Link to="/manage/vouchers" className="nav-link">Vouchers</Link></li>
                     <li className={f === "orders" ? "nav-item active" : "nav-item"} ><Link to={{ pathname: "/manage/orders", search: "?search=&page=1" }} className="nav-link">Orders</Link></li>
                 </ul>

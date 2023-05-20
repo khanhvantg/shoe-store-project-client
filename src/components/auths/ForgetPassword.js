@@ -122,7 +122,7 @@ const ForgetPassword = () => {
                             <div className="text-center pt-1 mb-3 pb-1">
                                             <button className="button-63 w-100" onClick={loading?"disabled":handleSubmit}>
                                                 {loading?<Loading a={"24px"}/>:
-                                                "Login"}
+                                                "Submit"}
                                             </button>
                                         </div>
                                     {error && (<Message variant="alert-danger">Username or Password is not correct</Message>)}
