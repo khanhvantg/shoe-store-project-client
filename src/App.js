@@ -38,6 +38,7 @@ import Invoice from './components/invoice/Invoice';
 
 import MessengerCustomerChat from 'react-messenger-customer-chat';
 import PrivateRouteForAdmin from './PrivateRouteForAdmin';
+import NotFoundPage from './components/notFoundPage/NotFoundPage';
 const App = () => {
   return (
     <div className="App" style={{ backgroundColor: "white" }}>
@@ -48,6 +49,7 @@ const App = () => {
         <Header />
         <div className="main">
           <Routes forceRefresh={true}>
+            <Route path="*" element={<NotFoundPage />} />
             <Route path="/" element={<Home />} />
             <Route path="/order-detail/:id"
               element={
