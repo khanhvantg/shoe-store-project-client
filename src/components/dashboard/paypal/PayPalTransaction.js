@@ -160,6 +160,7 @@ const PayPalTransaction = () => {
                 <td className="text-nowrap align-middle"><Skeleton/></td>
                 <td className="text-nowrap align-middle"><Skeleton/></td>
                 <td className="text-nowrap align-middle"><Skeleton/></td>
+                <td className="text-nowrap align-middle"><Skeleton/></td>
             </tr>
         ); 
     }
