@@ -197,8 +197,8 @@ const ProductDetail = () => {
                     <nav aria-label="breadcrumb">
                         {loading?<Skeleton style={{color:"black"}}/>:
                         <ol className="breadcrumb bg-transparent justify-content-center">
-                            <p className="breadcrumb-item"><Link to="/">Home</Link></p>
-                            <p className="breadcrumb-item"><Link to="/Shop">Shoes</Link></p>
+                            <p className="breadcrumb-item"><Link reloadDocument={true}  to="/">Home</Link></p>
+                            <p className="breadcrumb-item"><Link reloadDocument={true}  to="/Shop">Shoes</Link></p>
                             <p className="breadcrumb-item active" aria-current="page">{product.name}</p>
                         </ol>}
                     </nav>
@@ -381,14 +381,14 @@ const ProductDetail = () => {
                     <div class="col-lg-2 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals" style={{flex: "0 0 20%", maxWidth: "20%"}}>
                         <div class="product__item">
                         <div class="img-wrap product-wrap"> 
-                            <Link to={{ pathname: `/product/${product.id}`}}>
+                            <Link reloadDocument={true}  to={{ pathname: `/product/${product.id}`}}>
                                 <img className="box-shadow w-100 mb-2 border" src={product.link} />
                             </Link>
                         </div> 
                         {/* <span class="onsale">New</span> */}
                         <div class="product__item__text">
                                 <h6>{product.name}</h6>
-                                <Link to={`/product/${product.id}`} class="add-cart">View Detail</Link>
+                                <Link reloadDocument={true}  to={`/product/${product.id}`} class="add-cart">View Detail</Link>
                             
                                 <h5>${product.price}</h5>
                             </div>

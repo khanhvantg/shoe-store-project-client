@@ -505,7 +505,7 @@ const Checkout = () => {
                                         {lineItems && lineItems.sort((a, b) => (a.id - b.id)).map(item => (
                                             <ul className="list-unstyled border-bottom">
                                                 <li className="d-flex justify-content-between mb-1">
-                                                    <Link to={`/product/${item.product.id}`}>
+                                                    <Link reloadDocument={true}  to={`/product/${item.product.id}`}>
                                                         <img className="media-object mr-3" style={{ width: "70px" }} src={item.product.images[0]?.link} alt="image" />
                                                     </Link>
                                                     <span style={{ width: "160px" }}>

@@ -50,20 +50,20 @@ const Layout = () => {
         <>
             <nav id="sidebar" className={active ? "active" : ""}>
                 <div className="sidebar-header">
-                    <h5><ul className="list-unstyled"><li className={f === "paypal" ? "nav-item active" : "nav-item"}><Link to="/manage/paypal" style={{ padding: 0 }}>PayPal Transaction</Link></li></ul></h5>
+                    <h5><ul className="list-unstyled"><li className={f === "paypal" ? "nav-item active" : "nav-item"}><Link reloadDocument={true}  to="/manage/paypal" style={{ padding: 0 }}>PayPal Transaction</Link></li></ul></h5>
                     <hr></hr>
                 </div>
                 {/* <ul className="list-unstyled" style={{paddingLeft:20}}>
-                <li className={f==="d-revenue"?"nav-item active":"nav-item"} ><Link to="/manage/d-revenue" className="nav-link">Statistics By Day</Link></li>
+                <li className={f==="d-revenue"?"nav-item active":"nav-item"} ><Link reloadDocument={true}  to="/manage/d-revenue" className="nav-link">Statistics By Day</Link></li>
             </ul> */}
                 <div className="sidebar-header">
                     <h5>Sales</h5>
                     <hr></hr>
                 </div>
                 <ul className="list-unstyled" style={{ paddingLeft: 20 }}>
-                    <li className={f === "d-revenue" ? "nav-item active" : "nav-item"} ><Link to="/manage/d-revenue" className="nav-link">Statistics By Day</Link></li>
-                    <li className={f === "m-revenue" ? "nav-item active" : "nav-item"} ><Link to="/manage/m-revenue" className="nav-link">Statistics By Month</Link></li>
-                    <li className={f === "y-revenue" ? "nav-item active" : "nav-item"} ><Link to="/manage/y-revenue" className="nav-link">Monthly Revenue By Year</Link></li>
+                    <li className={f === "d-revenue" ? "nav-item active" : "nav-item"} ><Link reloadDocument={true}  to="/manage/d-revenue" className="nav-link">Statistics By Day</Link></li>
+                    <li className={f === "m-revenue" ? "nav-item active" : "nav-item"} ><Link reloadDocument={true}  to="/manage/m-revenue" className="nav-link">Statistics By Month</Link></li>
+                    <li className={f === "y-revenue" ? "nav-item active" : "nav-item"} ><Link reloadDocument={true}  to="/manage/y-revenue" className="nav-link">Monthly Revenue By Year</Link></li>
                 </ul>
                 <div className="sidebar-header">
                     <h5>Dashboard</h5>
@@ -71,13 +71,13 @@ const Layout = () => {
                 </div>
                 <ul className="list-unstyled" style={{ paddingLeft: 20 }}>
                     {isAdmin &&
-                        <li className={f === "accounts" ? "nav-item active" : "nav-item"} ><Link to={{ pathname: "/manage/accounts", search: "?search=&page=1" }} className="nav-link">Accounts</Link></li>
+                        <li className={f === "accounts" ? "nav-item active" : "nav-item"} ><Link reloadDocument={true}  to={{ pathname: "/manage/accounts", search: "?search=&page=1" }} className="nav-link">Accounts</Link></li>
                     }
-                    <li className={f === "users" ? "nav-item active" : "nav-item"} ><Link to="/manage/users?page=1" className="nav-link">Users</Link></li>
-                    <li className={f === "categories" ? "nav-item active" : "nav-item"} ><Link to="/manage/categories" className="nav-link" >Categories</Link></li>
-                    <li className={f === "products" ? "nav-item active" : "nav-item"} ><Link to={{ pathname: "/manage/products", search: "?search=&page=1" }} className="nav-link">Products</Link></li>
-                    <li className={f === "vouchers" ? "nav-item active" : "nav-item"} ><Link to="/manage/vouchers" className="nav-link">Vouchers</Link></li>
-                    <li className={f === "orders" ? "nav-item active" : "nav-item"} ><Link to={{ pathname: "/manage/orders", search: "?search=&page=1" }} className="nav-link">Orders</Link></li>
+                    <li className={f === "users" ? "nav-item active" : "nav-item"} ><Link reloadDocument={true}  to="/manage/users?page=1" className="nav-link">Users</Link></li>
+                    <li className={f === "categories" ? "nav-item active" : "nav-item"} ><Link reloadDocument={true}  to="/manage/categories" className="nav-link" >Categories</Link></li>
+                    <li className={f === "products" ? "nav-item active" : "nav-item"} ><Link reloadDocument={true}  to={{ pathname: "/manage/products", search: "?search=&page=1" }} className="nav-link">Products</Link></li>
+                    <li className={f === "vouchers" ? "nav-item active" : "nav-item"} ><Link reloadDocument={true}  to="/manage/vouchers" className="nav-link">Vouchers</Link></li>
+                    <li className={f === "orders" ? "nav-item active" : "nav-item"} ><Link reloadDocument={true}  to={{ pathname: "/manage/orders", search: "?search=&page=1" }} className="nav-link">Orders</Link></li>
                 </ul>
             </nav>
             {windowSize.width < 768 && (

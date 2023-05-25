@@ -208,7 +208,7 @@ const Order = () => {
                         <div className="text-center">
                             <h1>There are no orders yet</h1>
                             
-                            <Link to="/shop?page=1" className="button-1">
+                            <Link reloadDocument={true}  to="/shop?page=1" className="button-1">
                                 Shop Now
                             </Link>
                         </div>

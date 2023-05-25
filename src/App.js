@@ -46,9 +46,9 @@ const App = () => {
         className="toast-position"
       />
       <BrowserRouter>
-        <Header />
+        <Header/>
         <div className="main">
-          <Routes forceRefresh={true}>
+          <Routes>
             <Route path="*" element={<NotFoundPage />} />
             <Route path="/" element={<Home />} />
             <Route path="/order-detail/:id"
@@ -82,8 +82,24 @@ const App = () => {
             />
             <Route path="/order" element={<Order />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/forgetPassword" element={<ForgetPassword />} />
+            {/* <Route path="/signup" element={<SignUp />} /> */}
+            <Route
+              path="/signup"
+              element={
+                <PrivateRoute>
+                  <SignUp />
+                </PrivateRoute>
+              }
+            />
+            {/* <Route path="/forgetPassword" element={<ForgetPassword />} /> */}
+            <Route
+              path="/forgetPassword"
+              element={
+                <PrivateRoute>
+                  <ForgetPassword />
+                </PrivateRoute>
+              }
+            />
             <Route path="/manage/accounts" element={<ManageAccountsScreen />} />
             <Route
               path="/manage/paypal"

@@ -182,7 +182,7 @@ const Home1 = () => {
                     <p className="text-md mt-3 text-white">Hurry up! Limited time offer. Grab ot now!</p>
                   
                         <div id="simple-timer" className="syotimer mb-5"></div>
-                    <Link to="/shop" className="btn btn-main"><i className="ti-bag mr-2"></i>Shop Now </Link>
+                    <Link reloadDocument={true}  to="/shop" className="btn btn-main"><i className="ti-bag mr-2"></i>Shop Now </Link>
                     </div>
                 </div>
                 </div>
@@ -202,11 +202,11 @@ const Home1 = () => {
                             <>
                             {index<4?(
                                 <div className="media mb-3">
-                            <Link className="featured-entry-thumb" to={`/product/${product.id}`}>
+                            <Link reloadDocument={true}  className="featured-entry-thumb" to={`/product/${product.id}`}>
                                 <img src={product.images.sort((a, b) => (a.id-b.id))[0]?.link} alt="Product thumb" width="64" className="img-fluid mr-3" />
                             </Link>
                             <div className="media-body">
-                                <h6 className="featured-entry-title mb-0"><Link to={`/product/${product.id}`}>{product.name}</Link></h6>
+                                <h6 className="featured-entry-title mb-0"><Link reloadDocument={true}  to={`/product/${product.id}`}>{product.name}</Link></h6>
                                 <p className="featured-entry-meta">$ {product.price}</p>
                             </div>
                         </div>
@@ -222,11 +222,11 @@ const Home1 = () => {
                             <>
                             {index<4?(
                                 <div className="media mb-3">
-                            <Link className="featured-entry-thumb" to={`/product/${product.id}`}>
+                            <Link reloadDocument={true}  className="featured-entry-thumb" to={`/product/${product.id}`}>
                                 <img src={product.images.sort((a, b) => (a.id-b.id))[0]?.link} alt="Product thumb" width="64" className="img-fluid mr-3" />
                             </Link>
                             <div className="media-body">
-                                <h6 className="featured-entry-title mb-0"><Link to={`/product/${product.id}`}>{product.name}</Link></h6>
+                                <h6 className="featured-entry-title mb-0"><Link reloadDocument={true}  to={`/product/${product.id}`}>{product.name}</Link></h6>
                                 <p className="featured-entry-meta">$ {product.price}</p>
                             </div>
                         </div>
@@ -310,7 +310,7 @@ const Home1 = () => {
                         </div>
                         <div class="product__item__text">
                             <h6>{product.name}</h6>
-                            <Link to={`/product/${product.id}`} class="add-cart">View Detail</Link>
+                            <Link reloadDocument={true}  to={`/product/${product.id}`} class="add-cart">View Detail</Link>
                             {/* <div class="rating">
                                 <i class="fa fa-star-o"></i>
                                 <i class="fa fa-star-o"></i>
@@ -351,7 +351,7 @@ const Home1 = () => {
                     </div>
                     <div class="product__item__text">
                         <h6>{product.name}</h6>
-                        <Link to={`/product/${product.id}`} class="add-cart">View Detail</Link>
+                        <Link reloadDocument={true}  to={`/product/${product.id}`} class="add-cart">View Detail</Link>
                         {/* <div class="rating">
                             <i class="fa fa-star-o"></i>
                             <i class="fa fa-star-o"></i>

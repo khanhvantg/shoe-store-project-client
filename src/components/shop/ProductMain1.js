@@ -241,13 +241,13 @@ const ProductMain1 = () => {
 
                         {/* </Skeleton> */}
                         {/* </Skeleton> */}
-                        {/* <Link to={{ pathname: `/product/${product.id}`}}>
+                        {/* <Link reloadDocument={true}  to={{ pathname: `/product/${product.id}`}}>
                                         <img className="box-shadow border w-100 mb-2 img-first" src={product.images.sort((a, b) => (a.id-b.id))[0]?.link} />
                                     </Link> */}
                     </div>
                     <div class="product__item__text">
                         <h5><Skeleton></Skeleton></h5>
-                        {/* <Link to={`/product/${product.id}`} class="add-cart">View Detail</Link> */}
+                        {/* <Link reloadDocument={true}  to={`/product/${product.id}`} class="add-cart">View Detail</Link> */}
                         <h5><Skeleton></Skeleton></h5>
                     </div>
                 </figure>
@@ -293,7 +293,7 @@ const ProductMain1 = () => {
 
                                 <nav aria-label="breadcrumb">
                                     <ol className="breadcrumb bg-transparent justify-content-center">
-                                        <li className="breadcrumb-item"><Link to="/">Home</Link></li>
+                                        <li className="breadcrumb-item"><Link reloadDocument={true}  to="/">Home</Link></li>
                                         <li className="breadcrumb-item active" aria-current="page">Shoes</li>
                                     </ol>
                                 </nav>
@@ -508,7 +508,7 @@ const ProductMain1 = () => {
                                                         <div class="col-md-4">
                                                             <figure class="product__item card card-product-grid product">
                                                                 <div class="img-wrap product-wrap">
-                                                                    <Link to={{ pathname: `/product/${product.id}` }}>
+                                                                    <Link reloadDocument={true}  to={{ pathname: `/product/${product.id}` }}>
                                                                         <img className="box-shadow border w-100 mb-2 img-first" src={product.images.sort((a, b) => (a.id - b.id))[0]?.link} />
                                                                     </Link>
                                                                 </div>
@@ -523,11 +523,11 @@ const ProductMain1 = () => {
                                                         <span class="price">${product.price}</span>
                                                     </div>
                                                 </div>
-                                                <Link to={{ pathname: `/product/${product.id}`}} class="btn btn-block btn-primary">View Detail</Link>
+                                                <Link reloadDocument={true}  to={{ pathname: `/product/${product.id}`}} class="btn btn-block btn-primary">View Detail</Link>
                                             </figcaption> */}
                                                                 <div class="product__item__text">
                                                                     <h6>{product.name}</h6>
-                                                                    <Link to={`/product/${product.id}`} class="add-cart">View Detail</Link>
+                                                                    <Link reloadDocument={true}  to={`/product/${product.id}`} class="add-cart">View Detail</Link>
                                                                     <h5>${product.price}</h5>
                                                                 </div>
                                                             </figure>

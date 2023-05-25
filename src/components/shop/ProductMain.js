@@ -88,7 +88,7 @@ const ProductMain = ({idCategory}) => {
                     <div className="col-lg-3 col-12 col-md-6 col-sm-6 mb-5" >
                         <div className="product">
                             <div className="product-wrap">
-                                <Link to={{ pathname: `/product/${product.id}`}}>
+                                <Link reloadDocument={true}  to={{ pathname: `/product/${product.id}`}}>
                                     <img className="img-thumbnail w-100 mb-3 img-first"  src={product.images.sort((a, b) => (a.id-b.id))[0]?.link} />
                                 </Link>                      
                             </div>
@@ -99,7 +99,7 @@ const ProductMain = ({idCategory}) => {
                             </div> */}
                             {/* <a className="circle" ><i className="tf-ion-ios-heart"></i></a> */}
                             <div className="product-info">
-                                <h2 className="product-title h5 mb-0"><Link to={{ pathname: `/product/${product.id}`}}>{product.name}</Link></h2>
+                                <h2 className="product-title h5 mb-0"><Link reloadDocument={true}  to={{ pathname: `/product/${product.id}`}}>{product.name}</Link></h2>
                                 <span className="price">
                                     $ {product.price}
                                 </span>

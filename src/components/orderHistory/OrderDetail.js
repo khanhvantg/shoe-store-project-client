@@ -133,7 +133,7 @@ const OrderDetail = ({isShowing, hide, id}) => {
                                                     {lineItems&&lineItems.map(order=>(
                                                         <tr className="cart_order">
                                                     <td className="product-thumbnail" data-title="Image">
-                                                        <Link to={`/product/${order.product.id}`}><img src={order.product.images.sort((a,b)=>(a.id-b.id))[0].link} className="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" /></Link>
+                                                        <Link reloadDocument={true}  to={`/product/${order.product.id}`}><img src={order.product.images.sort((a,b)=>(a.id-b.id))[0].link} className="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" /></Link>
                                                     </td>
                                                     <td className="product-name" data-title="Product">
                                                         <span className="amount">{order.product.name}</span>
@@ -239,7 +239,7 @@ const OrderDetail = ({isShowing, hide, id}) => {
                         //                             {lineItems&&lineItems.map(item=>(
                         //                                 <tr className="cart_item">
                         //                             <td className="product-thumbnail" data-title="Image">
-                        //                                 <Link to={`/product/${item.product.id}`}><img src={item.product.images.sort((a,b)=>(a.id-b.id))[0].link} className="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" /></Link>
+                        //                                 <Link reloadDocument={true}  to={`/product/${item.product.id}`}><img src={item.product.images.sort((a,b)=>(a.id-b.id))[0].link} className="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" /></Link>
                         //                             </td>
                         //                             <td className="product-name" data-title="Product">
                         //                                 <span className="amount">{item.product.name}</span>

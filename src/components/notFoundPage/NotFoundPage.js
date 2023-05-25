@@ -9,8 +9,8 @@ const NotFoundPage = () => {
             <h1 style={{marginTop: "-79px", fontSize: "50px"}}>PAGE NOT FOUND</h1>
         </div>
         <div className="text-center cart-buttons mt-3" style={{ padding: "10px 0px 50px 0px" }}>
-            <Link to="/" className="button-1 mb-3 mr-5">Go Home</Link>
-            <Link to="/shop?page=1" className="button-1 mb-3 ml-5">Go Shop</Link>
+            <Link reloadDocument={true}  to="/" className="button-1 mb-3 mr-5">Go Home</Link>
+            <Link reloadDocument={true}  to="/shop?page=1" className="button-1 mb-3 ml-5">Go Shop</Link>
         </div>
     </div>
   )

@@ -31,7 +31,7 @@ const Shop = () => {
                     
                                 <nav aria-label="breadcrumb">
                                     <ol className="breadcrumb bg-transparent justify-content-center">
-                                    <li className="breadcrumb-item"><Link to="/">Home</Link></li>
+                                    <li className="breadcrumb-item"><Link reloadDocument={true}  to="/">Home</Link></li>
                                     <li className="breadcrumb-item active" aria-current="page">Shoes</li>
                                     </ol>
                                 </nav>

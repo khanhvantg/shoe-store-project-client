@@ -18,9 +18,9 @@ const Thanks = () => {
                 <p className="text-md mt-3 text-white">or call us at (+84) 94-529-1058</p>
             </div>
             <div className="text-center cart-buttons mt-3" style={{ padding: "10px 0px 50px 0px" }}>
-                <Link to="/order" className="button-1 mb-3 mr-5">Order History</Link>
+                <Link reloadDocument={true}  to="/order" className="button-1 mb-3 mr-5">Order History</Link>
 
-                <Link to="/shop?page=1" className="button-1 mb-3 ml-5">Shop Continue</Link>
+                <Link reloadDocument={true}  to="/shop?page=1" className="button-1 mb-3 ml-5">Shop Continue</Link>
             </div>
         </div>
     )

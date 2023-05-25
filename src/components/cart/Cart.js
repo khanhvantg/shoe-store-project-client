@@ -215,7 +215,7 @@ const Cart = () => {
         
                 <nav aria-label="breadcrumb">
                     <ol className="breadcrumb bg-transparent justify-content-center">
-                    <li className="breadcrumb-item"><Link to="/">Home</Link></li>
+                    <li className="breadcrumb-item"><Link reloadDocument={true}  to="/">Home</Link></li>
                     <li className="breadcrumb-item active" aria-current="page">Cart</li>
                     </ol>
                 </nav>
@@ -274,10 +274,10 @@ const Cart = () => {
                                                 />
                                         </td> */}
                                         <td className="product-thumbnail text-center" data-title="Image">
-                                            <Link to={`/product/${item.product.id}`}><img src={item.product.images.sort((a,b)=>(a.id-b.id))[0].link} className="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" /></Link>
+                                            <Link reloadDocument={true}  to={`/product/${item.product.id}`}><img src={item.product.images.sort((a,b)=>(a.id-b.id))[0].link} className="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" /></Link>
                                         </td>
                                         <td className="product-name text-center" data-title="Product">
-                                            <Link to={`/product/${item.product.id}`}>{item.product.name}</Link>
+                                            <Link reloadDocument={true}  to={`/product/${item.product.id}`}>{item.product.name}</Link>
                                         </td>
                                         <td className="product-price text-center" data-title="Price">
                                             <span className="amount">${item.product.price}</span>
@@ -338,7 +338,7 @@ const Cart = () => {
                                     <tr>
                                     {lineItems&&lineItems.length>0&&
                                         <th colspan="7">
-                                        <Link to="/checkout" className="button-1">Check Out</Link>
+                                        <Link reloadDocument={true}  to="/checkout" className="button-1">Check Out</Link>
                                         </th>
                                         }
                                     </tr>
@@ -356,7 +356,7 @@ const Cart = () => {
                 <div className="text-center" style={{marginTop: "-79px"}}>
                     <h1>There are no lineitems yet</h1>
                     
-                    <Link to="/shop?page=1" className="button-1">
+                    <Link reloadDocument={true}  to="/shop?page=1" className="button-1">
                         Shop Now
                     </Link>
                 </div>

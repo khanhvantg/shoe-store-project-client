@@ -29,15 +29,14 @@ const Login = () => {
             } else {
                 if(userInfo.name===null){
                     navigate("/profile");
-                } else if(navigate(-1)!==navigate("/manage/paypal")){
-                    navigate(-1);
-                } else navigate("/");
+                } else navigate(-1);
             }
             // if(userInfo.name===null){
             //     navigate("/profile");
             // }
             // else navigate("/");
         }
+        console.log(window.history)
     }, [dispatch, userInfo, navigate]);
 
     const onInputValidate = (value, name) => {
@@ -98,7 +97,7 @@ const Login = () => {
                             <div className="login-form border p-5 bg-white">
                                 <div className="text-center">
                                     <h2 className="mb-2">Login</h2>
-                                    <p className="lead">Don’t have an account? <Link to={{ pathname: "/signup" }} style={{color: "blue"}}>Create a free account</Link></p>
+                                    <p className="lead">Don’t have an account? <Link reloadDocument={true}  to={{ pathname: "/signup" }} style={{color: "blue"}}>Create a free account</Link></p>
                                 </div>
                                 <div className="form">
                                     <Input
@@ -119,7 +118,7 @@ const Login = () => {
                                         onChangeFunc={onInputChange}
                                         {...errorInput.password}
                                     />
-                                    <Link to={{ pathname: "/forgetPassword" }} style={{color: "blue", marginTop: '-10px'}}>Forget Password ?</Link>
+                                    <Link reloadDocument={true}  to={{ pathname: "/forgetPassword" }} style={{color: "blue", marginTop: '-10px'}}>Forget Password ?</Link>
                                     <div className="text-center pt-1 mb-3 pb-1">
                                             <button className="button-63 w-100" onClick={loading?"disabled":handleSubmit}>
                                                 {loading?<Loading a={"24px"}/>:

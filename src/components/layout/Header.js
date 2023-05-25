@@ -12,7 +12,7 @@ import { color } from "highcharts";
 const Header = () => {
     const nameUrl = window.location.href.toString();
     let arrayStrig = nameUrl.split("/");
-    const f = arrayStrig[3];
+    const f = arrayStrig[3].split("?")[0];
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -62,7 +62,7 @@ const Header = () => {
                     </li> */}
                     <li className="dropdown cart-nav dropdown-slide list-inline-item">
                     
-                        <Link to="/cart" data-hover="dropdown">
+                        <Link reloadDocument={true}  to="/cart" data-hover="dropdown">
                             <i className="tf-ion-android-cart">
                             {/* <sup style={{fontSize: "15px"}}>{amountItem}</sup> */}
                             </i>
@@ -70,7 +70,7 @@ const Header = () => {
                         <div className="dropdown-menu cart-dropdown">
                         {lineItems&&lineItems.sort((a,b)=>(a.id-b.id)).map(item=>(
                                 <div className="media">
-                                <Link to={`/product/${item.product.id}`}>
+                                <Link reloadDocument={true}  to={`/product/${item.product.id}`}>
                                     <img className="media-object img- mr-3" src={item.product.images.sort((a,b)=>(a.id-b.id))[0]?.link} alt="image" />
                                 </Link>
                                 <div className="media-body">
@@ -97,8 +97,8 @@ const Header = () => {
                                 <span className="total-price h6">$1799.00</span> */}
                             {lineItems&&lineItems.length>0&&
                                 <div className="text-center cart-buttons mt-3">
-                                    <Link to="/checkout" className="button-1 mr-1">Check Out</Link>
-                                    <Link to="/cart" className="button-1 ml-1">View Cart</Link>
+                                    <Link reloadDocument={true}  to="/checkout" className="button-1 mr-1">Check Out</Link>
+                                    <Link reloadDocument={true}  to="/cart" className="button-1 ml-1">View Cart</Link>
                                 </div>||<div className="text-center">
                                             <img className="w-100 h-100" src="/assets/images/empty-cart.jpg"/>
                                         </div>}
@@ -126,7 +126,7 @@ const Header = () => {
                     </li>
                     
                     <li className="dropdown cart-nav dropdown-slide list-inline-item">
-                        <Link to="/profile" data-hover="dropdown">
+                        <Link reloadDocument={true}  to="/profile" data-hover="dropdown">
                             <i className="tf-ion-ios-person"></i>
                         </Link>
                         <div className="dropdown-menu cart-dropdown">
@@ -136,15 +136,15 @@ const Header = () => {
                         
                                 <div className="text-center cart-buttons mt-3">
                                     {   isAdmin?
-                                        <Link to="/manage/paypal" className="button-1 mr-3">Manage</Link>
+                                        <Link reloadDocument={true}  to="/manage/paypal" className="button-1 mr-3">Manage</Link>
                                         : userInfo ?
-                                        <Link to="/profile" className="button-1 mr-3">Profile</Link>
+                                        <Link reloadDocument={true}  to="/profile" className="button-1 mr-3">Profile</Link>
                                         : <></>
                                     }
                                     { userInfo ? 
                                         <Link to={{ pathname:"/login"}} onClick={logoutHandler} className="button-1 ml-3">Logout</Link>
                                         :
-                                        <Link to={{ pathname:"/login"}} className="button-1">Login</Link>
+                                        <Link reloadDocument={true}  to={{ pathname:"/login"}} className="button-1">Login</Link>
                                     }
                                 </div>
                             </div>
@@ -152,14 +152,14 @@ const Header = () => {
                     
                     </li>
                     {/* <li className="list-inline-item" style={{width: 35}}>
-                        <Link to="/profile" style={{width: "35px"}} >
+                        <Link reloadDocument={true}  to="/profile" style={{width: "35px"}} >
                             <i className="tf-ion-ios-person mr-3"></i>
                         </Link>
                     </li> */}
                 </ul>
             </div>
             <div className="container">
-                <Link className="navbar-brand" to={{ pathname: "/"}}>
+                <Link reloadDocument={true}  className="navbar-brand" to={{ pathname: "/"}}>
                     {/* <img src="assets/images/Untitled.png" style={{width:"30px", height:"30px"}}/> */}
                     <h4 className="font-weight-bold">Shoe Store</h4>
                 </Link>
@@ -172,25 +172,30 @@ const Header = () => {
                 <div className="collapse navbar-collapse" id="main-navbar" style={{fontSize: "20px"}}>
                 <ul className="navbar-nav mx-auto text-center">
                     <li className={f===""?"nav-item active":"nav-item"}>
-                        <Link className="nav-link" to={{ pathname: "/"}}>Home</Link>
+                        <Link reloadDocument={true}  className="nav-link" to={{ pathname: "/"}}>Home</Link>
                     </li>
                     <li className={f==="shop"||f==="product"?"nav-item active":"nav-item"}>
-                        <Link className="nav-link" to="/shop?page=1">Shoes</Link>
+                        <Link  className="nav-link" to="/shop?page=1" reloadDocument={true}>Shoes</Link>
                     </li>
                     {
-                        !isAdmin&&userInfo ? 
-                        <li className={f==="order"?"nav-item active":"nav-item"}>
-                            <Link className="nav-link" to="/order">Order History</Link>
+                        userInfo &&
+                        <li className={(f==="order"||f==="manage")?"nav-item active":"nav-item"}>
+                            <Link reloadDocument={true}  className="nav-link" to={isAdmin?"/manage/paypal":"/order"}>{isAdmin?"Manage":"Order History"}</Link>
                         </li>
-                        :<></>
                     }
-                    {
-                        isAdmin ? 
+                    {/* {
+                        !isAdmin&&userInfo &&
+                        <li className={f==="order"?"nav-item active":"nav-item"}>
+                            <Link reloadDocument={true}  className="nav-link" to="/order">Order History</Link>
+                        </li>
+                        // :<></>
+                    } */}
+                    {/* {
+                        isAdmin &&
                             <li className={f==="manage"?"nav-item active":"nav-item"}>
-                                <Link className="nav-link" to={{ pathname: "/manage/paypal"}}>Manage</Link>
-                            </li>
-                        :<></>    
-                    }
+                                <Link reloadDocument={true}  className="nav-link" to={{ pathname: "/manage/paypal"}}>Manage</Link>
+                            </li>  
+                    } */}
                 </ul>
                 </div>
             </div>
