@@ -144,7 +144,7 @@ const Header = () => {
                                     { userInfo ? 
                                         <Link to={{ pathname:"/login"}} onClick={logoutHandler} className="button-1 ml-3">Logout</Link>
                                         :
-                                        <Link reloadDocument={true}  to={{ pathname:"/login"}} className="button-1">Login</Link>
+                                        <Link to={{ pathname:"/login"}} className="button-1">Login</Link>
                                     }
                                 </div>
                             </div>

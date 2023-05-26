@@ -98,7 +98,7 @@ const SignUp = () => {
                     <div className="login-form border p-5 bg-white">
                         <div className="text-center">
                         <h2 className="mb-2">Sign Up</h2>
-                        <p className="lead">Already have an account? <Link reloadDocument={true}  to="/login" style={{color: "blue"}}> Login now</Link></p>
+                        <p className="lead">Already have an account? <Link to="/login" style={{color: "blue"}}> Login now</Link></p>
                         </div>
                         <div className="form">
                             <Input

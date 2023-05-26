@@ -96,7 +96,7 @@ const ForgetPassword = () => {
                         <div className="text-center">
                             <h2 className="mb-2">Forget Password</h2>
                         </div>
-                        <Link reloadDocument={true}  to="/login" style={{color: "blue"}}>Back?</Link>
+                        <Link to="/login" style={{color: "blue"}}>Back?</Link>
                         <div className="form">
                             <Input
                                 name="userName"
