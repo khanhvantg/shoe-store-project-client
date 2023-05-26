@@ -24,6 +24,7 @@ const ManageRevenueDateScreen = () => {
   // }
   const productList = useSelector((state) => state.productList);
   const { products } = productList;
+  const dataList = products&&products.filter(item=>item.status==="1");
   const [re, setRe] = useState([]);
   const revenueOfDate = useSelector((state) => state.revenueOfDate);
   const { loading, revenue, revenueList } = revenueOfDate;
@@ -137,9 +138,9 @@ const ManageRevenueDateScreen = () => {
     }
   }, [dataproduct]);
 
-  for (let j in products) {
-    dataproduct.name.push(products[j].name);
-    dataproduct.id.push(products[j].id);
+  for (let j in dataList) {
+    dataproduct.name.push(dataList[j].name);
+    dataproduct.id.push(dataList[j].id);
     dataproduct.data.push(0);
   }
   for (let j in dataproduct.data) {
