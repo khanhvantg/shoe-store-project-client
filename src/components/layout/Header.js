@@ -169,7 +169,7 @@ const Header = () => {
                     <span className="navbar-toggler-icon"></span>
                 </button>
   
-                <div className="collapse navbar-collapse" id="main-navbar" style={{fontSize: "20px"}}>
+                <div className="collapse navbar-collapse" id="main-navbar" style={{fontSize: "20px"}} style={{background: "white"}}>
                 <ul className="navbar-nav mx-auto text-center">
                     <li className={f===""?"nav-item active":"nav-item"}>
                         <Link reloadDocument={true}  className="nav-link" to={{ pathname: "/"}}>Home</Link>
