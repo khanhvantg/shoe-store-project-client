@@ -24,6 +24,7 @@ const ManageRevenueMonthScreen = () => {
   // }
   const productList = useSelector((state) => state.productList);
   const { products } = productList;
+  
   const dataList = products&&products.filter(item=>item.status==="1");
   const [re, setRe] = useState([]);
   const revenueOfMonth = useSelector((state) => state.revenueOfMonth);
