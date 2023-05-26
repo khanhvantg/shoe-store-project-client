@@ -97,7 +97,7 @@ const Login = () => {
                             <div className="login-form border p-5 bg-white">
                                 <div className="text-center">
                                     <h2 className="mb-2">Login</h2>
-                                    <p className="lead">Don’t have an account? <Link reloadDocument={true}  to={{ pathname: "/signup" }} style={{color: "blue"}}>Create a free account</Link></p>
+                                    <p className="lead">Don’t have an account? <Link to={{ pathname: "/signup" }} style={{color: "blue"}}>Create a free account</Link></p>
                                 </div>
                                 <div className="form">
                                     <Input
