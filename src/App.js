@@ -39,6 +39,7 @@ import Invoice from './components/invoice/Invoice';
 import MessengerCustomerChat from 'react-messenger-customer-chat';
 import PrivateRouteForAdmin from './PrivateRouteForAdmin';
 import NotFoundPage from './components/notFoundPage/NotFoundPage';
+import RouteLogin from './RouteLogin';
 const App = () => {
   return (
     <div className="App" style={{ backgroundColor: "white" }}>
@@ -86,18 +87,18 @@ const App = () => {
             <Route
               path="/signup"
               element={
-                <PrivateRoute>
+                <RouteLogin>
                   <SignUp />
-                </PrivateRoute>
+                </RouteLogin>
               }
             />
             {/* <Route path="/forgetPassword" element={<ForgetPassword />} /> */}
             <Route
               path="/forgetPassword"
               element={
-                <PrivateRoute>
+                <RouteLogin>
                   <ForgetPassword />
-                </PrivateRoute>
+                </RouteLogin>
               }
             />
             <Route path="/manage/accounts" element={<ManageAccountsScreen />} />
