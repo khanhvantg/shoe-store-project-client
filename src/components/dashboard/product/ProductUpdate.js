@@ -83,8 +83,9 @@ const ProductUpdate = ({isShowing, hide, id, idCategory, name}) => {
             onValidateFunc: onInputValidate
         }
     });
-
+    const [errStatus, setErrStatus]=useState("");
     useEffect(() => {
+        setErrStatus("")
         setForm({})
         if (successUpdate) {
             dispatch({type: PRODUCT_UPDATE_RESET});
@@ -143,10 +144,11 @@ const ProductUpdate = ({isShowing, hide, id, idCategory, name}) => {
         // }));
         if (name==="status"&&value==="1"){
             if (product.productInfors.length===0||product.images.length===0){
-                setErrorInput(prev => ({
-                    ...prev,
-                    status: { errorMsg: `Please insert size or image of ${product.name} to active` }
-                }));
+                // setErrorInput(prev => ({
+                //     ...prev,
+                //     status: { errorMsg: `Please insert size or image of ${product.name} to active` }
+                // }));
+                setErrStatus(`Please insert size and image of ${product.name} to active`)
             } else {
                 setForm(prev => ({
                     ...prev,
@@ -247,7 +249,8 @@ const ProductUpdate = ({isShowing, hide, id, idCategory, name}) => {
                                                     options={statusList}
                                                     onChangeFunc={onInputChange}
                                                     {...errorInput.status}
-                                                />             
+                                                />
+                                                {errStatus!==""&&<span className="text-danger">{errStatus}</span>}            
                                             </div>
                                     </div>
                                     <div className="text-center pt-1 mb-3 pb-1">

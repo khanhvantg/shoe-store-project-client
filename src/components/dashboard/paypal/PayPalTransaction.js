@@ -107,7 +107,6 @@ const PayPalTransaction = () => {
         money[j].transaction_info.order_id='0';
         for(let i in orders){
             if(money[j].transaction_info.transaction_id===orders[i].transactionCode){
-                console.log("trueee")
                 money[j].transaction_info.order_id=orders[i].id;
                 if(orders[i].paymentStatus==='2'){
                     money[j].transaction_info.status='-1';
