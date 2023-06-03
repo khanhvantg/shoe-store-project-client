@@ -136,7 +136,11 @@ const Invoice = () => {
                                                         <span className="amount">{order.product.name}</span>
                                                     </td>
                                                     <td className="product-price" data-title="Price">
-                                                        <span className="amount">${order.product.price}</span>
+                                                        {order.productPrice===null?
+                                                            <span className="amount">${Math.round((Number(order.total)/Number(order.amount))*100)/100}</span>
+                                                            :
+                                                            <span className="amount">${order.productPrice}</span>
+                                                        }
                                                     </td>
                                                     <td className="product-quantity" data-title="Quantity">
                                                         {order.amount}

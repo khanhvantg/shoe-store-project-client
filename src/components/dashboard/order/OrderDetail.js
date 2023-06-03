@@ -190,7 +190,6 @@ const OrderDetail = ({isShowing, hide, id}) => {
                                                             :
                                                             <span className="amount">${order.productPrice}</span>
                                                         }
-                                                        {/* <span className="amount">${order.productPrice}</span> */}
                                                     </td>
                                                     <td className="product-quantity" data-title="Quantity">
                                                         {order.amount}
