@@ -90,6 +90,9 @@ const Checkout = () => {
     const voucherDetail = useSelector((state) => state.voucherDetail);
     const { success: successgetVoucher, error: errorVoucher, voucher } = voucherDetail;
 
+    const dataNumberDetail = useSelector((state) => state.dataNumberDetail);
+    const { dataNumber } = dataNumberDetail;
+    console.log(dataNumber)
     //Paypal
     const [show, setShow] = useState(false);
     const [successPayPal, setSuccessPayPal] = useState(false);
@@ -145,6 +148,7 @@ const Checkout = () => {
                     status: 1,      //status = 0 : cancle, 1 : wait confirm, 2: shipping, 3: completed 
                     createdDate: today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear(),
                     createdBy: userInfo.username,
+                    vat: (Number(dataNumber.value)/100).toString(),
                     totalPrice: totalPrice
                 }))
             }
@@ -468,6 +472,7 @@ const Checkout = () => {
     const onError = (data, actions) => {
         setErrorMessage("An Error occured with your payment ");
     };
+    console.log(voucher.name)
     return (
         <>
             {
@@ -567,11 +572,11 @@ const Checkout = () => {
                                             </li>
                                             <li className="d-flex justify-content-between">
                                                 <span >VAT:</span>
-                                                <span className="h5" style={{ width: "100px" }}>10%</span>
+                                                <span className="h5" style={{ width: "100px" }}>{dataNumber.value}%</span>
                                             </li>
                                             <li className="d-flex justify-content-between">
                                                 <span>Total:</span>
-                                                <span className="h5" style={{ width: "100px", textDecorationLine: form.voucher !== "0" && "line-through" }}>${Math.round((Number(totalPrice) + Number(form.feeShip) + Number(totalPrice) * 0.1) * 100) / 100}</span>
+                                                <span className="h5" style={{ width: "100px", textDecorationLine: form.voucher !== "0" && "line-through" }}>${Math.round((Number(totalPrice) + Number(form.feeShip) + Number(totalPrice) * (Number(dataNumber.value)/100)) * 100) / 100}</span>
                                             </li>
                                             {form.voucher !== "0" && <li className="d-flex justify-content-between">
                                                 <span></span>

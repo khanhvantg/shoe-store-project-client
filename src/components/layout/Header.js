@@ -9,6 +9,7 @@ import {
     LINE_ITEM_LIST_RESET,
 } from '../../redux/constants/Constants'
 import { color } from "highcharts";
+import { getDataNumberByName } from "../../redux/actions/DataNumberAction";
 const Header = () => {
     const nameUrl = window.location.href.toString();
     let arrayStrig = nameUrl.split("/");
@@ -19,6 +20,8 @@ const Header = () => {
     const [isAdmin, setIsAdmin] = useState(false);
     const lineItemList = useSelector((state) => state.lineItemList);
     const { loading, error, lineItems} = lineItemList;
+    const dataNumberDetail = useSelector((state) => state.dataNumberDetail);
+    const { dataNumber } = dataNumberDetail;
     //const lineItems = wishList.lineItems;
 
     const userLogin = useSelector((state) => state.userLogin);
@@ -29,6 +32,7 @@ const Header = () => {
     useEffect(() =>{
         if(userInfo){
             dispatch(getWishListById());
+            dispatch(getDataNumberByName());
             for (let i in userInfo.roles) {
                 if(userInfo.roles[i]==="ROLE_ADMIN" || userInfo.roles[i]==="ROLE_MODERATOR") {
                     setIsAdmin(true);

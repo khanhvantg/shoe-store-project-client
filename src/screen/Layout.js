@@ -5,6 +5,7 @@ import {
     useNavigate,
     useParams
 } from "react-router-dom";
+import Input from '../components/checkValidate/Input';
 import './Layout.css'
 
 const Layout = () => {
@@ -78,6 +79,7 @@ const Layout = () => {
                     <li className={f === "products" ? "nav-item active" : "nav-item"} ><Link reloadDocument={true}  to={{ pathname: "/manage/products", search: "?search=&page=1" }} className="nav-link">Products</Link></li>
                     <li className={f === "vouchers" ? "nav-item active" : "nav-item"} ><Link reloadDocument={true}  to="/manage/vouchers" className="nav-link">Vouchers</Link></li>
                     <li className={f === "orders" ? "nav-item active" : "nav-item"} ><Link reloadDocument={true}  to={{ pathname: "/manage/orders", search: "?search=&page=1" }} className="nav-link">Orders</Link></li>
+                    <li className={f === "vat" ? "nav-item active" : "nav-item"} ><Link reloadDocument={true}  to={{ pathname: "/manage/vat"}} className="nav-link">Vat</Link></li>
                 </ul>
             </nav>
             {windowSize.width < 768 && (

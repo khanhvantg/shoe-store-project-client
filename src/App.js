@@ -40,6 +40,7 @@ import MessengerCustomerChat from 'react-messenger-customer-chat';
 import PrivateRouteForAdmin from './PrivateRouteForAdmin';
 import NotFoundPage from './components/notFoundPage/NotFoundPage';
 import RouteLogin from './RouteLogin';
+import ManageVatScreen from './screen/ManageVatScreen';
 const App = () => {
   return (
     <div className="App" style={{ backgroundColor: "white" }}>
@@ -129,6 +130,9 @@ const App = () => {
             <Route
               path="/manage/orders"
               element={<PrivateRouteForAdmin><ManageOrderScreen /></PrivateRouteForAdmin>} />
+            <Route
+              path="/manage/vat"
+              element={<PrivateRouteForAdmin><ManageVatScreen /></PrivateRouteForAdmin>} />
             <Route
               path="/manage/orders/page/:page"
               element={<PrivateRouteForAdmin><ManageOrderScreen /></PrivateRouteForAdmin>} />

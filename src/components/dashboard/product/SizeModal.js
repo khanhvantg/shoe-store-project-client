@@ -21,6 +21,7 @@ const SizeModal = ({isShowing, hide, id, name}) => {
       });
     const {isShowing:isShowConfirmBox, toggle:toggleConfirmBox, id: idSize} = useModal();
     const [isOpen,setIsOpen]=useState(false)
+    const [isAdd,setIsAdd]=useState(false)
     const [edit,setEdit]=useState(false)
     const dispatch = useDispatch();
     const sizeList = useSelector((state) => state.sizeList);
@@ -181,6 +182,7 @@ const SizeModal = ({isShowing, hide, id, name}) => {
 
     const editHandler = (itemId) => {
         setIsOpen(true)
+        setIsAdd(true)
         dispatch(getSizeById({itemId}))
     }
     const deleteHandler = () => {
@@ -188,6 +190,7 @@ const SizeModal = ({isShowing, hide, id, name}) => {
     }
     const handleCancel = () => {
         setIsOpen(false)
+        setIsAdd(false)
         setForm({})
     }
     const handleOnSubmit = () => {
@@ -196,6 +199,26 @@ const SizeModal = ({isShowing, hide, id, name}) => {
             dispatch(updateSize({form}))
         }
     }
+    const handleOnAdd = () => {
+        setIsAdd(true)
+    }
+    const [isHoveringNo, setIsHoveringNo] = useState(true);
+    const [isHoveringYes, setIsHoveringYes] = useState(true);
+    const handleMouseEnterNo = () => {
+        setIsHoveringNo(false);
+    };
+
+    const handleMouseLeaveNo = () => {
+        setIsHoveringNo(true);
+    };
+
+    const handleMouseEnterYes = () => {
+        setIsHoveringYes(false);
+    };
+
+    const handleMouseLeaveYes = () => {
+        setIsHoveringYes(true);
+    };
     if(!isShowing)return null;
     return (
     <>
@@ -216,7 +239,19 @@ const SizeModal = ({isShowing, hide, id, name}) => {
                     <div className="modal-body">
                         <div className="py-1 ">
                             <div className="form" novalidate="">
-                            <div className="row">   
+                            {!isAdd?
+                            <button className="button-2 mr-auto" type="button" onClick={handleOnAdd}>Add Size</button>:
+                            !isOpen&&
+                            <button type="button" className="button-2" style={{
+                                                                        border: "1px solid #ff4d4d",
+                                                                        background: isHoveringNo ? '#ff4d4d' : 'white',
+                                                                        color: isHoveringNo ? 'white' : '#ff4d4d',
+                                                                    }} 
+                                                                onMouseEnter={handleMouseEnterNo}
+                                                                onMouseLeave={handleMouseLeaveNo} 
+                                                                data-dismiss="modal" 
+                                                                onClick={()=>{setIsHoveringNo(true);setIsAdd(false)}}>Cancel Add</button>}
+                            {isAdd&&<div className="row">   
                                 <div className="col">
                                     <div className="row">
                                          <div className="col">
@@ -240,7 +275,7 @@ const SizeModal = ({isShowing, hide, id, name}) => {
                                         </div>
                                     </div>
                                     </div>
-                                </div>
+                                </div>}
                                 <div className="col text-center px-xl-3">
                                 {isOpen&&isOpen?
                                     <div className="d-flex text-white justify-content-center">
@@ -253,7 +288,7 @@ const SizeModal = ({isShowing, hide, id, name}) => {
                                         type="button" className="btn btn-success">Save</button>
                                     </div>
                                     </div>
-                                    :
+                                    : isAdd&&
                                     <button className="btn btn-primary btn-block" type="submit" onClick={submitHandler}>Save Create</button>  
                                 }
                                     </div>

@@ -105,7 +105,7 @@ const OrderDetail = ({isShowing, hide, id}) => {
                                             </li>
                                             <li className="d-flex justify-content-between pt-2">
                                             <h5>VAT</h5>
-                                            <span>{order.orderPrice!==null?10:0}%</span>
+                                            <span>{order.orderPrice!==null?order.vat*100:0}%</span>
                                             </li>
                                             <li className="d-flex justify-content-between pt-2">
                                             <h5>Total Price</h5>

@@ -119,7 +119,8 @@ const Order = () => {
                                             </td>
                                         }
 
-                                        <td className="text-nowrap align-middle">${item.orderPrice!=null?item.orderPrice:item.totalPrice}</td>
+                                        <td className="text-nowrap align-middle">${item.orderPrice!=null?Math.round(item.orderPrice*100)/100:Math.round(item.totalPrice*100)/100}</td>
+
                                         {/* <td className="text-nowrap align-middle">{item.amountItem}</td> */}
                                         {item.paymentType === null || item.paymentType === "0" ? (
                                             <td className="text-nowrap align-middle" >

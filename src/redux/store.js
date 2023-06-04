@@ -79,6 +79,10 @@ import {
   paypalBalanceReducer,
   paypalRefundReducer,
 } from "./reducers/PayPalReducer";
+import {
+  dataNumberDetailsReducer,
+  dataNumberUpdateReducer,
+} from "./reducers/DataNumberReducer";
 const cartItemsFromStorage = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems"))
   : [];
@@ -157,6 +161,9 @@ const reducer = combineReducers({
   paypalTransaction: paypalTransactionReducer,
   paypalRefund: paypalRefundReducer,
   paypalBalance: paypalBalanceReducer,
+  //dataNumber
+  dataNumberDetail: dataNumberDetailsReducer,
+  dataNumberUpdate: dataNumberUpdateReducer,
 });
 const initialState = {
   cart: {
