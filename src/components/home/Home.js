@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllProducts} from '../../redux/actions/ProductAction';
+import { getAllProducts, getProductsByName} from '../../redux/actions/ProductAction';
 import { getAllcategories, getCategoryById, stopGetCategory } from '../../redux/actions/CategoryAction'
 import { Link } from "react-router-dom";
 import Loading from '../loadingError/Loading';
 import Message from "../loadingError/Message";
-import { createLineItem } from '../../redux/actions/WishlistAction'
+import { createLineItem, getWishListById } from '../../redux/actions/WishlistAction'
 import { getProductBest, getRevenueByMonth } from "../../redux/actions/RevenueAction";
 import LoadingCustom from "../loadingError/LoadingCustom";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import Voucher from "./Voucher";
+import { getAllVouchers } from "../../redux/actions/VoucherAction";
 const Home = () => {
     const [total, setTotal] = useState(0);
     const [amount, setAmount] = useState(1);
     const [productId,setProductId]=useState(null);
+    const [searchText, setSearchText]=useState("")
     const dispatch = useDispatch();
     const dispatchItem = useDispatch();
 
@@ -22,13 +25,15 @@ const Home = () => {
     const dataList = products&&products.filter(item=>item.status==="1");
     const revenueOfMonth = useSelector((state) => state.revenueOfMonth);
     const { revenueList } = revenueOfMonth;
+    const voucherList = useSelector((state) => state.voucherList);
+    const {loading: loadingVoucher, vouchers} = voucherList;
+    const vList = vouchers&&vouchers.filter(item=>item.status==="1");
     //const { success, category, loading, error, products } = categoryDetail;
     var today = new Date();
     const month = {
         month: today.getMonth(),
         year: today.getFullYear()
     }
-    console.log(revenueList)
     const proBest = [];
     revenueList&&revenueList.sort((a,b)=>(Number(b.amountProduct)-Number(a.amountProduct)))
     for (let i in revenueList) {
@@ -43,7 +48,8 @@ const Home = () => {
     useEffect(() => {
         dispatch(getAllProducts());
         dispatch(getRevenueByMonth({month}))
-    }, [check]);
+        dispatch(getAllVouchers())
+    }, []);
 
     const handelBestSeller = () => {
         setCheck(0);
@@ -55,6 +61,28 @@ const Home = () => {
     //     dispatch(getAllProducts());
     //     dispatch(getRevenueByMonth({month}))
     // }, []);
+    const [data,setData]=useState([])
+    const [loadings, setLoadings]=useState(false)
+    const [timer,setTimer]=useState(null);
+    const filterData = (value) => {
+        const lowercasedValue = value.toLowerCase().trim();
+        if (lowercasedValue === "") {
+            setData([]);
+        } else {
+            setLoadings(true)
+            clearTimeout(timer);
+                const newTimer = setTimeout(() => {
+                    const filteredData = dataList.filter(item => {
+                        return Object.keys(item).some(key =>
+                            ["name"].includes(key)&&item[key].toString().toLowerCase().includes(lowercasedValue)
+                        );
+                    })
+                    setData(filteredData)
+                    setLoadings(false)
+                }, 1000)
+            setTimer(newTimer)
+        }
+    }
     const ListItem = () => {
         return (
             <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
@@ -72,7 +100,18 @@ const Home = () => {
                     
         );
       }
-  return (
+      const ListSearch = () => {
+        return (
+            <div className="media" style={{marginBottom: "0px",}}>
+                <div className="media-body">
+                    <h5><Skeleton/></h5>
+                    <h7><Skeleton/></h7>
+                </div>
+            </div>
+                    
+        );
+      }
+    return (
     <div className="home-container">
         {/* {loading&&<LoadingCustom content="Loading"/>} */}
         <div id="carouselExampleIndicators" className="carousel slide" data-ride="carousel">
@@ -101,9 +140,51 @@ const Home = () => {
                 <span className="sr-only">Next</span>
             </a>
         </div>
-        <section className="ads section">
-            <div className="container">
-                <div className="row align-items-center">
+        {/* <section className="section"> */}
+                <div style={{backgroundColor: "gray", marginTop: "0px"}}>
+                <div className="dropdown cart-nav dropdown-slide1" style={{width: "50%", margin: "auto"}}>
+                        <form class="pb-3" style={{padding: "20px 0px 50px 0px"}}>
+                            <h3 class="text-center" style={{color: "white", fontFamily: "nunito,roboto,proxima-nova,proxima nova,sans-serif"}}>SEARCH</h3>
+                            <div class="input-group">
+                                <input style={{background:"white"}}
+                                    type="text" class="form-control" placeholder="Text to search"
+                                    value={searchText}
+                                    onChange={(e) => {setSearchText(e.target.value);filterData(e.target.value)}}
+                                />
+                                {/* <span className = "text-center"
+                                    style={{position: "absolute",
+                                            fontSize:20,
+                                            right: 10,
+                                            top: 14,
+                                            cursor: "pointer"}}
+                                    > */}
+                                {/* <span style={{backgroundColor: "white"}}>
+                                    <i className="tf-ion-ios-search"></i>
+                                </span> */}
+                                
+                            </div>
+                            {(searchText!=="")&&
+                            <div className="dropdown-menu cart-dropdown">
+                            {loadings?<ListSearch></ListSearch>:
+                                data.length===0?<Message variant="alert-danger">Not found product</Message> :
+                            data.sort((a,b)=>(a.id-b.id)).map(product=>(
+                                <Link reloadDocument={true}  to={`/product/${product.id}`}>
+                                    <div className="media" style={{paddingBottom: "5px"}}>
+                                        <img className="media-object img- mr-3" src={product.images.sort((a,b)=>(a.id-b.id))[0]?.link} alt="image" />
+                                        <div className="media-body">
+                                            <h5>{product.name}</h5>
+                                            <h7>${product.price}</h7>
+                                        </div>
+                                    </div>
+                                    </Link>
+                                ))
+                               } 
+                            </div>    
+}
+                        </form>
+                </div>
+                </div>
+                {/* <div className="row align-items-center">
                 <div className="col-lg-6 offset-lg-6">
                     <div className="ads-content">
                     <span className="h5 deal">Hot Hot Hot</span>
@@ -114,11 +195,20 @@ const Home = () => {
                     <Link reloadDocument={true}  to="/shop?page=1" className="btn btn-main"><i className="ti-bag mr-2"></i>Shop Now </Link>
                     </div>
                 </div>
-                </div>
-            </div>
-        </section>
+                </div> */}
+        
+        {/* </section> */}
 
         <section class="product spad">
+        <div class="container">
+            
+            <h3 class="text-center" style={{marginTop: "39px", color: "black", fontFamily: "nunito,roboto,proxima-nova,proxima nova,sans-serif"}}>COUPON</h3>
+
+            <Voucher 
+                vouchers={vList}
+                loading={loadingVoucher}    
+            />
+        </div>
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">

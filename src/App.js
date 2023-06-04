@@ -52,6 +52,7 @@ const App = () => {
           <Routes>
             <Route path="*" element={<NotFoundPage />} />
             <Route path="/" element={<Home />} />
+            <Route path="/s" element={<Home1 />} />
             <Route path="/order-detail/:id"
               element={
                 <PrivateRoute >

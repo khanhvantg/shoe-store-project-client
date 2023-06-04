@@ -729,6 +729,14 @@ a.text-primary:hover {
   visibility: visible;
   margin-top: -5px;
 }
+.dropdown.cart-nav.dropdown-slide1 .cart-dropdown {
+  display: block;
+  opacity: 1;
+  z-index: 1;
+  visibility: visible;
+  margin-top: -15px;
+  width: 100%;
+}
 
 @media (max-width: 480px) {
   .navigation {
@@ -2165,7 +2173,7 @@ table.shop_table_responsive {
 .copyright {
   color: #000;
 }
-.slick-prev, .slick-next {
+/* .slick-prev, .slick-next {
   font-size: 0!important;
   line-height: 0!important;
   position: absolute;
@@ -2206,5 +2214,5 @@ table.shop_table_responsive {
 }
 .slick-slider:hover .slick-prev, .slick-slider:hover .slick-next{
   opacity: 1!important;
-}
+} */
 /*# sourceMappingURL=maps/style.css.map */

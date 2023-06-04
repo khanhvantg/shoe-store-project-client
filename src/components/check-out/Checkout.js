@@ -536,7 +536,6 @@ const Checkout = () => {
                                                     }
                                                 </> ||
                                                 <div className="voucher text-center">
-
                                                     <li className="d-flex h-100">
                                                         <span className="" style={{ width: "100px" }}>
                                                             <h6 className="font-weight-bold mt-4">Discount</h6>

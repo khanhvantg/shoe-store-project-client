@@ -112,6 +112,7 @@ const reducer = combineReducers({
   productCreate: productCreateReducer,
   productDetail: productDetailsReducer,
   productList: productListReducer,
+  productListByName: productListReducer,
   productUpdate: productUpdateReducer,
   //image
   imageCreate: imageCreateReducer,

@@ -1047,6 +1047,9 @@
   .tf-ion-ios-copy:before {
     content: "\f41c";
   }
+  .tf-ion-ios-copy:hover {
+    cursor: pointer;
+  }
   .tf-ion-ios-crop-strong:before {
     content: "\f41d";
   }
