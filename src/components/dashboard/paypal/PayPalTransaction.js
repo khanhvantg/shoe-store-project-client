@@ -392,6 +392,8 @@ const PayPalTransaction = () => {
                                     ) : (
                                     <tbody  align="center">
                                     { money && money.sort((a,b)=>(b.transaction_info.status-a.transaction_info.status)).map((item,index) => (
+                                        <>
+                                        {item.transaction_info.order_id!=='0'&&
                                         <tr style={{backgroundColor: item.transaction_info.status==='-1'&&"gray", textDecorationLine: item.transaction_info.status==='-1'&&"line-through"}}>
                                             {/* <td className="align-middle">{account.id}</td> */}
                                             <td className="text-nowrap align-middle text-center">{item.transaction_info.transaction_id}</td>
@@ -416,7 +418,8 @@ const PayPalTransaction = () => {
                                                 </div>
                                             </td>
                                             
-                                        </tr>
+                                        </tr>}
+                                        </>
                                     ))}
                                     </tbody>)}
                                 </table>

@@ -2,7 +2,6 @@ import './App.css';
 import Header from './components/layout/Header'; //Include Header
 import Footer from './components/layout/Footer'; //Include Footer
 import Shop from './components/shop/Shop'
-import ProductMain1 from './components/shop/ProductMain1'
 import ProductDetail from './components/product-detail/ProductDetail'
 import Checkout from './components/check-out/Checkout'
 import Cart from './components/cart/Cart'
@@ -28,7 +27,6 @@ import PrivateRoute from "./PrivateRoute";
 import ManageRevenueYearScreen from './screen/ManageRevenueYearScreen';
 import ManageRevenueMonthScreen from './screen/ManageRevenueMonthScreen';
 import ManageRevenueDayScreen from './screen/ManageRevenueDayScreen';
-import Home1 from './components/home/Home1';
 import ManageVoucherScreen from './screen/ManageVoucherScreen';
 import Thanks from './components/check-out/Thanks';
 import PrivateRouteCheckOut from './PrivateRouteCheckOut';
@@ -53,7 +51,6 @@ const App = () => {
           <Routes>
             <Route path="*" element={<NotFoundPage />} />
             <Route path="/" element={<Home />} />
-            <Route path="/s" element={<Home1 />} />
             <Route path="/order-detail/:id"
               element={
                 <PrivateRoute >
@@ -70,7 +67,7 @@ const App = () => {
               }
             />
             {/* <Route path="/shop" element={<Shop />} /> */}
-            <Route path="/shop" element={<ProductMain1 />} />
+            <Route path="/shop" element={<Shop />} />
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/checkout" element={<Checkout />} />
             {/* <Route path="/checkout" element={<PrivateRouteCheckOut><Checkout /></PrivateRouteCheckOut>} /> */}

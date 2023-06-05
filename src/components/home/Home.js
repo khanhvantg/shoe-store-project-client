@@ -79,7 +79,7 @@ const Home = () => {
                     })
                     setData(filteredData)
                     setLoadings(false)
-                }, 1000)
+                }, 800)
             setTimer(newTimer)
         }
     }
@@ -165,7 +165,7 @@ const Home = () => {
                             </div>
                             {(searchText!=="")&&
                             <div className="dropdown-menu cart-dropdown">
-                            {loadings?<ListSearch></ListSearch>:
+                            {loadings?<Loading></Loading>:
                                 data.length===0?<Message variant="alert-danger">Not found product</Message> :
                             data.sort((a,b)=>(a.id-b.id)).map(product=>(
                                 <Link reloadDocument={true}  to={`/product/${product.id}`}>
@@ -202,8 +202,9 @@ const Home = () => {
         <section class="product spad">
         <div class="container">
             
-            <h3 class="text-center" style={{marginTop: "39px", color: "black", fontFamily: "nunito,roboto,proxima-nova,proxima nova,sans-serif"}}>COUPON</h3>
-
+            <h3 class="text-center" style={{marginTop: "39px", color: "black", fontFamily: "nunito,roboto,proxima-nova,proxima nova,sans-serif"}}>
+                Voucher
+            </h3>
             <Voucher 
                 vouchers={vList}
                 loading={loadingVoucher}    
