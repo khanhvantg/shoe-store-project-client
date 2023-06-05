@@ -81,7 +81,7 @@ const App = () => {
               }
             />
             <Route path="/order" element={<Order />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="login" element={<Login />} />
             {/* <Route path="/signup" element={<SignUp />} /> */}
             <Route
               path="/signup"

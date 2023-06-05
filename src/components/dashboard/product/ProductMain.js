@@ -125,10 +125,10 @@ const ProductMain = () => {
                 <div className="card-body">
                     <div className="text-center card-title">
                         <h3 className="mr-2">Products Manage</h3>
-                        <header class="mb-3">
-                                <div class="form-inline">
+                        <header className="mb-3">
+                                <div className="form-inline">
                                     <button className="button-2 mr-auto" type="button" onClick={toggleCreate}>New Product</button>
-                                    <select class="form-control mt-2" value={idCategory}
+                                    <select className="form-control mt-2" value={idCategory}
                                         onChange={handleC} >
                                         <option value="0">All</option>
                                         {categories&&categories.map((item,index)=>(
@@ -141,16 +141,16 @@ const ProductMain = () => {
                                     <input type="hidden" name="paged" value="1" />
                                 </div>
                             </header>
-                            <header class="">
-                            <form class="pb-3">
-                                <div class="input-group">
+                            <header className="">
+                            <form className="pb-3">
+                                <div className="input-group">
                                     <input style={{background:"white"}}
-                                    type="text" class="form-control" placeholder="Search..." 
+                                    type="text" className="form-control" placeholder="Search..." 
                                     value={searchText}
                                     onChange={(e) => {onSearchTextChanged(e)}}
                                     />
-                                    <div class="input-group-append">
-                                        <button class="btn btn-light" type="button"><i class="fa fa-search"></i></button>
+                                    <div className="input-group-append">
+                                        <button className="btn btn-light" type="button"><i className="fa fa-search"></i></button>
                                     </div>
                                 </div>
                             </form>

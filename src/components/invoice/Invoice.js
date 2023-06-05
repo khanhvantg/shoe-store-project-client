@@ -35,11 +35,11 @@ const Invoice = () => {
                                 <div className="col-lg-12">
                                     <div className="cart-info card" style={{padding: "0px 1.5rem 1.5rem 1.5rem"}}>
                                     <li className="d-flex justify-content-between pt-2">
-                                        <h4 class="mb-4">
+                                        <h4 className="mb-4">
                                             Invoice <br/>
                                             OrderID#: <span> {order.id}</span>
                                         </h4>
-                                        <h1 class="align-middle">E-SHOP</h1>
+                                        <h1 className="align-middle">E-SHOP</h1>
                                     </li>
                                         <ul className="list-unstyled mb-4">
                                             <h4>Info</h4>

@@ -1,13 +1,9 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
-// import Slider from "react-styled-carousel";
 import AliceCarousel from 'react-alice-carousel';
 import "react-alice-carousel/lib/alice-carousel.css";
 import copy from "copy-to-clipboard";
 import Loading from '../loadingError/Loading';
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
-// import Slider from "react-slick";
 const responsive = {
     0: {
       items: 1

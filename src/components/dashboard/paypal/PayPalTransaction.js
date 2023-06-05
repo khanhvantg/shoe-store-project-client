@@ -175,22 +175,22 @@ const PayPalTransaction = () => {
         {/* <div className="text-center card-title">
             <h3 className="mr-2">Accounts Manage</h3>
         </div> */}
-       <div class="content-page">
+       <div className="content-page">
            
-           <div class="content">
-               <div class="container-fluid">
-                   <div class="page-title-box">
-                        <div class="text-center">
-                               <h4 class="page-title">PayPal Transaction</h4>
+           <div className="content">
+               <div className="container-fluid">
+                   <div className="page-title-box">
+                        <div className="text-center">
+                               <h4 className="page-title">PayPal Transaction</h4>
                            </div>
-                       {/* <div class="row align-items-center">
-                           <div class="col-sm-6 text-center">
-                               <h4 class="page-title">PayPal Transaction</h4>
+                       {/* <div className="row align-items-center">
+                           <div className="col-sm-6 text-center">
+                               <h4 className="page-title">PayPal Transaction</h4>
                            </div>
-                           <div class="col-sm-6">
-                               <ol class="breadcrumb float-right">
-                                   <li class="breadcrumb-item"><a href="#">Jassa</a></li>
-                                   <li class="breadcrumb-item active">Dashboard</li>
+                           <div className="col-sm-6">
+                               <ol className="breadcrumb float-right">
+                                   <li className="breadcrumb-item"><a href="#">Jassa</a></li>
+                                   <li className="breadcrumb-item active">Dashboard</li>
                                </ol>
                            </div>
                        </div> */}
@@ -198,46 +198,46 @@ const PayPalTransaction = () => {
                    </div>
                  
 
-                   <div class="row mb-40">
+                   <div className="row mb-40">
 
-                       <div class="col-xl-6">
-                           <div class="card">
-                               <div class="card-heading p-4">
-                                   <div class="mini-stat-icon float-right">
-                                       <i class="mdi mdi-cube-outline bg-primary  text-white"></i>
+                       <div className="col-xl-6">
+                           <div className="card">
+                               <div className="card-heading p-4">
+                                   <div className="mini-stat-icon float-right">
+                                       <i className="mdi mdi-cube-outline bg-primary  text-white"></i>
                                    </div>
                                    <div>
-                                       <h5 class="font-16">PayPal Balance</h5>
+                                       <h5 className="font-16">PayPal Balance</h5>
                                    </div>
                                    {loadingBalance ? (
                                 <Loading />
                             ) : errorBlance ? (
                                 <Message variant="alert-danger">{errorBlance}</Message>
                             ) : (
-                                   <h3 class="mt-4">${balance.value}</h3>)}
-                                   {/* <div class="progress mt-4" style={{height: "4px"}}>
-                                       <div class="progress-bar bg-primary" role="progressbar" style={{width: "75%"}} aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                   <h3 className="mt-4">${balance.value}</h3>)}
+                                   {/* <div className="progress mt-4" style={{height: "4px"}}>
+                                       <div className="progress-bar bg-primary" role="progressbar" style={{width: "75%"}} aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
                                    </div>
-                                   <p class="text-muted mt-2 mb-0">Previous period<span class="float-right">75%</span></p> */}
+                                   <p className="text-muted mt-2 mb-0">Previous period<span className="float-right">75%</span></p> */}
                                </div>
                            </div>
                        </div>
                        
                        
-                       {/* <div class="col-sm-6 col-xl-3">
-                           <div class="card">
-                               <div class="card-heading p-4">
-                                   <div class="mini-stat-icon float-right">
-                                       <i class="mdi mdi-buffer bg-danger text-white"></i>
+                       {/* <div className="col-sm-6 col-xl-3">
+                           <div className="card">
+                               <div className="card-heading p-4">
+                                   <div className="mini-stat-icon float-right">
+                                       <i className="mdi mdi-buffer bg-danger text-white"></i>
                                    </div>
                                    <div>
-                                       <h5 class="font-16">Add to Card</h5>
+                                       <h5 className="font-16">Add to Card</h5>
                                    </div>
-                                   <h3 class="mt-4">86%</h3>
-                                   <div class="progress mt-4" style={{height: "4px"}}>
-                                       <div class="progress-bar bg-danger" role="progressbar" style={{width: "82%"}} aria-valuenow="82" aria-valuemin="0" aria-valuemax="100"></div>
+                                   <h3 className="mt-4">86%</h3>
+                                   <div className="progress mt-4" style={{height: "4px"}}>
+                                       <div className="progress-bar bg-danger" role="progressbar" style={{width: "82%"}} aria-valuenow="82" aria-valuemin="0" aria-valuemax="100"></div>
                                    </div>
-                                   <p class="text-muted mt-2 mb-0">Previous period<span class="float-right">82%</span></p>
+                                   <p className="text-muted mt-2 mb-0">Previous period<span className="float-right">82%</span></p>
                                </div>
                            </div>
                        </div> */}
@@ -310,48 +310,48 @@ const PayPalTransaction = () => {
             )} */}
             <div>
             <div className="row" style={{margin: "10px 0px", position: "none"}}>
-                       <div class="col-xl-6 mb-1" style={{position: "initial"}}>
-                           <div class="" style={{backgroundColor: "white"}}>
-                               <div class="card-heading p-4">
-                                   <div class="mini-stat-icon float-right">
-                                       <i class="mdi mdi-briefcase-check bg-success text-white"></i>
+                       <div className="col-xl-6 mb-1" style={{position: "initial"}}>
+                           <div className="" style={{backgroundColor: "white"}}>
+                               <div className="card-heading p-4">
+                                   <div className="mini-stat-icon float-right">
+                                       <i className="mdi mdi-briefcase-check bg-success text-white"></i>
                                    </div>
                                    <div>
-                                       <h5 class="font-16">Money In</h5>
+                                       <h5 className="font-16">Money In</h5>
                                    </div>
                                    {loading ? (
                                 <Loading />
                             ) : error ? (
                                 <Message variant="alert-danger" style ={{position: "initial"}}>{error}</Message>
                             ) : (
-                                   <h3 class="mt-4">${Math.round(moneyIn*100)/100}</h3>)}
-                                   {/* <div class="progress mt-4" style={{height: "4px"}}>
-                                       <div class="progress-bar bg-success" role="progressbar" style={{width: "88%"}} aria-valuenow="88" aria-valuemin="0" aria-valuemax="100"></div>
+                                   <h3 className="mt-4">${Math.round(moneyIn*100)/100}</h3>)}
+                                   {/* <div className="progress mt-4" style={{height: "4px"}}>
+                                       <div className="progress-bar bg-success" role="progressbar" style={{width: "88%"}} aria-valuenow="88" aria-valuemin="0" aria-valuemax="100"></div>
                                    </div>
-                                   <p class="text-muted mt-2 mb-0">Previous period<span class="float-right">88%</span></p> */}
+                                   <p className="text-muted mt-2 mb-0">Previous period<span className="float-right">88%</span></p> */}
                                </div>
                            </div>
                        </div>
 
-                       <div class="col-xl-6" style={{position: "initial"}}>
-                           <div class="bg-white">
-                               <div class="card-heading p-4">
-                                   <div class="mini-stat-icon float-right">
-                                       <i class="mdi mdi-tag-text-outline bg-warning text-white"></i>
+                       <div className="col-xl-6" style={{position: "initial"}}>
+                           <div className="bg-white">
+                               <div className="card-heading p-4">
+                                   <div className="mini-stat-icon float-right">
+                                       <i className="mdi mdi-tag-text-outline bg-warning text-white"></i>
                                    </div>
                                    <div>
-                                       <h5 class="font-16">Money Out</h5>
+                                       <h5 className="font-16">Money Out</h5>
                                    </div>
                                    {loading ? (
                                 <Loading />
                             ) : error ? (
                                 <Message variant="alert-danger">{error}</Message>
                             ) : (
-                                   <h3 class="mt-4">${Math.round(moneyOut*100)/100}</h3>)}
-                                   {/* <div class="progress mt-4" style={{height: "4px"}}>
-                                       <div class="progress-bar bg-warning" role="progressbar" style={{width: "68%"}} aria-valuenow="68" aria-valuemin="0" aria-valuemax="100"></div>
+                                   <h3 className="mt-4">${Math.round(moneyOut*100)/100}</h3>)}
+                                   {/* <div className="progress mt-4" style={{height: "4px"}}>
+                                       <div className="progress-bar bg-warning" role="progressbar" style={{width: "68%"}} aria-valuenow="68" aria-valuemin="0" aria-valuemax="100"></div>
                                    </div>
-                                   <p class="text-muted mt-2 mb-0">Previous period<span class="float-right">68%</span></p> */}
+                                   <p className="text-muted mt-2 mb-0">Previous period<span className="float-right">68%</span></p> */}
                                </div>
                            </div>
                        </div>
@@ -359,11 +359,11 @@ const PayPalTransaction = () => {
 
                        </div>
                 
-           <div class="row">
-                       <div class="col-xl-12" style={{position: "initial"}}>
-                           <div class="bg-white m-b-30" style={{margin: "10px 15px"}}>
-                               <div class="card-body">
-                                   <h4 class="mt-0 header-title mb-4 text-center">Active Transaction</h4>
+           <div className="row">
+                       <div className="col-xl-12" style={{position: "initial"}}>
+                           <div className="bg-white m-b-30" style={{margin: "10px 15px"}}>
+                               <div className="card-body">
+                                   <h4 className="mt-0 header-title mb-4 text-center">Active Transaction</h4>
                                   
                                    <div className="e-table">
                             <div className="table-responsive table-lg mt-3">

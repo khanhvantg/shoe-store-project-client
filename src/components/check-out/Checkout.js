@@ -666,11 +666,11 @@ const Checkout = () => {
                                                             />
                                                             {/* <button className="button-1" onClick={getOTP}>Get OTP</button> */}
                                                             <label className="form-label">Payment Type</label>
-                                                            <div class="card-body">
+                                                            <div className="card-body">
                                                                 {paymentList.map(item => (
-                                                                    <label class="checkbox-btn mr-1">
+                                                                    <label className="checkbox-btn mr-1">
                                                                         <input type="radio" className="hide" name="myfilter_radio" value={item.value} onChange={(e) => setForm(prev => ({ ...prev, paymentType: e.target.value }))} />
-                                                                        <span class={form.paymentType === item.value ? "btn btn-light active" : "btn btn-light"}>{item.label}</span>
+                                                                        <span className={form.paymentType === item.value ? "btn btn-light active" : "btn btn-light"}>{item.label}</span>
                                                                     </label>
                                                                 ))}
                                                             </div>

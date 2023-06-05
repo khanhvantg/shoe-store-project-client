@@ -205,16 +205,16 @@ const OrderMain = () => {
                     <div className="text-center card-title">
                         <h3 className="mr-2">Orders Manage</h3>
                     </div>
-                    <header class="">
-                        <form class="pb-3">
-                            <div class="input-group">
+                    <header className="">
+                        <form className="pb-3">
+                            <div className="input-group">
                                 <input style={{background:"white"}}
-                                type="text" class="form-control" placeholder="Search..." 
+                                type="text" className="form-control" placeholder="Search..." 
                                 value={searchText}
                                 onChange={(e) => {onSearchTextChanged(e)}}
                                 />
-                                <div class="input-group-append">
-                                    <button class="btn btn-light" type="button"><i class="fa fa-search"></i></button>
+                                <div className="input-group-append">
+                                    <button className="btn btn-light" type="button"><i className="fa fa-search"></i></button>
                                 </div>
                             </div>
                         </form>

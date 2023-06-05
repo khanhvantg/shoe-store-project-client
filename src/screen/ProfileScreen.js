@@ -215,18 +215,18 @@ const ProfileScreen = () => {
                         <span className="font-weight-bold">{form.username}</span>
                         <span className="text-black-50">{form.email}</span>
                         <span>{form.address}</span></div>
-                    <article class="filter-group">
-                        <header class="card-header" style={{ border: "none" }}>
-                            <a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="false" class="d-flex collapsed">
-                                <i class="icon-control fa fa-chevron-down mr-3">
+                    <article className="filter-group">
+                        <header className="card-header" style={{ border: "none" }}>
+                            <a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="false" className="d-flex collapsed">
+                                <i className="icon-control fa fa-chevron-down mr-3">
                                 </i>
-                                <h5 class="title1">Change Password </h5>
+                                <h5 className="title1">Change Password </h5>
                             </a>
                         </header>
                         {/* <button className="btn btn-primary btn-block" type="submit" onClick={()=>setHide(!hide)}>Change Password</button> */}
                         {/* { hide ? ( */}
 
-                        <div class="filter-content collapse form mb-5 py-2" id="collapse_3">
+                        <div className="filter-content collapse form mb-5 py-2" id="collapse_3">
                             <div className="login-form">
                                 <Input
                                     name="currentPassword"

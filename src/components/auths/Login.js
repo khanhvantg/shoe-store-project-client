@@ -36,7 +36,6 @@ const Login = () => {
             // }
             // else navigate("/");
         }
-        console.log(window.history)
     }, [dispatch, userInfo, navigate]);
 
     const onInputValidate = (value, name) => {

@@ -155,13 +155,13 @@ const ProductDetail = () => {
     }
     const ListItem = () => {
         return (
-            <div class="cus-col-lg-2 col-md-4 col-sm-4 mix new-arrivals">
-                    <div class="product__item">
-                        <div class="img-wrap product-wrap"> 
+            <div className="cus-col-lg-2 col-md-4 col-sm-4 mix new-arrivals">
+                    <div className="product__item">
+                        <div className="img-wrap product-wrap"> 
                         <Skeleton className="w-100 mb-2 img-load2"></Skeleton>
                     </div>
                     
-                        <div class="product__item__text">
+                        <div className="product__item__text">
                             <h5><Skeleton></Skeleton></h5>
                             <h5><Skeleton></Skeleton></h5>
                         </div>
@@ -257,21 +257,21 @@ const ProductDetail = () => {
                         <h3 className="product-price">$ {product.price}<del></del></h3>
                         <hr />
                         
-                        <div class="form-group">
+                        <div className="form-group">
                                 <h5>Short description</h5>
-                                <div class="card-body">
+                                <div className="card-body">
                                     <p className="product-description mr-1">
                                         {product.description}
                                     </p>
                                 </div>
-                                <h5 class="">Available sizes</h5>
-                                    <div class="card-body"> 
+                                <h5 className="">Available sizes</h5>
+                                    <div className="card-body"> 
                                         {product.productInfors&&product.productInfors.sort((a,b)=>a.size-b.size).map(item=>(
                                             <>
                                             {item.amount>0&&
-                                            <label class="checkbox-btn mr-1">
+                                            <label className="checkbox-btn mr-1">
                                                 <input type="radio" className="hide" name="myfilter_radio" value={item.size} onClick={(e)=>setForm(prev => ({...prev,size: e.target.value}))} />
-                                                <span style={{width:"72px"}} class={form.size===item.size?"btn btn-light active":"btn btn-light"} >{item.size} UK</span>
+                                                <span style={{width:"72px"}} className={form.size===item.size?"btn btn-light active":"btn btn-light"} >{item.size} UK</span>
                                             </label>
                                             }
                                             </>
@@ -368,27 +368,27 @@ const ProductDetail = () => {
                         
                     </div>    
             </div>
-                <div class="col-lg-12">
-                    <ul class="filter__controls mt-4">
-                        <li class="btn active">Maybe you are interested</li>
+                <div className="col-lg-12">
+                    <ul className="filter__controls mt-4">
+                        <li className="btn active">Maybe you are interested</li>
                     </ul>
                 </div>
-                {loading? <div class="row product__filter">
+                {loading? <div className="row product__filter">
                     <ListItem/><ListItem/><ListItem/><ListItem/><ListItem/>
                     </div>:
-                <div class="row product__filter">
+                <div className="row product__filter">
                 {irecommendProducts&&irecommendProducts.sort((a, b) => (a.id-b.id)).map((product, index)=>(   
-                    <div class="col-lg-2 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals" style={{flex: "0 0 20%", maxWidth: "20%"}}>
-                        <div class="product__item">
-                        <div class="img-wrap product-wrap"> 
+                    <div className="col-lg-2 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals" style={{flex: "0 0 20%", maxWidth: "20%"}}>
+                        <div className="product__item">
+                        <div className="img-wrap product-wrap"> 
                             <Link reloadDocument={true}  to={{ pathname: `/product/${product.id}`}}>
                                 <img className="box-shadow w-100 mb-2 border" src={product.link} />
                             </Link>
                         </div> 
-                        {/* <span class="onsale">New</span> */}
-                        <div class="product__item__text">
+                        {/* <span className="onsale">New</span> */}
+                        <div className="product__item__text">
                                 <h6>{product.name}</h6>
-                                <Link reloadDocument={true}  to={`/product/${product.id}`} class="add-cart">View Detail</Link>
+                                <Link reloadDocument={true}  to={`/product/${product.id}`} className="add-cart">View Detail</Link>
                             
                                 <h5>${product.price}</h5>
                             </div>

@@ -85,13 +85,13 @@ const Home = () => {
     }
     const ListItem = () => {
         return (
-            <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
-                    <div class="product__item">
-                        <div class="img-wrap product-wrap"> 
+            <div className="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
+                    <div className="product__item">
+                        <div className="img-wrap product-wrap"> 
                         <Skeleton className="w-100 mb-2 border img-load1"></Skeleton>
                     </div>
                     
-                        <div class="product__item__text">
+                        <div className="product__item__text">
                             <h5><Skeleton></Skeleton></h5>
                             <h5><Skeleton></Skeleton></h5>
                         </div>
@@ -143,11 +143,11 @@ const Home = () => {
         {/* <section className="section"> */}
                 <div style={{backgroundColor: "gray", marginTop: "0px"}}>
                 <div className="dropdown cart-nav dropdown-slide1" style={{width: "50%", margin: "auto"}}>
-                        <form class="pb-3" style={{padding: "20px 0px 50px 0px"}}>
-                            <h3 class="text-center" style={{color: "white", fontFamily: "nunito,roboto,proxima-nova,proxima nova,sans-serif"}}>SEARCH</h3>
-                            <div class="input-group">
+                        <form className="pb-3" style={{padding: "20px 0px 50px 0px"}}>
+                            <h3 className="text-center" style={{color: "white", fontFamily: "nunito,roboto,proxima-nova,proxima nova,sans-serif"}}>SEARCH</h3>
+                            <div className="input-group">
                                 <input style={{background:"white"}}
-                                    type="text" class="form-control" placeholder="Text to search"
+                                    type="text" className="form-control" placeholder="Text to search"
                                     value={searchText}
                                     onChange={(e) => {setSearchText(e.target.value);filterData(e.target.value)}}
                                 />
@@ -199,10 +199,10 @@ const Home = () => {
         
         {/* </section> */}
 
-        <section class="product spad">
-        <div class="container">
+        <section className="product spad">
+        <div className="container">
             
-            <h3 class="text-center" style={{marginTop: "39px", color: "black", fontFamily: "nunito,roboto,proxima-nova,proxima nova,sans-serif"}}>
+            <h3 className="text-center" style={{marginTop: "39px", color: "black", fontFamily: "nunito,roboto,proxima-nova,proxima nova,sans-serif"}}>
                 Voucher
             </h3>
             <Voucher 
@@ -210,12 +210,12 @@ const Home = () => {
                 loading={loadingVoucher}    
             />
         </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <ul class="filter__controls mt-4">
-                        <li class={check===0?" btn active":" btn"} onClick={handelBestSeller}>Best Sellers</li>
-                        <li class={check===1?" btn active":" btn"} onClick={handelNewArray}>New Arrivals</li>
+        <div className="container">
+            <div className="row">
+                <div className="col-lg-12">
+                    <ul className="filter__controls mt-4">
+                        <li className={check===0?" btn active":" btn"} onClick={handelBestSeller}>Best Sellers</li>
+                        <li className={check===1?" btn active":" btn"} onClick={handelNewArray}>New Arrivals</li>
                         {/* <li data-filter=".hot-sales">Hot Sales</li> */}
                     </ul>
                 </div>
@@ -226,25 +226,25 @@ const Home = () => {
             <div className="row product__filter" >
                 <ListItem/><ListItem/><ListItem/><ListItem/>
                 </div>:
-            <div class="row product__filter">   
+            <div className="row product__filter">   
                 {check===0?proBest&&proBest.map((product, index)=>(
                 <>
                 {index<4&&(
-                <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
-                    <div class="product__item">
-                        {/* <div class="product__item__pic set-bg" style={{backgroundImage:`url(${product.images.sort((a, b) => (a.id-b.id))[0]?.link})`}}>
-                            <span class="label" style={{backgroundColor: "gray"}}>Best</span>
+                <div className="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
+                    <div className="product__item">
+                        {/* <div className="product__item__pic set-bg" style={{backgroundImage:`url(${product.images.sort((a, b) => (a.id-b.id))[0]?.link})`}}>
+                            <span className="label" style={{backgroundColor: "gray"}}>Best</span>
                         </div> */}
-                        <span class="onsale">Best</span>
-                        <div class="img-wrap product-wrap"> 
+                        <span className="onsale">Best</span>
+                        <div className="img-wrap product-wrap"> 
                         <Link reloadDocument={true}  to={{ pathname: `/product/${product.id}`}}>
                             <img className="box-shadow w-100 mb-2 border" src={product.images.sort((a, b) => (a.id-b.id))[0]?.link} />
                         </Link>
                     </div>
                     
-                        <div class="product__item__text">
+                        <div className="product__item__text">
                             <h6>{product.name}</h6>
-                            <Link reloadDocument={true}  to={`/product/${product.id}`} class="add-cart">View Detail</Link>
+                            <Link reloadDocument={true}  to={`/product/${product.id}`} className="add-cart">View Detail</Link>
                       
                             <h5>${product.price}</h5>
                         </div>
@@ -256,17 +256,17 @@ const Home = () => {
                 dataList&&dataList.sort((a, b) => (b.id-a.id)).map((product, index)=>(
                     <>
                     {index<4&&(
-                <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
-                    <div class="product__item">
-                    <div class="img-wrap product-wrap"> 
+                <div className="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
+                    <div className="product__item">
+                    <div className="img-wrap product-wrap"> 
                         <Link reloadDocument={true}  to={{ pathname: `/product/${product.id}`}}>
                             <img className="box-shadow w-100 mb-2 border" src={product.images.sort((a, b) => (a.id-b.id))[0]?.link} />
                         </Link>
                     </div> 
-                    <span class="onsale">New</span>
-                    <div class="product__item__text">
+                    <span className="onsale">New</span>
+                    <div className="product__item__text">
                             <h6>{product.name}</h6>
-                            <Link reloadDocument={true}  to={`/product/${product.id}`} class="add-cart">View Detail</Link>
+                            <Link reloadDocument={true}  to={`/product/${product.id}`} className="add-cart">View Detail</Link>
                       
                             <h5>${product.price}</h5>
                         </div>
