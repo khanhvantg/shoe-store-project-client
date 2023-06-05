@@ -472,7 +472,6 @@ const Checkout = () => {
     const onError = (data, actions) => {
         setErrorMessage("An Error occured with your payment ");
     };
-    console.log(voucher.name)
     return (
         <>
             {
@@ -529,17 +528,15 @@ const Checkout = () => {
                                             {form.voucher === "0" &&
                                                 <>
                                                     <div className="form-group">
-                                                        <input className="form-control" type="text" placeholder="Enter Coupon Code" onChange={(e) => setInfoVoucher({ name: e.target.value })} />
+                                                        <input className="form-control" type="text" placeholder="Enter Voucher" onChange={(e) => setInfoVoucher({ name: e.target.value })} />
                                                     </div>
-                                                    {errorVoucher &&
-                                                        <Message variant="alert-danger">Not Found Voucher</Message>
-                                                    }
+                                                    {errorVoucher && <Message variant="alert-danger">{errorVoucher}</Message>}
                                                     {infoVoucher.name !== '' &&
                                                         <div className="text-right">
                                                             <button type="button" className="button-1" onClick={handleVoucher}>Apply Voucher</button>
                                                         </div>
                                                     }
-                                                </> ||
+                                                </>  || 
                                                 <div className="voucher text-center">
                                                     <li className="d-flex h-100">
                                                         <span className="" style={{ width: "100px" }}>
