@@ -61,7 +61,7 @@ const VoucherMain = () => {
                                         {/* <th>Id</th> */}
                                         <th>Name</th>
                                         <th>Value</th>
-                                        <th>Quantity</th>
+                                        {/* <th>Quantity</th> */}
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
@@ -89,7 +89,7 @@ const VoucherMain = () => {
                                         {/* <td className="align-middle">{category.id}</td> */}
                                         <td className="text-nowrap align-middle">{item.name}</td>
                                         <td className="text-nowrap align-middle">{Math.round(item.value*100)}%</td>
-                                        <td className="text-nowrap align-middle">{item.quantity}</td>
+                                        {/* <td className="text-nowrap align-middle">{item.quantity}</td> */}
                                         {/* <td className="text-nowrap align-middle">
                                             {category.status ==="1" ? <Status check="checked" /> : <Status check=""/>}
                                         </td> */}
