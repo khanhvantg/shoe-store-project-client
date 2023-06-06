@@ -12,6 +12,23 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import Paginations from "../pagination/Paginations";
 const Shop = () => {
+    //test
+    // const loadProducts = async () => {
+    //     const response = await fetch('/products')
+    //     return await response.json()
+    // }
+    // const loading = false;
+    // const error =false;
+    // const [ products, setProducts ] = useState([])
+    // const [ currentData, setCurrentData ] = useState([])
+    // const dataList = products && products.filter(item => item.status === "1");
+    // const [data, setData] = useState([])
+    // useEffect(() => {
+    //     loadProducts().then(setProducts)
+    //     loadProducts().then(setData)
+    //     loadProducts().then(setCurrentData)
+    // }, [])
+    //end test
     const [form, setForm] = useState({
         amount: 1,
         size: '',
@@ -469,7 +486,7 @@ const Shop = () => {
                             */}
                             </div>
                         </aside>
-                        <main className="col-md-9">
+                        <main className="col-md-9" role="product">
                             <header className="border-bottom mb-4 pb-3">
                                 <div className="form-inline">
                                     <span className="mr-md-auto">{(check && dataList.length !== 0 && data.length === 0) ? dataList.length : data.length} Items found </span>
@@ -535,7 +552,7 @@ const Shop = () => {
                                                 </>
                                             ))}
                                         </>
-                                        :
+                                         :
                                         <div className="text-center" style={{ width: "100%" }}>
                                             <span >No Products Found To Display!</span>
                                         </div>}

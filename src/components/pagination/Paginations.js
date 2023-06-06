@@ -31,7 +31,6 @@ const Paginations = (props) => {
   const fetchPageNumbers = () => {
     const totalNumbers = pageNeighbours * 2 + 3;
     const totalBlocks = totalNumbers + 2;
-    console.log(currentPage)
     if (totalPages > totalBlocks) {
       // const startPage = Math.max(2, Number(currentPage) - pageNeighbours);
       // const endPage = Math.min(totalPages - 1, Number(currentPage) + pageNeighbours);
@@ -63,7 +62,6 @@ const Paginations = (props) => {
     return range(1, totalPages);
   };
   const pages = fetchPageNumbers() || [];
-  console.log("c",currentPage)
   return (
     <nav aria-label="Page navigation sample">
       <ul className="pagination">
