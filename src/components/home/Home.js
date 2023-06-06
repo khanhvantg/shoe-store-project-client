@@ -19,7 +19,10 @@ const Home = () => {
     const [searchText, setSearchText]=useState("")
     const dispatch = useDispatch();
     const dispatchItem = useDispatch();
-
+    
+    const categoryList = useSelector((state) => state.categoryList);
+    const { categories } = categoryList;
+    const categoryL = categories&&categories.filter(item=>item.status==="1");
     const productList = useSelector((state) => state.productList);
     const { loading, error, products} = productList;
     const dataList = products&&products.filter(item=>item.status==="1");
@@ -49,6 +52,7 @@ const Home = () => {
         dispatch(getAllProducts());
         dispatch(getRevenueByMonth({month}))
         dispatch(getAllVouchers())
+        dispatch(getAllcategories())
     }, []);
 
     const handelBestSeller = () => {
@@ -183,7 +187,18 @@ const Home = () => {
 }
                         </form>
                 </div>
-                </div>
+                {/* <div className="row"> */}
+                                <div className="" style={{margin: "auto"}}>
+                                    <ul className="filter__controls1" style={{padding: "0px",}}>
+                                        {categoryL&&categoryL.sort((a,b)=>(a.id-b.id)).map((item,index)=>(
+                                        <li className="btn" style={{fontFamily: "math"}} className="btn">
+                                            <Link reloadDocument={true}  to={{ pathname: `shop?category=${item.name}&page=1`}}>{item.name}</Link>
+                                        </li>))}
+                                    </ul>
+                                </div>
+                                {/* <ListItem/><ListItem/><ListItem/><ListItem/> */}
+                            </div>
+                {/* </div> */}
                 {/* <div className="row align-items-center">
                 <div className="col-lg-6 offset-lg-6">
                     <div className="ads-content">
@@ -202,7 +217,7 @@ const Home = () => {
         <section className="product spad">
         <div className="container">
             
-            <h3 className="text-center" style={{marginTop: "39px", color: "black", fontFamily: "nunito,roboto,proxima-nova,proxima nova,sans-serif"}}>
+            <h3 className="text-center" style={{ color: "black", fontFamily: "nunito,roboto,proxima-nova,proxima nova,sans-serif"}}>
                 Voucher
             </h3>
             <Voucher 

@@ -75,6 +75,7 @@ const Shop = () => {
     const [priceFilter, setPriceFilter] = useState(0)
     const [searchParams, setSearchParams] = useSearchParams();
     const [currentPage, setCurrentPage] = useState(searchParams.get('page'));
+    const [currentCategory, setCurrentCategory] = useState(searchParams.get('category'));
     let NUM_OF_RECORDS = dataList.length;
     let LIMIT = 5;
     useEffect(() => {
@@ -82,6 +83,15 @@ const Shop = () => {
             // window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
             dispatchCategory(getAllcategories());
             setCheck1(1);
+        }
+        if(currentCategory=='Bitis'){
+            setIdCategory('2')
+        } else if(currentCategory=='Nike Jordan') {
+            setIdCategory('1')
+        } else if (currentCategory=='Nike Air') {
+            setIdCategory('4')
+        } else if (currentCategory=='Adidas') {
+            setIdCategory('3')
         }
         if (idCategory === "0") {
             // clearTimeout(timer);
@@ -112,6 +122,7 @@ const Shop = () => {
             dispatch(getCategoryById(idCategory));
             setCurrentPage(1);
             setSearchParams({page: 1}, { replace: true });
+            setCurrentCategory(null)
         }
         setSearchText("")
         setData([]);
@@ -143,6 +154,7 @@ const Shop = () => {
         } else {
             clearTimeout(timer);
             const newTimer = setTimeout(() => {
+                setIdCategory('0');
                 setFilters(prev => ({ ...prev, price: value }));
             }, 1000);
             setTimer(newTimer);
