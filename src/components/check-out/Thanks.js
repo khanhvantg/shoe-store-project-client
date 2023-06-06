@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const Thanks = () => {
     return (
-        <div className="" style={{ backgroundColor: "#99ffff" }}>
+        <div className="" style={{ backgroundColor: "#99ffff", minHeight: "700px" }}>
             <div className="text-center">
                 <span className="h1" style={{ fontFamily: "Brush Script MT", fontSize: "200px" }}>Thank You</span>
                 <h2 className="mt-3">Your purchase is truly appreciated!</h2>
