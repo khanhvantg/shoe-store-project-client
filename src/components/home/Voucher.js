@@ -51,7 +51,7 @@ const Voucher = ({vouchers, loading}) => {
                     <span style={{ width: "200px" }}>
                         <h6 className="font-weight-bold mt-4 text-center mr-2">Voucher</h6>
                         <span className="mr-2">{voucher.name}</span>
-                        <i className="tf-ion-ios-copy" onClick={()=>{handleCopyText(voucher.name)}}></i>
+                        <i className="tf-ion-ios-copy" style={{fontSize: "19px", marginLeft: "19px"}} onClick={()=>{handleCopyText(voucher.name)}}></i>
                         <br></br>
                         {copyText===voucher.name&&
                         <span style={{color:"green"}}>
