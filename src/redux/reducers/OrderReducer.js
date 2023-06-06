@@ -3,6 +3,10 @@ import {
     ORDER_CREATE_REQUEST,
     ORDER_CREATE_RESET,
     ORDER_CREATE_SUCCESS,
+    ORDER_CHECK_FAIL,
+    ORDER_CHECK_REQUEST,
+    ORDER_CHECK_RESET,
+    ORDER_CHECK_SUCCESS,
     ORDER_UPDATE_FAIL,
     ORDER_UPDATE_REQUEST,
     ORDER_UPDATE_RESET,
@@ -66,6 +70,21 @@ import {
         case ORDER_CREATE_FAIL:
           return { loading: false, error: action.payload };
         case ORDER_CREATE_RESET:
+          return { order: {} };
+        default:
+          return state;
+      }
+  };
+
+  export const orderCheckReducer = (state = { order: {} }, action) => {
+    switch (action.type) {
+        case ORDER_CHECK_REQUEST:
+          return { loading: true };
+        case ORDER_CHECK_SUCCESS:
+          return { loading: false, success: true, order: action.payload };
+        case ORDER_CHECK_FAIL:
+          return { loading: false, error: action.payload };
+        case ORDER_CHECK_RESET:
           return { order: {} };
         default:
           return state;

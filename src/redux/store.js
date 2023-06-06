@@ -52,6 +52,7 @@ import {
   orderListReducer,
   orderListByUserIdReducer,
   orderUpdateReducer,
+  orderCheckReducer,
 } from "./reducers/OrderReducer";
 import {
   cartReducer,
@@ -139,6 +140,7 @@ const reducer = combineReducers({
   //order
   orderList: orderListReducer,
   orderCreate: orderCreateReducer,
+  orderCheck: orderCheckReducer,
   orderDetail: orderDetailsReducer,
   orderUpdate: orderUpdateReducer,
   orderListByUserId: orderListByUserIdReducer,

@@ -5,6 +5,10 @@ import {
   ORDER_CREATE_REQUEST,
   ORDER_CREATE_RESET,
   ORDER_CREATE_SUCCESS,
+  ORDER_CHECK_FAIL,
+  ORDER_CHECK_REQUEST,
+  ORDER_CHECK_RESET,
+  ORDER_CHECK_SUCCESS,
   ORDER_UPDATE_FAIL,
   ORDER_UPDATE_REQUEST,
   ORDER_UPDATE_RESET,
@@ -65,7 +69,27 @@ export const createOrder = ({form}) => async (dispatch,getState) => {
       toast(`${error.response.data.message}`, {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
     }
     };
-    
+
+    export const checkAmount = () => async (dispatch,getState) => {
+      try {
+        dispatch({ type: ORDER_CHECK_REQUEST });
+        const {
+          userLogin: { userInfo },
+        } = getState();
+        const { data } = await axios.post(`/api/checkAmount/orders/${userInfo.id}`, {}, {headers: authHeader()});
+        dispatch({ type: ORDER_CHECK_SUCCESS, payload: data });
+        // toast("Create Order Successfull", {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
+      } catch (error) {
+        dispatch({
+          type: ORDER_CHECK_FAIL,
+          payload:
+            error.response && error.response.data.message
+              ? error.response.data.message
+              : error.message,
+        });
+        toast(`${error.response.data.message}`, {position: toast.POSITION.BOTTOM_RIGHT,  autoClose: 1500});
+      }
+      };   
 
 export const getOrdersByUserId = () => async (dispatch,getState) => {
 try {

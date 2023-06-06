@@ -5,7 +5,7 @@ import {
     ORDER_CREATE_RESET,
     VOUCHER_DETAILS_STOP
 } from '../../redux/constants/Constants'
-import { createOrder } from '../../redux/actions/OrderAction'
+import { createOrder, checkAmount } from '../../redux/actions/OrderAction'
 import Input from '../checkValidate/Input'
 import Select from '../checkValidate/Select'
 import { Link, useNavigate } from "react-router-dom";
@@ -86,6 +86,9 @@ const Checkout = () => {
 
     const orderCreate = useSelector((state) => state.orderCreate);
     const { success: succsesCreate, loading: loadingCreate } = orderCreate;
+
+    const orderCheck = useSelector((state) => state.orderCheck);
+    const { error: errorCheckAmount, success: succsesCheckAmount, loading: loadingCheckAmount } = orderCheck;
 
     const voucherDetail = useSelector((state) => state.voucherDetail);
     const { success: successgetVoucher, error: errorVoucher, voucher } = voucherDetail;
@@ -428,6 +431,8 @@ const Checkout = () => {
 
     // creates a paypal order
     const onClick = (data, actions) => {
+        dispatch(checkAmount())
+        console.log('e',errorCheckAmount)
         const isValid = validateForm();
         if (isValid) {
             return actions.resolve();
@@ -444,7 +449,7 @@ const Checkout = () => {
                         description: "Thanks for your purchase",
                         amount: {
                             currency_code: "USD",
-                            value: Math.round((Number(totalPrice) + Number(form.feeShip) + Number(totalPrice) * 0.1 - totalPrice * Number(form.voucher)) * 100) / 100,
+                            value: Math.round((Number(totalPrice) + Number(form.feeShip) + Number(totalPrice) * (Number(dataNumber.value)/100) - totalPrice * Number(form.voucher)) * 100) / 100,
                         },
                     },
                 ],
@@ -478,6 +483,7 @@ const Checkout = () => {
                 loadingCreate && <LoadingCustom content='Creating' />
             }
             <div className="checkout-container">
+                <button onClick={()=>dispatch(checkAmount())}>Click</button>
                 <section className="page-header">
                     <div className="overly"></div>
                     <div className="container">
@@ -577,7 +583,7 @@ const Checkout = () => {
                                             </li>
                                             {form.voucher !== "0" && <li className="d-flex justify-content-between">
                                                 <span></span>
-                                                <span className="h5" style={{ width: "100px" }}>${Math.round((Number(totalPrice) + Number(form.feeShip) + Number(totalPrice) * 0.1 - totalPrice * Number(form.voucher)) * 100) / 100}</span>
+                                                <span className="h5" style={{ width: "100px" }}>${Math.round((Number(totalPrice) + Number(form.feeShip) + Number(totalPrice) * (Number(dataNumber.value)/100) - totalPrice * Number(form.voucher)) * 100) / 100}</span>
                                             </li>}
                                         </ul>
                                     </div>
@@ -688,7 +694,7 @@ const Checkout = () => {
                                                             onClick={onClick}
                                                             createOrder={createOrders}
                                                             onApprove={onApprove}
-                                                            forceReRender={[form.voucher, form.feeShip, form.city, form.district, form.ward, form.numberDetail]}
+                                                            forceReRender={[errorCheckAmount,form.voucher, form.feeShip, form.city, form.district, form.ward, form.numberDetail]}
                                                         />
                                                     </PayPalScriptProvider> :
                                                     <button
