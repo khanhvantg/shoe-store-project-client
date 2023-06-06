@@ -198,6 +198,8 @@ const SizeModal = ({isShowing, hide, id, name}) => {
         if (isValid) {
             dispatch(updateSize({form}))
         }
+        setIsOpen(false)
+        setIsAdd(false)
     }
     const handleOnAdd = () => {
         setIsAdd(true)
